@@ -1,6 +1,7 @@
 <?php
 
 use app\core\view\TinyView;
+use app\lang\Arrays;
 
 require_once "constants.php";
 require_once "core/shortcuts.php";
@@ -17,7 +18,7 @@ spl_autoload_register(function ($class_name) {
 set_exception_handler(function (Exception $exception) {
     http_response_code(400);
     TinyView::show("error.tmpl", array(
-        "title"         => get_class($exception),
+        "title"         => Arrays::last(explode("\\", get_class($exception))),
         "message"       => $exception->getMessage(),
         "description"   => $exception->getTraceAsString()
     ));
