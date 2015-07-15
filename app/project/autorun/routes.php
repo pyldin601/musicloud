@@ -6,6 +6,4 @@
  * Time: 16:59
  */
 
-use app\core\exceptions\status\PageNotFoundException;
-use app\project\handlers\dynamic\DoRegistrationPage;
 
