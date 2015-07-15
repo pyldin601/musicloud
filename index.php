@@ -9,4 +9,3 @@ $router = Router::getInstance();
 
 $router->run();
 
-

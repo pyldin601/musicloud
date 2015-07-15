@@ -23,10 +23,6 @@ set_exception_handler(function (Exception $exception) {
     ));
 });
 
-//set_error_handler(function () {
-//    die("OOPS!");
-//});
-
 // Scan autorun directory for executable scripts
 foreach (scandir(AUTORUN_SCRIPTS_PATH) as $file) {
     if ($file == "." || $file == "..")
