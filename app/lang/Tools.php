@@ -22,4 +22,12 @@ class Tools {
         }
         return false;
     }
+
+    /**
+     * @param $source
+     * @return mixed
+     */
+    public static function turnSlashes($source) {
+        return str_replace("/", "\\", $source);
+    }
 } 

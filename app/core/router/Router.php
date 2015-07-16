@@ -17,6 +17,7 @@ use app\core\exceptions\status\PageNotFoundException;
 use app\core\http\HttpRoute;
 use app\core\injector\Injector;
 use app\core\router\sources\RouteSource;
+use app\core\view\JsonResponse;
 use app\lang\option\Option;
 use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
@@ -191,8 +192,6 @@ class Router implements SingletonInterface {
             throw new ApplicationException("Invalid action handler!");
 
         }
-
-
 
     }
 

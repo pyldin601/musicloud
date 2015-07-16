@@ -1,5 +1,6 @@
 <?php
 
+use app\core\view\JsonResponse;
 use app\core\view\TinyView;
 use app\lang\Arrays;
 
@@ -25,11 +26,19 @@ spl_autoload_register(function ($class_name) {
 // Set global exception handler
 set_exception_handler(function (Exception $exception) {
     http_response_code(400);
-    TinyView::show("error.tmpl", array(
-        "title"         => Arrays::last(explode("\\", get_class($exception))),
-        "message"       => $exception->getMessage(),
-        "description"   => $exception->getTraceAsString()
-    ));
+    if (JsonResponse::hasInstance()) {
+        JsonResponse::getInstance()->write(array(
+            "error"         => Arrays::last(explode("\\", get_class($exception))),
+            "message"       => $exception->getMessage(),
+            "description"   => $exception->getTraceAsString()
+        ));
+    } else {
+        TinyView::show("error.tmpl", array(
+            "title"         => Arrays::last(explode("\\", get_class($exception))),
+            "message"       => $exception->getMessage(),
+            "description"   => $exception->getTraceAsString()
+        ));
+    }
 });
 
 // Scan autorun directory for executable scripts
