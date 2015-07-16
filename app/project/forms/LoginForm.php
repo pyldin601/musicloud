@@ -19,9 +19,7 @@ class LoginForm extends AbstractForm {
         parent::__construct();
     }
 
-    protected function validate() {
-
-    }
+    protected function validate() { }
 
     /**
      * @return mixed
