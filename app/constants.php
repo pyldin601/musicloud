@@ -1,5 +1,7 @@
 <?php
 
+const LIBRARIES_PATH            = "app/lib/";
+
 const AUTORUN_SCRIPTS_PATH      = "app/project/autorun/";
 const FIXED_ROUTES_PATH         = "app/project/handlers/fixed/";
 const DYNAMIC_ROUTES_PATH       = "app/project/handlers/dynamic/";

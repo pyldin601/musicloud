@@ -9,10 +9,12 @@
 namespace app\project\handlers\fixed;
 
 
+use app\core\http\HttpSession;
 use app\core\router\RouteHandler;
+use app\project\models\single\LoggedInUserModel;
 
 class DoIndex implements RouteHandler {
-    public function doGet() {
-
+    public function doGet(LoggedInUserModel $userModel) {
+        echo $userModel;
     }
 }

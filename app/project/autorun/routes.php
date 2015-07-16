@@ -7,7 +7,5 @@
  */
 
 
-use app\core\router\Router;
 
-$router = Router::getInstance();
 

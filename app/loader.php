@@ -6,9 +6,17 @@ use app\lang\Arrays;
 require_once "constants.php";
 require_once "core/shortcuts.php";
 
-// Registering class loader
+// Registering base class loader
 spl_autoload_register(function ($class_name) {
     $filename = str_replace("\\", "/", $class_name) . '.php';
+    if (file_exists($filename)) {
+        require_once $filename;
+    }
+});
+
+// Registering additional class loader for libraries
+spl_autoload_register(function ($class_name) {
+    $filename = LIBRARIES_PATH . str_replace("\\", "/", $class_name) . '.php';
     if (file_exists($filename)) {
         require_once $filename;
     }
