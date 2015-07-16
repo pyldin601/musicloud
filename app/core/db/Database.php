@@ -17,32 +17,38 @@ use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 use PDO;
 
-class SQL implements SingletonInterface, Injectable {
+class Database implements SingletonInterface, Injectable {
 
     use Singleton;
 
     /** @var PDO $pdo */
     private $pdo;
-    /** @var Settings $settings */
-    private $settings;
+    /** @var DatabaseConfiguration $configuration */
+    private static $configuration;
 
     protected function __construct() {
-
-        $this->settings = Settings::getInstance();
 
         $this->connect();
 
     }
 
+    public static function configure(DatabaseConfiguration $configuration) {
+        self::$configuration = $configuration;
+    }
+
     /**
      * @return $this
-     * @throws \PDOException
+     * @throws ApplicationException
      */
     private function connect() {
 
-        $pdo_dsn = $this->settings->get("pdo", "dsn");
-        $pdo_login = $this->settings->get("pdo", "login");
-        $pdo_password = $this->settings->get("pdo", "password");
+        if (self::$configuration === null) {
+            throw new ApplicationException("Database not configured");
+        }
+
+        $pdo_dsn = self::$configuration->getDsnUri();
+        $pdo_login = self::$configuration->getDsnLogin();
+        $pdo_password = self::$configuration->getDsnPassword();
         $pdo_options = array(
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_PERSISTENT => true,

@@ -9,7 +9,7 @@
 namespace app\core\db\builder;
 
 
-use app\core\db\SQL;
+use app\core\db\Database;
 use app\lang\option\Option;
 
 abstract class BaseQuery implements QueryBuilder {
@@ -94,7 +94,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Option
      */
     public function fetchOneRow() {
-        return SQL::doInConnection(function (SQL $db) {
+        return Database::doInConnection(function (Database $db) {
             /** @var SelectQuery $query */
             $query = clone $this;
             $query->limit(1);
@@ -111,7 +111,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Option
      */
     public function fetchOneColumn($column = 0) {
-        return SQL::doInConnection(function (SQL $db) use (&$column) {
+        return Database::doInConnection(function (Database $db) use (&$column) {
             /** @var SelectQuery $query */
             $query = clone $this;
             $query->limit(1);
@@ -130,7 +130,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return array
      */
     public function fetchAll($key = null, callable $callback = null) {
-        return SQL::doInConnection(function (SQL $db) use (&$key, &$callback) {
+        return Database::doInConnection(function (Database $db) use (&$key, &$callback) {
             return $db->fetchAll(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters(),
@@ -146,7 +146,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Option
      */
     public function fetchObject($className, array $ctor_args = []) {
-        return SQL::doInConnection(function (SQL $db) use (&$className, &$ctor_args) {
+        return Database::doInConnection(function (Database $db) use (&$className, &$ctor_args) {
             /** @var SelectQuery $query */
             $query = clone $this;
             $query->limit(1);
@@ -166,7 +166,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Object[]
      */
     public function fetchAllObjects($className, array $ctor_args = []) {
-        return SQL::doInConnection(function (SQL $db) use (&$className, &$ctor_args) {
+        return Database::doInConnection(function (Database $db) use (&$className, &$ctor_args) {
             return $db->fetchAllObjects(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters(),
@@ -180,7 +180,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @param callable $callable
      */
     public function eachRow(callable $callable) {
-        SQL::doInConnection(function (SQL $db) use (&$callable) {
+        Database::doInConnection(function (Database $db) use (&$callable) {
             $db->eachRow(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters(),
@@ -193,7 +193,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return mixed
      */
     public function update() {
-        return SQL::doInConnection(function (SQL $db) {
+        return Database::doInConnection(function (Database $db) {
             return $db->executeUpdate($this->getQuery($db->getPDO()), $this->getParameters());
         });
     }
@@ -202,7 +202,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return mixed
      */
     public function executeInsert() {
-        return SQL::doInConnection(function (SQL $db) {
+        return Database::doInConnection(function (Database $db) {
             return $db->executeInsert($this->getQuery($db->getPDO()), $this->getParameters());
         });
     }
