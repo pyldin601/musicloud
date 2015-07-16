@@ -17,7 +17,7 @@ use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 use PDO;
 
-class RDL implements SingletonInterface, Injectable {
+class SQL implements SingletonInterface, Injectable {
 
     use Singleton;
 
@@ -62,20 +62,8 @@ class RDL implements SingletonInterface, Injectable {
      */
     public static function doInConnection(callable $callable) {
 
-        if (self::hasInstance()) {
-
-            $result = self::getInstance()->doInTransaction($callable);
-
-        } else {
-
-            $conn = self::getInstance();
-            $result = $conn->doInTransaction($callable);
-
-            self::killInstance();
-
-        }
-
-        return $result;
+        $conn = self::getInstance();
+        return $conn->doInTransaction($callable);
 
     }
 
@@ -85,9 +73,7 @@ class RDL implements SingletonInterface, Injectable {
      */
     public function doInTransaction(callable $callable) {
 
-        $result = call_user_func($callable, $this);
-
-        return $result;
+        return call_user_func($callable, $this);
 
     }
 

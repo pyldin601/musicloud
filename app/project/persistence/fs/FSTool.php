@@ -6,7 +6,7 @@
  * Time: 9:34
  */
 
-namespace app\project\persistance\fs;
+namespace app\project\persistence\fs;
 
 
 use app\core\etc\Settings;
