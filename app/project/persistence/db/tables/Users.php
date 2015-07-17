@@ -11,7 +11,7 @@ namespace app\project\persistence\db\tables;
 
 class Users {
     const TABLE_NAME = "users";
-    const CELL_ID = "id";
-    const CELL_EMAIL = "email";
-    const CELL_PASSWORD = "password";
+    const ID = "id";
+    const EMAIL = "email";
+    const PASSWORD = "password";
 } 

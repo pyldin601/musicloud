@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Library</title>
+    <link href="/public/css/reset.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&subset=latin,cyrillic' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="/public/css/common.css" rel="stylesheet" type="text/css">
+    <link href="/public/css/library.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+    <div class="library-header">
+        <ul class="items">
+            <li class="nav-logo">
+                <span class="group">
+                    <i class="fa fa-music"></i>
+                    <span class="padded logo">Media Library</span>
+                </span>
+            </li>
+            <li class="nav-search">
+                <span class="group">
+                    <i class="fa fa-search"></i>
+                    <span class="padded label">Search</span>
+                </span>
+            </li>
+            <li class="nav-profile">
+                <span class="group">
+                    <i class="fa fa-user"></i>
+                    <span class="padded label">Guest</span>
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div class="library-player">
+        <ul class="items">
+            <li class="player-controls">
+                <ul class="controls">
+                    <li class="ctrl-previous">
+                        <i class="fa fa-backward"></i>
+                    </li>
+                    <li class="ctrl-play">
+                        <i class="fa fa-play"></i>
+                    </li>
+                    <li class="ctrl-next">
+                        <i class="fa fa-forward"></i>
+                    </li>
+                </ul>
+            </li>
+            <li class="player-display">
+                <div class="display">
+                    <div class="cover">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/b/bb/Robert_Miles_-_Children_(Cover).jpg">
+                    </div>
+                    <div class="text">
+                        <div class="now-playing">
+                            <div class="track-title">Robert Miles &mdash; Children (Original Mix)</div>
+                        </div>
+                        <div class="progress-background">
+                            <div class="time-right">4:27</div>
+                            <div class="time-left">1:13</div>
+                            <div class="progress-area">
+                                <div class="progress-line"></div>
+                                <div class="progress-position"></div>
+                                <div class="progress-bulb"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="player-icons">
+                <ul class="icons">
+                    <li class="ctrl-repeat">
+                        <i class="fa fa-repeat"></i>
+                    </li>
+                    <li class="ctrl-shuffle">
+                        <i class="fa fa-random"></i>
+                    </li>
+                    <li class="ctrl-volume">
+                        <i class="fa fa-volume-up"></i>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

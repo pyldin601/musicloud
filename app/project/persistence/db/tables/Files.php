@@ -10,8 +10,9 @@ namespace app\project\persistence\db\tables;
 
 
 class Files {
-    const TABLE_FILES = "files";
-    const CELL_ID = "id";
-    const CELL_SHA1 = "sha1";
-    const CELL_USED = "used";
+    const TABLE_NAME = "files";
+    const ID = "id";
+    const SHA1 = "sha1";
+    const SIZE = "size";
+    const USED = "used";
 } 

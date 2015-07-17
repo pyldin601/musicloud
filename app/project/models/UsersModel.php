@@ -17,14 +17,22 @@ use app\project\exceptions\WrongCredentialsException;
 use app\project\persistence\db\tables\Users;
 
 class UsersModel {
+
+    /** @var HttpSession */
+    private static $session;
+
+    public static function static_init() {
+        self::$session = HttpSession::getInstance();
+    }
+
     /**
      * @param $email
      * @param $password
      */
     public static function create($email, $password) {
         $query = new InsertQuery(Users::TABLE_NAME);
-        $query->values(Users::CELL_EMAIL, $email);
-        $query->values(Users::CELL_PASSWORD, password_hash($password, PASSWORD_DEFAULT));
+        $query->values(Users::EMAIL, $email);
+        $query->values(Users::PASSWORD, password_hash($password, PASSWORD_DEFAULT));
         $query->executeInsert();
     }
 
@@ -32,7 +40,7 @@ class UsersModel {
      * @param $id
      */
     public static function delete($id) {
-        $query = new DeleteQuery(Users::TABLE_NAME, Users::CELL_ID, $id);
+        $query = new DeleteQuery(Users::TABLE_NAME, Users::ID, $id);
         $query->update();
     }
 
@@ -42,19 +50,17 @@ class UsersModel {
      * @throws WrongCredentialsException
      */
     public static function login($email, $password) {
-        $session = HttpSession::getInstance();
-        $query = new SelectQuery(Users::TABLE_NAME, Users::CELL_EMAIL, $email);
+        $query = new SelectQuery(Users::TABLE_NAME, Users::EMAIL, $email);
         $user = $query->fetchOneRow()->getOrElse(WrongCredentialsException::class);
-        if (password_verify($password, $user[Users::CELL_PASSWORD])) {
-            $session->set($user[Users::CELL_ID], "auth", "id");
+        if (password_verify($password, $user[Users::PASSWORD])) {
+            self::$session->set($user[Users::ID], "auth", "id");
         } else {
             throw new WrongCredentialsException;
         }
     }
 
     public static function logout() {
-        $session = HttpSession::getInstance();
-        $session->erase("auth", "id");
+        self::$session->erase("auth", "id");
     }
 
 }

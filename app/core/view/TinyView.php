@@ -13,8 +13,10 @@ class TinyView {
 
     const TEMPLATES_PATH = "app/project/templates/";
 
-    public static function show($template, $context) {
-        extract($context);
+    public static function show($template, $context = null) {
+        if ($context) {
+            extract($context);
+        }
         eval("?>" . file_get_contents(self::TEMPLATES_PATH . $template));
     }
 

@@ -1,0 +1,205 @@
+.library-header {
+  position: fixed;
+  width: 100%;
+  height: 48px;
+  display: table;
+  table-layout: fixed;
+  border-bottom: 1px solid #eaeaea;
+  top: 0;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f2f2f2+100 */
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f2f2f2));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@a', endColorstr='@b', GradientType=0);
+  /* IE6-9 */
+}
+.library-header ul.items {
+  width: 100%;
+  height: 100%;
+  display: table-row;
+}
+.library-header ul.items > li {
+  vertical-align: middle;
+  display: table-cell;
+  height: 48px;
+  padding: 0 10px;
+}
+.library-header ul.items > li.nav-logo,
+.library-header ul.items > li.nav-profile {
+  width: 20%;
+}
+.library-header ul.items > li:not(:last-child) {
+  border-right: 1px solid #dadada;
+}
+.library-header ul.items > li:not(:first-child) {
+  border-left: 1px solid #ffffff;
+}
+.library-player {
+  position: fixed;
+  width: 100%;
+  height: 48px;
+  display: table;
+  table-layout: fixed;
+  border-top: 1px solid #eaeaea;
+  bottom: 0;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f2f2f2+100 */
+  background: #ffffff;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f2f2f2));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #ffffff 0%, #f2f2f2 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@a', endColorstr='@b', GradientType=0);
+  /* IE6-9 */
+}
+.library-player ul.items {
+  width: 100%;
+  height: 100%;
+  display: table-row;
+}
+.library-player ul.items > li {
+  vertical-align: middle;
+  display: table-cell;
+  height: 48px;
+  padding: 0 10px;
+}
+.library-player ul.items > li.player-controls,
+.library-player ul.items > li.player-icons {
+  width: 20%;
+}
+.library-player ul.items > li.player-display {
+  padding: 0;
+}
+.library-player .player-controls {
+  position: relative;
+}
+.library-player .player-controls .controls li {
+  float: left;
+  width: 33%;
+  text-align: center;
+  font-size: 18px;
+}
+.library-player .player-controls .controls li.ctrl-play {
+  font-size: 24px;
+}
+.library-player .player-controls .controls li.ctrl-previous,
+.library-player .player-controls .controls li.ctrl-next {
+  margin-top: 2px;
+}
+.library-player .player-icons {
+  position: relative;
+}
+.library-player .player-icons .icons li {
+  float: left;
+  width: 33%;
+  text-align: center;
+  font-size: 18px;
+}
+.library-player .player-display {
+  position: relative;
+}
+.library-player .player-display .display {
+  overflow: hidden;
+}
+.library-player .player-display .display .cover {
+  float: left;
+  width: 48px;
+  height: 48px;
+}
+.library-player .player-display .display .cover img {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+.library-player .player-display .display .text {
+  position: relative;
+  padding-left: 48px;
+  box-sizing: border-box;
+}
+.library-player .player-display .display .text .now-playing {
+  text-align: center;
+}
+.library-player .player-display .display .text .now-playing .track-title {
+  white-space: nowrap;
+  overflow: hidden;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+  font-size: 10pt;
+  margin-top: 8px;
+}
+.library-player .player-display .display .text .progress-background {
+  box-sizing: border-box;
+  padding: 0 16px;
+  margin-top: 4px;
+  width: 100%;
+  height: 9px;
+}
+.library-player .player-display .display .text .progress-background .progress-area {
+  overflow: hidden;
+  padding: 5px 0;
+  position: relative;
+  height: 6px;
+  cursor: pointer;
+}
+.library-player .player-display .display .text .progress-background .progress-area .progress-line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: black;
+  z-index: 0;
+}
+.library-player .player-display .display .text .progress-background .progress-area .progress-position {
+  position: absolute;
+  width: 44%;
+  height: 1px;
+  background-color: #ff4141;
+  z-index: 1;
+}
+.library-player .player-display .display .text .progress-background .progress-area .progress-bulb {
+  opacity: 0;
+  transition: 0.1s linear opacity;
+  margin-top: -4px;
+  margin-left: -4px;
+  position: absolute;
+  left: 44%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #ff4141;
+  z-index: 2;
+}
+.library-player .player-display .display .text .progress-background .time-left {
+  float: left;
+  margin-right: 16px;
+}
+.library-player .player-display .display .text .progress-background .time-right {
+  float: right;
+  margin-left: 16px;
+}
+.library-player .player-display .display .text .progress-background .time-left,
+.library-player .player-display .display .text .progress-background .time-right {
+  font-size: 8pt;
+  font-weight: bold;
+}
+.library-player .player-display .display .text .progress-background:hover .progress-bulb {
+  opacity: 1;
+}
