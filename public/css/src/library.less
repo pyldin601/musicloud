@@ -1,5 +1,36 @@
 @import "mixins/gradient";
 
+.sidebar-block() {
+  width: 300px;
+  @media (max-width: 1024px) {
+    width: 180px;
+  }
+  @media (max-width: 640px) {
+    width: 140px;
+  }
+  @media (max-width: 500px) {
+//    width: 100px;
+  }
+}
+
+.dynamic-padding() {
+  padding-left: 24px;
+  padding-right: 24px;
+  @media (max-width: 640px) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.dynamic-margin() {
+  margin-left: 24px;
+  margin-right: 24px;
+  @media (max-width: 640px) {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+
 .library-header {
   position: fixed;
   width: 100%;
@@ -21,9 +52,11 @@
       vertical-align: middle;
       display: table-cell;
       height: 48px;
-      padding: 0 24px;
+      & >.group {
+        .dynamic-padding
+      }
       &.nav-logo, &.nav-profile {
-        width: 20%;
+        .sidebar-block;
       }
       &:not(:last-child) {
         border-right: 1px solid #112233;
@@ -43,7 +76,6 @@
   table-layout: fixed;
   border-top: 1px solid #eaeaea;
   bottom: 0;
-  box-sizing: border-box;
 
   color: #dddddd;
   background-color: #223344;
@@ -56,9 +88,8 @@
       vertical-align: middle;
       display: table-cell;
       height: 48px;
-      padding: 0 10px;
       &.player-controls, &.player-icons {
-        width: 20%;
+        .sidebar-block;
       }
       &.player-display {
         padding: 0;
@@ -128,6 +159,9 @@
         .progress-background {
           box-sizing: border-box;
           padding: 0 16px;
+          @media (max-width: 640px) {
+            padding: 0 8px;
+          }
           margin-top: 4px;
           width: 100%;
           height: 9px;
@@ -174,10 +208,16 @@
           .time-left {
             float: left;
             margin-right: 16px;
+            @media (max-width: 500px) {
+              display:none;
+            }
           }
           .time-right {
             float: right;
             margin-left: 16px;
+            @media (max-width: 500px) {
+              display:none;
+            }
           }
           .time-left, .time-right {
             font-size: 8pt;
@@ -204,7 +244,7 @@
 }
 
 .library-sidebar {
-  width: 20%;
+  .sidebar-block;
   position: fixed;
   box-sizing: border-box;
   top: 48px;
@@ -224,13 +264,17 @@
         font-size: 12pt;
         padding-bottom: 16px;
         border-bottom: 1px solid #ced1d6;
-        margin: 8px 24px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        .dynamic-margin;
       }
       ul.section-list {
         font-size: 10pt;
         font-weight: 600;
         & > li {
-          padding: 12px 24px;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          .dynamic-padding;
           &.active {
             background-color: #dfe2e9;
             color: #111111;
@@ -241,3 +285,4 @@
 
   }
 }
+
