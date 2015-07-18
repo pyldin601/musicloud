@@ -1,1 +1,9 @@
-* { }
+.adaptive-side-width() {
+  width: 260px;
+  @media (max-width: 1024px) {
+    width: 180px;
+  }
+  @media (max-width: 640px) {
+    width: 140px;
+  }
+}

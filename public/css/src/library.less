@@ -2,7 +2,7 @@
 @import "mixins/adaptive";
 
 .sidebar-block() {
-  width: 300px;
+  width: 240px;
   @media (max-width: 1024px) {
     width: 180px;
   }
@@ -249,7 +249,7 @@
   position: fixed;
   box-sizing: border-box;
   top: 48px;
-  bottom: 96px;
+  bottom: 48px;
   color: #757577;
   .sidebar {
     background-color: #f1f2f4;
@@ -287,22 +287,3 @@
   }
 }
 
-.library-stats {
-  position: fixed;
-  height: 48px;
-  bottom: 48px;
-  border-right: 1px solid #ced1d6;
-  color: #757577;
-  background-color: #f1f2f4;
-  .sidebar-block;
-  .stats {
-    .dynamic-padding;
-    .item {
-      margin-bottom: 8px;
-      font-size: 9pt;
-      .value {
-        color: #333333;
-      }
-    }
-  }
-}

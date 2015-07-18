@@ -32,7 +32,7 @@
 }
 .library-header ul.items > li.nav-logo,
 .library-header ul.items > li.nav-profile {
-  width: 300px;
+  width: 240px;
 }
 @media (max-width: 1024px) {
   .library-header ul.items > li.nav-logo,
@@ -75,7 +75,7 @@
 }
 .library-player ul.items > li.player-controls,
 .library-player ul.items > li.player-icons {
-  width: 300px;
+  width: 240px;
 }
 @media (max-width: 1024px) {
   .library-player ul.items > li.player-controls,
@@ -235,11 +235,11 @@
   height: 3px;
 }
 .library-sidebar {
-  width: 300px;
+  width: 240px;
   position: fixed;
   box-sizing: border-box;
   top: 48px;
-  bottom: 96px;
+  bottom: 48px;
   color: #757577;
 }
 @media (max-width: 1024px) {
@@ -297,40 +297,4 @@
 .library-sidebar .sidebar .section ul.section-list > li.active {
   background-color: #dfe2e9;
   color: #111111;
-}
-.library-stats {
-  position: fixed;
-  height: 48px;
-  bottom: 48px;
-  border-right: 1px solid #ced1d6;
-  color: #757577;
-  background-color: #f1f2f4;
-  width: 300px;
-}
-@media (max-width: 1024px) {
-  .library-stats {
-    width: 180px;
-  }
-}
-@media (max-width: 640px) {
-  .library-stats {
-    width: 140px;
-  }
-}
-.library-stats .stats {
-  padding-left: 24px;
-  padding-right: 24px;
-}
-@media (max-width: 640px) {
-  .library-stats .stats {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-}
-.library-stats .stats .item {
-  margin-bottom: 8px;
-  font-size: 9pt;
-}
-.library-stats .stats .item .value {
-  color: #333333;
 }
