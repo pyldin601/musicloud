@@ -7,6 +7,8 @@
  */
 
 
-when("test", function () {
+use app\project\models\Auth;
 
+when("test", function () {
+    $auth = new Auth();
 });

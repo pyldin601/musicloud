@@ -3,15 +3,16 @@
  * Created by PhpStorm.
  * User: Roman
  * Date: 16.07.2015
- * Time: 10:25
+ * Time: 10:27
  */
 
 namespace app\project\persistence\db\tables;
 
 
-class Users {
-    const TABLE_NAME = "users";
+class FilesTable {
+    const TABLE_NAME = "files";
     const ID = "id";
-    const EMAIL = "email";
-    const PASSWORD = "password";
+    const SHA1 = "sha1";
+    const SIZE = "size";
+    const USED = "used";
 } 

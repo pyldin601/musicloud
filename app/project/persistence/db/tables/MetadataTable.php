@@ -9,7 +9,7 @@
 namespace app\project\persistence\db\tables;
 
 
-class Metadata {
+class MetadataTable {
     const TABLE_NAME = "metadata";
     const ID = "id";
     const ALBUM_ARTIST = "album_artist";

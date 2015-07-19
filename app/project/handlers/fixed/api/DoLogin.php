@@ -12,10 +12,10 @@ namespace app\project\handlers\fixed\api;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\project\forms\LoginForm;
-use app\project\models\UsersModel;
+use app\project\models\Auth;
 
 class DoLogin implements RouteHandler {
     public function doPost(JsonResponse $response, LoginForm $form) {
-        UsersModel::login($form->getEmail(), $form->getPassword());
+        Auth::login($form->getEmail(), $form->getPassword());
     }
 } 

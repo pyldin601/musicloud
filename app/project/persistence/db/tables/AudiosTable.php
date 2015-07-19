@@ -9,7 +9,7 @@
 namespace app\project\persistence\db\tables;
 
 
-class Audios {
+class AudiosTable {
     const TABLE_NAME = "audios";
     const ID = "id";
     const USER_ID = "user_id";

@@ -11,10 +11,10 @@ namespace app\project\handlers\fixed\api;
 
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\project\models\UsersModel;
+use app\project\models\Auth;
 
 class DoLogout implements  RouteHandler {
     public function doPost(JsonResponse $response) {
-        UsersModel::logout();
+        Auth::logout();
     }
 } 

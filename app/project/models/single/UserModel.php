@@ -13,7 +13,7 @@ use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\project\exceptions\IncorrectPasswordException;
 use app\project\exceptions\UserNotFoundException;
-use app\project\persistence\db\tables\Users;
+use app\project\persistence\db\tables\UsersTable;
 
 class UserModel {
 
@@ -24,7 +24,7 @@ class UserModel {
      * @param int $user_id
      */
     public function __construct($user_id) {
-        $query = new SelectQuery(Users::TABLE_NAME, Users::ID, $user_id);
+        $query = new SelectQuery(UsersTable::TABLE_NAME, UsersTable::ID, $user_id);
         $this->user = $query->fetchOneRow()->getOrThrow(UserNotFoundException::class);
         $this->user_id = $user_id;
     }
@@ -33,8 +33,8 @@ class UserModel {
      * @param string $new_password
      */
     public function changePassword($new_password) {
-        $query = new UpdateQuery(Users::TABLE_NAME, Users::ID, $this->user_id);
-        $query->set(Users::PASSWORD, password_hash($new_password, PASSWORD_DEFAULT));
+        $query = new UpdateQuery(UsersTable::TABLE_NAME, UsersTable::ID, $this->user_id);
+        $query->set(UsersTable::PASSWORD, password_hash($new_password, PASSWORD_DEFAULT));
     }
 
     /**
