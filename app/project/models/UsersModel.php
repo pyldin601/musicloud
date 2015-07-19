@@ -12,6 +12,7 @@ namespace app\project\models;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
+use app\core\db\builder\UpdateQuery;
 use app\core\http\HttpSession;
 use app\project\exceptions\EmailExistsException;
 use app\project\exceptions\WrongCredentialsException;
@@ -27,6 +28,19 @@ class UsersModel {
     }
 
     /**
+     * Test whether $email already registered
+     *
+     * @param $email
+     * @return bool
+     */
+    public static function isEmailExists($email) {
+        return (new SelectQuery(Users::TABLE_NAME, Users::EMAIL, $email))
+            ->fetchOneRow()->nonEmpty();
+    }
+
+    /**
+     * Creates user with specified $email and $password
+     *
      * @param $email
      * @param $password
      * @throws EmailExistsException
@@ -43,14 +57,30 @@ class UsersModel {
     }
 
     /**
-     * @param $id
+     * Changes $password for user with specified $email
+     *
+     * @param $email
+     * @param $password
      */
-    public static function delete($id) {
-        $query = new DeleteQuery(Users::TABLE_NAME, Users::ID, $id);
+    public static function changePassword($email, $password) {
+        $query = new UpdateQuery(Users::TABLE_NAME);
+        $query->where(Users::EMAIL, $email);
+        $query->set(Users::PASSWORD, password_hash($password, PASSWORD_DEFAULT));
+    }
+
+    /**
+     * Deletes user from database
+     *
+     * @param $user_id
+     */
+    public static function delete($user_id) {
+        $query = new DeleteQuery(Users::TABLE_NAME, Users::ID, $user_id);
         $query->update();
     }
 
     /**
+     * Login user using $email and $password
+     *
      * @param $email
      * @param $password
      * @throws WrongCredentialsException
@@ -65,6 +95,9 @@ class UsersModel {
         }
     }
 
+    /**
+     * Logout logged in user
+     */
     public static function logout() {
         self::$session->erase("auth", "id");
     }
