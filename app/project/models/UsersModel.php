@@ -13,6 +13,7 @@ use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\http\HttpSession;
+use app\project\exceptions\EmailExistsException;
 use app\project\exceptions\WrongCredentialsException;
 use app\project\persistence\db\tables\Users;
 
@@ -21,19 +22,24 @@ class UsersModel {
     /** @var HttpSession */
     private static $session;
 
-    public static function static_init() {
-        self::$session = HttpSession::getInstance();
+    public static function class_init(HttpSession $session) {
+        self::$session = $session;
     }
 
     /**
      * @param $email
      * @param $password
+     * @throws EmailExistsException
      */
     public static function create($email, $password) {
         $query = new InsertQuery(Users::TABLE_NAME);
         $query->values(Users::EMAIL, $email);
         $query->values(Users::PASSWORD, password_hash($password, PASSWORD_DEFAULT));
-        $query->executeInsert();
+        try {
+            $query->executeInsert();
+        } catch (\PDOException $exception) {
+            throw new EmailExistsException;
+        }
     }
 
     /**

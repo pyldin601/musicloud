@@ -33,7 +33,17 @@ class Injector implements SingletonInterface {
      */
     public function call($callable) {
 
-        if (is_callable($callable) && is_array($callable)) {
+        if ($callable instanceof \ReflectionFunction) {
+
+            return $callable->invokeArgs(
+                $this->injectByFunctionArguments($callable->getParameters()));
+
+        } else if ($callable instanceOf \ReflectionMethod) {
+
+            return $callable->invokeArgs(null,
+                $this->injectByFunctionArguments($callable->getParameters()));
+
+        } else if (is_callable($callable) && is_array($callable)) {
 
             $reflection = new \ReflectionClass($callable[0]);
             $method = $reflection->getMethod($callable[1]);
@@ -44,8 +54,8 @@ class Injector implements SingletonInterface {
         } else if (is_callable($callable)) {
 
             $reflection = new \ReflectionFunction($callable);
-            return $reflection->invokeArgs($this->injectByFunctionArguments(
-                $reflection->getParameters()));
+
+            return $this->call($reflection);
 
         } else {
 

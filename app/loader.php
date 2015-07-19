@@ -1,5 +1,6 @@
 <?php
 
+use app\core\injector\Injector;
 use app\core\view\JsonResponse;
 use app\core\view\TinyView;
 use app\lang\Arrays;
@@ -7,7 +8,7 @@ use app\lang\Arrays;
 require_once "constants.php";
 require_once "core/shortcuts.php";
 
-const STATIC_CLASS_INIT_METHOD = "static_init";
+const STATIC_CLASS_INIT_METHOD = "class_init";
 
 // Registering base class loader
 spl_autoload_register(function ($class_name) {
@@ -65,8 +66,8 @@ foreach (scandir(AUTORUN_SCRIPTS_PATH) as $file) {
 function static_class_init($class_name) {
     if (class_exists($class_name) && method_exists($class_name, STATIC_CLASS_INIT_METHOD)) {
         $ref = new ReflectionMethod($class_name, STATIC_CLASS_INIT_METHOD);
-        if ($ref->isStatic() && $ref->getNumberOfParameters() == 0) {
-            $ref->invoke(null);
+        if ($ref->isStatic()) {
+            Injector::run($ref);
         }
     }
 }
