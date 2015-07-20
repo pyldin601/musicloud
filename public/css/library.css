@@ -511,6 +511,14 @@ b {
     padding-bottom: 8px;
   }
 }
+.library-body .library-container .album-wrapper {
+  padding-bottom: 16px;
+}
+@media (max-width: 1024px) {
+  .library-body .library-container .album-wrapper {
+    padding-bottom: 8px;
+  }
+}
 .library-body .library-container .album-wrapper .cover .cover-background {
   width: 200px;
   height: 200px;
@@ -548,7 +556,12 @@ b {
   }
 }
 .library-body .library-container .album-wrapper .content .album-tracks {
-  margin-top: 8px;
+  padding-top: 16px;
+}
+@media (max-width: 1024px) {
+  .library-body .library-container .album-wrapper .content .album-tracks {
+    padding-top: 8px;
+  }
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track {
   margin-bottom: 8px;
@@ -574,4 +587,5 @@ b {
   margin-top: 4px;
   font-size: 9pt;
   color: #757577;
+  height: 0px;
 }
