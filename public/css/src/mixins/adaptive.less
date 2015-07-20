@@ -44,6 +44,23 @@
   }
 }
 
+.dynamic-padding-bottom() {
+  padding-bottom: 24px;
+  @media (max-width: 1024px) {
+    padding-bottom: 16px;
+  }
+  @media (max-width: 640px) {
+    padding-bottom: 8px;
+  }
+}
+
+.dynamic-padding-bottom-alt() {
+  padding-bottom: 16px;
+  @media (max-width: 1024px) {
+    padding-bottom: 8px;
+  }
+}
+
 .dynamic-margin() {
   margin-left: 24px;
   margin-right: 24px;
@@ -73,6 +90,20 @@
   .col10 { width: 83.33% }
   .col11 { width: 91.66% }
   .col12 { width: 100% }
+
+  [class*="square"] { float: left }
+  .square1  { width: 8.33%; padding-bottom: 8.33%; }
+  .square2  { width: 16.66%; padding-bottom: 16.66%; }
+  .square3  { width: 25%; padding-bottom: 25%; }
+  .square4  { width: 33.33%; padding-bottom: 33.33%; }
+  .square5  { width: 41.66%; padding-bottom: 41.66%; }
+  .square6  { width: 50%; padding-bottom: 50%; }
+  .square7  { width: 58.33%; padding-bottom: 58.33%; }
+  .square8  { width: 66.66%; padding-bottom: 66.66%; }
+  .square9  { width: 75%; padding-bottom: 75%; }
+  .square10 { width: 83.33%; padding-bottom: 83.33%; }
+  .square11 { width: 91.66%; padding-bottom: 91.66%; }
+  .square12 { width: 100%; padding-bottom: 100%; }
 
   &:after {
     content: "";

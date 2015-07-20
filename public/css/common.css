@@ -3,6 +3,14 @@ body {
   font-size: 14px;
   overflow-y: scroll;
 }
+b {
+  font-weight: 600;
+}
+.clear-fix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 .colored {
   background-color: aquamarine;
 }
@@ -20,4 +28,9 @@ body {
   padding: 2px 4px;
   width: 32px;
   text-align: right;
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
