@@ -71,3 +71,7 @@ function static_class_init($class_name) {
         }
     }
 }
+
+function resource($class_name) {
+    return Injector::getInstance()->injectByClassName($class_name);
+}

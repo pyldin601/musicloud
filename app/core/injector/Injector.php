@@ -125,6 +125,22 @@ class Injector implements SingletonInterface {
 
     }
 
+    public function injectByClassName($class_name) {
+
+        $reflection = new \ReflectionClass($class_name);
+
+        if (!$reflection->implementsInterface(Injectable::class)) {
+            throw new InjectorException("Object could not be injected");
+        }
+
+        if ($reflection->implementsInterface(SingletonInterface::class)) {
+            return $reflection->getMethod("getInstance")->invoke(null);
+        } else {
+            return $reflection->newInstance();
+        }
+
+    }
+
     /**
      * @param array $classes
      * @return array

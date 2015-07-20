@@ -15,7 +15,7 @@ use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 use app\project\exceptions\UnauthorizedException;
 
-class LoggedInUserModel extends UserModel implements SingletonInterface, Injectable {
+class LoggedIn extends User implements SingletonInterface, Injectable {
 
     use Singleton;
 

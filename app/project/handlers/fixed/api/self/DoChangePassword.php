@@ -12,10 +12,10 @@ namespace app\project\handlers\fixed\api\self;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\project\forms\PasswordForm;
-use app\project\models\single\LoggedInUserModel;
+use app\project\models\single\LoggedIn;
 
 class DoChangePassword implements RouteHandler {
-    public function doPost(JsonResponse $response, PasswordForm $form, LoggedInUserModel $userModel) {
+    public function doPost(JsonResponse $response, PasswordForm $form, LoggedIn $userModel) {
         $userModel->changePassword($form->getPassword());
     }
 } 

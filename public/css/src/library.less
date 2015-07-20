@@ -1,45 +1,6 @@
 @import "mixins/gradient";
 @import "mixins/adaptive";
 
-.sidebar-block() {
-  width: 240px;
-  @media (max-width: 1024px) {
-    width: 180px;
-  }
-  @media (max-width: 640px) {
-    width: 160px;
-  }
-  @media (max-width: 500px) {
-//    width: 100px;
-  }
-}
-
-.dynamic-padding() {
-  padding-left: 24px;
-  padding-right: 24px;
-  @media (max-width: 1024px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  @media (max-width: 640px) {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-}
-
-.dynamic-margin() {
-  margin-left: 24px;
-  margin-right: 24px;
-  @media (max-width: 1024px) {
-    margin-left: 16px;
-    margin-right: 16px;
-  }
-  @media (max-width: 640px) {
-    margin-left: 8px;
-    margin-right: 8px;
-  }
-}
-
 .library-header {
   position: fixed;
   width: 100%;
@@ -62,10 +23,10 @@
       display: table-cell;
       height: 48px;
       & >.group {
-        .dynamic-padding
+        .dynamic-h-padding
       }
       &.nav-logo, &.nav-profile {
-        .sidebar-block;
+        .adaptive-side-width;
       }
       &:not(:last-child) {
         border-right: 1px solid #112233;
@@ -98,7 +59,7 @@
       display: table-cell;
       height: 48px;
       &.player-controls, &.player-icons {
-        .sidebar-block;
+        .adaptive-side-width;
       }
       &.player-display {
         padding: 0;
@@ -237,12 +198,10 @@
               opacity: 1;
             }
             .progress-line {
-              margin-top: -1px;
-              height: 3px;
+              box-shadow: 0 0 3px #000000;
             }
             .progress-position {
-              margin-top: -1px;
-              height: 3px;
+              box-shadow: 0 0 3px #ff4141;
             }
           }
         }
@@ -253,7 +212,7 @@
 }
 
 .library-sidebar {
-  .sidebar-block;
+  .adaptive-side-width;
   position: fixed;
   box-sizing: border-box;
   top: 48px;
@@ -267,14 +226,14 @@
     overflow-y: auto;
 
     .section {
-      padding: 24px 0;
+      .dynamic-v-padding;
+//      padding: 24px 0;
       .section-title {
         text-transform: uppercase;
         font-weight: 600;
         font-size: 12pt;
         padding-bottom: 16px;
         border-bottom: 1px solid #ced1d6;
-        margin-top: 8px;
         margin-bottom: 8px;
         .dynamic-margin;
       }
@@ -284,7 +243,7 @@
         & > li {
           padding-top: 12px;
           padding-bottom: 12px;
-          .dynamic-padding;
+          .dynamic-h-padding;
           &.active {
             background-color: #dfe2e9;
             color: #111111;
@@ -296,3 +255,10 @@
   }
 }
 
+.library-body {
+  margin-top: 48px;
+  margin-bottom: 48px;
+  .dynamic-body-margin;
+  .dynamic-v-padding;
+  .dynamic-h-padding;
+}

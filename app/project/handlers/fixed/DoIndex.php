@@ -10,10 +10,10 @@ namespace app\project\handlers\fixed;
 
 
 use app\core\router\RouteHandler;
-use app\project\models\single\LoggedInUserModel;
+use app\project\models\single\LoggedIn;
 
 class DoIndex implements RouteHandler {
-    public function doGet(LoggedInUserModel $user) {
+    public function doGet(LoggedIn $user) {
         echo $user;
     }
 }

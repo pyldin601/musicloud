@@ -21,13 +21,19 @@ use app\project\persistence\db\tables\UsersTable;
  *
  * Static class for logging in and logging out user
  */
-class Auth extends UninstantiatedClass {
+class Auth {
 
     /** @var HttpSession */
     private static $session;
 
-    public static function class_init(HttpSession $session) {
-        self::$session = $session;
+    public static function class_init() {
+
+        self::$session = resource(HttpSession::class);
+
+    }
+
+    private function __construct() {
+        throw new \Exception("This class couldn't be instantiated");
     }
 
     /**

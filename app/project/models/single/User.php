@@ -15,7 +15,7 @@ use app\project\exceptions\IncorrectPasswordException;
 use app\project\exceptions\UserNotFoundException;
 use app\project\persistence\db\tables\UsersTable;
 
-class UserModel {
+class User {
 
     private $user;
     private $user_id;
