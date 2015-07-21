@@ -9,11 +9,12 @@
 namespace app\core\etc;
 
 
+use app\core\injector\Injectable;
 use app\lang\option\Option;
 use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 
-class Settings implements SingletonInterface {
+class Settings implements SingletonInterface, Injectable {
 
     use Singleton;
 

@@ -72,8 +72,8 @@ class Injector implements SingletonInterface {
      */
     public function create(\ReflectionClass $reflection) {
 
-//        $reflection = new \ReflectionClass($class);
         $constructor = $reflection->getConstructor();
+
         $dependencies = $this->injectByFunctionArguments(
             $constructor->getParameters());
 

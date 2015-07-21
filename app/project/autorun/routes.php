@@ -7,7 +7,12 @@
  */
 
 
+use app\core\http\HttpServer;
 use app\project\handlers\dynamic\content\DoReadTrack;
 
 
 when("content/track/&id", DoReadTrack::class);
+
+when("test", function (HttpServer $server) {
+    echo $server->getContentType();
+});

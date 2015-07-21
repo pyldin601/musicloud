@@ -12,10 +12,13 @@ namespace app\core\http;
 use app\core\injector\Injectable;
 use app\lang\option\Option;
 use app\lang\singleton\Singleton;
+use app\lang\singleton\SingletonInterface;
 
-class HttpServer implements Injectable {
+class HttpServer implements Injectable, SingletonInterface {
 
     use Singleton;
+
+    private function __construct() {}
 
     /**
      * @return string
@@ -133,6 +136,10 @@ class HttpServer implements Injectable {
      */
     private function filterInputServer($param) {
         return FILTER_INPUT(INPUT_SERVER, $param);
+    }
+
+    public function getContentType() {
+        return $this->filterInputServer("HTTP_CONTENT_TYPE");
     }
 
 } 

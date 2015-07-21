@@ -17,18 +17,6 @@ use app\lang\option\Some;
 
 class FFProbe {
 
-    private $filename = null;
-    private $formatName = null;
-    private $duration = null;
-    private $size = null;
-    private $bitrate = null;
-    private $metaArtist = null;
-    private $metaTitle = null;
-    private $metaGenre = null;
-    private $metaDate = null;
-    private $metaAlbum = null;
-    private $metaTrackNumber = null;
-
     /** @var Settings */
     private static $settings;
 
@@ -41,11 +29,6 @@ class FFProbe {
      * @return Some
      */
     public static function read($filename) {
-
-        if (! file_exists($filename)) {
-            error_log("File {$filename} doesn't exists!");
-            return Option::None();
-        }
 
         $escaped_filename = escapeshellarg($filename);
 
@@ -60,24 +43,27 @@ class FFProbe {
 
         $json = json_decode(implode("", $result), true);
 
-        $object = new self();
+        $object = new Metadata();
 
-        $object->filename               = @$json["format"]["filename"];
-        $object->formatName             = @$json["format"]["format_name"];
-        $object->duration               = intval(@$json["format"]["duration"]);
-        $object->size                   = intval(@$json["format"]["size"]);
-        $object->bitrate                = intval(@$json["format"]["bit_rate"]);
+        $object->filename                = @$json["format"]["filename"];
+        $object->format_name             = @$json["format"]["format_name"];
+        $object->duration                = @doubleval($json["format"]["duration"]);
+        $object->size                    = @intval($json["format"]["size"]);
+        $object->bitrate                 = @intval($json["format"]["bit_rate"]);
 
         if (isset($json["format"]["tags"])) {
-            $object->metaArtist         = @$json["format"]["tags"]["artist"];
-            $object->metaTitle          = @$json["format"]["tags"]["title"];
-            $object->metaGenre          = @$json["format"]["tags"]["genre"];
-            $object->metaDate           = @$json["format"]["tags"]["date"];
-            $object->metaAlbum          = @$json["format"]["tags"]["album"];
-            $object->metaTrackNumber    = @$json["format"]["tags"]["track"];
+            $object->meta_artist         = @$json["format"]["tags"]["artist"];
+            $object->meta_title          = @$json["format"]["tags"]["title"];
+            $object->meta_genre          = @$json["format"]["tags"]["genre"];
+            $object->meta_date           = @$json["format"]["tags"]["date"];
+            $object->meta_album          = @$json["format"]["tags"]["album"];
+            $object->meta_track_number   = @$json["format"]["tags"]["track"];
+            $object->meta_album_artist   = @$json["format"]["tags"]["album_artist"];
+            $object->is_compilation      = @$json["format"]["tags"]["compilation"];
         }
 
         return Option::Some($object);
+
     }
 
     /**

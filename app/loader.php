@@ -1,5 +1,6 @@
 <?php
 
+use app\core\http\HttpServer;
 use app\core\injector\Injector;
 use app\core\view\JsonResponse;
 use app\core\view\TinyView;
@@ -35,7 +36,7 @@ set_exception_handler(function (Exception $exception) {
         JsonResponse::getInstance()->write(array(
             "error"         => Arrays::last(explode("\\", get_class($exception))),
             "message"       => $exception->getMessage(),
-            "description"   => $exception->getTraceAsString()
+//            "description"   => $exception->getTraceAsString()
         ));
     } else {
         TinyView::show("error.tmpl", array(
@@ -46,6 +47,10 @@ set_exception_handler(function (Exception $exception) {
     }
 });
 
+if (resource(HttpServer::class)->getContentType() === "application/json") {
+    JsonResponse::getInstance();
+}
+
 //set_error_handler(function ($err_no, $err_str, $err_file, $err_line, array $err_context) {
 //    TinyView::show("error.tmpl", array(
 //        "title"         => $err_str,
@@ -53,6 +58,7 @@ set_exception_handler(function (Exception $exception) {
 //        "description"   => $err_file
 //    ));
 //});
+//register_shutdown_function(function () {});
 
 
 // Scan autorun directory for executable scripts

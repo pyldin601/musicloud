@@ -15,6 +15,8 @@ use app\lang\singleton\SingletonInterface;
 
 class JsonResponse implements SingletonInterface, Injectable {
 
+    // todo: JSON if content-type specified
+
     use Singleton;
 
     private $data;

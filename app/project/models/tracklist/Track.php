@@ -12,9 +12,13 @@ namespace app\project\models\tracklist;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
+use app\project\exceptions\BackendException;
 use app\project\exceptions\TrackNotFoundException;
+use app\project\libs\FFProbe;
+use app\project\libs\Metadata;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\fs\FileServer;
 
 class Track {
@@ -51,12 +55,28 @@ class Track {
 
         assert($this->track_data[AudiosTable::FILE_ID] === null, "File already uploaded");
 
+        /** @var Metadata $metadata */
+        $metadata = FFProbe::read($file_path)
+            ->getOrThrow(BackendException::class, "Audio file could not be read");
+
         $file_id = FileServer::register($file_path);
 
         (new UpdateQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $this->track_id))
             ->set(AudiosTable::FILE_ID, $file_id)
             ->set(AudiosTable::FILE_NAME, urldecode($file_name))
             ->set(AudiosTable::CONTENT_TYPE, $content_type)
+            ->update();
+
+        (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID, $this->track_id))
+            ->set(MetadataTable::ALBUM, $metadata->meta_album)
+            ->set(MetadataTable::ALBUM_ARTIST, $metadata->meta_album_artist)
+            ->set(MetadataTable::ARTIST, $metadata->meta_artist)
+            ->set(MetadataTable::DATE, $metadata->meta_date)
+            ->set(MetadataTable::GENRE, $metadata->meta_genre)
+            ->set(MetadataTable::TITLE, $metadata->meta_title)
+            ->set(MetadataTable::TRACK_NUMBER, $metadata->meta_track_number)
+            ->set(MetadataTable::BITRATE, $metadata->bitrate)
+            ->set(MetadataTable::DURATION, $metadata->duration)
             ->update();
 
     }

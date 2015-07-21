@@ -21,4 +21,6 @@ class MetadataTable {
     const DATE = "date";
     const COVER_FILE_ID = "cover_file_id";
     const WAVEFORM = "waveform";
+    const BITRATE = "bitrate";
+    const DURATION = "duration";
 } 
