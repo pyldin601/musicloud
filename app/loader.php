@@ -42,14 +42,14 @@ set_exception_handler(function (Exception $exception) {
         TinyView::show("error.tmpl", array(
             "title"         => Arrays::last(explode("\\", get_class($exception))),
             "message"       => $exception->getMessage(),
-            "description"   => $exception->getTraceAsString()
+//            "description"   => $exception->getTraceAsString()
         ));
     }
 });
 
-if (resource(HttpServer::class)->getContentType() === "application/json") {
-    JsonResponse::getInstance();
-}
+//if (resource(HttpServer::class)->getContentType() === "application/json") {
+//    JsonResponse::getInstance();
+//}
 
 //set_error_handler(function ($err_no, $err_str, $err_file, $err_line, array $err_context) {
 //    TinyView::show("error.tmpl", array(
