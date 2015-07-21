@@ -9,7 +9,7 @@
 namespace app\project\exceptions;
 
 
-class AssertException extends BackendException {
+class AssertionException extends BackendException {
     public function __construct($message) {
         parent::__construct($message, 400);
     }
