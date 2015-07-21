@@ -301,13 +301,13 @@ class Database implements SingletonInterface, Injectable {
     /**
      * @param string $query
      * @param array|null $params
-     * @return mixed
+     * @return int
      */
     public function executeInsert($query, array $params = null) {
 
         $this->createResource($query, $params);
 
-        return $this->pdo->lastInsertId(null);
+        return intval($this->pdo->lastInsertId(null));
 
     }
 

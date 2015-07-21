@@ -199,7 +199,7 @@ abstract class BaseQuery implements QueryBuilder {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function executeInsert() {
         return Database::doInConnection(function (Database $db) {
