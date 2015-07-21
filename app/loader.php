@@ -24,6 +24,7 @@ spl_autoload_register(function ($class_name) {
     $filename = LIBRARIES_PATH . str_replace("\\", "/", $class_name) . '.php';
     if (file_exists($filename)) {
         require_once $filename;
+        static_class_init($class_name);
     }
 });
 
