@@ -732,6 +732,7 @@ b {
   }
 }
 .library-body .library-container .album-wrapper .content .album-tracks {
+  margin-top: -4px;
   padding-top: 16px;
 }
 @media (max-width: 1024px) {

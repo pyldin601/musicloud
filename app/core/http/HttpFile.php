@@ -19,6 +19,8 @@ class HttpFile extends AbstractRepository implements SingletonInterface, Injecta
 
     use Singleton;
 
+    private function __construct() {}
+
     /**
      * @param string $key
      * @return bool

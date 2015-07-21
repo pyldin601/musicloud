@@ -15,6 +15,7 @@ class MetadataTable {
     const ALBUM_ARTIST = "album_artist";
     const ARTIST = "artist";
     const TITLE = "title";
+    const TRACK_NUMBER = "track_number";
     const ALBUM = "album";
     const GENRE = "genre";
     const DATE = "date";

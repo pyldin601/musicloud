@@ -45,13 +45,13 @@ set_exception_handler(function (Exception $exception) {
     }
 });
 
-set_error_handler(function ($err_no, $err_str, $err_file, $err_line, array $err_context) {
-    TinyView::show("error.tmpl", array(
-        "title"         => $err_str,
-        "message"       => "At line " . $err_line,
-        "description"   => $err_file
-    ));
-});
+//set_error_handler(function ($err_no, $err_str, $err_file, $err_line, array $err_context) {
+//    TinyView::show("error.tmpl", array(
+//        "title"         => $err_str,
+//        "message"       => "At line " . $err_line,
+//        "description"   => $err_file
+//    ));
+//});
 
 
 // Scan autorun directory for executable scripts
@@ -75,3 +75,4 @@ function static_class_init($class_name) {
 function resource($class_name) {
     return Injector::getInstance()->injectByClassName($class_name);
 }
+

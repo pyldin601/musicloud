@@ -50,10 +50,11 @@ class Database implements SingletonInterface, Injectable {
         $pdo_login = self::$configuration->getDsnLogin();
         $pdo_password = self::$configuration->getDsnPassword();
         $pdo_options = array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_AUTOCOMMIT => true,
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+//            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
         );
 
         $this->pdo = new PDO($pdo_dsn, $pdo_login, $pdo_password, $pdo_options);

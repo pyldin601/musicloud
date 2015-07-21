@@ -42,13 +42,17 @@ class User {
      * @throws IncorrectPasswordException
      */
     public function verifyPassword($password) {
-        $result = password_verify($password, $this->user["password"]);
+        $result = password_verify($password, $this->user[UsersTable::PASSWORD]);
         if (! $result) {
             throw new IncorrectPasswordException;
         }
     }
 
     public function __toString() {
-        return "User({$this->user['email']})";
+        return "User({$this->user[UsersTable::EMAIL]})";
+    }
+
+    public function getId() {
+        return $this->user[UsersTable::ID];
     }
 } 
