@@ -131,6 +131,22 @@ b {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-bottom: 1px;
+}
+.rating-body {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  color: #000000;
+  font-weight: 600;
+}
+.rating-body > li {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+.rating-body > li:hover:before,
+.rating-body > li:hover ~ li:before {
+  content: "\f005";
 }
 .library-header {
   position: fixed;
@@ -141,6 +157,7 @@ b {
   border-bottom: 1px solid #eaeaea;
   top: 0;
   box-sizing: border-box;
+  z-index: 10;
   color: #dddddd;
   background-color: #223344;
 }
@@ -200,6 +217,7 @@ b {
   table-layout: fixed;
   border-top: 1px solid #eaeaea;
   bottom: 0;
+  z-index: 10;
   color: #dddddd;
   background-color: #223344;
 }
@@ -373,6 +391,7 @@ b {
   box-shadow: 0 0 3px #ff4141;
 }
 .library-sidebar {
+  z-index: 10;
   width: 260px;
   position: fixed;
   box-sizing: border-box;
@@ -512,16 +531,23 @@ b {
   }
 }
 .library-body .library-container .album-wrapper {
-  padding-bottom: 16px;
-}
-@media (max-width: 1024px) {
-  .library-body .library-container .album-wrapper {
-    padding-bottom: 8px;
-  }
+  padding-bottom: 48px;
 }
 .library-body .library-container .album-wrapper .cover .cover-background {
   width: 200px;
   height: 200px;
+}
+@media (max-width: 1024px) {
+  .library-body .library-container .album-wrapper .cover .cover-background {
+    width: 150px;
+    height: 150px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .library-container .album-wrapper .cover .cover-background {
+    width: 100px;
+    height: 100px;
+  }
 }
 .library-body .library-container .album-wrapper .cover .cover-background img {
   width: 100%;
@@ -567,23 +593,27 @@ b {
   margin-bottom: 8px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .duration {
-  width: 30px;
+  width: 40px;
   text-align: right;
 }
-.library-body .library-container .album-wrapper .content .album-tracks .track .duration,
-.library-body .library-container .album-wrapper .content .album-tracks .track .rating {
+.library-body .library-container .album-wrapper .content .album-tracks .track .duration {
   margin-left: 16px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .position {
   margin-right: 16px;
   width: 20px;
 }
-.library-body .library-container .album-wrapper .content .album-tracks .track .track-title {
+.library-body .library-container .album-wrapper .content .album-tracks .track .track-title .first {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-bottom: 1px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .track-title .second {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 1px;
   margin-top: 4px;
   font-size: 9pt;
   color: #757577;

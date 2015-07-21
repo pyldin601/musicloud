@@ -1,0 +1,15 @@
+.rating-body {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  color: #000000;
+  font-weight: 600;
+  & > li {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    &:hover:before,
+    &:hover ~ li:before {
+      content: "\f005";
+    }
+  }
+}

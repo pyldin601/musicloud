@@ -1,6 +1,7 @@
 @import "mixins/gradient";
 @import "mixins/adaptive";
 @import "common";
+@import "mixins/ui";
 
 .library-header {
   position: fixed;
@@ -11,6 +12,7 @@
   border-bottom: 1px solid #eaeaea;
   top: 0;
   box-sizing: border-box;
+  z-index: 10;
 
   color: #dddddd;
   background-color: #223344;
@@ -47,6 +49,7 @@
   table-layout: fixed;
   border-top: 1px solid #eaeaea;
   bottom: 0;
+  z-index: 10;
 
   color: #dddddd;
   background-color: #223344;
@@ -213,6 +216,7 @@
 }
 
 .library-sidebar {
+  z-index: 10;
   .adaptive-side-width;
   position: fixed;
   box-sizing: border-box;
@@ -267,11 +271,10 @@
 
   .library-container {
     .album-wrapper {
-      .dynamic-padding-bottom-alt;
+      padding-bottom: 48px;
       .cover {
         .cover-background {
-          width: 200px;
-          height: 200px;
+          .dynamic-cover-size;
           img {
             width: 100%;
             height: 100%;
@@ -280,8 +283,11 @@
         }
       }
       .content {
+
         overflow: hidden;
+
         .dynamic-h-padding;
+
         .album-title {
           font-weight: 600;
           border-bottom: 1px solid #ced1d6;
@@ -292,8 +298,11 @@
           .dynamic-padding-top-alt;
           .track {
             margin-bottom: 8px;
-            .duration { width: 30px; text-align: right; }
-            .duration, .rating {
+            .duration {
+              width: 40px;
+              text-align: right;
+            }
+            .duration {
               margin-left: 16px;
             }
             .position {
@@ -301,8 +310,11 @@
               width: 20px;
             }
             .track-title {
-              .ellipsis;
+              .first {
+                .ellipsis;
+              }
               .second {
+                .ellipsis;
                 margin-top: 4px;
                 font-size: 9pt;
                 color: #757577;

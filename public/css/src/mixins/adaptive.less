@@ -18,6 +18,19 @@
   }
 }
 
+.dynamic-cover-size() {
+  width: 200px;
+  height: 200px;
+  @media (max-width: 1024px) {
+    width: 150px;
+    height: 150px;
+  }
+  @media (max-width: 640px) {
+    width: 100px;
+    height: 100px;
+  }
+}
+
 .dynamic-h-padding() {
   padding-left: 24px;
   padding-right: 24px;
