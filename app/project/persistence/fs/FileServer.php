@@ -13,6 +13,7 @@ use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
+use app\lang\Arrays;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\persistence\db\tables\FilesTable;
 
@@ -69,36 +70,31 @@ class FileServer {
         $filename = FSTool::filename($file[FilesTable::SHA1]);
         $filesize = filesize($filename);
 
-        $fh = fopen($filename, "r");
+        $fh = fopen($filename, "rb");
 
         if (isset($_SERVER["HTTP_RANGE"])) {
-            $range = $_SERVER["HTTP_RANGE"];
-            $range = str_replace("bytes=", "", $range);
-            list($start, $end) = explode("-", $range);
+            $range = str_replace("bytes=", "", $_SERVER["HTTP_RANGE"]);
+            $start = Arrays::first(explode("-", $range));
         } else {
             $start = 0;
         }
 
         if (isset($range)) {
             http_response_code(206);
+            header("Content-Range: bytes " . $start . "-" . ($filesize - 1) . "/" . $filesize);
+            header("Content-Length: " . ($filesize - $start));
         } else {
             http_response_code(200);
+            header("Content-Length: " . $filesize);
         }
 
         header("Accept-Ranges: bytes");
-        header("Access-Control-Allow-Headers: range, accept-encoding");
-
-        if (isset($range)) {
-            header("Content-Range: bytes " . $start . "-" . ($filesize - 1) . "/" . $filesize);
-        } else {
-            header("Content-Length: " . $filesize);
-        }
 
         if ($start > 0) {
             fseek($fh, $start, SEEK_SET);
         }
 
-        set_time_limit(600);
+        set_time_limit(0);
 
         while ($data = fread($fh, self::READ_BUFFER_SIZE)) {
             echo $data;
