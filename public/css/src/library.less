@@ -318,7 +318,7 @@
       }
       .content {
 
-        overflow: hidden;
+        .dyn-cover-margin();
 
         .dyn-pad-left;
 
@@ -332,7 +332,11 @@
         .album-tracks {
           .dyn-pad-top-sm;
           .track {
-            margin-bottom: 8px;
+            margin-right: -8px;
+            margin-left: -8px;
+            margin-bottom: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
             .duration {
               width: 40px;
               text-align: right;
@@ -341,8 +345,7 @@
               margin-left: 16px;
             }
             .position {
-              margin-right: 16px;
-              width: 20px;
+              width: 36px;
             }
             .track-title {
               .first {
@@ -350,10 +353,22 @@
               }
               .second {
                 .ellipsis;
+                margin-left: 36px;
                 margin-top: 4px;
                 font-size: 9pt;
                 color: #757577;
-                height: 0px;
+                &:empty {
+                  display: none;
+                }
+              }
+            }
+            &.selected {
+              background-color: #334455;
+              color: #ffffff;
+              .track-title {
+                .second {
+                  color: #eeeeee;
+                }
               }
             }
           }

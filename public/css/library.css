@@ -136,7 +136,6 @@ b {
 .rating-body {
   unicode-bidi: bidi-override;
   direction: rtl;
-  color: #000000;
   font-weight: 600;
 }
 .rating-body > li {
@@ -672,8 +671,18 @@ b {
   vertical-align: middle;
 }
 .library-body .library-container .album-wrapper .content {
-  overflow: hidden;
+  margin-left: 200px;
   padding-left: 24px;
+}
+@media (max-width: 1024px) {
+  .library-body .library-container .album-wrapper .content {
+    margin-left: 150px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .library-container .album-wrapper .content {
+    margin-left: 100px;
+  }
 }
 @media (max-width: 1024px) {
   .library-body .library-container .album-wrapper .content {
@@ -736,7 +745,11 @@ b {
   }
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track {
-  margin-bottom: 8px;
+  margin-right: -8px;
+  margin-left: -8px;
+  margin-bottom: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .duration {
   width: 40px;
@@ -746,8 +759,7 @@ b {
   margin-left: 16px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .position {
-  margin-right: 16px;
-  width: 20px;
+  width: 36px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .track-title .first {
   white-space: nowrap;
@@ -760,8 +772,18 @@ b {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-bottom: 1px;
+  margin-left: 36px;
   margin-top: 4px;
   font-size: 9pt;
   color: #757577;
-  height: 0px;
+}
+.library-body .library-container .album-wrapper .content .album-tracks .track .track-title .second:empty {
+  display: none;
+}
+.library-body .library-container .album-wrapper .content .album-tracks .track.selected {
+  background-color: #334455;
+  color: #ffffff;
+}
+.library-body .library-container .album-wrapper .content .album-tracks .track.selected .track-title .second {
+  color: #eeeeee;
 }
