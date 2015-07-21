@@ -12,6 +12,7 @@ namespace app\project\models\tracklist;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
+use app\core\exceptions\status\PageNotFoundException;
 use app\project\exceptions\BackendException;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\libs\FFProbe;
@@ -125,8 +126,30 @@ class Track {
 
     }
 
-    private function ensure() {
-        assert($this->active, "File deleted");
+    public function cover() {
+
+        $this->ensure();
+
+        assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
+
+        $metadata = (new SelectQuery(MetadataTable::TABLE_NAME))
+            ->where(MetadataTable::ID, $this->track_id)
+            ->fetchOneRow()
+            ->get();
+
+        if ($metadata[MetadataTable::COVER_FILE_ID]) {
+            header("Content-Type: image/jpeg");
+            FileServer::writeToClient($metadata[MetadataTable::COVER_FILE_ID]);
+        } else {
+            throw new PageNotFoundException;
+        }
+
+
     }
+
+    private function ensure() {
+        assert($this->active, "Track deleted");
+    }
+
 
 } 

@@ -42,7 +42,7 @@ class FileServer {
                 ->values(FilesTable::USED, 1)
                 ->executeInsert();
 
-            move_uploaded_file($file_path, FSTool::filename($hash));
+            rename($file_path, FSTool::filename($hash));
 
         } else {
 
@@ -67,6 +67,7 @@ class FileServer {
             ->getOrThrow(TrackNotFoundException::class);
 
         $filename = FSTool::filename($file[FilesTable::SHA1]);
+        $filesize = filesize($filename);
 
         $fh = fopen($filename, "r");
 
@@ -86,10 +87,11 @@ class FileServer {
 
         header("Accept-Ranges: bytes");
         header("Access-Control-Allow-Headers: range, accept-encoding");
-        header("Content-Length: " . $file[FilesTable::SIZE]);
 
         if (isset($range)) {
-            header("Content-Range: bytes " . $start . "-" . ($file[FilesTable::SIZE] - 1) . "/" . $file[FilesTable::SIZE]);
+            header("Content-Range: bytes " . $start . "-" . ($filesize - 1) . "/" . $filesize);
+        } else {
+            header("Content-Length: " . $filesize);
         }
 
         if ($start > 0) {
