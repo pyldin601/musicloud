@@ -7,8 +7,7 @@
  */
 
 
-use app\project\models\Auth;
+use app\project\handlers\dynamic\content\DoReadTrack;
 
-when("test", function () {
-    $auth = new Auth();
-});
+
+when("content/track/&id", DoReadTrack::class);

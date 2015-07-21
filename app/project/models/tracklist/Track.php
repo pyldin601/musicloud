@@ -49,7 +49,7 @@ class Track {
 
         $this->ensure();
 
-        assert($this->track_data[AudiosTable::FILE_ID] == null, "File already uploaded");
+        assert($this->track_data[AudiosTable::FILE_ID] === null, "File already uploaded");
 
         $file_id = FileServer::register($file_path);
 
@@ -72,6 +72,18 @@ class Track {
             ->update();
 
         $this->active = false;
+
+    }
+
+    public function preview() {
+
+        $this->ensure();
+
+        assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
+
+        header("Content-Type: " . $this->track_data[AudiosTable::CONTENT_TYPE]);
+
+        FileServer::writeToClient($this->track_data[AudiosTable::FILE_ID]);
 
     }
 
