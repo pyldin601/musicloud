@@ -17,11 +17,11 @@ use app\project\models\tracklist\Track;
 class DoUpload implements RouteHandler {
     public function doPost(JsonResponse $response, $track_id, HttpFile $file) {
 
-        $track = $file->getOrError("track");
+        $track = $file->getOrError("file");
 
         $tm = new Track($track_id);
 
-        $tm->load($track["tmp_name"], $track["name"]);
+        $tm->upload($track["tmp_name"], $track["name"], $track["type"]);
 
     }
 } 

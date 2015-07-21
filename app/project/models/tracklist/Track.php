@@ -9,16 +9,13 @@
 namespace app\project\models\tracklist;
 
 
-use app\core\db\builder\InsertQuery;
+use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
-use app\project\exceptions\BadAccessException;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\models\single\LoggedIn;
-use app\project\models\Tracks;
 use app\project\persistence\db\tables\AudiosTable;
-use app\project\persistence\db\tables\FilesTable;
-use app\project\persistence\fs\FSTool;
+use app\project\persistence\fs\FileServer;
 
 class Track {
 
@@ -26,15 +23,17 @@ class Track {
     private $me;
 
     private $track_id;
-
     private $track_data;
+
+    private $active;
 
     public function __construct($track_id) {
 
         $this->me = resource(LoggedIn::class);
 
         $query = new SelectQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $track_id);
-        $track = $query->fetchOneRow()->getOrElse(TrackNotFoundException::class);
+
+        $track = $query->fetchOneRow()->getOrThrow(TrackNotFoundException::class);
 
         assert($track[AudiosTable::USER_ID] == $this->me->getId(), "You have no access to this resource");
 
@@ -42,43 +41,42 @@ class Track {
 
         $this->track_data = $track;
 
+        $this->active = true;
+
     }
 
-    public function load($file_path, $file_name) {
+    public function upload($file_path, $file_name, $content_type) {
 
-        $hash = FSTool::calculateHash($file_path);
-        $query = new SelectQuery(FilesTable::TABLE_NAME, FilesTable::SHA1, $hash);
-        $file = $query->fetchOneRow();
+        $this->ensure();
 
-        if ($file->isEmpty()) {
+        assert($this->track_data[AudiosTable::FILE_ID] == null, "File already uploaded");
 
-            FSTool::createPathUsingHash($hash);
-
-            $id = (new InsertQuery(FilesTable::TABLE_NAME))
-                ->values(FilesTable::SHA1, $hash)
-                ->values(FilesTable::SIZE, filesize($file_path))
-                ->values(FilesTable::USED, 1)
-                ->executeInsert();
-
-            move_uploaded_file($file_path, FSTool::filename($hash));
-
-        } else {
-
-            $id = $file->get()[FilesTable::ID];
-
-            (new UpdateQuery(FilesTable::TABLE_NAME))
-                ->increment(FilesTable::USED)
-                ->where(FilesTable::ID, $id)
-                ->update();
-
-
-        }
+        $file_id = FileServer::register($file_path);
 
         (new UpdateQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $this->track_id))
-            ->set(AudiosTable::FILE_ID, $id)
-            ->set(AudiosTable::FILE_NAME, $file_name)
+            ->set(AudiosTable::FILE_ID, $file_id)
+            ->set(AudiosTable::FILE_NAME, urldecode($file_name))
+            ->set(AudiosTable::CONTENT_TYPE, $content_type)
             ->update();
 
+    }
+
+    public function delete() {
+
+        $this->ensure();
+
+        FileServer::unregister($this->track_data[AudiosTable::FILE_ID]);
+
+        (new DeleteQuery(AudiosTable::TABLE_NAME))
+            ->where(AudiosTable::ID, $this->track_id)
+            ->update();
+
+        $this->active = false;
+
+    }
+
+    private function ensure() {
+        assert($this->active, "File deleted");
     }
 
 } 

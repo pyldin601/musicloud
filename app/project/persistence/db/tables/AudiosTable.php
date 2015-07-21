@@ -16,4 +16,5 @@ class AudiosTable {
     const USER_ID = "user_id";
     const FILE_ID = "file_id";
     const FILE_NAME = "file_name";
+    const CONTENT_TYPE = "content_type";
 }

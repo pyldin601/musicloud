@@ -42,4 +42,11 @@ class FSTool {
     public static function calculateHash($filename) {
         return sha1_file($filename);
     }
+
+    /**
+     * @param $hash
+     */
+    public static function delete($hash) {
+        unlink(self::filename($hash));
+    }
 } 
