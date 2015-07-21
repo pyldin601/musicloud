@@ -59,7 +59,15 @@ class Track {
         $metadata = FFProbe::read($file_path)
             ->getOrThrow(BackendException::class, "Audio file could not be read");
 
+        $cover = FFProbe::readTempCover($file_path);
+
         $file_id = FileServer::register($file_path);
+
+        if ($cover->nonEmpty()) {
+            $cover_file_id = FileServer::register($cover->get());
+        } else {
+            $cover_file_id = null;
+        }
 
         (new UpdateQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $this->track_id))
             ->set(AudiosTable::FILE_ID, $file_id)
@@ -77,6 +85,7 @@ class Track {
             ->set(MetadataTable::TRACK_NUMBER, $metadata->meta_track_number)
             ->set(MetadataTable::BITRATE, $metadata->bitrate)
             ->set(MetadataTable::DURATION, $metadata->duration)
+            ->set(MetadataTable::COVER_FILE_ID, $cover_file_id)
             ->update();
 
     }
@@ -84,6 +93,15 @@ class Track {
     public function delete() {
 
         $this->ensure();
+
+        $metadata = (new SelectQuery(MetadataTable::TABLE_NAME))
+            ->where(MetadataTable::ID, $this->track_id)
+            ->fetchOneRow()
+            ->get();
+
+        if ($metadata[MetadataTable::COVER_FILE_ID] !== null) {
+            FileServer::unregister($metadata[MetadataTable::COVER_FILE_ID]);
+        }
 
         FileServer::unregister($this->track_data[AudiosTable::FILE_ID]);
 

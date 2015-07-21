@@ -25,6 +25,31 @@ class FFProbe {
     }
 
     /**
+     * @param $filename
+     * @return Option
+     */
+    public static function readTempCover($filename) {
+
+        $escaped_filename = escapeshellarg($filename);
+        $temp_cover = sprintf("%s/%s.jpg",
+            self::$settings->get("fs", "temp"), "cover_" . md5(rand(0, 1000000000))
+        );
+
+        $command = sprintf("%s -i %s -v quiet -an -vcodec copy %s",
+            self::$settings->get("tools", "ffmpeg_cmd"), $escaped_filename, $temp_cover);
+
+        exec($command, $result, $status);
+
+        if (file_exists($temp_cover)) {
+            delete_on_shutdown($temp_cover);
+            return Option::Some($temp_cover);
+        } else {
+            return Option::None();
+        }
+
+    }
+
+    /**
      * @param string $filename
      * @return Some
      */
@@ -64,93 +89,6 @@ class FFProbe {
 
         return Option::Some($object);
 
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBitrate() {
-        return $this->bitrate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDuration() {
-        return $this->duration;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDurationMilliseconds() {
-        if ($this->getDuration() === null) {
-            return null;
-        }
-        return (int) ($this->duration * 1000);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFileName() {
-        return $this->filename;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFormatName() {
-        return $this->formatName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMetaAlbum() {
-        return $this->metaAlbum;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMetaArtist() {
-        return $this->metaArtist;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMetaDate() {
-        return $this->metaDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMetaGenre() {
-        return $this->metaGenre;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMetaTitle() {
-        return $this->metaTitle;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMetaTrackNumber() {
-        return $this->metaTrackNumber;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSize() {
-        return $this->size;
     }
 
 }
