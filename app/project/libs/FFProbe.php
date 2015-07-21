@@ -13,6 +13,8 @@ use app\core\etc\Settings;
 use app\lang\option\Option;
 use app\lang\option\Some;
 
+// todo: fix cp1251 charset support
+
 class FFProbe {
 
     private $filename = null;
