@@ -10,6 +10,8 @@ namespace app\project\libs;
 
 
 use app\core\etc\Settings;
+use app\lang\option\Option;
+use app\lang\option\Some;
 
 class FFProbe {
 
@@ -34,13 +36,13 @@ class FFProbe {
 
     /**
      * @param string $filename
-     * @return FFprobe|null
+     * @return Some
      */
     public static function read($filename) {
 
         if (! file_exists($filename)) {
             error_log("File {$filename} doesn't exists!");
-            return null;
+            return Option::None();
         }
 
         $escaped_filename = escapeshellarg($filename);
@@ -51,7 +53,7 @@ class FFProbe {
         exec($command, $result, $status);
 
         if ($status != 0) {
-            return null;
+            return Option::None();
         }
 
         $json = json_decode(implode("", $result), true);
@@ -73,7 +75,7 @@ class FFProbe {
             $object->metaTrackNumber    = @$json["format"]["tags"]["track"];
         }
 
-        return $object;
+        return Option::Some($object);
     }
 
     /**
