@@ -19,6 +19,7 @@ class MetadataTable {
     const ALBUM = "album";
     const GENRE = "genre";
     const DATE = "date";
+    const RATING = "rating";
     const COVER_FILE_ID = "cover_file_id";
     const WAVEFORM = "waveform";
     const BITRATE = "bitrate";
