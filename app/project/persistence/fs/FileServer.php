@@ -26,7 +26,7 @@ class FileServer {
 
     public static function register($file_path) {
 
-        assert(file_exists($file_path), "Track file uploaded incorrectly");
+        assert(file_exists($file_path), "Audio file uploaded incorrectly");
 
         $hash = FSTool::calculateHash($file_path);
         $query = new SelectQuery(FilesTable::TABLE_NAME, FilesTable::SHA1, $hash);
