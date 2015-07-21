@@ -26,10 +26,10 @@
       display: table-cell;
       height: 48px;
       & >.group {
-        .dynamic-h-padding
+        .dyn-pad-h
       }
       &.nav-logo, &.nav-profile {
-        .adaptive-side-width;
+        .dyn-sidebar-width;
       }
       &:not(:last-child) {
         border-right: 1px solid #112233;
@@ -63,7 +63,7 @@
       display: table-cell;
       height: 48px;
       &.player-controls, &.player-icons {
-        .adaptive-side-width;
+        .dyn-sidebar-width;
       }
       &.player-display {
         padding: 0;
@@ -97,6 +97,42 @@
         width: 33%;
         text-align: center;
         font-size: 18px;
+        position: relative;
+      }
+      .volume-controller {
+        display: none;
+        bottom: 32px;
+        position: absolute;
+        width: 32px;
+        height: 100px;
+        left: 50%;
+        margin-left: -16px;
+        background-color: #223344;
+        box-sizing: border-box;
+        .volume-background {
+          width: 5px;
+          height: 75px;
+          margin-left: 14px;
+          margin-top: 13px;
+          position: relative;
+          .background-line {
+            left: 2px;
+            position: absolute;
+            width: 1px;
+            background-color: #000000;
+            height: 100%;
+            z-index: 1;
+          }
+          .value-line {
+            left: 2px;
+            position: absolute;
+            width: 1px;
+            height: 50%;
+            z-index: 2;
+            background-color: #ff4141;
+            bottom: 0;
+          }
+        }
       }
     }
   }
@@ -217,7 +253,7 @@
 
 .library-sidebar {
   z-index: 10;
-  .adaptive-side-width;
+  .dyn-sidebar-width;
   position: fixed;
   box-sizing: border-box;
   top: 48px;
@@ -231,23 +267,22 @@
     overflow-y: auto;
 
     .section {
-      .dynamic-v-padding;
+      .dyn-pad-v;
       .section-title {
         text-transform: uppercase;
         font-weight: 600;
         font-size: 12pt;
-        .dynamic-padding-bottom-alt;
+        .dyn-pad-bottom-sm;
         border-bottom: 1px solid #ced1d6;
         margin-bottom: 8px;
-        .dynamic-margin;
+        .dyn-mar-h;
       }
       ul.section-list {
         font-size: 10pt;
         font-weight: 600;
         & > li {
-          padding-top: 12px;
-          padding-bottom: 12px;
-          .dynamic-h-padding;
+          .dyn-pad-v-xs;
+          .dyn-pad-h;
           &.active {
             background-color: #dfe2e9;
             color: #111111;
@@ -262,19 +297,18 @@
 .library-body {
   margin-top: 48px;
   margin-bottom: 48px;
-  .dynamic-body-margin;
-  .dynamic-h-padding;
 
-  .title {
-    .dynamic-v-padding;
-  }
+  .dyn-body-margin;
+  .dyn-pad-h;
+
+  .title {  .dyn-pad-v;  }
 
   .library-container {
     .album-wrapper {
       padding-bottom: 48px;
       .cover {
         .cover-background {
-          .dynamic-cover-size;
+          .dyn-cover-size;
           img {
             width: 100%;
             height: 100%;
@@ -286,16 +320,17 @@
 
         overflow: hidden;
 
-        .dynamic-h-padding;
+        .dyn-pad-left;
 
         .album-title {
-          font-weight: 600;
+          font-weight: 300;
           border-bottom: 1px solid #ced1d6;
-          .dynamic-padding-bottom-alt;
+          .dyn-title-size;
+          .dyn-pad-bottom-sm;
         }
 
         .album-tracks {
-          .dynamic-padding-top-alt;
+          .dyn-pad-top-sm;
           .track {
             margin-bottom: 8px;
             .duration {
