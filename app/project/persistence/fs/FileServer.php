@@ -66,6 +66,8 @@ class FileServer {
 
         $fh = fopen(FSTool::filename($file[FilesTable::SHA1]), "r");
 
+        header("Content-Length: " . $file[FilesTable::SIZE]);
+
         if ($skip > 0) {
             fseek($fh, $skip, SEEK_SET);
         }
