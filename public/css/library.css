@@ -748,9 +748,8 @@ b {
 .library-body .library-container .album-wrapper .content .album-tracks .track {
   margin-right: -8px;
   margin-left: -8px;
-  margin-bottom: 4px;
-  padding: 4px 8px;
-  border-radius: 4px;
+  margin-bottom: 2px;
+  padding: 6px 8px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .duration {
   width: 40px;
@@ -782,6 +781,7 @@ b {
   display: none;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track.selected {
+  border-radius: 4px;
   background-color: #334455;
   color: #ffffff;
 }
