@@ -70,7 +70,7 @@ class DoTracks implements RouteHandler {
         $catalog = $query->fetchAll();
 
         $response->write([
-            "genres" => $catalog
+            "tracks" => $catalog
         ]);
 
     }
