@@ -91,6 +91,30 @@ class Mapper {
         };
     }
 
+    /**
+     * @return callable
+     */
+    public static function fulltext() {
+        return function ($text) {
+
+            $query = "";
+            $stop = "\\+\\-\\>\\<\\(\\)\\~\\*\\\"\\@";
+            $words = preg_split("/(*UTF8)(?![\\p{L}|\\'|\\p{N}|\\#]+)|([$stop]+)/", $text);
+
+            foreach ($words as $word) {
+                if (strlen($word) > 0) {
+                    $query .= "+{$word}";
+                }
+            }
+
+            if (strlen($query))
+                $query .= "*";
+
+            return $query;
+
+        };
+    }
+
 }
 
 
