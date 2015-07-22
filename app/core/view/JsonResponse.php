@@ -19,8 +19,10 @@ class JsonResponse implements SingletonInterface, Injectable {
 
     const MIME = "application/json";
     const DEFAULT_RESULT = "OK";
+    const DEFAULT_RESPONSE_CODE = 200;
 
     private $data;
+    private $http_response_code;
 
     protected function __construct() {
 
@@ -30,15 +32,18 @@ class JsonResponse implements SingletonInterface, Injectable {
 
             header("Content-Type: ".self::MIME."; charset=".DEFAULT_CHARSET);
 
+            http_response_code($this->http_response_code ?: self::DEFAULT_RESPONSE_CODE);
+
             echo json_encode($this->data ?: self::DEFAULT_RESULT, JSON_UNESCAPED_UNICODE);
 
         });
 
     }
 
-    public function write($object) {
+    public function write($object, $http_response_code = self::DEFAULT_RESPONSE_CODE) {
 
-        $this->data = &$object;
+        $this->data = $object;
+        $this->http_response_code = $http_response_code;
 
     }
 

@@ -15,6 +15,6 @@ use app\project\models\Tracks;
 
 class DoCreate implements RouteHandler {
     public function doPost(JsonResponse $response) {
-        $response->write(Tracks::create());
+        $response->write(Tracks::create(), 201);
     }
 } 
