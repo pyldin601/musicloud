@@ -10,8 +10,9 @@ namespace app\project\persistence\db\tables;
 
 
 class StatsTable {
-    const TABLE_NAME = "stats";
+    const TABLE_NAME = "track_stats";
     const ID = "id";
     const PLAYBACKS = "playbacks";
+    const SKIPS = "skips";
     const LAST_PLAYED = "last_played";
 } 

@@ -30,6 +30,14 @@ trait WhereSection {
     }
 
     /**
+     * @param $field
+     * @return $this
+     */
+    public function whereNotNull($field) {
+        return $this->where($field . " IS NOT NULL");
+    }
+
+    /**
      * @param $column
      * @param $values
      * @return $this

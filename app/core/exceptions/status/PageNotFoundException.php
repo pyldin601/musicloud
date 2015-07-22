@@ -13,7 +13,7 @@ use app\core\exceptions\StatusException;
 
 class PageNotFoundException extends StatusException {
     public function __construct() {
-        parent::__construct("Document not found", 404);
+        parent::__construct("Document Not Found", 404);
     }
 
 }

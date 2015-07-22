@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="uk">
 <head>
-    <title><?= $title ?></title>
+    <meta charset="UTF-8">
+    <link href='//fonts.googleapis.com/css?family=Fira+Sans:300,400&subset=cyrillic,latin' rel='stylesheet' type='text/css'>
+    <title>404 - Document Not Found</title>
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        p {
+            font-family: 'Fira Sans', sans-serif;
+            font-weight: 300;
+            font-size: 48px;
+            line-height: 60px;
+            color: #333333;
+            text-align: center;
+        }
+        .centr-text {
+            width: 900px;
+            height: 260px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -140px;
+            margin-left: -450px;
+        }
+    </style>
 </head>
 <body>
-<h1><?= $title ?></h1>
-<h2><?= $message ?></h2>
+<div class="centr-text">
+    <p>
+        <span style="color:#059528; font-size:200px; font-weight:400;"><?= $code ?></span><br>
+        <?= $message ?><br>
+        <span style="font-size:32px;">try again later or try another page</span>
+    </p>
+</div>
+
 </body>
 </html>

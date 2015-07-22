@@ -12,6 +12,7 @@ namespace app\project\models\tracklist;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
+use app\core\etc\Settings;
 use app\core\exceptions\status\PageNotFoundException;
 use app\project\exceptions\BackendException;
 use app\project\exceptions\TrackNotFoundException;
@@ -30,7 +31,7 @@ class Track {
     private $track_id;
     private $track_data;
 
-    private $active;
+    private $settings;
 
     public function __construct($track_id) {
 
@@ -46,13 +47,16 @@ class Track {
 
         $this->track_data = $track;
 
-        $this->active = true;
+        $this->settings = Settings::getInstance();
 
     }
 
-    public function upload($file_path, $file_name, $content_type) {
+    public function upload($file_path, $file_name) {
 
-        $this->ensure();
+        $mime_command = sprintf("%s --brief --mime-type %s",
+            $this->settings->get("tools", "file_cmd"), escapeshellarg($file_path));
+
+        $mime_type = shell_exec($mime_command);
 
         assert($this->track_data[AudiosTable::FILE_ID] === null, "File already uploaded");
 
@@ -73,7 +77,7 @@ class Track {
         (new UpdateQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $this->track_id))
             ->set(AudiosTable::FILE_ID, $file_id)
             ->set(AudiosTable::FILE_NAME, urldecode($file_name))
-            ->set(AudiosTable::CONTENT_TYPE, $content_type)
+            ->set(AudiosTable::CONTENT_TYPE, $mime_type)
             ->update();
 
         (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID, $this->track_id))
@@ -91,32 +95,8 @@ class Track {
 
     }
 
-    public function delete() {
-
-        $this->ensure();
-
-        $metadata = (new SelectQuery(MetadataTable::TABLE_NAME))
-            ->where(MetadataTable::ID, $this->track_id)
-            ->fetchOneRow()
-            ->get();
-
-        if ($metadata[MetadataTable::COVER_FILE_ID] !== null) {
-            FileServer::unregister($metadata[MetadataTable::COVER_FILE_ID]);
-        }
-
-        FileServer::unregister($this->track_data[AudiosTable::FILE_ID]);
-
-        (new DeleteQuery(AudiosTable::TABLE_NAME))
-            ->where(AudiosTable::ID, $this->track_id)
-            ->update();
-
-        $this->active = false;
-
-    }
 
     public function preview() {
-
-        $this->ensure();
 
         assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
 
@@ -127,8 +107,6 @@ class Track {
     }
 
     public function cover() {
-
-        $this->ensure();
 
         assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
 
@@ -145,10 +123,6 @@ class Track {
         }
 
 
-    }
-
-    private function ensure() {
-        assert($this->active, "Track deleted");
     }
 
 

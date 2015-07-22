@@ -13,6 +13,6 @@ use app\core\exceptions\StatusException;
 
 class NotImplementedException extends StatusException {
     public function __construct() {
-        parent::__construct("Requested method is not implemented", 500);
+        parent::__construct("Requested Method Is Not Implemented", 500);
     }
 }

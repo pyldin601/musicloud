@@ -31,18 +31,16 @@ spl_autoload_register(function ($class_name) {
 
 // Set global exception handler
 set_exception_handler(function (Exception $exception) {
-    http_response_code(400);
+    http_response_code($exception->getCode() > 0 ? $exception->getCode() : 400);
     if (JsonResponse::hasInstance()) {
         JsonResponse::getInstance()->write(array(
-            "error"         => Arrays::last(explode("\\", get_class($exception))),
             "message"       => $exception->getMessage(),
-//            "description"   => $exception->getTraceAsString()
+            "code"          => $exception->getCode()
         ));
     } else {
         TinyView::show("error.tmpl", array(
-            "title"         => Arrays::last(explode("\\", get_class($exception))),
             "message"       => $exception->getMessage(),
-//            "description"   => $exception->getTraceAsString()
+            "code"          => $exception->getCode()
         ));
     }
 });
@@ -58,6 +56,7 @@ set_exception_handler(function (Exception $exception) {
 //        "description"   => $err_file
 //    ));
 //});
+
 //register_shutdown_function(function () {});
 
 

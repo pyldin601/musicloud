@@ -15,25 +15,25 @@ use app\lang\singleton\SingletonInterface;
 
 class JsonResponse implements SingletonInterface, Injectable {
 
-    // todo: JSON if content-type specified
-
     use Singleton;
 
     private $data;
 
-    protected function __construct() { }
+    protected function __construct() {
+
+        register_shutdown_function(function () {
+
+            header("Content-Type: application/json");
+
+            echo json_encode($this->data ?: "OK");
+
+        });
+
+    }
 
     public function write($object) {
 
         $this->data = &$object;
-
-    }
-
-    public function __destruct() {
-
-        header("Content-Type: application/json");
-
-        echo json_encode($this->data ?: "OK");
 
     }
 

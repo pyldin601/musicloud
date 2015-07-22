@@ -12,16 +12,18 @@ namespace app\project\handlers\fixed\api\track;
 use app\core\http\HttpFile;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
+use app\lang\option\Option;
 use app\project\models\tracklist\Track;
+use app\project\models\Tracks;
 
 class DoUpload implements RouteHandler {
-    public function doPost(JsonResponse $response, $track_id, HttpFile $file) {
+    public function doPost(JsonResponse $response, Option $track_id, HttpFile $file) {
 
         $track = $file->getOrError("file");
 
-        $tm = new Track($track_id);
+        $tm = new Track($track_id->isEmpty() ? Tracks::create() : $track_id->get());
 
-        $tm->upload($track["tmp_name"], $track["name"], $track["type"]);
+        $tm->upload($track["tmp_name"], $track["name"]);
 
     }
 } 

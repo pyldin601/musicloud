@@ -52,4 +52,34 @@ class Arrays {
             return $temp;
         }
     }
+    public static function all($callback, array $array) {
+        if (empty($array)) {
+            return true;
+        }
+        foreach ($array as $item) {
+            if (!$callback($item)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public static function any($callback, array $array) {
+        if (empty($array)) {
+            return true;
+        }
+        foreach ($array as $item) {
+            if ($callback($item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static function contains($callback, array $array) {
+        foreach ($array as $item) {
+            if ($callback($item)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
