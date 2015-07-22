@@ -9,10 +9,20 @@
 namespace app\core\cache;
 
 
+use app\core\etc\Settings;
+
 class RedisBackend {
-    public static $redis;
+
+    public  static $redis;
+
     public static function class_init() {
+        /** @var Settings $settings */
+        $settings = resource(Settings::class);
         self::$redis = new \Redis();
-        self::$redis->connect("localhost", 6379);
+        self::$redis->connect(
+            $settings->get("redis", "hostname"),
+            $settings->get("redis", "connect_port")
+        );
     }
+
 }
