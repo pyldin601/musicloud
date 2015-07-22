@@ -52,7 +52,18 @@ class User {
         return "User({$this->user[UsersTable::EMAIL]})";
     }
 
+    /**
+     * @return mixed
+     */
     public function getId() {
         return $this->user[UsersTable::ID];
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail() {
+        return $this->user[UsersTable::EMAIL];
+    }
+
 } 

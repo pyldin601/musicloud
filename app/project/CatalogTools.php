@@ -35,4 +35,20 @@ class CatalogTools {
             StatsTable::SKIPS
         );
     }
+
+    /**
+     * @param string $key
+     * @param array $object
+     * @return array
+     */
+    public static function descent($key, array $object) {
+        $result = array();
+        foreach ($object as $item) {
+            if (!isset($result[$item[$key]])) {
+                $result[$item[$key]] = array();
+            }
+            $result[$item[$key]][] = $item;
+        }
+        return $result;
+    }
 } 

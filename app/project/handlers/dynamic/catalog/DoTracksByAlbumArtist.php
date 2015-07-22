@@ -36,6 +36,7 @@ class DoTracksByAlbumArtist implements RouteHandler {
         Context::contextify($query);
 
         $query->orderBy(MetadataTable::ALBUM_ARTIST);
+        $query->orderBy(MetadataTable::DATE." DESC");
         $query->orderBy(MetadataTable::ALBUM);
         $query->orderBy(MetadataTable::TRACK_NUMBER);
 

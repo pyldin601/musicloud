@@ -12,7 +12,7 @@ namespace app\project\persistence\db\tables;
 class StatsTable {
     const TABLE_NAME = "track_stats";
     const ID = "id";
-    const PLAYBACKS = "playbacks";
-    const SKIPS = "skips";
+    const PLAYBACKS = "playbacks_count";
+    const SKIPS = "skips_count";
     const LAST_PLAYED_DATE = "last_played_date";
 } 
