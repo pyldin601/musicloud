@@ -9,6 +9,7 @@
 namespace app\core\db;
 
 
+use app\core\cache\RedisCache;
 use app\core\etc\Settings;
 use app\core\exceptions\ApplicationException;
 use app\core\injector\Injectable;
@@ -189,6 +190,7 @@ class Database implements SingletonInterface, Injectable {
             }
 
         }
+
 
         return $result;
 
