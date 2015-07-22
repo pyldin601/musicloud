@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Roman
  * Date: 22.07.2015
- * Time: 12:18
+ * Time: 13:52
  */
 
 namespace app\project\handlers\fixed\api\catalog;
@@ -19,7 +19,7 @@ use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\MetadataTable;
 
-class DoArtists implements RouteHandler {
+class DoAlbums implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
         $query = (new SelectQuery(MetadataTable::TABLE_NAME));
@@ -28,22 +28,23 @@ class DoArtists implements RouteHandler {
         $query->where(AudiosTable::USER_ID, $me->getId());
 
         $query->select(MetadataTable::ALBUM_ARTIST);
-        $query->select("COUNT(distinct ".MetadataTable::ALBUM.") as albums");
+        $query->select(MetadataTable::ALBUM);
         $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks");
 
+        $query->addGroupBy(MetadataTable::ALBUM);
         $query->addGroupBy(MetadataTable::ALBUM_ARTIST);
 
         Context::contextify($query);
 
         if ($q->nonEmpty() && strlen($q->get()) > 0) {
-            $query->where("MATCH(".MetadataTable::ALBUM_ARTIST.") AGAINST(? IN BOOLEAN MODE)",
+            $query->where("MATCH(".MetadataTable::ALBUM.") AGAINST(? IN BOOLEAN MODE)",
                 array($q->map(Mapper::fulltext())->get()));
         }
 
         $catalog = $query->fetchAll();
 
         $response->write([
-            "artists" => $catalog
+            "albums" => $catalog
         ]);
 
     }

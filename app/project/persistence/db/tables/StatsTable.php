@@ -14,5 +14,5 @@ class StatsTable {
     const ID = "id";
     const PLAYBACKS = "playbacks";
     const SKIPS = "skips";
-    const LAST_PLAYED = "last_played";
+    const LAST_PLAYED_DATE = "last_played_date";
 } 

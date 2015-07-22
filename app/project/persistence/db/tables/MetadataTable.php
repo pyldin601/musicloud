@@ -10,7 +10,9 @@ namespace app\project\persistence\db\tables;
 
 
 class MetadataTable {
+
     const TABLE_NAME = "metadata";
+
     const ID = "id";
     const ALBUM_ARTIST = "album_artist";
     const ARTIST = "artist";
@@ -24,4 +26,5 @@ class MetadataTable {
     const WAVEFORM = "waveform";
     const BITRATE = "bitrate";
     const DURATION = "duration";
+
 } 

@@ -1,5 +1,7 @@
 <?php
 
+const DEFAULT_CHARSET           = "UTF-8";
+
 const LIBRARIES_PATH            = "app/lib/";
 
 const AUTORUN_SCRIPTS_PATH      = "app/project/autorun/";

@@ -31,7 +31,7 @@ spl_autoload_register(function ($class_name) {
 
 // Set global exception handler
 set_exception_handler(function (Exception $exception) {
-    http_response_code($exception->getCode() > 0 ? $exception->getCode() : 400);
+//    http_response_code($exception->getCode() > 0 ? $exception->getCode() : 400);
     if (JsonResponse::hasInstance()) {
         JsonResponse::getInstance()->write(array(
             "message"       => $exception->getMessage(),

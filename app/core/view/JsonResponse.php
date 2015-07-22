@@ -17,15 +17,18 @@ class JsonResponse implements SingletonInterface, Injectable {
 
     use Singleton;
 
+    const MIME = "application/json";
+    const DEFAULT_RESULT = "OK";
+
     private $data;
 
     protected function __construct() {
 
         register_shutdown_function(function () {
 
-            header("Content-Type: application/json");
+            header("Content-Type: ".self::MIME."; charset=".DEFAULT_CHARSET);
 
-            echo json_encode($this->data ?: "OK");
+            echo json_encode($this->data ?: self::DEFAULT_RESULT, JSON_UNESCAPED_UNICODE);
 
         });
 

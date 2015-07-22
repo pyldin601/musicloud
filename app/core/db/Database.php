@@ -142,6 +142,8 @@ class Database implements SingletonInterface, Injectable {
 
         $queryString = $this->queryQuote($query, $params);
 
+//        error_log($queryString);
+
         $resource = $this->pdo->prepare($queryString);
 
         if ($resource === false) {

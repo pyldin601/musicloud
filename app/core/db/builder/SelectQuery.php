@@ -61,9 +61,9 @@ class SelectQuery extends BaseQuery implements \Countable {
 
     // Inner join builder section
 
-    public function innerJoin($table, $on) {
+    public function innerJoin($other_table, $other_column, $this_column) {
 
-        $this->innerJoin[] = [$table, $on];
+        $this->innerJoin[] = [$other_table, $other_table.".".$other_column." = ".$this->tableName.".".$this_column];
 
         return $this;
 

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Roman
  * Date: 22.07.2015
- * Time: 12:18
+ * Time: 14:51
  */
 
 namespace app\project\handlers\fixed\api\catalog;
@@ -19,7 +19,7 @@ use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\MetadataTable;
 
-class DoArtists implements RouteHandler {
+class DoGenres implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
         $query = (new SelectQuery(MetadataTable::TABLE_NAME));
@@ -27,24 +27,24 @@ class DoArtists implements RouteHandler {
         $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID, MetadataTable::ID);
         $query->where(AudiosTable::USER_ID, $me->getId());
 
-        $query->select(MetadataTable::ALBUM_ARTIST);
-        $query->select("COUNT(distinct ".MetadataTable::ALBUM.") as albums");
+        $query->select(MetadataTable::GENRE);
         $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks");
+        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ALBUM_ARTIST.") as artists");
+        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ALBUM.") as albums");
 
-        $query->addGroupBy(MetadataTable::ALBUM_ARTIST);
+        $query->addGroupBy(MetadataTable::GENRE);
 
         Context::contextify($query);
 
         if ($q->nonEmpty() && strlen($q->get()) > 0) {
-            $query->where("MATCH(".MetadataTable::ALBUM_ARTIST.") AGAINST(? IN BOOLEAN MODE)",
+            $query->where("MATCH(".MetadataTable::GENRE.") AGAINST(? IN BOOLEAN MODE)",
                 array($q->map(Mapper::fulltext())->get()));
         }
 
         $catalog = $query->fetchAll();
 
         $response->write([
-            "artists" => $catalog
+            "genres" => $catalog
         ]);
-
     }
 } 

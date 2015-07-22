@@ -76,17 +76,17 @@ class Track {
 
         (new UpdateQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $this->track_id))
             ->set(AudiosTable::FILE_ID, $file_id)
-            ->set(AudiosTable::FILE_NAME, urldecode($file_name))
+            ->set(AudiosTable::FILE_NAME, $file_name)
             ->set(AudiosTable::CONTENT_TYPE, $mime_type)
             ->update();
 
         (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID, $this->track_id))
             ->set(MetadataTable::ALBUM, $metadata->meta_album)
-            ->set(MetadataTable::ALBUM_ARTIST, $metadata->meta_album_artist)
+            ->set(MetadataTable::ALBUM_ARTIST, $metadata->meta_album_artist ?: $metadata->meta_artist)
             ->set(MetadataTable::ARTIST, $metadata->meta_artist)
             ->set(MetadataTable::DATE, $metadata->meta_date)
             ->set(MetadataTable::GENRE, $metadata->meta_genre)
-            ->set(MetadataTable::TITLE, $metadata->meta_title)
+            ->set(MetadataTable::TITLE, $metadata->meta_title ?: $file_name)
             ->set(MetadataTable::TRACK_NUMBER, $metadata->meta_track_number)
             ->set(MetadataTable::BITRATE, $metadata->bitrate)
             ->set(MetadataTable::DURATION, $metadata->duration)
