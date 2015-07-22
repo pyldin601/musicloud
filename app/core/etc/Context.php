@@ -12,6 +12,7 @@ namespace app\core\etc;
 use app\core\db\builder\SelectQuery;
 use app\core\http\HttpGet;
 use app\lang\option\Filter;
+use app\lang\option\Mapper;
 
 class Context {
 
@@ -27,14 +28,20 @@ class Context {
     }
 
     public static function contextify(SelectQuery $query) {
+
         $limit = self::$request->get("l")->filter(Filter::isNumber());
         $offset = self::$request->get("o")->filter(Filter::isNumber());
+
+        $sort_field = self::$request->get("sf");
+        $sort_order = self::$request->get("so");
+
         if ($offset->nonEmpty()) {
             $query->offset($offset->get());
         }
-        $query->limit(min(
-            $limit->getOrElse(self::$settings->get("catalog", "items_per_request_limit")),
-            self::$settings->get("catalog", "items_per_request_limit")
-        ));
+
+        $max_limit = self::$settings->get("catalog", "items_per_request_limit");
+
+        $query->limit($limit->filter(Filter::isLessThan($max_limit))->getOrElse($max_limit));
+
     }
 } 

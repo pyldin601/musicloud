@@ -103,5 +103,25 @@ class Filter {
         };
     }
 
+    /**
+     * @param $that
+     * @return callable
+     */
+    public static function isLessThan($that) {
+        return function ($value) use ($that) {
+            return $value < $that;
+        };
+    }
+
+    /**
+     * @param $that
+     * @return callable
+     */
+    public static function isMoreThan($that) {
+        return function ($value) use ($that) {
+            return $value > $that;
+        };
+    }
+
 }
 

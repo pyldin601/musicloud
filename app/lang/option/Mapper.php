@@ -115,6 +115,26 @@ class Mapper {
         };
     }
 
+    /**
+     * @param $that
+     * @return callable
+     */
+    public static function min($that) {
+        return function ($value) use ($that) {
+            return ($that > $value) ? $value : $that;
+        };
+    }
+
+    /**
+     * @param $that
+     * @return callable
+     */
+    public static function max($that) {
+        return function ($value) use ($that) {
+            return ($that < $value) ? $value : $that;
+        };
+    }
+
 }
 
 
