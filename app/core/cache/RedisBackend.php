@@ -13,7 +13,8 @@ use app\core\etc\Settings;
 
 class RedisBackend {
 
-    public  static $redis;
+    /** @var \Redis */
+    public static $redis;
 
     public static function class_init() {
         /** @var Settings $settings */
