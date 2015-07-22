@@ -11,6 +11,6 @@ namespace app\project\exceptions;
 
 class WrongCredentialsException extends BackendException {
     public function __construct() {
-        parent::__construct("Incorrect email or password");
+        parent::__construct("Incorrect email or password", 403);
     }
 } 

@@ -1,5 +1,6 @@
 <?php
 
+use app\core\exceptions\ApplicationException;
 use app\core\http\HttpServer;
 use app\core\injector\Injector;
 use app\core\view\JsonResponse;
@@ -31,7 +32,13 @@ spl_autoload_register(function ($class_name) {
 
 // Set global exception handler
 set_exception_handler(function (Exception $exception) {
-//    http_response_code($exception->getCode() > 0 ? $exception->getCode() : 400);
+
+    if ($exception instanceof ApplicationException) {
+        http_response_code($exception->getHttpCode());
+    } else {
+        http_response_code(500);
+    }
+
     if (JsonResponse::hasInstance()) {
         JsonResponse::getInstance()->write(array(
             "message"       => $exception->getMessage(),

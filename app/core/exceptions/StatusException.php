@@ -12,7 +12,7 @@ namespace app\core\exceptions;
 use Exception;
 
 class StatusException extends ApplicationException {
-    public function __construct($message = "", $code = 0, Exception $previous = null) {
-        parent::__construct($message, $code, $previous);
+    public function __construct($message = "", $http_response_code = 400) {
+        parent::__construct($message, $http_response_code);
     }
 }

@@ -13,6 +13,6 @@ use Exception;
 
 class UnauthorizedException extends BackendException {
     public function __construct() {
-        parent::__construct("This action requires you to be authorized");
+        parent::__construct("This action requires you to be authorized", 403);
     }
 }

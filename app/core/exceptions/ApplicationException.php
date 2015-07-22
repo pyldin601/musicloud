@@ -12,7 +12,16 @@ namespace app\core\exceptions;
 use Exception;
 
 class ApplicationException extends \Exception {
-    public function __construct($message = "", $code = 0, Exception $previous = null) {
-        parent::__construct($message, $code, $previous);
+
+    private $http_code;
+
+    public function __construct($message = "", $http_response_code = 400) {
+        parent::__construct($message, 0);
+        $this->http_code = $http_response_code;
     }
+
+    public function getHttpCode() {
+        return $this->http_code;
+    }
+
 }
