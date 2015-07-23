@@ -29,6 +29,12 @@ class HttpSession implements SingletonInterface, Injectable {
 
     }
 
+    public function disableLifeTime() {
+
+        setcookie(session_name(), session_id(), 0, "/");
+
+    }
+
     /**
      * @param $keys
      * @return Option

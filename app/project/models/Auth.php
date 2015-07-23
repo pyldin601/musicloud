@@ -13,6 +13,7 @@ use app\core\db\builder\SelectQuery;
 use app\core\helpers\UninstantiatedClass;
 use app\core\http\HttpSession;
 use app\project\exceptions\WrongCredentialsException;
+use app\project\forms\LoginForm;
 use app\project\persistence\db\tables\UsersTable;
 
 /**
@@ -39,14 +40,13 @@ class Auth {
     /**
      * Login user using $email and $password
      *
-     * @param $email
-     * @param $password
+     * @param LoginForm $form
      * @throws WrongCredentialsException
      */
-    public static function login($email, $password) {
-        $query = new SelectQuery(UsersTable::TABLE_NAME, UsersTable::EMAIL, $email);
+    public static function login(LoginForm $form) {
+        $query = new SelectQuery(UsersTable::TABLE_NAME, UsersTable::EMAIL, $form->getEmail());
         $user = $query->fetchOneRow()->getOrElse(WrongCredentialsException::class);
-        if (password_verify($password, $user[UsersTable::PASSWORD])) {
+        if (password_verify($form->getPassword(), $user[UsersTable::PASSWORD])) {
             self::$session->set($user[UsersTable::ID], "auth", "id");
         } else {
             throw new WrongCredentialsException;

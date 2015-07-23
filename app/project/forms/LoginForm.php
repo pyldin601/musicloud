@@ -13,7 +13,7 @@ use app\abstractions\AbstractForm;
 
 class LoginForm extends AbstractForm {
 
-    protected $email, $password;
+    protected $email, $password, $save;
 
     public function __construct() {
         parent::__construct();
@@ -35,5 +35,11 @@ class LoginForm extends AbstractForm {
         return $this->password;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSave() {
+        return $this->save;
+    }
 
 }

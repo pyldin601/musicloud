@@ -16,6 +16,6 @@ use app\project\models\Auth;
 
 class DoLogin implements RouteHandler {
     public function doPost(JsonResponse $response, LoginForm $form) {
-        Auth::login($form->getEmail(), $form->getPassword());
+        Auth::login($form);
     }
 } 
