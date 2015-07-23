@@ -1,11 +1,9 @@
 <?php
 
 use app\core\exceptions\ApplicationException;
-use app\core\http\HttpServer;
 use app\core\injector\Injector;
 use app\core\view\JsonResponse;
 use app\core\view\TinyView;
-use app\lang\Arrays;
 
 require_once "constants.php";
 require_once "core/shortcuts.php";
@@ -49,8 +47,8 @@ set_exception_handler(function (Exception $exception) {
     http_response_code($http_code);
 
     $response_data = array(
-        "message"       => $message,
-        "code"          => $http_code
+        "message" => $message,
+        "code" => $http_code
     );
 
     JsonResponse::ifInstance()->then(function (JsonResponse $response) use (&$response_data) {
@@ -71,7 +69,6 @@ foreach (scandir(AUTORUN_SCRIPTS_PATH) as $file) {
         continue;
     require_once AUTORUN_SCRIPTS_PATH . $file;
 }
-
 
 
 function static_class_init($class_name) {
