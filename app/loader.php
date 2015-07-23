@@ -34,38 +34,36 @@ spl_autoload_register(function ($class_name) {
 set_exception_handler(function (Exception $exception) {
 
     if ($exception instanceof ApplicationException) {
-        http_response_code($exception->getHttpCode());
+
+        $message = $exception->getMessage();
+        $http_code = $exception->getHttpCode();
+
     } else {
-        http_response_code(500);
+
+        $message = $exception->getMessage();
+        $http_code = \app\core\http\HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR;
+
+
     }
 
-    if (JsonResponse::hasInstance()) {
-        JsonResponse::getInstance()->write(array(
-            "message"       => $exception->getMessage(),
-            "code"          => $exception->getCode()
-        ));
-    } else {
-        TinyView::show("error.tmpl", array(
-            "message"       => $exception->getMessage(),
-            "code"          => $exception->getCode()
-        ));
-    }
+    http_response_code($http_code);
+
+    $response_data = array(
+        "message"       => $message,
+        "code"          => $http_code
+    );
+
+    JsonResponse::ifInstance()->then(function (JsonResponse $response) use (&$response_data) {
+
+        $response->write($response_data);
+
+    })->orCall(function () use (&$response_data) {
+
+        TinyView::show("error.tmpl", $response_data);
+
+    });
+
 });
-
-//if (resource(HttpServer::class)->getContentType() === "application/json") {
-//    JsonResponse::getInstance();
-//}
-
-//set_error_handler(function ($err_no, $err_str, $err_file, $err_line, array $err_context) {
-//    TinyView::show("error.tmpl", array(
-//        "title"         => $err_str,
-//        "message"       => "At line " . $err_line,
-//        "description"   => $err_file
-//    ));
-//});
-
-//register_shutdown_function(function () {});
-
 
 // Scan autorun directory for executable scripts
 foreach (scandir(AUTORUN_SCRIPTS_PATH) as $file) {

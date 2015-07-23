@@ -3,6 +3,8 @@
 namespace app\lang\singleton;
 
 
+use app\lang\option\Option;
+
 trait Singleton {
 
     protected static $_instance = [];
@@ -41,4 +43,23 @@ trait Singleton {
 
         unset(self::$_instance[$hash]);
     }
+
+    /**
+     * @param $args
+     * @return Option
+     */
+    public static function ifInstance(...$args) {
+
+        if (self::hasInstance(...$args)) {
+
+            return Option::Some(self::getInstance(...$args));
+
+        } else {
+
+            return Option::None();
+
+        }
+
+    }
+
 }
