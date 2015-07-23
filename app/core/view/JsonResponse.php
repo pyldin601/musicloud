@@ -28,13 +28,18 @@ class JsonResponse implements SingletonInterface, Injectable {
 
         register_shutdown_function(function () {
 
-            ob_start("ob_gzhandler");
+            if (error_get_last() === null) {
 
-            header("Content-Type: ".self::MIME."; charset=".DEFAULT_CHARSET);
+                ob_start("ob_gzhandler");
 
-            http_response_code($this->http_response_code ?: self::DEFAULT_RESPONSE_CODE);
+                header("Content-Type: ".self::MIME."; charset=".DEFAULT_CHARSET);
 
-            echo json_encode($this->data ?: self::DEFAULT_RESULT, JSON_UNESCAPED_UNICODE);
+                http_response_code($this->http_response_code ?: self::DEFAULT_RESPONSE_CODE);
+
+                echo json_encode($this->data ?: self::DEFAULT_RESULT, JSON_UNESCAPED_UNICODE);
+
+            }
+
 
         });
 
