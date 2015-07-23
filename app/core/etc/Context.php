@@ -12,7 +12,6 @@ namespace app\core\etc;
 use app\core\db\builder\SelectQuery;
 use app\core\http\HttpGet;
 use app\lang\option\Filter;
-use app\lang\option\Mapper;
 
 class Context {
 

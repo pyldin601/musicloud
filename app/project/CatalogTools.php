@@ -36,6 +36,24 @@ class CatalogTools {
         );
     }
 
+    public static function commonSelectAlbum(SelectQuery $query) {
+        $query->select(
+            MetadataTable::ALBUM,
+            MetadataTable::DATE,
+            MetadataTable::COVER_FILE_ID,
+            "SUM(" . MetadataTable::DURATION . ") AS " . MetadataTable::DURATION,
+            "AVG(" . MetadataTable::RATING . ") AS " . MetadataTable::RATING
+        );
+    }
+
+    public static function commonSelectArtist(SelectQuery $query) {
+        $query->select(
+            MetadataTable::COVER_FILE_ID,
+            "SUM(" . MetadataTable::DURATION . ") AS " . MetadataTable::DURATION,
+            "AVG(" . MetadataTable::RATING . ") AS " . MetadataTable::RATING
+        );
+    }
+
     /**
      * @param string $key
      * @param array $object

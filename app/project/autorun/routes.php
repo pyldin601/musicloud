@@ -15,9 +15,11 @@ use app\project\handlers\dynamic\content\DoReadTrack;
 when("content/track/&id", DoReadTrack::class);
 when("content/cover/&id", DoReadCover::class);
 
-when("api/catalog/tracks/by-artist/:artist", catalog\DoTracksByAlbumArtist::class);
-when("api/catalog/tracks/by-album/:album",   catalog\DoTracksByAlbum::class);
-when("api/catalog/tracks/by-genre/:genre",   catalog\DoTracksByGenre::class);
+when("api/catalog/tracks/by-artist/:artist",         catalog\DoTracksByAlbumArtist::class);
+when("api/catalog/tracks/by-album/:artist/:album",   catalog\DoTracksByAlbum::class);
+when("api/catalog/tracks/by-genre/:genre",           catalog\DoTracksByGenre::class);
+
+when("api/catalog/albums/by-artist/:artist",          catalog\DoAlbumsByAlbumArtist::class);
 
 //when("test", function (HttpServer $server) {
 //    echo $server->getContentType();

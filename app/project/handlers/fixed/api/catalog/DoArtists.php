@@ -15,6 +15,7 @@ use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\lang\option\Mapper;
 use app\lang\option\Option;
+use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -28,12 +29,14 @@ class DoArtists implements RouteHandler {
         $query->where(AudiosTable::USER_ID, $me->getId());
 
         $query->select(MetadataTable::ALBUM_ARTIST);
-        $query->select("COUNT(distinct ".MetadataTable::ALBUM.") as albums");
-        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks");
+        $query->select("COUNT(distinct ".MetadataTable::ALBUM.") as albums_count");
+        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks_count");
 
         $query->addGroupBy(MetadataTable::ALBUM_ARTIST);
 
         Context::contextify($query);
+
+        CatalogTools::commonSelectArtist($query);
 
         if ($q->nonEmpty() && strlen($q->get()) > 0) {
             $query->where("MATCH(".MetadataTable::ALBUM_ARTIST.") AGAINST(? IN BOOLEAN MODE)",

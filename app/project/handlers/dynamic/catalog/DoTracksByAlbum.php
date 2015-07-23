@@ -20,9 +20,9 @@ use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\StatsTable;
 
 class DoTracksByAlbum implements RouteHandler {
-    public function doGet(JsonResponse $response, $album, LoggedIn $me) {
+    public function doGet(JsonResponse $response, $artist, $album, LoggedIn $me) {
 
-        $query = (new SelectQuery(MetadataTable::TABLE_NAME));
+        $query = new SelectQuery(MetadataTable::TABLE_NAME);
 
         $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID, MetadataTable::ID);
         $query->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID, MetadataTable::ID);
@@ -31,13 +31,12 @@ class DoTracksByAlbum implements RouteHandler {
 
         CatalogTools::commonSelectors($query);
 
-        Context::contextify($query);
-
         $query->orderBy(MetadataTable::ALBUM_ARTIST);
         $query->orderBy(MetadataTable::ALBUM);
         $query->orderBy(MetadataTable::TRACK_NUMBER);
 
         $query->where(MetadataTable::ALBUM, urldecode($album));
+        $query->where(MetadataTable::ALBUM_ARTIST, urldecode($artist));
 
         $catalog = $query->fetchAll();
 

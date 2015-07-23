@@ -15,6 +15,7 @@ use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\lang\option\Mapper;
 use app\lang\option\Option;
+use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -35,6 +36,8 @@ class DoAlbums implements RouteHandler {
         $query->addGroupBy(MetadataTable::ALBUM_ARTIST);
 
         Context::contextify($query);
+
+        CatalogTools::commonSelectAlbum($query);
 
         if ($q->nonEmpty() && strlen($q->get()) > 0) {
             $query->where("MATCH(".MetadataTable::ALBUM.") AGAINST(? IN BOOLEAN MODE)",
