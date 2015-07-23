@@ -3,17 +3,17 @@
  * Created by PhpStorm.
  * User: roman
  * Date: 23.07.15
- * Time: 20:39
+ * Time: 21:20
  */
 
 namespace app\project\persistence\db\tables;
 
 
-class MetaGenresTable {
+class MetaArtistsTable {
 
-    const TABLE_NAME = "meta_genres";
+    const TABLE_NAME = "meta_artists";
 
     const ID = "id";
-    const GENRE = "genre";
+    const ARTIST = "artist";
 
 }

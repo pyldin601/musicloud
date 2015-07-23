@@ -26,5 +26,7 @@ class MetadataTable {
     const WAVEFORM = "waveform";
     const BITRATE = "bitrate";
     const DURATION = "duration";
+    const GENRE_ID = "genre_id";
+    const ARTIST_ID = "artist_id";
 
 } 

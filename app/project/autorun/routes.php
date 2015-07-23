@@ -7,9 +7,13 @@
  */
 
 
+use app\core\db\builder\SelectQuery;
+use app\core\db\builder\UpdateQuery;
 use app\project\handlers\dynamic\catalog;
 use app\project\handlers\dynamic\content\DoReadCover;
 use app\project\handlers\dynamic\content\DoReadTrack;
+use app\project\persistence\db\dao\ArtistDao;
+use app\project\persistence\db\tables\MetadataTable;
 
 
 when("content/track/&id", DoReadTrack::class);
@@ -21,6 +25,14 @@ when("api/catalog/tracks/by-genre/:genre",           catalog\DoTracksByGenre::cl
 
 when("api/catalog/albums/by-artist/:artist",          catalog\DoAlbumsByAlbumArtist::class);
 
-//when("test", function (HttpServer $server) {
-//    echo $server->getContentType();
-//});
+when("test", function () {
+    (new SelectQuery(MetadataTable::TABLE_NAME))
+        ->where(MetadataTable::ARTIST_ID . " IS NULL")
+        ->eachRow(function ($row) {
+            $artist_id = ArtistDao::getArtistId($row[MetadataTable::ALBUM_ARTIST]);
+            (new UpdateQuery(MetadataTable::TABLE_NAME))
+                ->set(MetadataTable::ARTIST_ID, $artist_id)
+                ->where(MetadataTable::ID, $row[MetadataTable::ID])
+                ->update();
+        });
+});
