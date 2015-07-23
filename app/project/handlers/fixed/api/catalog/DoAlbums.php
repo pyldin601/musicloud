@@ -30,7 +30,6 @@ class DoAlbums implements RouteHandler {
 
         $query->select(MetadataTable::ALBUM_ARTIST);
         $query->select(MetadataTable::ALBUM);
-        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks");
 
         $query->addGroupBy(MetadataTable::ALBUM);
         $query->addGroupBy(MetadataTable::ALBUM_ARTIST);

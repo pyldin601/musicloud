@@ -29,8 +29,6 @@ class DoArtists implements RouteHandler {
         $query->where(AudiosTable::USER_ID, $me->getId());
 
         $query->select(MetadataTable::ALBUM_ARTIST);
-        $query->select("COUNT(distinct ".MetadataTable::ALBUM.") as albums_count");
-        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks_count");
 
         $query->addGroupBy(MetadataTable::ALBUM_ARTIST);
 

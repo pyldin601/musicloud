@@ -28,9 +28,9 @@ class DoGenres implements RouteHandler {
         $query->where(AudiosTable::USER_ID, $me->getId());
 
         $query->select(MetadataTable::GENRE);
-        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks");
-        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ALBUM_ARTIST.") as artists");
-        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ALBUM.") as albums");
+        $query->select("COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks_count");
+        $query->select("COUNT(distinct ".MetadataTable::ALBUM_ARTIST.") as artists_count");
+        $query->select("COUNT(distinct ".MetadataTable::ALBUM_ARTIST.",".MetadataTable::ALBUM.") as albums_count");
 
         $query->addGroupBy(MetadataTable::GENRE);
 

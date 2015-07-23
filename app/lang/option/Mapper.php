@@ -98,17 +98,17 @@ class Mapper {
         return function ($text) {
 
             $query = "";
-            $stop = "\\+\\-\\>\\<\\(\\)\\~\\*\\\"\\@";
+            $stop = "\\+\\-\\>\\<\\(\\)\\~\\*\\\"\\@\\s";
             $words = preg_split("/(*UTF8)(?![\\p{L}|\\'|\\p{N}|\\#]+)|([$stop]+)/", $text);
 
-            foreach ($words as $word) {
+            foreach ($words as $id => $word) {
                 if (strlen($word) > 0) {
-                    $query .= "+{$word}";
+                    $query .= '+"'.$word.'" ';
                 }
             }
 
-            if (strlen($query))
-                $query .= "*";
+//            if (strlen($query))
+//                $query .= "*";
 
             return $query;
 

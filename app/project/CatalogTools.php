@@ -41,16 +41,15 @@ class CatalogTools {
             MetadataTable::ALBUM,
             MetadataTable::DATE,
             MetadataTable::COVER_FILE_ID,
-            "SUM(" . MetadataTable::DURATION . ") AS " . MetadataTable::DURATION,
-            "AVG(" . MetadataTable::RATING . ") AS " . MetadataTable::RATING
+            "COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks_count"
         );
     }
 
     public static function commonSelectArtist(SelectQuery $query) {
         $query->select(
-            MetadataTable::COVER_FILE_ID,
-            "SUM(" . MetadataTable::DURATION . ") AS " . MetadataTable::DURATION,
-            "AVG(" . MetadataTable::RATING . ") AS " . MetadataTable::RATING
+            "COUNT(distinct ".MetadataTable::ALBUM.") as albums_count",
+            "COUNT(distinct ".MetadataTable::TABLE_NAME.".".MetadataTable::ID.") as tracks_count",
+            MetadataTable::COVER_FILE_ID
         );
     }
 
