@@ -9,8 +9,10 @@
 namespace app\project\exceptions;
 
 
+use app\core\http\HttpStatusCodes;
+
 class BadAccessException extends BackendException {
     function __construct() {
-        parent::__construct("You have no access to modify this resource", 403);
+        parent::__construct("You have no access to this resource", HttpStatusCodes::HTTP_FORBIDDEN);
     }
 }

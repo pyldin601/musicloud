@@ -13,6 +13,18 @@ assert_options(ASSERT_WARNING, 0);
 assert_options(ASSERT_QUIET_EVAL, 1);
 assert_options(ASSERT_CALLBACK, function ($file, $line, $code, $desc = null) {
 
-    throw new BackendException($desc, 400);
+    if ($desc instanceof Exception) {
+
+        throw $desc;
+
+    } else if (is_string($desc) && class_exists($desc, false)) {
+
+        throw new $desc;
+
+    } else {
+
+        throw new BackendException($desc, 400);
+
+    }
 
 });

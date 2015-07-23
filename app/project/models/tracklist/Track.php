@@ -12,9 +12,13 @@ namespace app\project\models\tracklist;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
+use app\core\etc\MIME;
 use app\core\etc\Settings;
 use app\core\exceptions\status\PageNotFoundException;
+use app\project\exceptions\AlreadyUploadedException;
 use app\project\exceptions\BackendException;
+use app\project\exceptions\BadAccessException;
+use app\project\exceptions\InvalidAudioFileException;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\libs\FFProbe;
 use app\project\libs\Metadata;
@@ -41,7 +45,7 @@ class Track {
 
         $track = $query->fetchOneRow()->getOrThrow(TrackNotFoundException::class);
 
-        assert($track[AudiosTable::USER_ID] == $this->me->getId(), "You have no access to this resource");
+        assert($track[AudiosTable::USER_ID] == $this->me->getId(), BadAccessException::class);
 
         $this->track_id = $track_id;
 
@@ -53,44 +57,50 @@ class Track {
 
     public function upload($file_path, $file_name) {
 
-        $mime_command = sprintf("%s --brief --mime-type %s",
-            $this->settings->get("tools", "file_cmd"), escapeshellarg($file_path));
+//        $mime_command = sprintf("%s --brief --mime-type %s",
+//            $this->settings->get("tools", "file_cmd"), escapeshellarg($file_path));
 
-        $mime_type = shell_exec($mime_command);
+        $mime_type = MIME::mime_type($file_path);
 
-        assert($this->track_data[AudiosTable::FILE_ID] === null, "File already uploaded");
+//        $mime_type = shell_exec($mime_command);
+
+        assert($this->track_data[AudiosTable::FILE_ID] === null, AlreadyUploadedException::class);
 
         /** @var Metadata $metadata */
         $metadata = FFProbe::read($file_path)
-            ->getOrThrow(BackendException::class, "Audio file could not be read");
+            ->getOrThrow(InvalidAudioFileException::class);
 
         $cover = FFProbe::readTempCover($file_path);
 
         $file_id = FileServer::register($file_path);
 
         if ($cover->nonEmpty()) {
+
             $cover_file_id = FileServer::register($cover->get());
+
         } else {
+
             $cover_file_id = null;
+
         }
 
         (new UpdateQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $this->track_id))
-            ->set(AudiosTable::FILE_ID, $file_id)
-            ->set(AudiosTable::FILE_NAME, $file_name)
-            ->set(AudiosTable::CONTENT_TYPE, $mime_type)
+            ->set(AudiosTable::FILE_ID,             $file_id)
+            ->set(AudiosTable::FILE_NAME,           $file_name)
+            ->set(AudiosTable::CONTENT_TYPE,        $mime_type)
             ->update();
 
         (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID, $this->track_id))
-            ->set(MetadataTable::ALBUM, $metadata->meta_album)
-            ->set(MetadataTable::ALBUM_ARTIST, $metadata->meta_album_artist ?: $metadata->meta_artist)
-            ->set(MetadataTable::ARTIST, $metadata->meta_artist)
-            ->set(MetadataTable::DATE, $metadata->meta_date)
-            ->set(MetadataTable::GENRE, $metadata->meta_genre)
-            ->set(MetadataTable::TITLE, $metadata->meta_title ?: $file_name)
-            ->set(MetadataTable::TRACK_NUMBER, $metadata->meta_track_number)
-            ->set(MetadataTable::BITRATE, $metadata->bitrate)
-            ->set(MetadataTable::DURATION, $metadata->duration)
-            ->set(MetadataTable::COVER_FILE_ID, $cover_file_id)
+            ->set(MetadataTable::ALBUM,             $metadata->meta_album)
+            ->set(MetadataTable::ALBUM_ARTIST,      $metadata->meta_album_artist ?: $metadata->meta_artist)
+            ->set(MetadataTable::ARTIST,            $metadata->meta_artist)
+            ->set(MetadataTable::DATE,              $metadata->meta_date)
+            ->set(MetadataTable::GENRE,             $metadata->meta_genre)
+            ->set(MetadataTable::TITLE,             $metadata->meta_title ?: $file_name)
+            ->set(MetadataTable::TRACK_NUMBER,      $metadata->meta_track_number)
+            ->set(MetadataTable::BITRATE,           $metadata->bitrate)
+            ->set(MetadataTable::DURATION,          $metadata->duration)
+            ->set(MetadataTable::COVER_FILE_ID,     $cover_file_id)
             ->update();
 
     }
@@ -101,6 +111,7 @@ class Track {
         assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
 
         header("Content-Type: " . $this->track_data[AudiosTable::CONTENT_TYPE]);
+        header(sprintf("Content-Disposition: filename=%s", $this->track_data[AudiosTable::FILE_NAME]));
 
         FileServer::writeToClient($this->track_data[AudiosTable::FILE_ID]);
 
