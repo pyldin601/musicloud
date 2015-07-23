@@ -38,18 +38,4 @@ class ArtistDao {
         }
     }
 
-    /**
-     * Deletes unused genres from database.
-     */
-    public static function truncateUnusedGenres() {
-        (new DeleteQuery(MetaArtistsTable::TABLE_NAME))
-            ->where(sprintf("NOT EXISTS(SELECT * FROM %s WHERE %s = %s",
-                MetadataTable::TABLE_NAME,
-                MetadataTable::TABLE_NAME.".".MetadataTable::ARTIST_ID,
-                MetaGenresTable::TABLE_NAME.".".MetaGenresTable::ID))
-            ->update();
-    }
-
-
-
 }

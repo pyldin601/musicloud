@@ -23,6 +23,7 @@ use app\project\exceptions\TrackNotFoundException;
 use app\project\libs\FFProbe;
 use app\project\libs\Metadata;
 use app\project\models\single\LoggedIn;
+use app\project\persistence\db\dao\AlbumDao;
 use app\project\persistence\db\dao\ArtistDao;
 use app\project\persistence\db\dao\GenreDao;
 use app\project\persistence\db\tables\AudiosTable;
@@ -93,7 +94,8 @@ class Track {
             ->update();
 
         $artist_id = ArtistDao::getArtistId($metadata->meta_album_artist);
-        $genre_id = GenreDao::getGenreId($metadata->meta_genre);
+        $genre_id  = GenreDao::getGenreId($metadata->meta_genre);
+        $album_id  = AlbumDao::getAlbumId($artist_id, $metadata->meta_album);
 
         (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID, $this->track_id))
             ->set(MetadataTable::ALBUM,             $metadata->meta_album)
@@ -107,6 +109,7 @@ class Track {
             ->set(MetadataTable::DURATION,          $metadata->duration)
             ->set(MetadataTable::ARTIST_ID,         $artist_id)
             ->set(MetadataTable::GENRE_ID,          $genre_id)
+            ->set(MetadataTable::ALBUM_ID,          $album_id)
             ->set(MetadataTable::COVER_FILE_ID,     $cover_file_id)
             ->update();
 

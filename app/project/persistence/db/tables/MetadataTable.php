@@ -28,5 +28,6 @@ class MetadataTable {
     const DURATION = "duration";
     const GENRE_ID = "genre_id";
     const ARTIST_ID = "artist_id";
+    const ALBUM_ID = "album_id";
 
 } 
