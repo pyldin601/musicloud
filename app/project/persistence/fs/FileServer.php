@@ -13,6 +13,7 @@ use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
+use app\core\exceptions\ApplicationException;
 use app\lang\Arrays;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\persistence\db\tables\FilesTable;
@@ -114,7 +115,7 @@ class FileServer {
             ->where(FilesTable::ID, $file_id)
             ->fetchOneRow();
 
-        $file_data = $file->get();
+        $file_data = $file->getOrThrow(ApplicationException::class, "File index corrupted!");
 
         if ($file_data[FilesTable::USED] > 1) {
             (new UpdateQuery(FilesTable::TABLE_NAME))
@@ -124,7 +125,7 @@ class FileServer {
         } else {
 
             (new DeleteQuery(FilesTable::TABLE_NAME))
-                ->where(FilesTable::ID, $file_id)
+                ->where(FilesTable::ID, $file[FilesTable::ID])
                 ->update();
 
             FSTool::delete($file_data[FilesTable::SHA1]);

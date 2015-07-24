@@ -34,6 +34,9 @@ spl_autoload_register(function ($class_name) {
 // Set global exception handler
 set_exception_handler(function (Exception $exception) {
 
+    error_log("Exception: " . $exception->getMessage());
+    error_log("Stacktrace: " . $exception->getTraceAsString());
+
     if ($exception instanceof ApplicationException) {
 
         $message = $exception->getMessage();

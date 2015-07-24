@@ -37,8 +37,10 @@ class Tracks {
 
     public static function delete($track_id) {
 
+        assert(strlen($track_id) > 0, "At lease one track id must be specified");
+
         // Explode $track_id string into array of track ids
-        $track_ids = explode(",", $track_id);
+        $track_ids = array_map("intval", explode(",", $track_id));
 
         // Fetch track objects from database
         $track_objects = (new SelectQuery(AudiosTable::TABLE_NAME))
@@ -48,7 +50,6 @@ class Tracks {
         // Fetch track metadata from database
         $track_metas = (new SelectQuery(MetadataTable::TABLE_NAME))
             ->where(MetadataTable::ID, $track_ids)
-            ->whereNotNull(MetadataTable::COVER_FILE_ID)
             ->fetchAll();
 
         // Check owner to be equal to current user
@@ -59,11 +60,15 @@ class Tracks {
 
         // Remove album covers
         foreach ($track_metas as $track_meta) {
+            if ($track_meta[MetadataTable::COVER_FILE_ID] === null)
+                continue;
             FileServer::unregister($track_meta[MetadataTable::COVER_FILE_ID]);
         }
 
         // Remove track files
         foreach ($track_objects as $track_object) {
+            if ($track_object[AudiosTable::FILE_ID] === null)
+                continue;
             FileServer::unregister($track_object[AudiosTable::FILE_ID]);
         }
 
