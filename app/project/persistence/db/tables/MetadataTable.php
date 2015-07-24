@@ -14,6 +14,7 @@ class MetadataTable {
     const TABLE_NAME            = "metadata";
 
     const ID                    = "id";
+    const USER_ID               = "user_id";
     const ALBUM_ARTIST          = "album_artist";
     const ARTIST                = "artist";
     const TITLE                 = "title";
@@ -31,6 +32,7 @@ class MetadataTable {
     const ALBUM_ID              = "album_id";
 
     const ID_FULL               = self::TABLE_NAME . "." .self::ID;
+    const USER_ID_FULL          = self::TABLE_NAME . "." .self::USER_ID;
     const ALBUM_ARTIST_FULL     = self::TABLE_NAME . "." .self::ALBUM_ARTIST;
     const ARTIST_FULL           = self::TABLE_NAME . "." .self::ARTIST;
     const TITLE_FULL            = self::TABLE_NAME . "." .self::TITLE;

@@ -28,10 +28,15 @@ class DoArtists implements RouteHandler {
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
         $query = (new SelectQuery(MetaArtistsTable::TABLE_NAME))
+            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ARTIST_ID_FULL, MetaArtistsTable::ID_FULL)
             ->select(MetaArtistsTable::ID_FULL)
-            ->select(MetaArtistsTable::ARTIST_FULL);
+            ->select(MetaArtistsTable::ARTIST_FULL)
+            ->selectCount(MetadataTable::ID_FULL, "tracks_count")
+            ->selectCountDistinct(MetadataTable::ALBUM_ID_FULL, "albums_count")
+            ->addGroupBy(MetaArtistsTable::ID_FULL)
+            ->having("COUNT(".MetadataTable::ID_FULL.") > 0")
+            ->where(MetaArtistsTable::USER_ID_FULL, $me->getId());
 
-        CatalogTools::filterArtists($query);
 
         Context::contextify($query);
 

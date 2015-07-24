@@ -15,8 +15,10 @@ class MetaArtistsTable {
 
     const ID                = "id";
     const ARTIST            = "artist";
+    const USER_ID           = "user_id";
 
     const ID_FULL           = self::TABLE_NAME . "." . self::ID;
     const ARTIST_FULL       = self::TABLE_NAME . "." . self::ARTIST;
+    const USER_ID_FULL      = self::TABLE_NAME . "." . self::USER_ID;
 
 }

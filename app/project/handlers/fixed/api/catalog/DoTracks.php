@@ -27,20 +27,19 @@ class DoTracks implements RouteHandler {
 
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
-        $query = (new SelectQuery(MetadataTable::TABLE_NAME));
+        $query = (new SelectQuery(MetadataTable::TABLE_NAME))
+            ->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL)
+            ->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID_FULL, MetadataTable::ID_FULL)
 
-        $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL);
-        $query->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID_FULL, MetadataTable::ID_FULL);
+            ->where(MetadataTable::USER_ID_FULL, $me->getId())
 
-        $query->where(AudiosTable::USER_ID_FULL, $me->getId());
+            ->orderBy(MetadataTable::ALBUM_ARTIST)
+            ->orderBy(MetadataTable::ALBUM)
+            ->orderBy(MetadataTable::TRACK_NUMBER);
 
         CatalogTools::commonSelectors($query);
 
         Context::contextify($query);
-
-        $query->orderBy(MetadataTable::ALBUM_ARTIST);
-        $query->orderBy(MetadataTable::ALBUM);
-        $query->orderBy(MetadataTable::TRACK_NUMBER);
 
         if ($filter->nonEmpty()) {
             $cols = implode(",", [

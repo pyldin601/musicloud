@@ -15,8 +15,10 @@ class MetaGenresTable {
 
     const ID                = "id";
     const GENRE             = "genre";
+    const USER_ID           = "user_id";
 
     const ID_FULL           = self::TABLE_NAME . "." . self::ID;
     const GENRE_FULL        = self::TABLE_NAME . "." . self::GENRE;
+    const USER_ID_FULL      = self::TABLE_NAME . "." . self::USER_ID;
 
 }

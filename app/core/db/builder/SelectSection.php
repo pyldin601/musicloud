@@ -13,7 +13,38 @@ trait SelectSection {
 
     protected $selects = [];
 
-    // Select builder section
+
+    public function selectCount($column, $alias = null) {
+
+        if (is_null($alias)) {
+
+            $this->select("COUNT(".$column.")");
+
+        } else {
+
+            $this->selectAlias("COUNT(" . $column . ")", $alias);
+
+        }
+
+        return $this;
+
+    }
+
+    public function selectCountDistinct($column, $alias = null) {
+
+        if (is_null($alias)) {
+
+            $this->select("COUNT(DISTINCT ".$column.")");
+
+        } else {
+
+            $this->selectAlias("COUNT(DISTINCT " . $column . ")", $alias);
+
+        }
+
+        return $this;
+
+    }
 
     public function select($column = null) {
 

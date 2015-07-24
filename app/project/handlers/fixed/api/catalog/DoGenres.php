@@ -28,10 +28,14 @@ class DoGenres implements RouteHandler {
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
         $query = (new SelectQuery(MetaGenresTable::TABLE_NAME))
+            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::GENRE_ID_FULL, MetaGenresTable::ID_FULL)
             ->select(MetaGenresTable::GENRE_FULL)
-            ->select(MetaGenresTable::ID_FULL);
-
-        CatalogTools::filterGenres($query);
+            ->select(MetaGenresTable::ID_FULL)
+            ->selectCount(MetadataTable::ID_FULL, "tracks_count")
+            ->selectCountDistinct(MetadataTable::ALBUM_ID_FULL, "albums_count")
+            ->addGroupBy(MetaGenresTable::ID_FULL)
+            ->having("COUNT(".MetadataTable::ID_FULL.") > 0")
+            ->where(MetaGenresTable::USER_ID_FULL, $me->getId());
 
         Context::contextify($query);
 

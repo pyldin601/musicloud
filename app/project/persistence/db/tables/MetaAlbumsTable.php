@@ -16,9 +16,11 @@ class MetaAlbumsTable {
     const ID                    = "id";
     const ARTIST_ID             = "artist_id";
     const ALBUM                 = "album";
+    const USER_ID               = "user_id";
 
     const ID_FULL               = self::TABLE_NAME . "." . self::ID;
     const ARTIST_ID_FULL        = self::TABLE_NAME . "." . self::ARTIST_ID;
     const ALBUM_FULL            = self::TABLE_NAME . "." . self::ALBUM;
+    const USER_ID_FULL          = self::TABLE_NAME . "." . self::USER_ID;
 
 }
