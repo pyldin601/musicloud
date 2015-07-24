@@ -16,6 +16,7 @@ use app\core\view\JsonResponse;
 use app\lang\option\Filter;
 use app\lang\option\Mapper;
 use app\lang\option\Option;
+use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -27,17 +28,10 @@ class DoGenres implements RouteHandler {
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
         $query = (new SelectQuery(MetaGenresTable::TABLE_NAME))
-
-            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::GENRE_ID_FULL, MetaGenresTable::ID_FULL)
-            ->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL)
-
-            ->where(AudiosTable::USER_ID_FULL, $me->getId())
-
             ->select(MetaGenresTable::GENRE_FULL)
-            ->select(MetaGenresTable::ID_FULL)
-            ->select("COUNT(".MetadataTable::ID_FULL.") as tracks_count")
+            ->select(MetaGenresTable::ID_FULL);
 
-            ->addGroupBy(MetaGenresTable::GENRE_FULL);
+        CatalogTools::filterGenres($query);
 
         Context::contextify($query);
 

@@ -29,21 +29,16 @@ class DoAlbums implements RouteHandler {
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
         $query = (new SelectQuery(MetaAlbumsTable::TABLE_NAME))
-
             ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID_FULL, MetaAlbumsTable::ARTIST_ID_FULL)
-            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ALBUM_ID_FULL, MetaAlbumsTable::ID_FULL)
-            ->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL)
-
-            ->where(AudiosTable::USER_ID_FULL, $me->getId())
-
+            ->select(sprintf("(SELECT %s FROM %s WHERE %s = %s AND %s IS NOT NULL LIMIT 1) AS cover_file_id",
+                MetadataTable::COVER_FILE_ID_FULL, MetadataTable::TABLE_NAME,
+                MetadataTable::ALBUM_ID_FULL, MetaAlbumsTable::ID_FULL, MetadataTable::COVER_FILE_ID_FULL))
             ->select(MetaAlbumsTable::ALBUM_FULL)
-            ->select(MetaArtistsTable::ARTIST_FULL)
-
-            ->addGroupBy(MetadataTable::ALBUM_ID_FULL);
+            ->select(MetaArtistsTable::ARTIST_FULL);
 
         Context::contextify($query);
 
-        CatalogTools::commonSelectAlbum($query);
+        CatalogTools::filterAlbums($query);
 
         if ($filter->nonEmpty()) {
             $query->match(MetaAlbumsTable::ALBUM_FULL, $filter->get());
