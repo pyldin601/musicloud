@@ -31,6 +31,7 @@ class DoTracks implements RouteHandler {
 
         $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL);
         $query->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID_FULL, MetadataTable::ID_FULL);
+
         $query->where(AudiosTable::USER_ID_FULL, $me->getId());
 
         CatalogTools::commonSelectors($query);
