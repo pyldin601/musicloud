@@ -10,10 +10,11 @@ namespace app\project\exceptions;
 
 
 use app\core\exceptions\ControllerException;
+use app\core\http\HttpStatusCodes;
 use Exception;
 
 class BackendException extends ControllerException {
-    public function __construct($message = "", $http_response_code = 400) {
+    public function __construct($message = "", $http_response_code = HttpStatusCodes::HTTP_BAD_REQUEST) {
         parent::__construct($message, $http_response_code);
     }
 }

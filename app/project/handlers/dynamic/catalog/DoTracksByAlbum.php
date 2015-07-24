@@ -14,29 +14,44 @@ use app\core\etc\Context;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\project\CatalogTools;
+use app\project\exceptions\AlbumArtistNotFoundException;
+use app\project\exceptions\AlbumNotFoundException;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\MetaAlbumsTable;
+use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
+use app\project\persistence\db\tables\MetaGenresTable;
 use app\project\persistence\db\tables\StatsTable;
 
 class DoTracksByAlbum implements RouteHandler {
     public function doGet(JsonResponse $response, $artist, $album, LoggedIn $me) {
 
-        $query = new SelectQuery(MetadataTable::TABLE_NAME);
+        $artist_id = (new SelectQuery(MetaArtistsTable::TABLE_NAME))
+            ->where(MetaArtistsTable::ARTIST_FULL, urldecode($artist))
+            ->where(MetaArtistsTable::USER_ID_FULL, $me->getId())
+            ->fetchOneColumn()->toInt()->getOrThrow(AlbumArtistNotFoundException::class);
 
-        $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID, MetadataTable::ID);
-        $query->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID, MetadataTable::ID);
+        $album_id = (new SelectQuery(MetaAlbumsTable::TABLE_NAME))
+            ->where(MetaAlbumsTable::ALBUM_FULL, urldecode($album))
+            ->where(MetaAlbumsTable::ARTIST_ID_FULL, $artist_id)
+            ->fetchOneColumn()->toInt()->getOrThrow(AlbumNotFoundException::class);
 
-        $query->where(AudiosTable::USER_ID, $me->getId());
+        $query = (new SelectQuery(MetadataTable::TABLE_NAME))
+            ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
+            ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
+
+            ->where(MetadataTable::ALBUM_ID_FULL, $album_id)
+
+            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
+                MetaGenresTable::GENRE, MetaGenresTable::TABLE_NAME, MetaGenresTable::ID, MetadataTable::GENRE_ID
+            ), "genre")
+
+            ->orderBy(MetadataTable::TRACK_NUMBER);
+
+        Context::contextify($query);
 
         CatalogTools::commonSelectors($query);
-
-        $query->orderBy(MetadataTable::ALBUM_ARTIST);
-        $query->orderBy(MetadataTable::ALBUM);
-        $query->orderBy(MetadataTable::TRACK_NUMBER);
-
-        $query->where(MetadataTable::ALBUM, urldecode($album));
-        $query->where(MetadataTable::ALBUM_ARTIST, urldecode($artist));
 
         $catalog = $query->fetchAll();
 

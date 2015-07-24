@@ -63,7 +63,15 @@ class SelectQuery extends BaseQuery implements \Countable {
 
     public function innerJoin($other_table, $other_column, $this_column) {
 
-        $this->innerJoin[] = [$other_table, $other_column . " = " . $this_column];
+        $this->innerJoin[] = [$other_table, " ON " . $other_column . " = " . $this_column];
+
+        return $this;
+
+    }
+
+    public function joinUsing($other_table, $key) {
+
+        $this->innerJoin[] = [$other_table, " USING (" . $key . ")"];
 
         return $this;
 
@@ -71,9 +79,9 @@ class SelectQuery extends BaseQuery implements \Countable {
 
     // Left join builder section
 
-    public function leftJoin($table, $on) {
+    public function leftJoin($table, $other_column, $this_column) {
 
-        $this->leftJoin[] = [$table, $on];
+        $this->leftJoin[] = [$table, " ON " . $other_column . " = " . $this_column];
 
         return $this;
 
@@ -111,7 +119,7 @@ class SelectQuery extends BaseQuery implements \Countable {
 
         $query = [];
 
-        $query[] = "SELECT";
+        $query[] = "SELECT SQL_NO_CACHE";
         $query[] = $this->buildSelect();
         $query[] = "FROM " . $this->tableName;
         $query[] = $this->buildInnerJoins();
@@ -131,7 +139,7 @@ class SelectQuery extends BaseQuery implements \Countable {
         $build = [];
 
         foreach ($this->innerJoin as $join) {
-            $build[] = "INNER JOIN " . $join[0] . " ON " . $join[1];
+            $build[] = "INNER JOIN " . $join[0] . $join[1];
         }
 
         return implode(" ", $build);
@@ -143,7 +151,7 @@ class SelectQuery extends BaseQuery implements \Countable {
         $build = [];
 
         foreach ($this->leftJoin as $join) {
-            $build[] = "LEFT JOIN " . $join[0] . " ON " . $join[1];
+            $build[] = "LEFT JOIN " . $join[0] . $join[1];
         }
 
         return implode(" ", $build);

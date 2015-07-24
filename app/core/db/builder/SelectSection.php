@@ -97,7 +97,25 @@ trait SelectSection {
         $build = [];
 
         foreach ($this->selects as $select) {
-            $build[] = is_array($select) ? $select[0] . " AS " . $select[1] : $select;
+
+            if (is_array($select)) {
+
+//                if ($select[0] instanceof SelectQuery) {
+//                    $select[0] = $select[0]->generate();
+//                }
+
+                $build[] = $select[0] . " AS " . $select[1];
+
+            } else {
+
+//                if ($select instanceof SelectQuery) {
+//                    $select = $select->generate();
+//                }
+
+                $build[] = $select;
+
+            }
+
         }
 
         return count($build) == 0 ? "*" : implode(",", $build);

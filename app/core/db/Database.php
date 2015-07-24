@@ -143,6 +143,7 @@ class Database implements SingletonInterface, Injectable {
 
         $queryString = $this->queryQuote($query, $params);
 
+//        error_log($queryString);
 
         $resource = $this->pdo->prepare($queryString);
 
@@ -333,6 +334,17 @@ class Database implements SingletonInterface, Injectable {
     public function quote($var) {
 
         return $this->pdo->quote($var, PDO::PARAM_STR);
+
+    }
+
+    /**
+     * @param $query
+     * @param $params
+     * @return string
+     */
+    public function generate($query, $params) {
+
+        return $this->queryQuote($query, $params);
 
     }
 

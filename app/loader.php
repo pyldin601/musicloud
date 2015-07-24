@@ -1,9 +1,12 @@
 <?php
 
 use app\core\exceptions\ApplicationException;
+use app\core\http\HttpStatusCodes;
 use app\core\injector\Injector;
 use app\core\view\JsonResponse;
 use app\core\view\TinyView;
+use app\lang\option\Consumer;
+use app\lang\option\Mapper;
 
 require_once "constants.php";
 require_once "core/shortcuts.php";
@@ -39,27 +42,21 @@ set_exception_handler(function (Exception $exception) {
     } else {
 
         $message = $exception->getMessage();
-        $http_code = \app\core\http\HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR;
-
+        $http_code = HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR;
 
     }
 
-    http_response_code($http_code);
+    HttpStatusCodes::httpHeaderFor($http_code);
 
     $response_data = array(
         "message" => $message,
         "code" => $http_code
     );
 
-    JsonResponse::ifInstance()->then(function (JsonResponse $response) use (&$response_data) {
-
-        $response->write($response_data);
-
-    })->orCall(function () use (&$response_data) {
-
-        TinyView::show("error.tmpl", $response_data);
-
-    });
+    JsonResponse::ifInstance()->then(
+        Mapper::method("write", $response_data),
+        Consumer::call([TinyView::class, "show"], "error.tmpl", $response_data)
+    );
 
 });
 

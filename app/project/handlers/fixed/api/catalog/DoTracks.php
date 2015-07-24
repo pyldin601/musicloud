@@ -18,7 +18,10 @@ use app\lang\option\Option;
 use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\MetaAlbumsTable;
+use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
+use app\project\persistence\db\tables\MetaGenresTable;
 use app\project\persistence\db\tables\StatsTable;
 
 class DoTracks implements RouteHandler {
@@ -28,13 +31,23 @@ class DoTracks implements RouteHandler {
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
         $query = (new SelectQuery(MetadataTable::TABLE_NAME))
-            ->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL)
-            ->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID_FULL, MetadataTable::ID_FULL)
+            ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
+            ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
 
             ->where(MetadataTable::USER_ID_FULL, $me->getId())
 
-            ->orderBy(MetadataTable::ALBUM_ARTIST)
-            ->orderBy(MetadataTable::ALBUM)
+            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
+                MetaAlbumsTable::ALBUM, MetaAlbumsTable::TABLE_NAME, MetaAlbumsTable::ID, MetadataTable::ALBUM_ID
+            ), "album")
+            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
+                MetaArtistsTable::ARTIST, MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID, MetadataTable::ARTIST_ID
+            ), "album_artist")
+            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
+                MetaGenresTable::GENRE, MetaGenresTable::TABLE_NAME, MetaGenresTable::ID, MetadataTable::GENRE_ID
+            ), "genre")
+
+            ->orderBy(MetadataTable::ARTIST_ID_FULL)
+            ->orderBy(MetadataTable::ALBUM_ID_FULL)
             ->orderBy(MetadataTable::TRACK_NUMBER);
 
         CatalogTools::commonSelectors($query);

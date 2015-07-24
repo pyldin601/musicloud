@@ -29,22 +29,21 @@ class CatalogTools {
 
     public static function commonSelectors(SelectQuery $query) {
         $query->select(
-            MetadataTable::ALBUM,
-            MetadataTable::TITLE,
-            MetadataTable::ARTIST,
-            MetadataTable::ALBUM_ARTIST,
-            MetadataTable::BITRATE,
-            MetadataTable::DATE,
-            MetadataTable::DURATION,
-            MetadataTable::GENRE,
+            MetadataTable::TITLE_FULL,
+            MetadataTable::ALBUM_ID_FULL,
+            MetadataTable::ARTIST_ID_FULL,
+            MetadataTable::GENRE_ID_FULL,
+            MetadataTable::BITRATE_FULL,
+            MetadataTable::DATE_FULL,
+            MetadataTable::DURATION_FULL,
             MetadataTable::ID_FULL,
-            MetadataTable::RATING,
-            MetadataTable::TRACK_NUMBER,
-            MetadataTable::COVER_FILE_ID,
-            AudiosTable::CREATED_DATE,
-            StatsTable::LAST_PLAYED_DATE,
-            StatsTable::PLAYBACKS,
-            StatsTable::SKIPS
+            MetadataTable::RATING_FULL,
+            MetadataTable::TRACK_NUMBER_FULL,
+            MetadataTable::COVER_FILE_ID_FULL,
+            AudiosTable::CREATED_DATE_FULL,
+            StatsTable::LAST_PLAYED_DATE_FULL,
+            StatsTable::PLAYBACKS_FULL,
+            StatsTable::SKIPS_FULL
         );
     }
 

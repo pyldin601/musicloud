@@ -91,6 +91,19 @@ abstract class BaseQuery implements QueryBuilder {
     /* Fetchers shortcuts */
 
     /**
+     * @return string
+     */
+    public function generate() {
+        return Database::doInConnection(function (Database $db) {
+            /** @var SelectQuery $query */
+            return $db->generate(
+                $this->getQuery($db->getPDO()),
+                $this->getParameters()
+            );
+        });
+    }
+
+    /**
      * @return Option
      */
     public function fetchOneRow() {
