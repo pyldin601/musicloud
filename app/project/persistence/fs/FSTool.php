@@ -18,7 +18,7 @@ class FSTool {
      */
     public static function hashToPath($hash) {
         $prefix = Settings::getInstance()->get("fs", "media");
-        return sprintf("%s/%s/%s", $prefix, substr($hash, 0, 2), substr($hash, 2, 2));
+        return sprintf("%s/%s/%s/%s", $prefix, substr($hash, 0, 1), substr($hash, 1, 1), substr($hash, 2, 1));
     }
     public static function createPathUsingHash($hash) {
         $path = self::hashToPath($hash);
