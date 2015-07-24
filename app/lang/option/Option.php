@@ -7,7 +7,7 @@ namespace app\lang\option;
  * Class Option
  * @package Tools\Optional
  */
-abstract class Option implements \IteratorAggregate, \JsonSerializable {
+abstract class Option implements \IteratorAggregate, \JsonSerializable, \ArrayAccess {
 
     use OptionMixin;
 
@@ -156,6 +156,14 @@ abstract class Option implements \IteratorAggregate, \JsonSerializable {
 
     function jsonSerialize() {
         return $this->get();
+    }
+
+    public function offsetSet($offset, $value) {
+        throw new \Exception("Operation unavailable");
+    }
+
+    public function offsetUnset($offset) {
+        throw new \Exception("Operation unavailable");
     }
 
 }

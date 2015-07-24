@@ -28,7 +28,9 @@ class JsonResponse implements SingletonInterface, Injectable {
 
         register_shutdown_function(function () {
 
-            if (error_get_last() === null) {
+            $last_error = error_get_last();
+
+            if ($last_error === null || $last_error["type"] | (E_ERROR | E_PARSE)) {
 
                 ob_start("ob_gzhandler");
 
@@ -37,6 +39,10 @@ class JsonResponse implements SingletonInterface, Injectable {
                 http_response_code($this->http_response_code ?: self::DEFAULT_RESPONSE_CODE);
 
                 echo json_encode($this->data ?: self::DEFAULT_RESULT, JSON_UNESCAPED_UNICODE);
+
+            } else {
+
+                error_log(serialize(error_get_last()));
 
             }
 

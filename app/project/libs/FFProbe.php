@@ -25,6 +25,8 @@ class FFProbe {
     }
 
     /**
+     * Reads album cover from audio file if possible.
+     *
      * @param $filename
      * @return Option
      */
@@ -50,6 +52,8 @@ class FFProbe {
     }
 
     /**
+     * Reads audio file metadata and returns Metadata object.
+     *
      * @param string $filename
      * @return Some
      */
@@ -66,28 +70,47 @@ class FFProbe {
             return Option::None();
         }
 
-        $json = json_decode(implode("", $result), true);
+        $json = Option::Some(json_decode(implode("", $result), true));
+
+        $o_format = $json["format"];
+        $o_tags = $o_format["tags"];
 
         $object = new Metadata();
 
-        $object->filename                = @$json["format"]["filename"];
-        $object->format_name             = @$json["format"]["format_name"];
-        $object->duration                = @doubleval($json["format"]["duration"]);
-        $object->size                    = @intval($json["format"]["size"]);
-        $object->bitrate                 = @intval($json["format"]["bit_rate"]);
+        $object->filename           = $o_format["filename"]     ->get();
+        $object->format_name        = $o_format["format_name"]  ->get();
+        $object->duration           = $o_format["duration"]     ->map("doubleval")->get();
+        $object->size               = $o_format["size"]         ->toInt()->get();
+        $object->bitrate            = $o_format["bit_rate"]     ->toInt()->get();
 
-        if (isset($json["format"]["tags"])) {
-            $object->meta_artist         = @$json["format"]["tags"]["artist"];
-            $object->meta_title          = @$json["format"]["tags"]["title"];
-            $object->meta_genre          = @$json["format"]["tags"]["genre"];
-            $object->meta_date           = @$json["format"]["tags"]["date"];
-            $object->meta_album          = @$json["format"]["tags"]["album"];
-            $object->meta_track_number   = @$json["format"]["tags"]["track"];
-            $object->meta_album_artist   = @$json["format"]["tags"]["album_artist"];
-            $object->is_compilation      = @$json["format"]["tags"]["compilation"];
-        }
+        $object->meta_artist        = $o_tags["artist"]         ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_title         = $o_tags["title"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_genre         = $o_tags["genre"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_date          = $o_tags["date"]           ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_album         = $o_tags["album"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_track_number  = $o_tags["track"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_album_artist  = $o_tags["album_artist"]   ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->is_compilation     = $o_tags["compilation"]    ->toInt()->getOrElse(0);
 
         return Option::Some($object);
+
+    }
+
+    /**
+     * Converts text from CP1251 to UTF-8 encoding.
+     *
+     * @param $chars
+     * @return string
+     */
+    static function cp1252dec($chars) {
+
+        $test = @iconv("UTF-8", "CP1252", $chars);
+
+        if (is_null($test)) {
+            return $chars;
+        } else {
+            return iconv("CP1251", "UTF-8", $test);
+        }
 
     }
 

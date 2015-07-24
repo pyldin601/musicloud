@@ -60,18 +60,14 @@ class Track {
 
     public function upload($file_path, $file_name) {
 
-//        $mime_command = sprintf("%s --brief --mime-type %s",
-//            $this->settings->get("tools", "file_cmd"), escapeshellarg($file_path));
-
         $mime_type = MIME::mime_type($file_path);
-
-//        $mime_type = shell_exec($mime_command);
 
         assert($this->track_data[AudiosTable::FILE_ID] === null, AlreadyUploadedException::class);
 
         /** @var Metadata $metadata */
         $metadata = FFProbe::read($file_path)
             ->getOrThrow(InvalidAudioFileException::class);
+
 
         $cover = FFProbe::readTempCover($file_path);
 
@@ -93,16 +89,13 @@ class Track {
             ->set(AudiosTable::CONTENT_TYPE,        $mime_type)
             ->update();
 
-        $artist_id = ArtistDao::getArtistId($metadata->meta_album_artist);
-        $genre_id  = GenreDao::getGenreId($metadata->meta_genre);
-        $album_id  = AlbumDao::getAlbumId($artist_id, $metadata->meta_album);
+        $artist_id = ArtistDao::getArtistId($metadata->meta_album_artist ?: "");
+        $genre_id  = GenreDao::getGenreId($metadata->meta_genre ?: "");
+        $album_id  = AlbumDao::getAlbumId($artist_id, $metadata->meta_album ?: "");
 
         (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID, $this->track_id))
-            ->set(MetadataTable::ALBUM,             $metadata->meta_album)
-            ->set(MetadataTable::ALBUM_ARTIST,      $metadata->meta_album_artist)
             ->set(MetadataTable::ARTIST,            $metadata->meta_artist)
             ->set(MetadataTable::DATE,              $metadata->meta_date)
-            ->set(MetadataTable::GENRE,             $metadata->meta_genre)
             ->set(MetadataTable::TITLE,             $metadata->meta_title)
             ->set(MetadataTable::TRACK_NUMBER,      $metadata->meta_track_number)
             ->set(MetadataTable::BITRATE,           $metadata->bitrate)

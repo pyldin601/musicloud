@@ -142,4 +142,14 @@ final class Some extends Option {
     public function orThrow($callable, ...$args) {
         return $this;
     }
+
+    public function offsetExists($offset) {
+        return isset($this->get()[$offset]);
+    }
+
+    public function offsetGet($offset) {
+        return $this->offsetExists($offset) ? Option::Some($this->get()[$offset]) : Option::None();
+    }
+
+
 }

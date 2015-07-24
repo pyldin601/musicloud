@@ -141,6 +141,13 @@ final class None extends Option {
         return $this;
     }
 
+    public function offsetExists($offset) {
+        return false;
+    }
+
+    public function offsetGet($offset) {
+        return $this;
+    }
 
 }
 
