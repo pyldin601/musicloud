@@ -30,8 +30,9 @@ class FileServer {
         assert(file_exists($file_path), "Audio file uploaded incorrectly");
 
         $hash = FSTool::calculateHash($file_path);
-        $query = new SelectQuery(FilesTable::TABLE_NAME, FilesTable::SHA1, $hash);
-        $file = $query->fetchOneRow();
+        $query = (new SelectQuery(FilesTable::TABLE_NAME, FilesTable::SHA1, $hash))
+            ->select(FilesTable::ID);
+        $file = $query->fetchOneColumn()->toInt();
 
         if ($file->isEmpty()) {
 
@@ -47,12 +48,14 @@ class FileServer {
 
         } else {
 
-            $id = $file->get()[FilesTable::ID];
+            $id = $file->get();
 
             (new UpdateQuery(FilesTable::TABLE_NAME))
                 ->increment(FilesTable::USED)
                 ->where(FilesTable::ID, $id)
                 ->update();
+
+            unlink($file_path);
 
         }
 
