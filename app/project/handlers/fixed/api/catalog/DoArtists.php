@@ -18,27 +18,33 @@ use app\lang\option\Option;
 use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\MetaAlbumsTable;
+use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
 
 class DoArtists implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
-        $query = (new SelectQuery(MetadataTable::TABLE_NAME));
+        $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
-        $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID, MetadataTable::ID);
-        $query->where(AudiosTable::USER_ID, $me->getId());
+        $query = (new SelectQuery(MetaArtistsTable::TABLE_NAME))
 
-        $query->select(MetadataTable::ALBUM_ARTIST);
+//            ->innerJoin(MetaAlbumsTable::TABLE_NAME, MetaAlbumsTable::ARTIST_ID_FULL, MetaArtistsTable::ID_FULL)
+//            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ARTIST_ID_FULL, MetaArtistsTable::ID_FULL)
+//            ->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL)
 
-        $query->addGroupBy(MetadataTable::ALBUM_ARTIST);
+            ->select(MetaArtistsTable::ID_FULL)
+            ->select(MetaArtistsTable::ARTIST_FULL);
+//            ->select("COUNT(".MetadataTable::ID_FULL.") as tracks_count")
+//            ->select("COUNT(DISTINCT ".MetaAlbumsTable::ID_FULL.") as albums_count")
+//            ->addGroupBy(MetaArtistsTable::ARTIST_FULL);
+
+        CatalogTools::filterArtist($query);
 
         Context::contextify($query);
 
-        CatalogTools::commonSelectArtist($query);
-
-        if ($q->nonEmpty() && strlen($q->get()) > 0) {
-            $query->where("MATCH(".MetadataTable::ALBUM_ARTIST.") AGAINST(? IN BOOLEAN MODE)",
-                array($q->map(Mapper::fulltext())->get()));
+        if ($q->nonEmpty()) {
+            $query->match(MetaArtistsTable::ARTIST_FULL, $filter->get());
         }
 
         $catalog = $query->fetchAll();

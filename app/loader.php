@@ -84,3 +84,11 @@ function resource($class_name) {
     return Injector::getInstance()->injectByClassName($class_name);
 }
 
+
+function expect_string($arg) {
+    assert(is_string($arg), "Expected \"String\" but \"" . gettype($arg) . "\" given");
+}
+
+function expect_number($arg) {
+    assert(is_numeric($arg), "Expected \"Number\" but \"" . gettype($arg) . "\" given");
+}

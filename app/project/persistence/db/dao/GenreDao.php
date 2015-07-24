@@ -18,11 +18,6 @@ use app\project\persistence\db\tables\MetaGenresTable;
  * @package app\project\persistence\db\dao
  */
 class GenreDao {
-//    /** @var LoggedIn */
-//    private static $me;
-//    public static function class_init() {
-//        self::$me = resource(LoggedIn::class);
-//    }
 
     /**
      * Returns id of $genre from database if exists, or generates
@@ -32,11 +27,14 @@ class GenreDao {
      * @return int
      */
     public static function getGenreId($genre) {
+        expect_string($genre);
+
         $genre_object = (new SelectQuery(MetaGenresTable::TABLE_NAME))
             ->where(MetaGenresTable::GENRE, $genre)
-            ->fetchOneRow();
+            ->select(MetaGenresTable::ID)
+            ->fetchOneColumn()->toInt();
         if ($genre_object->nonEmpty()) {
-            return $genre_object->get()[MetaGenresTable::ID];
+            return $genre_object->get();
         } else {
             return (new InsertQuery(MetaGenresTable::TABLE_NAME))
                 ->values(MetaGenresTable::GENRE, $genre)

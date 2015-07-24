@@ -113,6 +113,10 @@ final class None extends Option {
         return $this;
     }
 
+    public function toInt() {
+        return $this;
+    }
+
     public function then($callable, $otherwise = null) {
         if (is_callable($otherwise)) {
             return $otherwise();

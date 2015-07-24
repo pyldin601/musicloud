@@ -26,13 +26,13 @@ when("api/catalog/tracks/by-genre/:genre", catalog\DoTracksByGenre::class);
 when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::class);
 
 when("test", function () {
-    (new SelectQuery(MetadataTable::TABLE_NAME))
-        ->where(MetadataTable::ALBUM_ID . " IS NULL")
-        ->eachRow(function ($row) {
-            $album_id = AlbumDao::getAlbumId($row[MetadataTable::ARTIST_ID], $row[MetadataTable::ALBUM]);
-            (new UpdateQuery(MetadataTable::TABLE_NAME))
-                ->set(MetadataTable::ALBUM_ID, $album_id)
-                ->where(MetadataTable::ID, $row[MetadataTable::ID])
-                ->update();
-        });
+//    (new SelectQuery(MetadataTable::TABLE_NAME))
+//        ->where(MetadataTable::ALBUM_ID . " IS NULL")
+//        ->eachRow(function ($row) {
+//            $album_id = AlbumDao::getAlbumId($row[MetadataTable::ARTIST_ID], $row[MetadataTable::ALBUM]);
+//            (new UpdateQuery(MetadataTable::TABLE_NAME))
+//                ->set(MetadataTable::ALBUM_ID, $album_id)
+//                ->where(MetadataTable::ID, $row[MetadataTable::ID])
+//                ->update();
+//        });
 });

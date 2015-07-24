@@ -12,6 +12,7 @@ namespace app\core\etc;
 use app\core\db\builder\SelectQuery;
 use app\core\http\HttpGet;
 use app\lang\option\Filter;
+use app\lang\option\Mapper;
 
 class Context {
 
@@ -34,9 +35,7 @@ class Context {
         $sort_field = self::$request->get("sf");
         $sort_order = self::$request->get("so");
 
-        if ($offset->nonEmpty()) {
-            $query->offset($offset->get());
-        }
+        $offset->then(Mapper::call($query, "offset"));
 
         $max_limit = self::$settings->get("catalog", "items_per_request_limit");
 

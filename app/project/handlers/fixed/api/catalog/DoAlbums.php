@@ -16,31 +16,37 @@ use app\core\view\JsonResponse;
 use app\lang\option\Mapper;
 use app\lang\option\Option;
 use app\project\CatalogTools;
+use app\project\libs\Metadata;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\MetaAlbumsTable;
+use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
 
 class DoAlbums implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
-        $query = (new SelectQuery(MetadataTable::TABLE_NAME));
+        $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
-        $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID, MetadataTable::ID);
-        $query->where(AudiosTable::USER_ID, $me->getId());
+        $query = (new SelectQuery(MetaAlbumsTable::TABLE_NAME))
 
-        $query->select(MetadataTable::ALBUM_ARTIST);
-        $query->select(MetadataTable::ALBUM);
+            ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID_FULL, MetaAlbumsTable::ARTIST_ID_FULL)
+            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ALBUM_ID_FULL, MetaAlbumsTable::ID_FULL)
+            ->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL)
 
-        $query->addGroupBy(MetadataTable::ALBUM);
-        $query->addGroupBy(MetadataTable::ALBUM_ARTIST);
+            ->where(AudiosTable::USER_ID_FULL, $me->getId())
+
+            ->select(MetaAlbumsTable::ALBUM_FULL)
+            ->select(MetaArtistsTable::ARTIST_FULL)
+
+            ->addGroupBy(MetadataTable::ALBUM_ID_FULL);
 
         Context::contextify($query);
 
         CatalogTools::commonSelectAlbum($query);
 
-        if ($q->nonEmpty() && strlen($q->get()) > 0) {
-            $query->where("MATCH(".MetadataTable::ALBUM.") AGAINST(? IN BOOLEAN MODE)",
-                array($q->map(Mapper::fulltext())->get()));
+        if ($filter->nonEmpty()) {
+            $query->match(MetaAlbumsTable::ALBUM_FULL, $filter->get());
         }
 
         $catalog = $query->fetchAll();

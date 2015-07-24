@@ -102,6 +102,11 @@ abstract class Option implements \IteratorAggregate, \JsonSerializable {
     public abstract function reject($predicate);
 
     /**
+     * @return $this
+     */
+    public abstract function toInt();
+
+    /**
      * @param $callable
      * @param ...$args
      * @return $this

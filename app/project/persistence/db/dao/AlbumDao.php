@@ -11,17 +11,22 @@ namespace app\project\persistence\db\dao;
 
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
+use app\lang\option\Filter;
+use app\lang\option\Mapper;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 
 class AlbumDao {
     public static function getAlbumId($artist_id, $album) {
-        assert(is_numeric($artist_id), "Artist id could not be null");
+        expect_number($artist_id);
+        expect_string($album);
+
         $album_object = (new SelectQuery(MetaAlbumsTable::TABLE_NAME))
             ->where(MetaAlbumsTable::ALBUM, $album)
             ->where(MetaAlbumsTable::ARTIST_ID, $artist_id)
-            ->fetchOneRow();
+            ->select(MetaAlbumsTable::ID)
+            ->fetchOneColumn()->toInt();
         if ($album_object->nonEmpty()) {
-            return $album_object->get()[MetaAlbumsTable::ID];
+            return $album_object->get();
         } else {
             return (new InsertQuery(MetaAlbumsTable::TABLE_NAME))
                 ->values(MetaAlbumsTable::ALBUM, $album)

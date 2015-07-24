@@ -99,6 +99,18 @@ final class Some extends Option {
         }
     }
 
+    /**
+     * @return $this
+     */
+    public function toInt() {
+        if (is_numeric($this->get())) {
+            return Option::Some(intval($this->get()));
+        } else {
+            return None::instance();
+        }
+    }
+
+
     public function then($callable, $otherwise = null) {
         $callable($this->get());
         return $this;

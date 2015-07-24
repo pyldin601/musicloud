@@ -14,7 +14,13 @@ trait WhereSection {
     protected $wheres = [];
     protected $whereGlue = "AND";
 
-    // Where section
+    public function match($fields, $value) {
+        return $this->where(sprintf("MATCH(%s) AGAINST(? IN BOOLEAN MODE)", $fields), [ $value ]);
+    }
+
+    public function exists(SelectQuery $query) {
+        return $this;
+    }
 
     public function where($clause) {
         if (func_num_args() == 2 && is_array(func_get_arg(1))) {

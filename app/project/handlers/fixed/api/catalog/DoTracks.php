@@ -25,11 +25,13 @@ class DoTracks implements RouteHandler {
 
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
+        $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
+
         $query = (new SelectQuery(MetadataTable::TABLE_NAME));
 
-        $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID, MetadataTable::ID);
-        $query->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID, MetadataTable::ID);
-        $query->where(AudiosTable::USER_ID, $me->getId());
+        $query->innerJoin(AudiosTable::TABLE_NAME, AudiosTable::ID_FULL, MetadataTable::ID_FULL);
+        $query->innerJoin(StatsTable::TABLE_NAME, StatsTable::ID_FULL, MetadataTable::ID_FULL);
+        $query->where(AudiosTable::USER_ID_FULL, $me->getId());
 
         CatalogTools::commonSelectors($query);
 
@@ -39,7 +41,7 @@ class DoTracks implements RouteHandler {
         $query->orderBy(MetadataTable::ALBUM);
         $query->orderBy(MetadataTable::TRACK_NUMBER);
 
-        if ($q->nonEmpty() && strlen($q->get()) > 0) {
+        if ($filter->nonEmpty()) {
             $cols = implode(",", [
                 MetadataTable::ALBUM_ARTIST,
                 MetadataTable::ARTIST,
@@ -47,8 +49,7 @@ class DoTracks implements RouteHandler {
                 MetadataTable::ALBUM,
                 MetadataTable::GENRE
             ]);
-            $query->where("MATCH({$cols}) AGAINST(? IN BOOLEAN MODE)",
-                array($q->map(Mapper::fulltext())->get()));
+            $query->match($cols, $filter->get());
         }
 
         $catalog = $query->fetchAll();
