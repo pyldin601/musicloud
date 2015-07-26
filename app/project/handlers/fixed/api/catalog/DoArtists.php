@@ -41,7 +41,7 @@ class DoArtists implements RouteHandler {
 
         Context::contextify($query);
 
-        if ($q->nonEmpty()) {
+        if ($filter->nonEmpty()) {
             $query->match(MetaArtistsTable::ARTIST_FULL, $filter->get());
         }
 
