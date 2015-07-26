@@ -34,6 +34,7 @@ class DoAlbums implements RouteHandler {
             ->select(MetaAlbumsTable::ID_FULL)
             ->select(MetaAlbumsTable::ALBUM_FULL)
             ->select(MetaArtistsTable::ARTIST_FULL)
+            ->select(MetadataTable::COVER_FILE_ID_FULL)
             ->selectCount(MetadataTable::ID_FULL, "tracks_count")
             ->selectAlias(MetaArtistsTable::ID_FULL, "artist_id")
             ->where(MetaAlbumsTable::USER_ID_FULL, $me->getId())

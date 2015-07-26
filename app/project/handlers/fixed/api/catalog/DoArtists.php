@@ -31,6 +31,7 @@ class DoArtists implements RouteHandler {
             ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ARTIST_ID_FULL, MetaArtistsTable::ID_FULL)
             ->select(MetaArtistsTable::ID_FULL)
             ->select(MetaArtistsTable::ARTIST_FULL)
+            ->select(MetadataTable::COVER_FILE_ID_FULL)
             ->selectCount(MetadataTable::ID_FULL, "tracks_count")
             ->selectCountDistinct(MetadataTable::ALBUM_ID_FULL, "albums_count")
             ->addGroupBy(MetaArtistsTable::ID_FULL)

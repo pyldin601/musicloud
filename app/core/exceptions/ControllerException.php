@@ -9,10 +9,10 @@
 namespace app\core\exceptions;
 
 
-use Exception;
+use app\core\http\HttpStatusCodes;
 
 class ControllerException extends ApplicationException {
-    public function __construct($message = "", $http_response_code = 400) {
+    public function __construct($message = "", $http_response_code = HttpStatusCodes::HTTP_BAD_REQUEST) {
         parent::__construct($message, $http_response_code);
     }
 }

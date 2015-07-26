@@ -34,13 +34,12 @@ spl_autoload_register(function ($class_name) {
 // Set global exception handler
 set_exception_handler(function (Exception $exception) {
 
-    error_log("Exception: " . $exception->getMessage());
-    error_log("Stacktrace: " . $exception->getTraceAsString());
 
     if ($exception instanceof ApplicationException) {
 
         $message = $exception->getMessage();
         $http_code = $exception->getHttpCode();
+
 
     } else {
 
@@ -49,17 +48,19 @@ set_exception_handler(function (Exception $exception) {
 
     }
 
-    HttpStatusCodes::httpHeaderFor($http_code);
+    error_log("Exception: " . $exception->getMessage());
+    error_log("Stacktrace: " . $exception->getTraceAsString());
+
+    http_response_code($http_code);
 
     $response_data = array(
         "message" => $message,
         "code" => $http_code
     );
 
-    JsonResponse::ifInstance()->then(
-        Mapper::method("write", $response_data),
-        Consumer::call([TinyView::class, "show"], "error.tmpl", $response_data)
-    );
+    JsonResponse::ifInstance()
+        ->call("write", $response_data)
+        ->otherwise(Consumer::call([TinyView::class, "show"], "error.tmpl", $response_data));
 
 });
 
