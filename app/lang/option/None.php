@@ -141,6 +141,24 @@ final class None extends Option {
         return $this;
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function sel($key) {
+        return $this;
+    }
+
+    /**
+     * @param $method
+     * @param $args
+     * @return mixed
+     */
+    public function call($method, ...$args) {
+        return $this;
+    }
+
+
     public function offsetExists($offset) {
         return false;
     }

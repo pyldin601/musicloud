@@ -135,6 +135,25 @@ final class Some extends Option {
     }
 
     /**
+     * @param $key
+     * @return $this
+     */
+    public function sel($key) {
+        return (is_array($this->get()) && array_key_exists($key, $this->get()))
+            ? Option::Some($this->get()[$key]) : None::instance();
+    }
+
+    /**
+     * @param $method
+     * @param $args
+     * @return $this
+     */
+    public function call($method, ...$args) {
+        return (is_object($this->get()) && method_exists($this->get(), $method))
+            ? Option::Some($this->get()->$method(...$args)) : None::instance();
+    }
+
+    /**
      * @param $callable
      * @param ...$args
      * @return $this

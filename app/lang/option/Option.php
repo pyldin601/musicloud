@@ -139,6 +139,19 @@ abstract class Option implements \IteratorAggregate, \JsonSerializable, \ArrayAc
     public abstract function selectInstance($object);
 
     /**
+     * @param $key
+     * @return $this
+     */
+    public abstract function sel($key);
+
+    /**
+     * @param $method
+     * @param $args
+     * @return $this
+     */
+    public abstract function call($method, ...$args);
+
+    /**
      * @return Option
      */
     public static function None() {
