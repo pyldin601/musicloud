@@ -35,14 +35,13 @@ class DoTracksByGenre implements RouteHandler {
             ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
             ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
 
+            ->innerJoin(MetaAlbumsTable::TABLE_NAME, MetaAlbumsTable::ID_FULL, MetadataTable::ALBUM_ID_FULL)
+            ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaAlbumsTable::ID_FULL, MetaAlbumsTable::ARTIST_ID_FULL)
+
             ->where(MetadataTable::GENRE_ID_FULL, $genre_id)
 
-            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
-                MetaAlbumsTable::ALBUM, MetaAlbumsTable::TABLE_NAME, MetaAlbumsTable::ID, MetadataTable::ALBUM_ID
-            ), "album")
-            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
-                MetaArtistsTable::ARTIST, MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID, MetadataTable::ARTIST_ID
-            ), "album_artist")
+            ->select(MetaAlbumsTable::ALBUM_FULL)
+            ->selectAlias(MetaArtistsTable::ARTIST_FULL, "album_artist")
 
             ->orderBy(MetadataTable::ARTIST_ID_FULL)
             ->orderBy(MetadataTable::DATE . " DESC")
