@@ -70,27 +70,33 @@ class FFProbe {
             return Option::None();
         }
 
+        /**
+         * @var Option[] $json
+         * @var Option[] $o_format
+         * @var Option[] $o_tags
+         */
+
         $json = Option::Some(json_decode(implode("", $result), true));
 
-        $o_format = $json->sel("format");
-        $o_tags = $o_format->sel("tags");
+        $o_format = $json["format"];
+        $o_tags = $o_format["tags"];
 
         $object = new Metadata();
 
-        $object->filename           = $o_format->sel("filename")     ->get();
-        $object->format_name        = $o_format->sel("format_name")  ->get();
-        $object->duration           = $o_format->sel("duration")     ->map("doubleval")->get();
-        $object->size               = $o_format->sel("size")         ->toInt()->get();
-        $object->bitrate            = $o_format->sel("bit_rate")     ->toInt()->get();
+        $object->filename           = $o_format["filename"]     ->get();
+        $object->format_name        = $o_format["format_name"]  ->get();
+        $object->duration           = $o_format["duration"]     ->map("doubleval")->get();
+        $object->size               = $o_format["size"]         ->toInt()->get();
+        $object->bitrate            = $o_format["bit_rate"]     ->toInt()->get();
 
-        $object->meta_artist        = $o_tags->sel("artist")         ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->meta_title         = $o_tags->sel("title")          ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->meta_genre         = $o_tags->sel("genre")          ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->meta_date          = $o_tags->sel("date")           ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->meta_album         = $o_tags->sel("album")          ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->meta_track_number  = $o_tags->sel("track")          ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->meta_album_artist  = $o_tags->sel("album_artist")   ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->is_compilation     = $o_tags->sel("compilation")    ->toInt()->getOrElse(0);
+        $object->meta_artist        = $o_tags["artist"]         ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_title         = $o_tags["title"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_genre         = $o_tags["genre"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_date          = $o_tags["date"]           ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_album         = $o_tags["album"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_track_number  = $o_tags["track"]          ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->meta_album_artist  = $o_tags["album_artist"]   ->map([self::class, "cp1252dec"])->orEmpty();
+        $object->is_compilation     = $o_tags["compilation"]    ->toInt()->getOrElse(0);
 
         return Option::Some($object);
 
