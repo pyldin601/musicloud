@@ -34,20 +34,18 @@ class DoTracks implements RouteHandler {
             ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
             ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
 
+            ->innerJoin(MetaAlbumsTable::TABLE_NAME,  MetaAlbumsTable::ID_FULL,  MetadataTable::ALBUM_ID_FULL)
+            ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID_FULL, MetadataTable::ARTIST_ID_FULL)
+            ->innerJoin(MetaGenresTable::TABLE_NAME,  MetaGenresTable::ID_FULL,  MetadataTable::GENRE_ID_FULL)
+
             ->where(MetadataTable::USER_ID_FULL, $me->getId())
 
-            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
-                MetaAlbumsTable::ALBUM, MetaAlbumsTable::TABLE_NAME, MetaAlbumsTable::ID, MetadataTable::ALBUM_ID
-            ), "album")
-            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
-                MetaArtistsTable::ARTIST, MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID, MetadataTable::ARTIST_ID
-            ), "album_artist")
-            ->selectAlias(sprintf("(SELECT %s FROM %s WHERE %s = %s)",
-                MetaGenresTable::GENRE, MetaGenresTable::TABLE_NAME, MetaGenresTable::ID, MetadataTable::GENRE_ID
-            ), "genre")
+            ->select(MetaAlbumsTable::ALBUM_FULL)
+            ->select(MetaArtistsTable::ARTIST_FULL)
+            ->select(MetaGenresTable::GENRE_FULL)
 
-            ->orderBy(MetadataTable::ARTIST_ID_FULL)
-            ->orderBy(MetadataTable::ALBUM_ID_FULL)
+            ->orderBy(MetaArtistsTable::ARTIST_FULL)
+            ->orderBy(MetaAlbumsTable::ALBUM_FULL)
             ->orderBy(MetadataTable::TRACK_NUMBER);
 
         CatalogTools::commonSelectors($query);
@@ -55,13 +53,7 @@ class DoTracks implements RouteHandler {
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
-            $cols = implode(",", [
-                MetadataTable::ALBUM_ARTIST,
-                MetadataTable::ARTIST,
-                MetadataTable::TITLE,
-                MetadataTable::ALBUM,
-                MetadataTable::GENRE
-            ]);
+            $cols = implode(",", [MetadataTable::ARTIST_FULL, MetadataTable::TITLE_FULL]);
             $query->match($cols, $filter->get());
         }
 
