@@ -53,8 +53,7 @@ class DoTracks implements RouteHandler {
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
-            $cols = implode(",", [MetadataTable::ARTIST_FULL, MetadataTable::TITLE_FULL]);
-            $query->match($cols, $filter->get());
+            $query->match(MetadataTable::TITLE_FULL, $filter->get());
         }
 
         $catalog = $query->fetchAll();
