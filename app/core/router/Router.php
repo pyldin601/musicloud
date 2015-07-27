@@ -56,6 +56,19 @@ class Router implements SingletonInterface {
     }
 
     /**
+     * @param $regexp
+     * @param $callable
+     */
+    public function whenRegExp($regexp, $callable) {
+
+        $this->routes[$regexp] = array(
+            "keys" => [],
+            "action" => $callable
+        );
+
+    }
+
+    /**
      * @param $callable
      */
     public function otherwise($callable) {

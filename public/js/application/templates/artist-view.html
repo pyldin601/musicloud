@@ -9,7 +9,7 @@
         <div class="album-wrapper clear-fix" ng-repeat="album in albums">
             <div class="left cover">
                 <div class="cover-background">
-                    <img ng-if="album.has_cover" ng-src="/content/cover/{{ album.cover_id }}">
+                    <img ng-if="album.cover_id" ng-src="/content/cover/{{ album.cover_id }}">
                 </div>
             </div>
             <div class="content">

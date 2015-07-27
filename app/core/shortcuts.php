@@ -12,6 +12,14 @@ function when($pattern, $callable) {
 }
 
 /**
+ * @param $regexp
+ * @param $callable
+ */
+function whenRegExp($regexp, $callable) {
+    Router::getInstance()->whenRegExp($regexp, $callable);
+}
+
+/**
  * Adds default route to router pool
  * @param $callable
  */

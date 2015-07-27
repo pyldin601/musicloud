@@ -7,6 +7,8 @@ var mediacloud = angular.module("HomeCloud");
 mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
     var templatePath = "/public/js/application/templates";
 
+    //$locationProvider.html5Mode(true).hashPrefix("!");
+
     $routeProvider.when("/artists/", {
         templateUrl: templatePath + "/artists-view.html",
         controller: "AllArtistsViewController",

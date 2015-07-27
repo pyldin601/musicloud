@@ -20,6 +20,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.min.js"></script>
 
+    <script src="/public/js/application/libs/angular-post-fix.js"></script>
+    <script src="/public/js/application/libs/ng-infinite-scroll.min.js"></script>
+
     <script src="/public/js/application/homecloud.js"></script>
     <script src="/public/js/application/modules/services.js"></script>
     <script src="/public/js/application/modules/filters.js"></script>
@@ -191,7 +194,7 @@
         </div>
     </div>
 </div>
-<div ng-view=""></div>
+<div ng-view="" autoscroll="true"></div>
 
 </body>
 </html>

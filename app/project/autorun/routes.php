@@ -9,6 +9,7 @@
 
 use app\project\handlers\dynamic\catalog;
 use app\project\handlers\dynamic\content;
+use app\project\handlers\fixed\DoLibrary;
 
 
 when("content/track/&id", content\DoReadTrack::class);
@@ -20,6 +21,8 @@ when("api/catalog/tracks/by-album/:artist/:album", catalog\DoTracksByAlbum::clas
 when("api/catalog/tracks/by-genre/:genre", catalog\DoTracksByGenre::class);
 
 when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::class);
+
+//whenRegExp("/library\\/.+/", DoLibrary::class);
 
 when("test", function () {
 //    (new SelectQuery(MetadataTable::TABLE_NAME))

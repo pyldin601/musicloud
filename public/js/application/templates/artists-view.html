@@ -1,10 +1,6 @@
 <div class="library-body">
-    <div class="title">
-        List of artists in your library
-        (total &mdash; <b ng-bind="account.user.stats.artists_count">-</b>)
-    </div>
     <div class="library-container">
-        <div class="artist-wrapper list-view container">
+        <div class="artist-wrapper list-view container" infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
             <div class="artist-item square2" ng-repeat="artist in artists">
                 <div class="artist-list-content">
                     <div class="cover">
