@@ -96,7 +96,7 @@ class FFProbe {
         $object->meta_album         = $o_tags["album"]          ->map([self::class, "cp1252dec"])->orEmpty();
         $object->meta_track_number  = $o_tags["track"]          ->map([self::class, "cp1252dec"])->orEmpty();
         $object->meta_album_artist  = $o_tags["album_artist"]   ->map([self::class, "cp1252dec"])->orEmpty();
-        $object->is_compilation     = $o_tags["compilation"]    ->toInt()->getOrElse(0);
+        $object->is_compilation     = $o_tags["compilation"]    ->toInt()->orZero();
 
         return Option::Some($object);
 
