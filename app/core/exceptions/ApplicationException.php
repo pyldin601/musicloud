@@ -17,7 +17,6 @@ class ApplicationException extends \Exception {
     private $http_code;
 
     public function __construct($message = "", $http_response_code = HttpStatusCodes::HTTP_BAD_REQUEST) {
-
         parent::__construct($message, 0);
         $this->http_code = $http_response_code;
     }

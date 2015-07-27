@@ -39,16 +39,16 @@ homecloud.factory("TrackService", ["$http", function ($http) {
 homecloud.factory("SearchService", ["$http", function ($http) {
     return {
         artists: function (data) {
-            return $http.post("/api/catalog/artists", data);
+            return $http.get("/api/catalog/artists", data);
         },
         albums: function (data) {
-            return $http.post("/api/catalog/albums", data);
+            return $http.get("/api/catalog/albums", data);
         },
         genres: function (data) {
-            return $http.post("/api/catalog/genres", data);
+            return $http.get("/api/catalog/genres", data);
         },
         tracks: function (data) {
-            return $http.post("/api/catalog/tracks", data);
+            return $http.get("/api/catalog/tracks", data);
         }
     };
 }]);
@@ -56,14 +56,46 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 homecloud.factory("LibraryService", ["$http", function ($http) {
     return {
         tracksByArtist: function (artist) {
-            return $http.post("/api/catalog/tracks/by-artist/" + encodeURI(artist));
+            return $http.get("/api/catalog/tracks/by-artist/" + encodeURI(artist));
         },
         tracksByAlbum: function (album, artist) {
-            return $http.post("/api/catalog/tracks/by-album/" + encodeURI(artist) + "/" + encodeURI(album));
+            return $http.get("/api/catalog/tracks/by-album/" + encodeURI(artist) + "/" + encodeURI(album));
         },
 
         albumsByArtist: function (artist) {
-            return $http.post("/api/catalog/albums/by-artist/" + encodeURI(artist));
+            return $http.get("/api/catalog/albums/by-artist/" + encodeURI(artist));
+        }
+    };
+}]);
+
+homecloud.factory("Library", [function () {
+    return {
+        groupAlbums: function (tracks) {
+            var albumsList = [],
+                index,
+                getAlbumIndex = function (album) {
+                    for (var j = 0; j < albumsList.length; j += 1) {
+                        if (albumsList[j].title == album) {
+                            return j;
+                        }
+                    }
+                    return -1;
+                };
+            for (var i = 0; i < tracks.length; i += 1) {
+                index = getAlbumIndex(tracks[i].album);
+                if (index == -1) {
+                    albumsList.push({
+                        title: tracks[i].album,
+                        cover_id: tracks[i].id,
+                        year: tracks[i].date,
+                        has_cover: tracks[i].cover_file_id !== null,
+                        tracks: [ tracks[i] ]
+                    });
+                } else {
+                    albumsList[index].tracks.push(tracks[i]);
+                }
+            }
+            return albumsList;
         }
     };
 }]);

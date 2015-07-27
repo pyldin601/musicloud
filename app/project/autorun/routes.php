@@ -7,17 +7,13 @@
  */
 
 
-use app\core\db\builder\SelectQuery;
-use app\core\db\builder\UpdateQuery;
 use app\project\handlers\dynamic\catalog;
-use app\project\handlers\dynamic\content\DoReadCover;
-use app\project\handlers\dynamic\content\DoReadTrack;
-use app\project\persistence\db\dao\AlbumDao;
-use app\project\persistence\db\tables\MetadataTable;
+use app\project\handlers\dynamic\content;
 
 
-when("content/track/&id", DoReadTrack::class);
-when("content/cover/&id", DoReadCover::class);
+when("content/track/&id", content\DoReadTrack::class);
+when("content/cover/&id", content\DoReadCover::class);
+when("content/raw/&id",   content\DoReadRawContent::class);
 
 when("api/catalog/tracks/by-artist/:artist", catalog\DoTracksByAlbumArtist::class);
 when("api/catalog/tracks/by-album/:artist/:album", catalog\DoTracksByAlbum::class);

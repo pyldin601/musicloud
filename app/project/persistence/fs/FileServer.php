@@ -14,6 +14,7 @@ use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\core\exceptions\ApplicationException;
+use app\core\exceptions\status\PageNotFoundException;
 use app\lang\Arrays;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\persistence\db\tables\FilesTable;
@@ -69,7 +70,7 @@ class FileServer {
         $file = (new SelectQuery(FilesTable::TABLE_NAME))
             ->where(FilesTable::ID, $file_id)
             ->fetchOneRow()
-            ->getOrThrow(TrackNotFoundException::class);
+            ->getOrThrow(PageNotFoundException::class);
 
         $filename = FSTool::filename($file[FilesTable::SHA1]);
         $filesize = filesize($filename);

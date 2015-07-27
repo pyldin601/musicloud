@@ -1,0 +1,39 @@
+<div class="library-body">
+    <div class="title">Albums by artist &laquo;<b>{{ artist }}</b>&raquo; (albums &mdash; <b>{{ albums.length }}</b>, tracks &mdash; <b>{{ tracks.length }}</b>)</div>
+    <div class="library-container">
+        <div class="album-wrapper clear-fix" ng-repeat="album in albums">
+            <div class="left cover">
+                <div class="cover-background">
+                    <img ng-if="album.has_cover" ng-src="/content/cover/{{ album.cover_id }}">
+                </div>
+            </div>
+            <div class="content">
+                <div class="album-title">
+                    <div class="right" ng-bind="album.year"></div>
+                    <div class="name" ng-bind="album.title"></div>
+                </div>
+                <div class="album-tracks">
+                    <div class="track" ng-repeat="track in album.tracks">
+                        <div class="duration right" ng-bind-template="{{ track.duration | time }}"></div>
+                        <div class="rating right">
+                            <ul class="rating-body">
+                                <li class="fa fa-star-o"></li>
+                                <li class="fa fa-star-o"></li>
+                                <li class="fa fa-star-o"></li>
+                                <li class="fa fa-star-o"></li>
+                                <li class="fa fa-star-o"></li>
+                            </ul>
+                        </div>
+                        <div class="position left" ng-bind-template="{{ $index + 1 }}."></div>
+                        <div class="track-title">
+                            <div class="first" ng-bind="track.title"></div>
+                            <div class="second" ng-bind="track.artist"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

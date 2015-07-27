@@ -9,10 +9,11 @@
 namespace app\project\exceptions;
 
 
+use app\core\http\HttpStatusCodes;
 use Exception;
 
 class UnauthorizedException extends BackendException {
     public function __construct() {
-        parent::__construct("This action requires you to be authorized", 403);
+        parent::__construct("This action requires you to be authorized", HttpStatusCodes::HTTP_UNAUTHORIZED);
     }
 }

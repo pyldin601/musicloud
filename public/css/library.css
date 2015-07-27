@@ -642,6 +642,8 @@ b {
   padding-bottom: 48px;
 }
 .library-body .library-container .album-wrapper .cover .cover-background {
+  background: #fcfcfc url("/public/images/default.directory.jpg") center center no-repeat;
+  background-size: cover;
   width: 200px;
   height: 200px;
 }
