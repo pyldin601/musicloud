@@ -19,7 +19,7 @@ homecloud.filter("count", function () {
     };
 });
 
-homecloud.filter("time", function () {
+homecloud.filter("MMSS", function () {
     return function (value) {
         var sec_num = parseInt(value, 10);
         var minutes = Math.floor(sec_num / 60);
@@ -30,4 +30,16 @@ homecloud.filter("time", function () {
 
         return minutes+':'+seconds;
     }
+});
+
+homecloud.filter("albumFilter", function () {
+    return function (album) {
+        return album ? album : "Unknown Album";
+    };
+});
+
+homecloud.filter("trackFilter", function () {
+    return function (track) {
+        return track.title || track.file_name || "Unknown Title";
+    };
 });

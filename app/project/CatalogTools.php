@@ -40,6 +40,7 @@ class CatalogTools {
             MetadataTable::RATING_FULL,
             MetadataTable::TRACK_NUMBER_FULL,
             MetadataTable::COVER_FILE_ID_FULL,
+            AudiosTable::FILE_NAME_FULL,
             AudiosTable::CREATED_DATE_FULL,
             StatsTable::LAST_PLAYED_DATE_FULL,
             StatsTable::PLAYBACKS_FULL,

@@ -6,19 +6,31 @@ var mediacloud = angular.module("HomeCloud");
 
 mediacloud.config(["$routeProvider", function ($routeProvider) {
     var templatePath = "/public/js/application/templates";
+
     $routeProvider.when("/", {
-        template: "Init"
+        templateUrl: templatePath + "/artists-view.html",
+        controller: "AllArtistsViewController",
+        resolve: {
+            AllArtistsContent: ["SearchService", "$location", function (SearchService, $location) {
+                return SearchService.artists(0, "").then(function (response) {
+                    return response.data;
+                }, function () {
+                    $location.url("/");
+                });
+            }]
+        }
     });
+
     $routeProvider.when("/artist/:artist", {
         templateUrl: templatePath + "/artist-view.html",
         controller: "ArtistViewController",
         resolve: {
             ArtistContent: ["LibraryService", "$route", "$location", function (LibraryService, $route, $location) {
-                var promise = LibraryService.tracksByArtist($route.current.params.artist);
-                promise.error(function () {
+                return LibraryService.tracksByArtist($route.current.params.artist).then(function (response) {
+                    return response.data;
+                }, function () {
                     $location.url("/");
                 });
-                return promise;
             }]
         }
     });

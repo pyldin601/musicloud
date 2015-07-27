@@ -1,0 +1,14 @@
+<div class="library-body">
+    <div class="title">
+        List of artists in your library
+        (total &mdash; <b ng-bind="account.user.stats.artists_count">-</b>)
+    </div>
+    <div class="library-container">
+        <div class="artist-wrapper">
+            <div class="artist-item" ng-repeat="artist in artists">
+                <span ng-bind="artist.artist"></span>
+                <a ng-href="#/artist/{{ artist.artist }}">Go</a>
+            </div>
+        </div>
+    </div>
+</div>

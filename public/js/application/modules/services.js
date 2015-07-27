@@ -38,17 +38,17 @@ homecloud.factory("TrackService", ["$http", function ($http) {
 
 homecloud.factory("SearchService", ["$http", function ($http) {
     return {
-        artists: function (data) {
-            return $http.get("/api/catalog/artists", data);
+        artists: function (offset, filter) {
+            return $http.get("/api/catalog/artists?o="+offset+"&q="+encodeURI(filter));
         },
-        albums: function (data) {
-            return $http.get("/api/catalog/albums", data);
+        albums: function (offset, filter) {
+            return $http.get("/api/catalog/albums?o="+offset+"&q="+encodeURI(filter));
         },
-        genres: function (data) {
-            return $http.get("/api/catalog/genres", data);
+        genres: function (offset, filter) {
+            return $http.get("/api/catalog/genres?o="+offset+"&q="+encodeURI(filter));
         },
-        tracks: function (data) {
-            return $http.get("/api/catalog/tracks", data);
+        tracks: function (offset, filter) {
+            return $http.get("/api/catalog/tracks?o="+offset+"&q="+encodeURI(filter));
         }
     };
 }]);
