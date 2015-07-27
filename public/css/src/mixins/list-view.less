@@ -1,6 +1,23 @@
 .list-view {
   .artist-item {
     position: relative;
+    margin-bottom: 32px;
+    .artist-name {
+      position: absolute;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      padding: 4px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      bottom: -22px;
+      text-align: center;
+      font-size: 9pt;
+      a {
+        text-decoration: none;
+        color: #000000;
+      }
+    }
     .artist-list-content {
       background: #f0f0f0 url("/public/images/default.directory.jpg") no-repeat center center;
       background-size: cover;
@@ -9,17 +26,17 @@
       bottom: 4px;
       top: 4px;
       position: absolute;
-      text-align: center;
-      .artist-name {
+      .cover {
         position: absolute;
         width: 100%;
-        bottom: 0;
-        background-color: rgba(255, 255, 255, 0.5);
-        padding: 4px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        height: 100%;
+        img {
+          vertical-align: middle;
+          width: 100%;
+          height: 100%;
+        }
       }
+
     }
   }
 }

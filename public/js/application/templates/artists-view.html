@@ -7,6 +7,9 @@
         <div class="artist-wrapper list-view container">
             <div class="artist-item square2" ng-repeat="artist in artists">
                 <div class="artist-list-content">
+                    <div class="cover">
+                        <img ng-if="artist.cover_file_id" ng-src="/content/cover/{{ artist.cover_file_id }}">
+                    </div>
                     <div class="artist-name">
                         <a ng-href="#/artist/{{ artist.artist }}"
                            ng-bind-template="{{ artist.artist | artistFilter }}"></a>
