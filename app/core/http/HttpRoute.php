@@ -22,6 +22,8 @@ class HttpRoute implements SingletonInterface {
         $this->raw = preg_replace('/(\.(html|php)$)|(\/$)/', '', $http_get->getOrElse("route", self::DEFAULT_ROUTE));
         $route_array = explode("/", $this->raw);
 
+        error_log(sprintf("::: %s :::", $this->raw));
+
         end($route_array); $key = key($route_array);
         $route_array[$key] = "Do" . ucfirst($route_array[$key]);
         reset($route_array);

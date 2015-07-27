@@ -71,14 +71,14 @@ class FFProbe {
         }
 
         /**
-         * @var Option[] $json
+         * @var Option[] $metadata
          * @var Option[] $o_format
          * @var Option[] $o_tags
          */
 
-        $json = Option::Some(json_decode(implode("", $result), true));
+        $metadata = Option::Some(json_decode(implode("", $result), true));
 
-        $o_format = $json["format"];
+        $o_format = $metadata["format"];
         $o_tags = $o_format["tags"];
 
         $object = new Metadata();
