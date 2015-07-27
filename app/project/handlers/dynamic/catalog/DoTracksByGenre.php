@@ -46,7 +46,7 @@ class DoTracksByGenre implements RouteHandler {
             ->orderBy(MetadataTable::ARTIST_ID_FULL)
             ->orderBy(MetadataTable::DATE . " DESC")
             ->orderBy(MetadataTable::ALBUM_ID_FULL)
-            ->orderBy(MetadataTable::TRACK_NUMBER);
+            ->orderBy(MetadataTable::TRACK_NUMBER . " ASC");
 
         Context::contextify($query);
 
