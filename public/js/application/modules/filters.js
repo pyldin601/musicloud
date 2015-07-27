@@ -43,3 +43,10 @@ homecloud.filter("trackFilter", function () {
         return track.title || track.file_name || "Unknown Title";
     };
 });
+
+homecloud.filter("artistFilter", function () {
+    return function (artist) {
+        return artist ? artist : "Unknown Artist";
+    };
+});
+

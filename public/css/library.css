@@ -96,6 +96,43 @@
   display: table;
   clear: both;
 }
+.rating-body {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  font-weight: 600;
+}
+.rating-body > li {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+.rating-body > li:hover:before,
+.rating-body > li:hover ~ li:before {
+  content: "\f005";
+}
+.list-view .artist-item {
+  position: relative;
+}
+.list-view .artist-item .artist-list-content {
+  background: #f0f0f0 url("/public/images/default.directory.jpg") no-repeat center center;
+  background-size: cover;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  top: 4px;
+  position: absolute;
+  text-align: center;
+}
+.list-view .artist-item .artist-list-content .artist-name {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -132,20 +169,6 @@ b {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-bottom: 1px;
-}
-.rating-body {
-  unicode-bidi: bidi-override;
-  direction: rtl;
-  font-weight: 600;
-}
-.rating-body > li {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-}
-.rating-body > li:hover:before,
-.rating-body > li:hover ~ li:before {
-  content: "\f005";
 }
 .library-header {
   position: fixed;

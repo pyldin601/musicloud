@@ -4,10 +4,14 @@
         (total &mdash; <b ng-bind="account.user.stats.artists_count">-</b>)
     </div>
     <div class="library-container">
-        <div class="artist-wrapper">
-            <div class="artist-item" ng-repeat="artist in artists">
-                <span ng-bind="artist.artist"></span>
-                <a ng-href="#/artist/{{ artist.artist }}">Go</a>
+        <div class="artist-wrapper list-view container">
+            <div class="artist-item square2" ng-repeat="artist in artists">
+                <div class="artist-list-content">
+                    <div class="artist-name">
+                        <a ng-href="#/artist/{{ artist.artist }}"
+                           ng-bind-template="{{ artist.artist | artistFilter }}"></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

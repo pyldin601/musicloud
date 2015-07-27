@@ -38,6 +38,7 @@ class DoArtists implements RouteHandler {
             ->having("COUNT(".MetadataTable::ID_FULL.") > 0")
             ->where(MetaArtistsTable::USER_ID_FULL, $me->getId());
 
+        $query->orderBy(MetaArtistsTable::ARTIST_FULL);
 
         Context::contextify($query);
 
