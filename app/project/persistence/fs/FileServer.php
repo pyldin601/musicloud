@@ -16,6 +16,7 @@ use app\core\db\builder\UpdateQuery;
 use app\core\etc\MIME;
 use app\core\exceptions\ApplicationException;
 use app\core\exceptions\status\PageNotFoundException;
+use app\core\http\HttpStatusCodes;
 use app\lang\Arrays;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\persistence\db\tables\FilesTable;
@@ -97,11 +98,11 @@ class FileServer {
         }
 
         if (isset($range)) {
-            http_response_code(206);
+            http_response_code(HttpStatusCodes::HTTP_PARTIAL_CONTENT);
             header("Content-Range: bytes " . $start . "-" . ($filesize - 1) . "/" . $filesize);
             header("Content-Length: " . ($filesize - $start));
         } else {
-            http_response_code(200);
+            http_response_code(HttpStatusCodes::HTTP_OK);
             header("Content-Length: " . $filesize);
         }
 
