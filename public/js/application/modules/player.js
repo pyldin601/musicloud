@@ -7,7 +7,6 @@ homecloud.run(["$rootScope", function ($rootScope) {
 
     jFrame.jPlayer({
         ready: function () {
-
         },
         ended: function () {
             $rootScope.player.doPlayNext();
@@ -78,6 +77,13 @@ homecloud.run(["$rootScope", function ($rootScope) {
                 position: 0,
                 load: 0
             };
+
+        },
+        doSeek: function (position) {
+
+            if (!$rootScope.player.isLoaded) return;
+
+            jFrame.jPlayer("playHead", position);
 
         },
         doPlayNext: function () {

@@ -12,7 +12,7 @@ homecloud.controller("ArtistViewController", [
         $scope.tracks_selected = [];
 
         $scope.$watch("tracks_selected", function (n, o) {
-            console.log(n, o);
+            //console.log(n, o);
         });
 
     }

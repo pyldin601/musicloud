@@ -25,10 +25,25 @@ homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
         template: '<div class="progress-line"></div><div class="progress-position"></div><div class="progress-bulb"></div>',
         link: function (scope, elem, attrs) {
             var bulb = elem.find(".progress-bulb"),
-                line = elem.find(".progress-position");
-            $rootScope.$watch("player.position", function (position) {
-                console.log(position);
+                line = elem.find(".progress-position"),
+                watcher = $rootScope.$watchCollection("player.playlist.position", function (pos) {
+
+                    var percent;
+
+                    if (!(pos && pos.duration > 0)) return;
+
+                    percent = 100 / pos.duration * pos.position;
+
+                    bulb.css("left", "" + percent + "%");
+                    line.css("width", "" + percent + "%");
+
+                });
+            elem.on("mousedown", function (event) {
+                var offset = elem.offset(),
+                    width = elem.width();
+                $rootScope.player.doSeek(100 / width * (event.clientX - offset.left));
             });
+            scope.$on("$destroy", watcher);
         }
     };
 }]);
@@ -53,7 +68,8 @@ homecloud.directive("multiselectList", [function () {
 
                 }).toArray();
 
-            };
+            },
+                lastSelected = null;
 
             elem.on("mousedown", function (event) {
 
@@ -70,7 +86,19 @@ homecloud.directive("multiselectList", [function () {
                         all.toggleClass(scope.multiselectList, false);
                     }
                     if (selected.length > 0) {
-                        selected.toggleClass(scope.multiselectList);
+                        if (event.shiftKey && lastSelected) {
+                            ((lastSelected.index() < selected.index())
+                                ? lastSelected.nextUntil(selected)
+                                : selected.nextUntil(lastSelected)
+                            )   .add(selected)
+                                .add(lastSelected)
+                                .toggleClass(scope.multiselectList, true)
+                        } else {
+                            selected.toggleClass(scope.multiselectList, true);
+                            lastSelected = selected;
+                        }
+                    } else {
+                        lastSelected = null;
                     }
                     countSelected();
                 });
