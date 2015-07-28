@@ -29,7 +29,12 @@
                                 <li class="fa fa-star-o"></li>
                             </ul>
                         </div>
-                        <div class="position left" ng-bind-template="{{ $index + 1 }}."></div>
+                        <div class="position left">
+                            <div ng-hide="player.playlist.track.id == track.id" ng-bind-template="{{ $index + 1 }}."></div>
+                            <div ng-show="player.playlist.track.id == track.id">
+                                <i class="fa fa-volume-up"></i>
+                            </div>
+                        </div>
                         <div class="track-title">
                             <div class="first" ng-bind="track | getTitle"></div>
                             <div class="second" ng-bind="track | getArtist"></div>

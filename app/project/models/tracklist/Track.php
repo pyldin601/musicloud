@@ -126,7 +126,6 @@ class Track {
         assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
 
         header("Content-Type: " . $this->track_data[AudiosTable::CONTENT_TYPE]);
-        header(sprintf("Content-Disposition: filename=%s", $this->track_data[AudiosTable::FILE_NAME]));
 
         FileServer::writeToClient($this->track_data[AudiosTable::FILE_ID]);
 

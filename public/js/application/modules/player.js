@@ -6,23 +6,23 @@ homecloud.run(["$rootScope", function ($rootScope) {
     var jFrame = $("<div>").appendTo("body");
 
     jFrame.jPlayer({
-        ready: function(e) {
+        ready: function () {
 
         },
-        ended: function(e) {
+        ended: function () {
             $rootScope.player.doPlayNext();
         },
-        error: function(e) {
+        error: function () {
             $rootScope.player.doStop();
         },
-        timeupdate: function(e) {
-            $rootScope.player.playlist.position.duration = e.jPlayer.status.duration;
-            $rootScope.player.playlist.position.position = e.jPlayer.status.currentTime;
-            $rootScope.$digest();
+        timeupdate: function (e) {
+            $rootScope.$applyAsync(function () {
+                $rootScope.player.playlist.position.duration = e.jPlayer.status.duration;
+                $rootScope.player.playlist.position.position = e.jPlayer.status.currentTime;
+            });
         },
-        progress: function(e) {  },
         swfPath: "/public/js/application/libs/jplayer/",
-        supplied: "m4a, mp3",
+        supplied: "mp3",
         solution: "html, flash",
         volume: 1
     });
@@ -32,16 +32,14 @@ homecloud.run(["$rootScope", function ($rootScope) {
         isPlaying: false,
         playlist: {
             tracks: [],
-            index: null,
             track: null,
             position: {
                 duration: 0,
-                position: 0
+                position: 0,
+                load: 0
             }
         },
         doPlay: function (track, playlist) {
-
-            var format, file;
 
             if (playlist !== undefined && playlist !== $rootScope.player.playlist.tracks) {
                 $rootScope.player.playlist.tracks = playlist;
@@ -49,29 +47,23 @@ homecloud.run(["$rootScope", function ($rootScope) {
 
             $rootScope.player.playlist.track = track;
 
-            switch (track.content_type) {
-                case "audio/mp4":
-                    format = "m4a";
-                    break;
-                default:
-                    format = "mp3";
-            }
-
-            file = {};
-            file[format] = "/content/track/" + track.id;
-
-            jFrame.jPlayer("setMedia", file);
+            jFrame.jPlayer("setMedia", { mp3: "/content/track/" + track.id });
 
             $rootScope.player.isLoaded = true;
+            $rootScope.player.isPlaying = true;
 
             jFrame.jPlayer("play");
-
-            $rootScope.player.isPlaying = true;
 
         },
         doPlayPause: function () {
 
-
+            if ($rootScope.player.isPlaying) {
+                $rootScope.player.isPlaying = false;
+                jFrame.jPlayer("pause");
+            } else {
+                $rootScope.player.isPlaying = true;
+                jFrame.jPlayer("play");
+            }
 
         },
         doStop: function () {
@@ -82,6 +74,12 @@ homecloud.run(["$rootScope", function ($rootScope) {
             $rootScope.player.isPlaying = false;
             $rootScope.player.playlist.track = null;
             $rootScope.player.playlist.tracks = [];
+
+            $rootScope.player.playlist.position = {
+                duration: 0,
+                position: 0,
+                load: 0
+            };
 
         },
         doPlayNext: function () {

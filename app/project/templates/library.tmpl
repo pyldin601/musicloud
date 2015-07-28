@@ -65,7 +65,8 @@
                     <i class="fa fa-backward"></i>
                 </li>
                 <li class="ctrl-play" ng-click="player.doPlayPause()">
-                    <i class="fa fa-play"></i>
+                    <i ng-hide="player.isPlaying" class="fa fa-play"></i>
+                    <i ng-show="player.isPlaying" class="fa fa-pause"></i>
                 </li>
                 <li class="ctrl-next" ng-click="player.doPlayNext()">
                     <i class="fa fa-forward"></i>
@@ -75,7 +76,8 @@
         <li class="player-display">
             <div class="display">
                 <div class="cover">
-                    <img src="/public/images/stub/life-at-mirror-cd.jpg">
+                    <img ng-if="player.playlist.track.cover_file_id"
+                         ng-src="/content/cover/{{ player.playlist.track.cover_file_id }}">
                 </div>
                 <div class="text">
                     <div class="now-playing">
