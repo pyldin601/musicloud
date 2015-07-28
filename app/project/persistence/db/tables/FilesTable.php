@@ -17,10 +17,14 @@ class FilesTable {
     const SHA1                  = "sha1";
     const SIZE                  = "size";
     const USED                  = "used";
+    const MTIME                 = "mtime";
+    const CONTENT_TYPE          = "content_type";
 
     const ID_FULL               = self::TABLE_NAME . "." . self::ID;
     const SHA1_FULL             = self::TABLE_NAME . "." . self::SHA1;
     const SIZE_FULL             = self::TABLE_NAME . "." . self::SIZE;
     const USED_FULL             = self::TABLE_NAME . "." . self::USED;
+    const MTIME_FULL            = self::TABLE_NAME . "." . self::MTIME;
+    const CONTENT_TYPE_FULL     = self::TABLE_NAME . "." . self::CONTENT_TYPE;
 
 } 

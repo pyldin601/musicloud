@@ -24,7 +24,8 @@ class DoReadCover implements RouteHandler {
         (new SelectQuery(MetadataTable::TABLE_NAME, MetadataTable::COVER_FILE_ID_FULL, $id))
             ->fetchOneRow()
             ->orThrow(PageNotFoundException::class)
-            ->filter(function ($row) use ($me) { return $row[MetadataTable::USER_ID] === $me->getId(); })
+            ->sel(MetadataTable::USER_ID)
+            ->select($me->getId())
             ->orThrow(BadAccessException::class);
 
         FileServer::writeToClient($id);

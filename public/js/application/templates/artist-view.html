@@ -1,25 +1,25 @@
-<div class="library-body">
+<div class="library-body" ng-init="albums = (tracks | groupBy: 'album')">
     <div class="title">
         Albums by artist
         &laquo;<b ng-bind="artist">-</b>&raquo;
-        (albums &mdash; <b ng-bind="albums.length">-</b>,
+        (albums &mdash; <b ng-bind="(albums | keys).length">-</b>,
         tracks &mdash; <b ng-bind="tracks.length">-</b>)
     </div>
     <div class="library-container">
-        <div class="album-wrapper clear-fix" ng-repeat="album in albums">
-            <div class="left cover">
+        <div class="album-wrapper clear-fix" ng-repeat="(album, tracks) in albums">
+            <div class="left cover" ng-init="first=tracks[0]">
                 <div class="cover-background">
-                    <img ng-if="album.cover_id" ng-src="/content/cover/{{ album.cover_id }}">
+                    <img ng-if="first.cover_file_id" ng-src="/content/cover/{{ first.cover_file_id }}">
                 </div>
             </div>
             <div class="content">
                 <div class="album-title">
-                    <div class="right" ng-bind="album.year"></div>
-                    <div class="name" ng-bind="album.title | albumFilter"></div>
+                    <div class="right" ng-bind="first.date"></div>
+                    <div class="name" ng-bind="album | albumFilter"></div>
                 </div>
                 <div class="album-tracks">
-                    <div class="track" ng-repeat="track in album.tracks">
-                        <div class="duration right" ng-bind-template="{{ track.duration | MMSS }}"></div>
+                    <div class="track" ng-repeat="track in tracks">
+                        <div class="duration right" ng-bind-template="{{ track.duration | mmss }}"></div>
                         <div class="rating right">
                             <ul class="rating-body">
                                 <li class="fa fa-star-o"></li>
@@ -31,8 +31,8 @@
                         </div>
                         <div class="position left" ng-bind-template="{{ $index + 1 }}."></div>
                         <div class="track-title">
-                            <div class="first" ng-bind="track | trackFilter"></div>
-                            <div class="second" ng-bind="track.artist"></div>
+                            <div class="first" ng-bind="track | getTitle"></div>
+                            <div class="second" ng-bind="track | getArtist"></div>
                         </div>
                     </div>
 

@@ -28,6 +28,7 @@ use app\project\persistence\db\dao\AlbumDao;
 use app\project\persistence\db\dao\ArtistDao;
 use app\project\persistence\db\dao\GenreDao;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\fs\FileServer;
 use app\project\persistence\fs\FSTool;
@@ -71,13 +72,22 @@ class Track {
             ->getOrThrow(InvalidAudioFileException::class);
 
 
-        $cover = FFProbe::readTempCover($file_path);
+        $covers = FFProbe::readTempCover($file_path);
 
         $file_id = FileServer::register($file_path);
 
-        if ($cover->nonEmpty()) {
+        if ($covers->nonEmpty()) {
 
-            $cover_file_id = FileServer::register($cover->get());
+            $full_cover_id = FileServer::register($covers->get()[0]);
+            $middle_cover_id = FileServer::register($covers->get()[1]);
+            $small_cover_id = FileServer::register($covers->get()[2]);
+            $cover_file_id = $full_cover_id;
+
+            (new UpdateQuery(CoversTable::TABLE_NAME, CoversTable::ID_FILL, $this->track_id))
+                ->set(CoversTable::COVER_FULL_FULL, $full_cover_id)
+                ->set(CoversTable::COVER_MIDDLE_FULL, $middle_cover_id)
+                ->set(CoversTable::COVER_SMALL_FULL, $small_cover_id)
+                ->update();
 
         } else {
 

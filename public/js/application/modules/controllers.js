@@ -9,7 +9,7 @@ homecloud.controller("ArtistViewController", [
 
         $scope.artist = $routeParams.artist;
         $scope.tracks = ArtistContent.tracks;
-        $scope.albums = Library.groupAlbums($scope.tracks);
+        //$scope.albums = Library.groupAlbums($scope.tracks);
 
     }
 ]);

@@ -13,11 +13,13 @@ use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
+use app\core\etc\MIME;
 use app\core\exceptions\ApplicationException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\lang\Arrays;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\persistence\db\tables\FilesTable;
+use app\project\persistence\db\tables\MetadataTable;
 
 class FileServer {
 
@@ -44,6 +46,8 @@ class FileServer {
                 ->values(FilesTable::SHA1, $hash)
                 ->values(FilesTable::SIZE, filesize($file_path))
                 ->values(FilesTable::USED, 1)
+                ->values(FilesTable::MTIME, filemtime($file_path))
+                ->values(FilesTable::CONTENT_TYPE, MIME::mime_type($file_path))
                 ->executeInsert();
 
             rename($file_path, FSTool::filename($hash));
@@ -71,6 +75,14 @@ class FileServer {
             ->where(FilesTable::ID, $file_id)
             ->fetchOneRow()
             ->getOrThrow(PageNotFoundException::class);
+
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $file[FilesTable::MTIME]) . ' GMT');
+        header('Cache-Control: max-age=0');
+
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $file[FilesTable::MTIME]) {
+            http_response_code(304);
+            return;
+        }
 
         $filename = FSTool::filename($file[FilesTable::SHA1]);
         $filesize = filesize($filename);

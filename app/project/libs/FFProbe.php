@@ -9,11 +9,10 @@
 namespace app\project\libs;
 
 
+use app\core\cache\TempFileProvider;
 use app\core\etc\Settings;
 use app\lang\option\Option;
 use app\lang\option\Some;
-
-// todo: fix cp1251 charset support
 
 class FFProbe {
 
@@ -33,18 +32,19 @@ class FFProbe {
     public static function readTempCover($filename) {
 
         $escaped_filename = escapeshellarg($filename);
-        $temp_cover = sprintf("%s/%s.jpg",
-            self::$settings->get("fs", "temp"), "cover_" . md5(rand(0, 1000000000))
-        );
 
-        $command = sprintf("%s -i %s -v quiet -an -vcodec copy %s",
-            self::$settings->get("tools", "ffmpeg_cmd"), $escaped_filename, $temp_cover);
+        $temp_cover_full   = TempFileProvider::generate("cover", ".jpeg");
+        $temp_cover_middle = TempFileProvider::generate("cover", ".jpeg");
+        $temp_cover_small  = TempFileProvider::generate("cover", ".jpeg");
+
+        $command = sprintf("%s -i %s -v quiet -an -q:v 1 -f image2 %s -q:v 1 -vf scale=450:-1 -f image2 %s -q:v 1 -vf scale=250:-1 -f image2 %s",
+            self::$settings->get("tools", "ffmpeg_cmd"), $escaped_filename,
+            $temp_cover_full, $temp_cover_middle, $temp_cover_small);
 
         exec($command, $result, $status);
 
-        if (file_exists($temp_cover)) {
-            delete_on_shutdown($temp_cover);
-            return Option::Some($temp_cover);
+        if (file_exists($temp_cover_full)) {
+            return Option::Some([$temp_cover_full, $temp_cover_middle, $temp_cover_small]);
         } else {
             return Option::None();
         }
