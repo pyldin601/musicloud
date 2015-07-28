@@ -41,12 +41,14 @@ homecloud.filter("albumFilter", function () {
 
 homecloud.filter("getTitle", function () {
     return function (track) {
+        if (!track) return;
         return track.title || track.file_name || "Unknown Title";
     };
 });
 
 homecloud.filter("getArtist", function () {
     return function (track) {
+        if (!track) return;
         return track.artist || "Unknown Artist";
     };
 });

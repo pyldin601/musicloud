@@ -30,6 +30,7 @@ class CatalogTools {
     public static function commonSelectors(SelectQuery $query) {
         $query->select(
             MetadataTable::TITLE_FULL,
+            MetadataTable::ARTIST_FULL,
             MetadataTable::ALBUM_ID_FULL,
             MetadataTable::ARTIST_ID_FULL,
             MetadataTable::GENRE_ID_FULL,
@@ -44,7 +45,8 @@ class CatalogTools {
             AudiosTable::CREATED_DATE_FULL,
             StatsTable::LAST_PLAYED_DATE_FULL,
             StatsTable::PLAYBACKS_FULL,
-            StatsTable::SKIPS_FULL
+            StatsTable::SKIPS_FULL,
+            AudiosTable::CONTENT_TYPE
         );
     }
 

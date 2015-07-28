@@ -5,11 +5,10 @@
 var homecloud = angular.module("HomeCloud");
 
 homecloud.controller("ArtistViewController", [
-    "ArtistContent", "Library", "$scope", "$routeParams", function (ArtistContent, Library, $scope, $routeParams) {
+    "ArtistContent", "$scope", "$routeParams", function (ArtistContent, $scope, $routeParams) {
 
         $scope.artist = $routeParams.artist;
         $scope.tracks = ArtistContent.tracks;
-        //$scope.albums = Library.groupAlbums($scope.tracks);
 
     }
 ]);
