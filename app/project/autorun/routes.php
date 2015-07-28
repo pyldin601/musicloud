@@ -7,15 +7,20 @@
  */
 
 
+use app\core\db\builder\SelectQuery;
+use app\core\db\builder\UpdateQuery;
 use app\project\handlers\dynamic\catalog;
 use app\project\handlers\dynamic\content;
 use app\project\handlers\fixed\DoLibrary;
+use app\project\persistence\db\tables\FilesTable;
+use app\project\persistence\fs\FileServer;
 
 
 when("content/track/&id", content\DoReadTrack::class);
 when("content/cover/&id", content\DoReadCover::class);
 when("content/peaks/&id", content\DoWavePeaks::class);
 
+when("file/:id",          content\DoGetFile::class);
 
 when("api/catalog/tracks/by-artist/:artist", catalog\DoTracksByAlbumArtist::class);
 when("api/catalog/tracks/by-album/:artist/:album", catalog\DoTracksByAlbum::class);
@@ -26,13 +31,11 @@ when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::clas
 //whenRegExp("/library\\/.+/", DoLibrary::class);
 
 when("test", function () {
-//    (new SelectQuery(MetadataTable::TABLE_NAME))
-//        ->where(MetadataTable::ALBUM_ID . " IS NULL")
-//        ->eachRow(function ($row) {
-//            $album_id = AlbumDao::getAlbumId($row[MetadataTable::ARTIST_ID], $row[MetadataTable::ALBUM]);
-//            (new UpdateQuery(MetadataTable::TABLE_NAME))
-//                ->set(MetadataTable::ALBUM_ID, $album_id)
-//                ->where(MetadataTable::ID, $row[MetadataTable::ID])
-//                ->update();
-//        });
+//    $files = (new SelectQuery(FilesTable::TABLE_NAME))->where(FilesTable::UNIQUE_ID, "")->fetchAll();
+//    foreach ($files as $file) {
+//        (new UpdateQuery(FilesTable::TABLE_NAME))
+//            ->where(FilesTable::ID, $file[FilesTable::ID])
+//            ->set(FilesTable::UNIQUE_ID, FileServer::generateKey())
+//            ->update();
+//    }
 });

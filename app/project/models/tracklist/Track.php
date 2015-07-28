@@ -125,8 +125,6 @@ class Track {
 
         assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
 
-        header("Content-Type: " . $this->track_data[AudiosTable::CONTENT_TYPE]);
-
         FileServer::writeToClient($this->track_data[AudiosTable::FILE_ID]);
 
     }
@@ -141,7 +139,6 @@ class Track {
             ->get();
 
         if ($metadata[MetadataTable::COVER_FILE_ID]) {
-            header("Content-Type: image/jpeg");
             FileServer::writeToClient($metadata[MetadataTable::COVER_FILE_ID]);
         } else {
             throw new PageNotFoundException;

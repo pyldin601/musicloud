@@ -30,6 +30,23 @@ class FileServer {
 
     }
 
+    public static function generateKey() {
+
+        $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        do {
+
+            $length = 10; $key = "";
+            while ($length --) {
+                $key .= $charset[rand(0, strlen($charset))];
+            }
+
+        } while (count(new SelectQuery(FilesTable::TABLE_NAME, FilesTable::UNIQUE_ID, $key)) > 0);
+
+        return $key;
+
+    }
+
     public static function register($file_path) {
 
         assert(file_exists($file_path), "Audio file uploaded incorrectly");
@@ -44,6 +61,7 @@ class FileServer {
             FSTool::createPathUsingHash($hash);
 
             $id = (new InsertQuery(FilesTable::TABLE_NAME))
+                ->values(FilesTable::UNIQUE_ID, self::generateKey())
                 ->values(FilesTable::SHA1, $hash)
                 ->values(FilesTable::SIZE, filesize($file_path))
                 ->values(FilesTable::USED, 1)
@@ -70,15 +88,14 @@ class FileServer {
 
     }
 
-    public static function writeToClient($file_id) {
-
-        $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::ID, $file_id)
-            ->fetchOneRow()
-            ->getOrThrow(PageNotFoundException::class);
+    /**
+     * @param $file
+     */
+    private static function write($file) {
 
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $file[FilesTable::MTIME]) . ' GMT');
         header('Cache-Control: max-age=0');
+        header('Content-Type: ' . $file[FilesTable::CONTENT_TYPE]);
 
         if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $file[FilesTable::MTIME]) {
             http_response_code(304);
@@ -155,6 +172,28 @@ class FileServer {
             ->fetchOneRow()->getOrThrow(PageNotFoundException::class);
 
         return FSTool::filename($file[FilesTable::SHA1]);
+
+    }
+
+    public static function writeToClient($file_id) {
+
+        $file = (new SelectQuery(FilesTable::TABLE_NAME))
+            ->where(FilesTable::ID, $file_id)
+            ->fetchOneRow()
+            ->getOrThrow(PageNotFoundException::class);
+
+        self::write($file);
+
+    }
+
+    public static function sendToClient($id) {
+
+        $file = (new SelectQuery(FilesTable::TABLE_NAME))
+            ->where(FilesTable::UNIQUE_ID, $id)
+            ->fetchOneRow()
+            ->getOrThrow(PageNotFoundException::class);
+
+        self::write($file);
 
     }
 
