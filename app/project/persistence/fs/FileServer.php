@@ -38,7 +38,7 @@ class FileServer {
 
             $length = 10; $key = "";
             while ($length --) {
-                $key .= $charset[rand(0, strlen($charset))];
+                $key .= $charset[rand(0, strlen($charset) - 1)];
             }
 
         } while (count(new SelectQuery(FilesTable::TABLE_NAME, FilesTable::UNIQUE_ID, $key)) > 0);

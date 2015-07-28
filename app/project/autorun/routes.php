@@ -12,7 +12,9 @@ use app\core\db\builder\UpdateQuery;
 use app\project\handlers\dynamic\catalog;
 use app\project\handlers\dynamic\content;
 use app\project\handlers\fixed\DoLibrary;
+use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\FilesTable;
+use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\fs\FileServer;
 
 
@@ -31,11 +33,14 @@ when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::clas
 //whenRegExp("/library\\/.+/", DoLibrary::class);
 
 when("test", function () {
-//    $files = (new SelectQuery(FilesTable::TABLE_NAME))->where(FilesTable::UNIQUE_ID, "")->fetchAll();
-//    foreach ($files as $file) {
-//        (new UpdateQuery(FilesTable::TABLE_NAME))
-//            ->where(FilesTable::ID, $file[FilesTable::ID])
-//            ->set(FilesTable::UNIQUE_ID, FileServer::generateKey())
-//            ->update();
-//    }
+    set_time_limit(0);
+    $query = new SelectQuery(MetadataTable::TABLE_NAME);
+    $query->innerJoin(FilesTable::TABLE_NAME, FilesTable::ID_FULL, AudiosTable::FILE_ID_FULL);
+    $files = $query->fetchAll();
+    foreach ($files as $file) {
+        (new UpdateQuery(AudiosTable::TABLE_NAME))
+            ->where(AudiosTable::ID_FULL, $file[AudiosTable::ID])
+            ->set(AudiosTable::FILE_ID_FULL, $file[FilesTable::UNIQUE_ID])
+            ->update();
+    }
 });
