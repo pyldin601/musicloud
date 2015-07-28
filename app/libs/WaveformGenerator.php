@@ -50,7 +50,7 @@ class WaveformGenerator {
     /**
      * @return callable
      */
-    public static function isPositive() {
+    private static function isPositive() {
         return function ($value) { return $value >= 0; };
     }
 } 
