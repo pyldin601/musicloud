@@ -135,4 +135,14 @@ class FileServer {
 
     }
 
+    public static function getFileUsingId($file_id) {
+
+        $file = (new SelectQuery(FilesTable::TABLE_NAME))
+            ->where(FilesTable::ID, $file_id)
+            ->fetchOneRow()->getOrThrow(PageNotFoundException::class);
+
+        return FSTool::filename($file[FilesTable::SHA1]);
+
+    }
+
 } 

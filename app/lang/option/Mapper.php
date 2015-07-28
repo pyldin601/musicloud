@@ -135,6 +135,26 @@ class Mapper {
         };
     }
 
+    /**
+     * @param $amount
+     * @return callable
+     */
+    public static function decrement($amount) {
+        return function ($value) use ($amount) {
+            return $value - $amount;
+        };
+    }
+
+    /**
+     * @param $amount
+     * @return callable
+     */
+    public static function increment($amount) {
+        return function ($value) use ($amount) {
+            return $value + $amount;
+        };
+    }
+
 }
 
 

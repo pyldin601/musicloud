@@ -50,6 +50,13 @@ class Filter {
     }
 
     /**
+     * @return callable
+     */
+    public static function isPositiveNumber() {
+        return function ($value) { return is_numeric($value) && $value >= 0; };
+    }
+
+    /**
      * @return \Closure
      */
     public static function isNull() {

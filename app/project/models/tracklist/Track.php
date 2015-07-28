@@ -15,6 +15,7 @@ use app\core\db\builder\UpdateQuery;
 use app\core\etc\MIME;
 use app\core\etc\Settings;
 use app\core\exceptions\status\PageNotFoundException;
+use app\libs\WaveformGenerator;
 use app\project\exceptions\AlreadyUploadedException;
 use app\project\exceptions\BackendException;
 use app\project\exceptions\BadAccessException;
@@ -29,6 +30,7 @@ use app\project\persistence\db\dao\GenreDao;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\fs\FileServer;
+use app\project\persistence\fs\FSTool;
 
 class Track {
 
@@ -137,6 +139,10 @@ class Track {
         }
 
 
+    }
+
+    public function getPeaks() {
+        return WaveformGenerator::generate(FileServer::getFileUsingId($this->track_data[AudiosTable::FILE_ID]));
     }
 
 

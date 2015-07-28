@@ -14,7 +14,8 @@ use app\project\handlers\fixed\DoLibrary;
 
 when("content/track/&id", content\DoReadTrack::class);
 when("content/cover/&id", content\DoReadCover::class);
-when("content/raw/&id",   content\DoReadRawContent::class);
+when("content/peaks/&id", content\DoWavePeaks::class);
+
 
 when("api/catalog/tracks/by-artist/:artist", catalog\DoTracksByAlbumArtist::class);
 when("api/catalog/tracks/by-album/:artist/:album", catalog\DoTracksByAlbum::class);
