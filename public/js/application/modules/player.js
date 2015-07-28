@@ -47,12 +47,10 @@ homecloud.run(["$rootScope", function ($rootScope) {
 
             $rootScope.player.playlist.track = track;
 
-            jFrame.jPlayer("setMedia", { mp3: "/content/track/" + track.id });
+            jFrame.jPlayer("setMedia", { mp3: "/content/track/" + track.id }).jPlayer("play");
 
             $rootScope.player.isLoaded = true;
             $rootScope.player.isPlaying = true;
-
-            jFrame.jPlayer("play");
 
         },
         doPlayPause: function () {

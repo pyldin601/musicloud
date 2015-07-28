@@ -45,8 +45,7 @@ homecloud.directive("multiselectList", [function () {
             elem.on("mousedown", function (event) {
 
                 event.preventDefault();
-
-                return false;
+                event.stopPropagation();
 
             });
 
@@ -54,7 +53,9 @@ homecloud.directive("multiselectList", [function () {
                 scope.$applyAsync(function () {
                     var all = elem.find("[multiselect-item]");
                     var selected = angular.element(event.target).parents("[multiselect-item]");
-                    all.toggleClass(scope.multiselectList, false);
+                    if (!(event.ctrlKey || event.metaKey)) {
+                        all.toggleClass(scope.multiselectList, false);
+                    }
                     if (selected.length > 0) {
                         selected.toggleClass(scope.multiselectList);
                     }
