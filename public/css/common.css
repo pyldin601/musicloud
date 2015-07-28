@@ -2,6 +2,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   overflow-y: scroll;
+  cursor: default;
 }
 b {
   font-weight: 600;

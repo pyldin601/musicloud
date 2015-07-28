@@ -9,6 +9,11 @@ homecloud.controller("ArtistViewController", [
 
         $scope.artist = $routeParams.artist;
         $scope.tracks = ArtistContent.tracks;
+        $scope.tracks_selected = [];
+
+        $scope.$watch("tracks_selected", function (n, o) {
+            console.log(n, o);
+        });
 
     }
 ]);
