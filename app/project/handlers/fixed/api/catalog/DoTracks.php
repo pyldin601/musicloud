@@ -48,6 +48,7 @@ class DoTracks implements RouteHandler {
             ->select(MetaGenresTable::GENRE_FULL)
 
             ->orderBy(MetaArtistsTable::ARTIST_FULL)
+            ->orderBy(MetadataTable::DATE_FULL." DESC")
             ->orderBy(MetaAlbumsTable::ALBUM_FULL)
             ->orderBy(MetadataTable::TRACK_NUMBER);
 

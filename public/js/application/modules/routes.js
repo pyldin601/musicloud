@@ -21,26 +21,12 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         }
     });
 
-    $routeProvider.when("/artist/:artist?", {
+    $routeProvider.when("/artist/:artist", {
         templateUrl: templatePath + "/artist-view.html",
         controller: "ArtistViewController",
         resolve: {
             Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
                 return SearchService.tracks({ artist: $route.current.params.artist || "" }, 0).then(function (response) {
-                    return response.data;
-                }, function () {
-                    $location.url("/");
-                });
-            }]
-        }
-    });
-
-    $routeProvider.when("/tracks/", {
-        templateUrl: templatePath + "/artist-view.html",
-        controller: "AllTracksAlbumViewController",
-        resolve: {
-            Resolved: ["SearchService", "$location", function (SearchService, $location) {
-                return SearchService.tracks(Empty, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");

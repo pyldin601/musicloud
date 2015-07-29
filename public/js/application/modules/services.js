@@ -95,9 +95,13 @@ homecloud.factory("Library", [function () {
                 if (index == -1) {
                     albumsList.push({
                         title: tracks[i].album,
-                        cover_id: tracks[i].cover_file_id,
-                        year: tracks[i].date,
-                        tracks: [ tracks[i] ]
+                        cover_small: tracks[i].cover_small,
+                        cover_middle: tracks[i].cover_middle,
+                        cover_full: tracks[i].cover_full,
+                        date: tracks[i].date,
+                        tracks: [
+                            tracks[i]
+                        ]
                     });
                 } else {
                     albumsList[index].tracks.push(tracks[i]);
