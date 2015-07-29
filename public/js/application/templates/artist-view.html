@@ -13,7 +13,7 @@
                     <div class="name" ng-bind="album | albumFilter"></div>
                 </div>
                 <div class="album-tracks">
-                    <div class="track" multiselect-item="track" ng-repeat="track in tracks_in_album" action-play="track" action-context="tracks" action-resolver="fetcher">
+                    <div class="track" multiselect-item="track" ng-repeat="track in tracks_in_album" action-play="track" action-context="tracks" action-resolver="fetch">
                         <div class="duration right" ng-bind-template="{{ track.duration | mmss }}"></div>
                         <div class="rating right">
                             <ul class="rating-body">

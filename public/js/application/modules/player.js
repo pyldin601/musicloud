@@ -11,7 +11,7 @@ homecloud.run(["$rootScope", function ($rootScope) {
         playlist: {
             tracks: [],
             track: null,
-            fetcher: null,
+            fetch: null,
             position: {
                 duration: 0,
                 position: 0,
@@ -25,7 +25,7 @@ homecloud.run(["$rootScope", function ($rootScope) {
             }
 
             if (resolver !== undefined) {
-                $rootScope.player.playlist.fetcher = resolver;
+                $rootScope.player.playlist.fetch = resolver;
             }
 
             $rootScope.player.playlist.track = track;
@@ -37,12 +37,12 @@ homecloud.run(["$rootScope", function ($rootScope) {
 
         },
         doFetch: function () {
-            if (!player.playlist.fetcher) return;
-            player.playlist.fetcher(player.playlist.tracks.length).success(function (data) {
+            if (!player.playlist.fetch) return;
+            player.playlist.fetch(player.playlist.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
                     player.playlist.tracks = player.playlist.tracks.concat(data.tracks);
                 } else {
-                    player.playlist.fetcher = null;
+                    player.playlist.fetch = null;
                 }
             });
         },
@@ -67,7 +67,7 @@ homecloud.run(["$rootScope", function ($rootScope) {
                 $rootScope.player.isPlaying = false;
                 $rootScope.player.playlist.track = null;
                 $rootScope.player.playlist.tracks = [];
-                $rootScope.player.playlist.fetcher = null;
+                $rootScope.player.playlist.fetch = null;
 
                 $rootScope.player.playlist.position = {
                     duration: 0,
@@ -99,7 +99,7 @@ homecloud.run(["$rootScope", function ($rootScope) {
                 $rootScope.player.doStop();
             }
 
-            if (index + 1 == player.playlist.tracks.length - 1 && player.playlist.fetcher) {
+            if (index + 1 == player.playlist.tracks.length - 1 && player.playlist.fetch) {
                 // If it's last try to fetch new tracks
                 console.log("Fetching new tracks...");
                 player.doFetch();

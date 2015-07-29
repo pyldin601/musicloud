@@ -14,11 +14,11 @@ homecloud.controller("ArtistViewController", [
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.fetcher = SearchService.tracks.curry("", { artist: $scope.artist });
+        $scope.fetch = SearchService.tracks.curry({ artist: $scope.artist });
 
         $scope.load = function () {
             $scope.busy = true;
-            $scope.fetcher($scope.tracks.length).success(function (data) {
+            $scope.fetch($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
                     $scope.tracks = $scope.tracks.concat(data.tracks);
                     $scope.busy = false;
@@ -40,11 +40,11 @@ homecloud.controller("AllTracksAlbumViewController", [
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.fetcher = SearchService.tracks.curry(Empty);
+        $scope.fetch = SearchService.tracks.curry(Empty);
 
         $scope.load = function () {
             $scope.busy = true;
-            $scope.fetcher($scope.tracks.length).success(function (data) {
+            $scope.fetch($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
                     $scope.tracks = $scope.tracks.concat(data.tracks);
                     $scope.busy = false;
