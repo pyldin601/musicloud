@@ -7,8 +7,6 @@ var mediacloud = angular.module("HomeCloud");
 mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
     var templatePath = "/public/js/application/templates";
 
-    //$locationProvider.html5Mode(true).hashPrefix("!");
-
     $routeProvider.when("/artists/", {
         templateUrl: templatePath + "/artists-view.html",
         controller: "AllArtistsViewController",
@@ -23,12 +21,12 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         }
     });
 
-    $routeProvider.when("/artist/:artist?", {
+    $routeProvider.when("/artist/:artist", {
         templateUrl: templatePath + "/artist-view.html",
         controller: "ArtistViewController",
         resolve: {
-            ArtistContent: ["LibraryService", "$route", "$location", function (LibraryService, $route, $location) {
-                return LibraryService.tracksByArtist($route.current.params.artist || "").then(function (response) {
+            ArtistContent: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
+                return SearchService.tracks(0, "").then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");

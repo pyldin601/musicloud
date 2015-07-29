@@ -27,9 +27,13 @@ use app\project\persistence\db\tables\StatsTable;
 
 class DoTracks implements RouteHandler {
 
-    public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
+    public function doGet(JsonResponse $response, Option $q,
+                          Option $artist_id, Option $album_id, Option $genre_id, LoggedIn $me) {
 
-        $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
+        $filter   = $q->map("trim")->reject("")->map(Mapper::fulltext());
+        $f_artist = $artist_id->toInt();
+        $f_album  = $album_id->toInt();
+        $f_genre  = $genre_id->toInt();
 
         $query = (new SelectQuery(MetadataTable::TABLE_NAME))
             ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
@@ -43,7 +47,7 @@ class DoTracks implements RouteHandler {
             ->where(MetadataTable::USER_ID_FULL, $me->getId())
 
             ->select(MetaAlbumsTable::ALBUM_FULL)
-            ->select(MetaArtistsTable::ARTIST_FULL)
+            ->selectAlias(MetaArtistsTable::ARTIST_FULL, "album_artist")
             ->select(MetaGenresTable::GENRE_FULL)
 
             ->orderBy(MetaArtistsTable::ARTIST_FULL)
@@ -53,6 +57,18 @@ class DoTracks implements RouteHandler {
         CatalogTools::commonSelectors($query);
 
         Context::contextify($query);
+
+        if ($f_artist->nonEmpty()) {
+            $query->where(MetadataTable::ARTIST_ID_FULL, $f_artist->get());
+        }
+
+        if ($f_album->nonEmpty()) {
+            $query->where(MetadataTable::ALBUM_ID_FULL, $f_album->get());
+        }
+
+        if ($f_genre->nonEmpty()) {
+            $query->where(MetadataTable::GENRE_ID_FULL, $f_genre->get());
+        }
 
         if ($filter->nonEmpty()) {
             $query->match(MetadataTable::TITLE_FULL, $filter->get());

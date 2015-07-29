@@ -62,7 +62,7 @@ homecloud.filter("getAlbumArtist", function () {
 
 homecloud.filter("groupBy", function () {
     return function (data, key) {
-        if (!(data && key)) return;
+        if (!data) return;
         var result = {};
         for (var i=0; i<data.length; i += 1) {
             if (!result[data[i][key]])
