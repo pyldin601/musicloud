@@ -5,22 +5,22 @@
 var homecloud = angular.module("HomeCloud");
 
 homecloud.controller("ArtistViewController", [
-    "Resolved", "SearchService", "$scope", "$routeParams",
-    function (Resolved, SearchService, $scope, $routeParams) {
+    "Resolved", "SearchService", "SyncService", "$scope", "$routeParams",
+    function (Resolved, SearchService, SyncService, $scope, $routeParams) {
 
         $scope.artist = $routeParams.artist || "";
-        $scope.tracks = Resolved.tracks;
+        $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.tracks_selected = [];
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.fetch = SearchService.tracks.curry({ artist: $scope.artist });
+        $scope.fetch = SearchService.tracks.curry({artist: $scope.artist});
 
         $scope.load = function () {
             $scope.busy = true;
             $scope.fetch($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
-                    $scope.tracks = $scope.tracks.concat(data.tracks);
+                    $scope.tracks = $scope.tracks.concat(SyncService.tracks(data.tracks));
                     $scope.busy = false;
                 } else {
                     $scope.end = true;
@@ -32,10 +32,10 @@ homecloud.controller("ArtistViewController", [
 ]);
 
 homecloud.controller("AllTracksAlbumViewController", [
-    "Resolved", "SearchService", "$scope",
-    function (Resolved, SearchService, $scope) {
+    "Resolved", "SearchService", "SyncService", "$scope",
+    function (Resolved, SearchService, SyncService, $scope) {
 
-        $scope.tracks = Resolved.tracks;
+        $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.tracks_selected = [];
         $scope.busy = false;
         $scope.end = false;
@@ -46,7 +46,7 @@ homecloud.controller("AllTracksAlbumViewController", [
             $scope.busy = true;
             $scope.fetch($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
-                    $scope.tracks = $scope.tracks.concat(data.tracks);
+                    $scope.tracks = $scope.tracks.concat(SyncService.tracks(data.tracks));
                     $scope.busy = false;
                 } else {
                     $scope.end = true;

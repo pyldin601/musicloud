@@ -1,7 +1,7 @@
 
 var homecloud = angular.module("HomeCloud");
 
-homecloud.run(["$rootScope", "StatsService", function ($rootScope, StatsService) {
+homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope, StatsService, SyncService) {
 
     var jFrame = $("<div>").appendTo("body");
 
@@ -40,7 +40,7 @@ homecloud.run(["$rootScope", "StatsService", function ($rootScope, StatsService)
             if (!player.playlist.fetch) return;
             player.playlist.fetch(player.playlist.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
-                    player.playlist.tracks = player.playlist.tracks.concat(data.tracks);
+                    player.playlist.tracks = player.playlist.tracks.concat(SyncService.tracks(data.tracks));
                 } else {
                     player.playlist.fetch = null;
                 }

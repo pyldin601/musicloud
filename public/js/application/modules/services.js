@@ -120,10 +120,13 @@ homecloud.factory("StatsService", ["$http", function ($http) {
 }]);
 
 homecloud.factory("SyncService", [function () {
-    var trackSyncer = sync();
+    var trackSync = sync();
     return {
         tracks: function (coll) {
-            return trackSyncer(coll);
+            return trackSync(coll);
+        },
+        track: function (track) {
+            return trackSync([ track ]).shift();
         }
     }
 }]);
