@@ -22,7 +22,6 @@ Function.prototype.rcurry = function () {
 };
 
 function sync() {
-    console.log("Initialized new object cache");
     var cache = [];
     return function (coll) {
         var id, found = false, result = [];
@@ -31,14 +30,12 @@ function sync() {
             found = false;
             for (var j = 0; j < cache.length; j++) {
                 if (cache[j].id == id) {
-                    console.log("Item with id " + id +" found in cache");
                     found = true;
                     result.push(cache[j]);
                     break;
                 }
             }
             if (!found) {
-                console.log("Item with id " + id +" added to cache");
                 cache.push(coll[i]);
                 result.push(coll[i]);
             }
