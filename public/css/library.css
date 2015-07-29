@@ -158,6 +158,10 @@ body {
 b {
   font-weight: 600;
 }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 .clear-fix:after {
   content: "";
   display: table;

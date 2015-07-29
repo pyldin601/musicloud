@@ -25,8 +25,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         templateUrl: templatePath + "/artist-view.html",
         controller: "ArtistViewController",
         resolve: {
-            ArtistContent: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
-                return SearchService.fetchTracks("", { artist: $route.current.params.artist || "" }, 0).then(function (response) {
+            Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
+                return SearchService.tracks({ artist: $route.current.params.artist || "" }, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");
@@ -40,7 +40,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         controller: "AllTracksAlbumViewController",
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
-                return SearchService.fetchTracks("", { }, 0).then(function (response) {
+                return SearchService.tracks(Empty, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");

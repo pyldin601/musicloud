@@ -47,41 +47,16 @@ homecloud.factory("SearchService", ["$http", function ($http) {
         genres: function (offset, filter) {
             return $http.get("/api/catalog/genres?o="+offset+"&q="+encodeURI(filter));
         },
-        tracks: function (offset, filter) {
-            return $http.get("/api/catalog/tracks?" + serialize_uri({
-                o: offset,
-                q: filter
-            }));
-        },
-        tracksByArtist: function (filter, artist, offset) {
-            return $http.get("/api/catalog/tracks?" + serialize_uri({
-                o: offset,
-                q: filter,
-                artist: artist
-            }));
-        },
-        tracksByAlbum: function (filter, artist, album, offset) {
-            return $http.get("/api/catalog/tracks?" + serialize_uri({
-                o: offset,
-                q: filter,
-                artist: artist,
-                album: album
-            }));
-        },
-        fetchTracks: function (filter, opts, offset) {
-            var uri = {
-                o: offset,
-                q: filter
-            };
-            if (opts.artist) {
-                uri.artist = opts.artist;
-            }
-            if (opts.album) {
-                uri.album = opts.album;
-            }
-            if (opts.genre) {
-                uri.genre = opts.genre;
-            }
+        tracks: function (opts, offset) {
+            var uri = Empty;
+
+            uri.o = offset;
+
+            if (opts.filter) { uri.q = opts.filter }
+            if (opts.artist) { uri.artist = opts.artist }
+            if (opts.album)  { uri.album = opts.album }
+            if (opts.genre)  { uri.genre = opts.genre }
+
             return $http.get("/api/catalog/tracks?" + serialize_uri(uri));
         }
     };

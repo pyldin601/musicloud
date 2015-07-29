@@ -5,16 +5,16 @@
 var homecloud = angular.module("HomeCloud");
 
 homecloud.controller("ArtistViewController", [
-    "ArtistContent", "SearchService", "$scope", "$routeParams",
-    function (ArtistContent, SearchService, $scope, $routeParams) {
+    "Resolved", "SearchService", "$scope", "$routeParams",
+    function (Resolved, SearchService, $scope, $routeParams) {
 
         $scope.artist = $routeParams.artist || "";
-        $scope.tracks = ArtistContent.tracks;
+        $scope.tracks = Resolved.tracks;
         $scope.tracks_selected = [];
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.fetcher = SearchService.fetchTracks.curry("", { artist: $scope.artist });
+        $scope.fetcher = SearchService.tracks.curry("", { artist: $scope.artist });
 
         $scope.load = function () {
             $scope.busy = true;
@@ -40,7 +40,7 @@ homecloud.controller("AllTracksAlbumViewController", [
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.fetcher = SearchService.fetchTracks.curry("", { });
+        $scope.fetcher = SearchService.tracks.curry(Empty);
 
         $scope.load = function () {
             $scope.busy = true;
