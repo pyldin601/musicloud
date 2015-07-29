@@ -1,7 +1,7 @@
 
 var homecloud = angular.module("HomeCloud");
 
-homecloud.run(["$rootScope", function ($rootScope) {
+homecloud.run(["$rootScope", "StatsService", function ($rootScope, StatsService) {
 
     var jFrame = $("<div>").appendTo("body");
 
@@ -127,6 +127,9 @@ homecloud.run(["$rootScope", function ($rootScope) {
         ready: function () {
         },
         ended: function () {
+            if (player.playlist.track) {
+                StatsService.incrementPlays(player.playlist.track.id);
+            }
             $rootScope.player.doPlayNext();
         },
         error: function () {

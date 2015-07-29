@@ -30,6 +30,7 @@ use app\project\persistence\db\dao\GenreDao;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetadataTable;
+use app\project\persistence\db\tables\StatsTable;
 use app\project\persistence\fs\FileServer;
 use app\project\persistence\fs\FSTool;
 
@@ -81,17 +82,12 @@ class Track {
             $full_cover_id = FileServer::register($covers->get()[0]);
             $middle_cover_id = FileServer::register($covers->get()[1]);
             $small_cover_id = FileServer::register($covers->get()[2]);
-//            $cover_file_id = $full_cover_id;
 
             (new UpdateQuery(CoversTable::TABLE_NAME, CoversTable::ID_FULL, $this->track_id))
                 ->set(CoversTable::COVER_FULL_FULL, $full_cover_id)
                 ->set(CoversTable::COVER_MIDDLE_FULL, $middle_cover_id)
                 ->set(CoversTable::COVER_SMALL_FULL, $small_cover_id)
                 ->update();
-
-        } else {
-
-//            $cover_file_id = null;
 
         }
 
@@ -115,40 +111,25 @@ class Track {
             ->set(MetadataTable::ARTIST_ID,         $artist_id)
             ->set(MetadataTable::GENRE_ID,          $genre_id)
             ->set(MetadataTable::ALBUM_ID,          $album_id)
-//            ->set(MetadataTable::COVER_FILE_ID,     $cover_file_id)
             ->update();
-
-    }
-
-
-    public function preview() {
-
-        assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
-
-        FileServer::writeToClient($this->track_data[AudiosTable::FILE_ID]);
-
-    }
-
-    public function cover() {
-
-        assert($this->track_data[AudiosTable::FILE_ID] !== null, "File not uploaded");
-
-        $metadata = (new SelectQuery(MetadataTable::TABLE_NAME))
-            ->where(MetadataTable::ID, $this->track_id)
-            ->fetchOneRow()
-            ->get();
-
-        if ($metadata[MetadataTable::COVER_FILE_ID]) {
-            FileServer::writeToClient($metadata[MetadataTable::COVER_FILE_ID]);
-        } else {
-            throw new PageNotFoundException;
-        }
-
 
     }
 
     public function getPeaks() {
         return WaveformGenerator::generate(FileServer::getFileUsingId($this->track_data[AudiosTable::FILE_ID]));
+    }
+
+    public function incrementPlays() {
+        (new UpdateQuery(StatsTable::TABLE_NAME, StatsTable::ID_FULL, $this->track_id))
+            ->increment(StatsTable::PLAYBACKS_FULL)
+            ->set(StatsTable::LAST_PLAYED_DATE_FULL, time())
+            ->update();
+    }
+
+    public function incrementSkips() {
+        (new UpdateQuery(StatsTable::TABLE_NAME, StatsTable::ID_FULL, $this->track_id))
+            ->increment(StatsTable::SKIPS_FULL)
+            ->update();
     }
 
 

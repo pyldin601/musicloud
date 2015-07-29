@@ -108,3 +108,13 @@ homecloud.factory("Library", [function () {
     };
 }]);
 
+homecloud.factory("StatsService", ["$http", function ($http) {
+    return {
+        incrementPlays: function (track_id) {
+            return $http.post("/api/stats/played", { id: track_id });
+        },
+        incrementSkips: function (track_id) {
+            return $http.post("/api/stats/skipped", { id: track_id });
+        }
+    }
+}]);
