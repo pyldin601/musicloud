@@ -21,7 +21,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         }
     });
 
-    $routeProvider.when("/artist/:artist", {
+    $routeProvider.when("/artist/:artist?", {
         templateUrl: templatePath + "/artist-view.html",
         controller: "ArtistViewController",
         resolve: {
