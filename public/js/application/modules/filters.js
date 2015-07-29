@@ -53,6 +53,13 @@ homecloud.filter("getArtist", function () {
     };
 });
 
+homecloud.filter("getAlbumArtist", function () {
+    return function (track) {
+        if (!track) return;
+        return track.album_artist || "Unknown Artist";
+    };
+});
+
 homecloud.filter("groupBy", function () {
     return function (data, key) {
         if (!(data && key)) return;

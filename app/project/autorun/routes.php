@@ -11,10 +11,7 @@ use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\project\handlers\dynamic\catalog;
 use app\project\handlers\dynamic\content;
-use app\project\handlers\fixed\DoLibrary;
-use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\FilesTable;
-use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\fs\FileServer;
 
 
@@ -22,7 +19,7 @@ when("content/track/&id", content\DoReadTrack::class);
 when("content/cover/&id", content\DoReadCover::class);
 when("content/peaks/&id", content\DoWavePeaks::class);
 
-when("file/:id",          content\DoGetFile::class);
+when("file/:id", content\DoGetFile::class);
 
 when("api/catalog/tracks/by-artist/:artist", catalog\DoTracksByAlbumArtist::class);
 when("api/catalog/tracks/by-album/:artist/:album", catalog\DoTracksByAlbum::class);
@@ -34,13 +31,12 @@ when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::clas
 
 when("test", function () {
     set_time_limit(0);
-    $query = new SelectQuery(MetadataTable::TABLE_NAME);
-    $query->innerJoin(FilesTable::TABLE_NAME, FilesTable::ID_FULL, AudiosTable::FILE_ID_FULL);
+    $query = new SelectQuery(FilesTable::TABLE_NAME);
+    $query->where("LENGTH(unique_id) < 10");
     $files = $query->fetchAll();
     foreach ($files as $file) {
-        (new UpdateQuery(AudiosTable::TABLE_NAME))
-            ->where(AudiosTable::ID_FULL, $file[AudiosTable::ID])
-            ->set(AudiosTable::FILE_ID_FULL, $file[FilesTable::UNIQUE_ID])
+        (new UpdateQuery(FilesTable::TABLE_NAME, FilesTable::UNIQUE_ID, $file[FilesTable::UNIQUE_ID]))
+            ->set(FilesTable::UNIQUE_ID, FileServer::generateKey())
             ->update();
     }
 });

@@ -101,7 +101,7 @@ class Router implements SingletonInterface {
 
                 preg_replace_callback("~:([a-z\\_]+)~", function ($match) use (&$keys) {
                     $keys[] = $match[1];
-                    return "(?:([^\\/]+))";
+                    return "(?:([^\\/]*))";
                 }, $quoted));
 
         return array(sprintf("~^%s$~", $quote_params), $keys);
@@ -117,7 +117,7 @@ class Router implements SingletonInterface {
 
         foreach ($this->routes as $regexp => $data) {
 
-            if (preg_match($regexp, $raw, $matches)) {
+            if (preg_match($regexp, $raw, $matches) || preg_match($regexp, $raw . "/", $matches)) {
 
                 array_shift($matches);
 

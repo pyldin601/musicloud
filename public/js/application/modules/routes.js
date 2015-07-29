@@ -23,12 +23,12 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         }
     });
 
-    $routeProvider.when("/artist/:artist", {
+    $routeProvider.when("/artist/:artist?", {
         templateUrl: templatePath + "/artist-view.html",
         controller: "ArtistViewController",
         resolve: {
             ArtistContent: ["LibraryService", "$route", "$location", function (LibraryService, $route, $location) {
-                return LibraryService.tracksByArtist($route.current.params.artist).then(function (response) {
+                return LibraryService.tracksByArtist($route.current.params.artist || "").then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");

@@ -18,6 +18,7 @@ use app\lang\option\Option;
 use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -29,9 +30,12 @@ class DoArtists implements RouteHandler {
 
         $query = (new SelectQuery(MetaArtistsTable::TABLE_NAME))
             ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ARTIST_ID_FULL, MetaArtistsTable::ID_FULL)
+            ->innerJoin(CoversTable::TABLE_NAME, CoversTable::ID_FULL, MetadataTable::ID_FULL)
             ->select(MetaArtistsTable::ID_FULL)
             ->select(MetaArtistsTable::ARTIST_FULL)
-            ->select(MetadataTable::COVER_FILE_ID_FULL)
+            ->select(CoversTable::COVER_MIDDLE_FULL)
+            ->select(CoversTable::COVER_FULL_FULL)
+            ->select(CoversTable::COVER_SMALL_FULL)
             ->selectCount(MetadataTable::ID_FULL, "tracks_count")
             ->selectCountDistinct(MetadataTable::ALBUM_ID_FULL, "albums_count")
             ->addGroupBy(MetaArtistsTable::ID_FULL)

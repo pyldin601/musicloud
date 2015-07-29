@@ -21,14 +21,14 @@ use app\project\persistence\fs\FileServer;
 class DoReadCover implements RouteHandler {
     public function doGet($id, LoggedIn $me) {
 
-        (new SelectQuery(MetadataTable::TABLE_NAME, MetadataTable::COVER_FILE_ID_FULL, $id))
-            ->fetchOneRow()
-            ->orThrow(PageNotFoundException::class)
-            ->sel(MetadataTable::USER_ID)
-            ->select($me->getId())
-            ->orThrow(BadAccessException::class);
-
-        FileServer::writeToClient($id);
+//        (new SelectQuery(MetadataTable::TABLE_NAME, MetadataTable::COVER_FILE_ID_FULL, $id))
+//            ->fetchOneRow()
+//            ->orThrow(PageNotFoundException::class)
+//            ->sel(MetadataTable::USER_ID)
+//            ->select($me->getId())
+//            ->orThrow(BadAccessException::class);
+//
+//        FileServer::writeToClient($id);
 
     }
 }

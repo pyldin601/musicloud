@@ -46,7 +46,7 @@ homecloud.run(["$rootScope", function ($rootScope) {
 
             $rootScope.player.playlist.track = track;
 
-            jFrame.jPlayer("setMedia", { mp3: "/content/track/" + track.id }).jPlayer("play");
+            jFrame.jPlayer("setMedia", { mp3: "/file/" + track.file_id }).jPlayer("play");
 
             $rootScope.player.isLoaded = true;
             $rootScope.player.isPlaying = true;
@@ -65,18 +65,22 @@ homecloud.run(["$rootScope", function ($rootScope) {
         },
         doStop: function () {
 
-            jFrame.jPlayer("stop");
+            jFrame.jPlayer("stop").jPlayer("clearMedia");
 
-            $rootScope.player.isLoaded = false;
-            $rootScope.player.isPlaying = false;
-            $rootScope.player.playlist.track = null;
-            $rootScope.player.playlist.tracks = [];
+            $rootScope.$applyAsync(function () {
 
-            $rootScope.player.playlist.position = {
-                duration: 0,
-                position: 0,
-                load: 0
-            };
+                $rootScope.player.isLoaded = false;
+                $rootScope.player.isPlaying = false;
+                $rootScope.player.playlist.track = null;
+                $rootScope.player.playlist.tracks = [];
+
+                $rootScope.player.playlist.position = {
+                    duration: 0,
+                    position: 0,
+                    load: 0
+                };
+
+            });
 
         },
         doSeek: function (position) {

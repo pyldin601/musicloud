@@ -12,6 +12,7 @@ namespace app\project;
 use app\core\db\builder\SelectQuery;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -40,13 +41,15 @@ class CatalogTools {
             MetadataTable::ID_FULL,
             MetadataTable::RATING_FULL,
             MetadataTable::TRACK_NUMBER_FULL,
-            MetadataTable::COVER_FILE_ID_FULL,
+            AudiosTable::FILE_ID_FULL,
             AudiosTable::FILE_NAME_FULL,
             AudiosTable::CREATED_DATE_FULL,
             StatsTable::LAST_PLAYED_DATE_FULL,
             StatsTable::PLAYBACKS_FULL,
             StatsTable::SKIPS_FULL,
-            AudiosTable::CONTENT_TYPE
+            CoversTable::COVER_MIDDLE_FULL,
+            CoversTable::COVER_FULL_FULL,
+            CoversTable::COVER_SMALL_FULL
         );
     }
 

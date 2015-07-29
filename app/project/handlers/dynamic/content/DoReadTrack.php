@@ -15,9 +15,9 @@ use app\project\models\tracklist\Track;
 class DoReadTrack implements RouteHandler {
     public function doGet($id) {
 
-        $tm = new Track($id);
-
-        $tm->preview();
+//        $tm = new Track($id);
+//
+//        $tm->preview();
 
     }
 } 

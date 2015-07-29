@@ -22,7 +22,7 @@ homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
 
 homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     return {
-        template: '<div class="progress-line"></div><div class="progress-position"></div><div class="progress-bulb"></div>',
+        template: '<div class="progress-line"></div><div ng-show="player.playlist.position.duration > 0" class="progress-position"></div><div ng-show="player.playlist.position.duration > 0" class="progress-bulb"></div>',
         link: function (scope, elem, attrs) {
             var bulb = elem.find(".progress-bulb"),
                 line = elem.find(".progress-position"),

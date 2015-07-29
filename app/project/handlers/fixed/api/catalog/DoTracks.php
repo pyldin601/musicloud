@@ -18,6 +18,7 @@ use app\lang\option\Option;
 use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -33,6 +34,7 @@ class DoTracks implements RouteHandler {
         $query = (new SelectQuery(MetadataTable::TABLE_NAME))
             ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
             ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
+            ->joinUsing(CoversTable::TABLE_NAME, CoversTable::ID)
 
             ->innerJoin(MetaAlbumsTable::TABLE_NAME,  MetaAlbumsTable::ID_FULL,  MetadataTable::ALBUM_ID_FULL)
             ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID_FULL, MetadataTable::ARTIST_ID_FULL)

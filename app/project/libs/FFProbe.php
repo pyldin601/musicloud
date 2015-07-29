@@ -37,7 +37,7 @@ class FFProbe {
         $temp_cover_middle = TempFileProvider::generate("cover", ".jpeg");
         $temp_cover_small  = TempFileProvider::generate("cover", ".jpeg");
 
-        $command = sprintf("%s -i %s -v quiet -an -q:v 1 -f image2 %s -q:v 1 -vf scale=450:-1 -f image2 %s -q:v 1 -vf scale=250:-1 -f image2 %s",
+        $command = sprintf("%s -i %s -v quiet -an -q:v 1 -vf \"scale='min(iw,900)':-1\" -f image2 %s -q:v 1 -vf \"scale='min(iw,450)':-1\" -f image2 %s -q:v 1 -vf \"scale='min(iw,250)':-1\" -f image2 %s",
             self::$settings->get("tools", "ffmpeg_cmd"), $escaped_filename,
             $temp_cover_full, $temp_cover_middle, $temp_cover_small);
 

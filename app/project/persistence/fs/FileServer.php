@@ -53,15 +53,17 @@ class FileServer {
 
         $hash = FSTool::calculateHash($file_path);
         $query = (new SelectQuery(FilesTable::TABLE_NAME, FilesTable::SHA1, $hash))
-            ->select(FilesTable::ID);
-        $file = $query->fetchOneColumn()->toInt();
+            ->select(FilesTable::UNIQUE_ID);
+        $file = $query->fetchOneColumn();
 
         if ($file->isEmpty()) {
 
             FSTool::createPathUsingHash($hash);
 
-            $id = (new InsertQuery(FilesTable::TABLE_NAME))
-                ->values(FilesTable::UNIQUE_ID, self::generateKey())
+            $id = self::generateKey();
+
+            (new InsertQuery(FilesTable::TABLE_NAME))
+                ->values(FilesTable::UNIQUE_ID, $id)
                 ->values(FilesTable::SHA1, $hash)
                 ->values(FilesTable::SIZE, filesize($file_path))
                 ->values(FilesTable::USED, 1)
@@ -71,16 +73,20 @@ class FileServer {
 
             rename($file_path, FSTool::filename($hash));
 
+            error_log("Registering " . $file_path . ": NEW");
+
         } else {
 
             $id = $file->get();
 
             (new UpdateQuery(FilesTable::TABLE_NAME))
                 ->increment(FilesTable::USED)
-                ->where(FilesTable::ID, $id)
+                ->where(FilesTable::UNIQUE_ID, $id)
                 ->update();
 
             unlink($file_path);
+
+            error_log("Registering " . $file_path . ": EXISTS");
 
         }
 
@@ -143,20 +149,20 @@ class FileServer {
     public static function unregister($file_id) {
 
         $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::ID, $file_id)
+            ->where(FilesTable::UNIQUE_ID, $file_id)
             ->fetchOneRow();
 
-        $file_data = $file->getOrThrow(ApplicationException::class, "File index corrupted!");
+        $file_data = $file->getOrThrow(ApplicationException::class, "File already unregistered");
 
         if ($file_data[FilesTable::USED] > 1) {
             (new UpdateQuery(FilesTable::TABLE_NAME))
                 ->decrement(FilesTable::USED)
-                ->where(FilesTable::ID, $file_id)
+                ->where(FilesTable::UNIQUE_ID, $file_id)
                 ->update();
         } else {
 
             (new DeleteQuery(FilesTable::TABLE_NAME))
-                ->where(FilesTable::ID, $file[FilesTable::ID])
+                ->where(FilesTable::UNIQUE_ID, $file[FilesTable::UNIQUE_ID])
                 ->update();
 
             FSTool::delete($file_data[FilesTable::SHA1]);
@@ -168,28 +174,17 @@ class FileServer {
     public static function getFileUsingId($file_id) {
 
         $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::ID, $file_id)
+            ->where(FilesTable::UNIQUE_ID, $file_id)
             ->fetchOneRow()->getOrThrow(PageNotFoundException::class);
 
         return FSTool::filename($file[FilesTable::SHA1]);
 
     }
 
-    public static function writeToClient($file_id) {
+    public static function sendToClient($file_id) {
 
         $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::ID, $file_id)
-            ->fetchOneRow()
-            ->getOrThrow(PageNotFoundException::class);
-
-        self::write($file);
-
-    }
-
-    public static function sendToClient($id) {
-
-        $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::UNIQUE_ID, $id)
+            ->where(FilesTable::UNIQUE_ID, $file_id)
             ->fetchOneRow()
             ->getOrThrow(PageNotFoundException::class);
 

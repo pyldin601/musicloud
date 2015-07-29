@@ -7,7 +7,7 @@ var homecloud = angular.module("HomeCloud");
 homecloud.controller("ArtistViewController", [
     "ArtistContent", "$scope", "$routeParams", function (ArtistContent, $scope, $routeParams) {
 
-        $scope.artist = $routeParams.artist;
+        $scope.artist = $routeParams.artist || "";
         $scope.tracks = ArtistContent.tracks;
         $scope.tracks_selected = [];
 

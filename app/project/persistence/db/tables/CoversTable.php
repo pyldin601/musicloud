@@ -18,7 +18,7 @@ class CoversTable {
     const COVER_MIDDLE = "cover_middle";
     const COVER_FULL = "cover_full";
 
-    const ID_FILL = self::TABLE_NAME . "." . self::ID;
+    const ID_FULL = self::TABLE_NAME . "." . self::ID;
     const COVER_SMALL_FULL = self::TABLE_NAME . "." . self::COVER_SMALL;
     const COVER_MIDDLE_FULL = self::TABLE_NAME . "." . self::COVER_MIDDLE;
     const COVER_FULL_FULL = self::TABLE_NAME . "." . self::COVER_FULL;

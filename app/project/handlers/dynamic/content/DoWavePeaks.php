@@ -15,7 +15,7 @@ use app\project\models\tracklist\Track;
 
 class DoWavePeaks implements RouteHandler {
     public function doGet(JsonResponse $response, $id) {
-        $tm = new Track($id);
-        $response->write($tm->getPeaks());
+//        $tm = new Track($id);
+//        $response->write($tm->getPeaks());
     }
 } 

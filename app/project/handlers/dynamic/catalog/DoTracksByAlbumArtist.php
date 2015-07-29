@@ -17,6 +17,7 @@ use app\project\CatalogTools;
 use app\project\exceptions\AlbumArtistNotFoundException;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -35,6 +36,7 @@ class DoTracksByAlbumArtist implements RouteHandler {
         $query = (new SelectQuery(MetadataTable::TABLE_NAME))
             ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
             ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
+            ->joinUsing(CoversTable::TABLE_NAME, CoversTable::ID)
 
             ->where(MetadataTable::ARTIST_ID_FULL, $artist_id)
 
