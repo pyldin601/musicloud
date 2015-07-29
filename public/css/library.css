@@ -416,16 +416,15 @@ b {
   background-color: black;
   z-index: 0;
   border-radius: 1px;
-  transition: 0.1s linear all;
+  transition: 0.1s linear height;
 }
 .library-player .player-display .display .text .progress-background .progress-area .progress-position {
   position: absolute;
-  width: 44%;
+  width: 0;
   height: 1px;
   background-color: #ff4141;
   z-index: 1;
   border-radius: 1px;
-  transition: 0.1s linear all;
 }
 .library-player .player-display .display .text .progress-background .progress-area .progress-bulb {
   opacity: 0;
@@ -433,7 +432,7 @@ b {
   margin-top: -4px;
   margin-left: -4px;
   position: absolute;
-  left: 44%;
+  left: 0;
   width: 9px;
   height: 9px;
   border-radius: 50%;

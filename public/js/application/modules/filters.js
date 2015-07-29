@@ -60,41 +60,23 @@ homecloud.filter("getAlbumArtist", function () {
     };
 });
 
-homecloud.filter("groupBy", function () {
-    var results={};
+homecloud.filter("groupBy", ["$timeout", function ($timeout) {
     return function (data, key) {
-        if (!(data && key)) return;
-        var result;
-        if(!this.$id){
-            result={};
-        }else{
-            var scopeId = this.$id;
-            if(!results[scopeId]){
-                results[scopeId]={};
-                this.$on("$destroy", function() {
-                    delete results[scopeId];
-                });
+        if (!key) return data;
+        var outputPropertyName = '__groupBy__' + key;
+        if(!data[outputPropertyName]){
+            var result = {};
+            for (var i=0;i<data.length;i++) {
+                if (!result[data[i][key]])
+                    result[data[i][key]]=[];
+                result[data[i][key]].push(data[i]);
             }
-            result = results[scopeId];
+            Object.defineProperty(data, outputPropertyName, {enumerable:false, configurable:true, writable: false, value:result});
+            $timeout(function(){delete data[outputPropertyName];},0,false);
         }
-
-        for(var groupKey in result) if (result.hasOwnProperty(groupKey))
-            result[groupKey].splice(0,result[groupKey].length);
-
-        for (var i=0; i<data.length; i++) {
-            if (!result[data[i][key]])
-                result[data[i][key]]=[];
-            result[data[i][key]].push(data[i]);
-        }
-
-        var keys = Object.keys(result);
-        for(var k=0; k<keys.length; k++){
-            if(result[keys[k]].length===0)
-                delete result[keys[k]];
-        }
-        return result;
+        return data[outputPropertyName];
     };
-});
+}]);
 
 homecloud.filter("first", function () {
     return function (data) {

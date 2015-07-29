@@ -9,12 +9,13 @@ homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
     return {
         scope: {
             actionPlay: "=",
-            actionContext: "="
+            actionContext: "=",
+            actionResolver: "="
         },
         restrict: "A",
         link: function (scope, elem, attrs) {
             elem.on("dblclick", function () {
-                $rootScope.player.doPlay(scope.actionPlay, scope.actionContext);
+                $rootScope.player.doPlay(scope.actionPlay, scope.actionContext, scope.actionResolver);
             });
         }
     }

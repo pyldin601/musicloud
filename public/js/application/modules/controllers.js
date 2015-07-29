@@ -14,13 +14,11 @@ homecloud.controller("ArtistViewController", [
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.$watch("albums", function (data) {
-            console.log(data);
-        });
+        $scope.fetcher = SearchService.fetchTracks.curry("", { artist: $scope.artist });
 
         $scope.load = function () {
             $scope.busy = true;
-            SearchService.tracks($scope.tracks.length, "").success(function (data) {
+            $scope.fetcher($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
                     $scope.tracks = $scope.tracks.concat(data.tracks);
                     $scope.busy = false;
@@ -30,9 +28,31 @@ homecloud.controller("ArtistViewController", [
             })
         };
 
-        $scope.$watch("tracks_selected", function (n, o) {
-            //console.log(n, o);
-        });
+    }
+]);
+
+homecloud.controller("AllTracksAlbumViewController", [
+    "Resolved", "SearchService", "$scope",
+    function (Resolved, SearchService, $scope) {
+
+        $scope.tracks = Resolved.tracks;
+        $scope.tracks_selected = [];
+        $scope.busy = false;
+        $scope.end = false;
+
+        $scope.fetcher = SearchService.fetchTracks.curry("", { });
+
+        $scope.load = function () {
+            $scope.busy = true;
+            $scope.fetcher($scope.tracks.length).success(function (data) {
+                if (data.tracks.length > 0) {
+                    $scope.tracks = $scope.tracks.concat(data.tracks);
+                    $scope.busy = false;
+                } else {
+                    $scope.end = true;
+                }
+            })
+        };
 
     }
 ]);
