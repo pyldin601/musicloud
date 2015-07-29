@@ -1,7 +1,7 @@
 <div class="library-body" ng-init="">
     <div class="library-container" multiselect-list="selected"
          multiselect-destination="tracks_selected" infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-        <div class="album-wrapper clear-fix" ng-repeat="(album, tracks_in_album) in (tracks | groupBy : 'album_id')">
+        <div class="album-wrapper clear-fix" ng-repeat="(album, tracks_in_album) in (tracks | groupBy:'album_id')">
             <div class="left cover">
                 <div class="cover-background">
                     <img ng-if="tracks_in_album[0].cover_middle" ng-src="/file/{{ tracks_in_album[0].cover_middle }}">
