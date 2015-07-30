@@ -1,10 +1,19 @@
 <div class="library-body" ng-init="">
     <div class="library-container" multiselect-list="selected"
          multiselect-destination="tracks_selected" infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-        <div class="genre-wrapper clear-fix" ng-repeat="album in albums">
+        <div class="album-wrapper clear-fix" ng-repeat="album in albums">
             <div class="left cover">
                 <div class="cover-background">
                     <img ng-if="album.cover_middle" ng-src="/file/{{ album.cover_middle }}">
+                </div>
+                <div class="album-ratio">
+                    <ul class="rating-body">
+                        <li class="fa fa-star-o"></li>
+                        <li class="fa fa-star-o"></li>
+                        <li class="fa fa-star-o"></li>
+                        <li class="fa fa-star-o"></li>
+                        <li class="fa fa-star-o"></li>
+                    </ul>
                 </div>
             </div>
             <div class="content">

@@ -21,6 +21,20 @@ homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
     }
 }]);
 
+homecloud.directive("play", ["$rootScope", function ($rootScope) {
+    return {
+        scope: {
+            play: "="
+        },
+        restrict: "A",
+        link: function (scope, elem, attrs) {
+            elem.on("click", function () {
+                $rootScope.player.doPlay(scope.play[0], scope.play[1] || null, scope.play[2] || null);
+            });
+        }
+    }
+}]);
+
 homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     return {
         template: '<div class="progress-line"></div><div ng-show="player.playlist.position.duration > 0" class="progress-position"></div><div ng-show="player.playlist.position.duration > 0" class="progress-bulb"></div>',
