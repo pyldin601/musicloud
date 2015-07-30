@@ -105,7 +105,7 @@ homecloud.factory("Library", [function () {
             var index,
                 getAlbumIndex = function (album) {
                     for (var j = 0; j < coll.length; j += 1) {
-                        if (coll[j].title == album) {
+                        if (coll[j].album_id == album) {
                             return j;
                         }
                     }
@@ -113,10 +113,13 @@ homecloud.factory("Library", [function () {
                 },
                 getAlbumIndexCached = getAlbumIndex.memoize();
             for (var i = 0; i < tracks.length; i += 1) {
-                index = getAlbumIndexCached.call(tracks[i].album);
+                index = getAlbumIndexCached.call(tracks[i].album_id);
                 if (index == -1) {
                     coll.push({
                         title: tracks[i].album,
+                        album_artist: tracks[i].album_artist,
+                        artist_id: tracks[i].artist_id,
+                        album_id: tracks[i].album_id,
                         cover_small: tracks[i].cover_small,
                         cover_middle: tracks[i].cover_middle,
                         cover_full: tracks[i].cover_full,

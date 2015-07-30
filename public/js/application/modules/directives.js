@@ -107,3 +107,26 @@ homecloud.directive("multiselectList", [function () {
         }
     }
 }]);
+
+homecloud.directive("activeTab", ["$location", "$route", function ($location, $route) {
+    return {
+        scope: {
+            activeTab: "@"
+        },
+        link: function ($scope, $element, $attributes) {
+
+            var CLASS = "active";
+
+            $element.toggleClass(CLASS, $location.url().match($scope.activeTab) !== null);
+
+            $scope.$on("$routeChangeSuccess", function () {
+                if ($route.current.special && $route.current.special.section) {
+                    $element.toggleClass(CLASS, $route.current.special.section == $scope.activeTab);
+                } else {
+                    $element.toggleClass(CLASS, false);
+                }
+            });
+
+        }
+    };
+}]);

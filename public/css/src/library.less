@@ -283,9 +283,11 @@
         font-size: 10pt;
         font-weight: 600;
         & > li {
-          .dyn-pad-v-xs;
+          & > a {
+            .dyn-pad-v-xs;
+          }
           .dyn-pad-h;
-          &.active {
+          &.active, &:hover {
             background-color: #dfe2e9;
             color: #111111;
           }
@@ -307,7 +309,7 @@
 
   .library-container {
     .dyn-pad-top;
-    .album-wrapper {
+    .genre-wrapper {
       padding-bottom: 48px;
       .cover {
         .cover-background {
@@ -330,8 +332,18 @@
         .album-title {
           font-weight: 300;
           border-bottom: 1px solid #ced1d6;
+          white-space: nowrap;
           .dyn-title-size;
           .dyn-pad-bottom-sm;
+          .album-sub {
+            overflow: hidden;
+            padding-bottom: 3px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            .band {
+              color: #737373;
+            }
+          }
         }
 
         .album-tracks {

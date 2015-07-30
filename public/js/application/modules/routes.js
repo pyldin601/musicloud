@@ -18,6 +18,9 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
                     $location.url("/");
                 });
             }]
+        },
+        special: {
+            section: "artists"
         }
     });
 
@@ -32,11 +35,31 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
                     $location.url("/");
                 });
             }]
+        },
+        special: {
+            section: "albums"
+        }
+    });
+
+    $routeProvider.when("/genres/", {
+        templateUrl: templatePath + "/genres-view.html",
+        controller: "AllGenresViewController",
+        resolve: {
+            Resolved: ["SearchService", "$location", function (SearchService, $location) {
+                return SearchService.genres(Empty, 0).then(function (response) {
+                    return response.data;
+                }, function () {
+                    $location.url("/");
+                });
+            }]
+        },
+        special: {
+            section: "genres"
         }
     });
 
     $routeProvider.when("/artist/:artist", {
-        templateUrl: templatePath + "/artist-view.html",
+        templateUrl: templatePath + "/grouped-view.html",
         controller: "ArtistViewController",
         resolve: {
             Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
@@ -46,6 +69,43 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
                     $location.url("/");
                 });
             }]
+        },
+        special: {
+            section: "artists"
+        }
+    });
+
+    $routeProvider.when("/album/:album", {
+        templateUrl: templatePath + "/grouped-view.html",
+        controller: "AlbumViewController",
+        resolve: {
+            Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
+                return SearchService.tracks({ album_id: $route.current.params.album }, 0).then(function (response) {
+                    return response.data;
+                }, function () {
+                    $location.url("/");
+                });
+            }]
+        },
+        special: {
+            section: "albums"
+        }
+    });
+
+    $routeProvider.when("/genre/:genre", {
+        templateUrl: templatePath + "/grouped-view.html",
+        controller: "GenreViewController",
+        resolve: {
+            Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
+                return SearchService.tracks({ genre_id: $route.current.params.genre }, 0).then(function (response) {
+                    return response.data;
+                }, function () {
+                    $location.url("/");
+                });
+            }]
+        },
+        special: {
+            section: "genres"
         }
     });
 

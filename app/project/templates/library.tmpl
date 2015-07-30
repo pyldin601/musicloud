@@ -127,8 +127,8 @@
                 <span class="label">Library</span>
             </div>
             <ul class="section-list">
-                <li>
-                    <a href="#/artists/">
+                <li active-tab="artists">
+                    <a class="block" href="#/artists/">
                         <span class="group">
                             <i class="icon-artists"></i>
                             <span class="label padded">Artists</span>
@@ -136,8 +136,8 @@
                         <div class="badge right" ng-bind-template="{{ account.user.stats.artists_count | count }}">-</div>
                     </a>
                 </li>
-                <li>
-                    <a href="#/albums/">
+                <li active-tab="albums">
+                    <a class="block" href="#/albums/">
                         <span class="group">
                             <i class="icon-albums"></i>
                             <span class="label padded">Albums</span>
@@ -145,21 +145,23 @@
                         <div class="badge right" ng-bind-template="{{ account.user.stats.albums_count | count}}">-</div>
                     </a>
                 </li>
-                <li>
-                        <span class="group">
-                            <i class="icon-songs"></i>
-                            <span class="label padded">Songs</span>
-                        </span>
-
-                    <div class="badge right" ng-bind-template="{{ account.user.stats.tracks_count | count }}">-</div>
-                </li>
-                <li>
+                <li active-tab="genres">
+                    <a class="block" href="#/genres/">
                         <span class="group">
                             <i class="icon-genres"></i>
                             <span class="label padded">Genres</span>
                         </span>
-
-                    <div class="badge right" ng-bind-template="{{ account.user.stats.genres_count | count }}">-</div>
+                        <div class="badge right" ng-bind-template="{{ account.user.stats.genres_count | count }}">-</div>
+                    </a>
+                </li>
+                <li active-tab="songs">
+                    <a class="block" href="#/songs/">
+                        <span class="group">
+                            <i class="icon-songs"></i>
+                            <span class="label padded">Songs</span>
+                        </span>
+                        <div class="badge right" ng-bind-template="{{ account.user.stats.tracks_count | count }}">-</div>
+                    </a>
                 </li>
             </ul>
         </div>

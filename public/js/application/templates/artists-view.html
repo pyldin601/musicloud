@@ -1,12 +1,13 @@
 <div class="library-body">
     <div class="library-container">
         <div class="artist-wrapper list-view container" infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-            <div class="artist-item square2" ng-repeat="artist in artists">
+            <div class="list-item square2" ng-repeat="artist in artists">
                 <div class="artist-list-content">
                     <div class="cover">
                         <img ng-if="artist.cover_middle" ng-src="/file/{{ artist.cover_middle }}">
                     </div>
                     <div class="artist-name">
+                        <i ng-show="player.playlist.track.artist_id === artist.id" class="fa fa-volume-up"></i>
                         <a ng-href="#/artist/{{ artist.id }}"
                            ng-bind-template="{{ artist | getArtist }}"></a>
                     </div>

@@ -1,7 +1,7 @@
 <div class="library-body" ng-init="">
     <div class="library-container" multiselect-list="selected"
          multiselect-destination="tracks_selected" infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-        <div class="album-wrapper clear-fix" ng-repeat="album in albums">
+        <div class="genre-wrapper clear-fix" ng-repeat="album in albums">
             <div class="left cover">
                 <div class="cover-background">
                     <img ng-if="album.cover_middle" ng-src="/file/{{ album.cover_middle }}">
@@ -10,7 +10,10 @@
             <div class="content">
                 <div class="album-title">
                     <div class="right" ng-bind="album.date"></div>
-                    <div class="name" ng-bind="album.title | albumFilter"></div>
+                    <div class="album-sub">
+                        <div class="inline name" ng-bind="album.title | albumFilter"></div>
+                        <div class="inline band">on <a href="#/artist/{{ album.artist_id }}" ng-bind="album.album_artist | artistFilter"></a></div>
+                    </div>
                 </div>
                 <div class="album-tracks">
                     <div class="track" multiselect-item="track" ng-repeat="track in album.tracks" action-play="track" action-context="tracks" action-resolver="fetch">
@@ -36,7 +39,7 @@
 
                 </div>
             </div>
-
         </div>
+        <div class="empty-placeholder" ng-show="end == true && tracks.length == 0">Nothing to show</div>
     </div>
 </div>

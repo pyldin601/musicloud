@@ -19,6 +19,12 @@ a {
 .colored {
   background-color: aquamarine;
 }
+.block {
+  display: block;
+}
+.inline {
+  display: inline-block;
+}
 .group .padded {
   padding-left: 6px;
 }
@@ -39,4 +45,13 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-bottom: 1px;
+}
+.table {
+  display: table;
+}
+.table .row {
+  display: table-row;
+}
+.table .row .cell {
+  display: table-cell;
 }

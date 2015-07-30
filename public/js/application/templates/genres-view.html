@@ -2,15 +2,14 @@
     <div class="library-container">
         <div class="genre-wrapper list-view container" infinite-scroll="load()"
              infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-            <div class="list-item square2" ng-repeat="album in albums">
+            <div class="list-item square2" ng-repeat="genre in genres">
                 <div class="artist-list-content">
                     <div class="cover">
-                        <img ng-if="album.cover_middle" ng-src="/file/{{ album.cover_middle }}">
+                        <img ng-if="genre.cover_middle" ng-src="/file/{{ genre.cover_middle }}">
                     </div>
                     <div class="artist-name">
-                        <i ng-show="player.playlist.track.album_id === album.id" class="fa fa-volume-up"></i>
-                        <a ng-href="#/album/{{ album.id }}"
-                           ng-bind-template="{{ album.album | albumFilter }}"></a>
+                        <a ng-href="#/genre/{{ genre.id }}"
+                           ng-bind-template="{{ genre.genre | genreFilter }}"></a>
                     </div>
                 </div>
             </div>

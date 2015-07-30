@@ -19,6 +19,7 @@ use app\lang\option\Option;
 use app\project\CatalogTools;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\MetaGenresTable;
 
@@ -29,10 +30,17 @@ class DoGenres implements RouteHandler {
 
         $query = (new SelectQuery(MetaGenresTable::TABLE_NAME))
             ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::GENRE_ID_FULL, MetaGenresTable::ID_FULL)
+            ->innerJoin(CoversTable::TABLE_NAME, CoversTable::ID_FULL, MetadataTable::ID_FULL)
             ->select(MetaGenresTable::GENRE_FULL)
             ->select(MetaGenresTable::ID_FULL)
             ->selectCount(MetadataTable::ID_FULL, "tracks_count")
             ->selectCountDistinct(MetadataTable::ALBUM_ID_FULL, "albums_count")
+            ->select(
+                CoversTable::COVER_MIDDLE_FULL,
+                CoversTable::COVER_FULL_FULL,
+                CoversTable::COVER_SMALL_FULL
+            )
+
             ->addGroupBy(MetaGenresTable::ID_FULL)
             ->having("COUNT(".MetadataTable::ID_FULL.") > 0")
             ->where(MetaGenresTable::USER_ID_FULL, $me->getId());

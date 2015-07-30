@@ -50,13 +50,13 @@ class DoTracks implements RouteHandler {
             ->select(MetaAlbumsTable::ALBUM_FULL)
             ->selectAlias(MetaArtistsTable::ARTIST_FULL, "album_artist")
             ->select(MetaGenresTable::GENRE_FULL)
-
             ->selectAlias(MetaAlbumsTable::ID_FULL, "group_id")
 
             ->orderBy(MetaArtistsTable::ARTIST_FULL)
             ->orderBy(MetadataTable::DATE_FULL." DESC")
             ->orderBy(MetaAlbumsTable::ALBUM_FULL)
-            ->orderBy(MetadataTable::TRACK_NUMBER);
+            ->orderBy(MetadataTable::DISC_NUMBER_FULL)
+            ->orderBy(MetadataTable::TRACK_NUMBER_FULL);
 
         CatalogTools::commonSelectors($query);
 

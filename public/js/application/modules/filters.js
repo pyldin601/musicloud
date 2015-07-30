@@ -33,11 +33,15 @@ homecloud.filter("mmss", function () {
     }
 });
 
-homecloud.filter("albumFilter", function () {
-    return function (album) {
-        return album ? album : "Unknown Album";
-    };
-});
+var filters = {
+    artist: function (artist) { return artist || "Unknown Artist" },
+    album:  function (album)  { return album || "Unknown Album" },
+    genre:  function (genre)  { return genre || "Unknown Genre" }
+};
+
+homecloud.filter("albumFilter",  function () { return filters.album });
+homecloud.filter("artistFilter", function () { return filters.artist });
+homecloud.filter("genreFilter",  function () { return filters.genre });
 
 homecloud.filter("getTitle", function () {
     return function (track) {
@@ -49,14 +53,14 @@ homecloud.filter("getTitle", function () {
 homecloud.filter("getArtist", function () {
     return function (track) {
         if (!track) return;
-        return track.artist || "Unknown Artist";
+        return filters.artist(track.artist);
     };
 });
 
 homecloud.filter("getAlbumArtist", function () {
     return function (track) {
         if (!track) return;
-        return track.album_artist || "Unknown Artist";
+        return filters.artist(track.album_artist);
     };
 });
 
@@ -71,8 +75,13 @@ homecloud.filter("groupBy", ["$timeout", function ($timeout) {
                     result[data[i][key]]=[];
                 result[data[i][key]].push(data[i]);
             }
-            Object.defineProperty(data, outputPropertyName, {enumerable:false, configurable:true, writable: false, value:result});
-            $timeout(function(){delete data[outputPropertyName];},0,false);
+            Object.defineProperty(data, outputPropertyName, {
+                enumerable: false,
+                configurable: true,
+                writable: false,
+                value: result
+            });
+            $timeout(function () { delete data[outputPropertyName] }, 0, false);
         }
         return data[outputPropertyName];
     };
