@@ -16,9 +16,7 @@ homecloud.controller("ArtistViewController", [
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.$watch("tracks", function (changed) {
-            $scope.albums = Library.groupAlbums(changed);
-        });
+        $scope.albums = Library.groupAlbums($scope.tracks);
 
         $scope.fetch = SearchService.tracks.curry({ artist_id: $scope.artist });
 
@@ -27,6 +25,7 @@ homecloud.controller("ArtistViewController", [
             $scope.fetch($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
                     $scope.tracks = $scope.tracks.concat(SyncService.tracks(data.tracks));
+                    Library.addToGroup($scope.albums, data.tracks);
                     $scope.busy = false;
                 } else {
                     $scope.end = true;

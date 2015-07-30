@@ -89,14 +89,14 @@ class FFProbe {
         $object->size               = $o_format["size"]         ->toInt()->get();
         $object->bitrate            = $o_format["bit_rate"]     ->toInt()->get();
 
-        $object->meta_artist        = $o_tags["artist"]         ->map([self::class, "cp1251dec"])->orEmpty();
-        $object->meta_title         = $o_tags["title"]          ->map([self::class, "cp1251dec"])->orEmpty();
-        $object->meta_genre         = $o_tags["genre"]          ->map([self::class, "cp1251dec"])->orEmpty();
-        $object->meta_date          = $o_tags["date"]           ->map([self::class, "cp1251dec"])->orEmpty();
-        $object->meta_album         = $o_tags["album"]          ->map([self::class, "cp1251dec"])->orEmpty();
-        $object->meta_track_number  = $o_tags["track"]          ->map([self::class, "cp1251dec"])->orEmpty();
-        $object->meta_disc_number   = $o_tags["disc"]           ->map([self::class, "cp1251dec"])->orEmpty();
-        $object->meta_album_artist  = $o_tags["album_artist"]   ->map([self::class, "cp1251dec"])->orEmpty();
+        $object->meta_artist        = $o_tags["artist"]         ->orEmpty();
+        $object->meta_title         = $o_tags["title"]          ->orEmpty();
+        $object->meta_genre         = $o_tags["genre"]          ->orEmpty();
+        $object->meta_date          = $o_tags["date"]           ->orEmpty();
+        $object->meta_album         = $o_tags["album"]          ->orEmpty();
+        $object->meta_track_number  = $o_tags["track"]          ->orEmpty();
+        $object->meta_disc_number   = $o_tags["disc"]           ->orEmpty();
+        $object->meta_album_artist  = $o_tags["album_artist"]   ->orEmpty();
         $object->is_compilation     = $o_tags["compilation"]    ->toInt()->orZero();
 
         return Option::Some($object);

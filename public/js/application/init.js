@@ -21,6 +21,24 @@ Function.prototype.rcurry = function () {
     };
 };
 
+Function.prototype.memoize = function () {
+    var cache = {}, that = this;
+    return {
+        call: function () {
+            var args = Array.prototype.slice.call(arguments),
+                key = JSON.stringify(args);
+            if (key in cache) {
+                return cache[key];
+            } else {
+                return cache[key] = that.apply(that, args);
+            }
+        },
+        reset: function () {
+            cache = {};
+        }
+    };
+};
+
 function sync() {
     var cache = {};
     return function (coll) {

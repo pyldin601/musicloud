@@ -33,20 +33,5 @@ when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::clas
 //whenRegExp("/library\\/.+/", DoLibrary::class);
 
 when("test", function () {
-    set_time_limit(0);
-    $n = 0;
-    $query = new SelectQuery(MetadataTable::TABLE_NAME);
-    $query->joinUsing(AudiosTable::TABLE_NAME, "id");
-    $query->where("disc_number = ''");
-    $query->eachRow(function ($file) use (&$n) {
-        $f = FileServer::getFileUsingId($file[AudiosTable::FILE_ID]);
-        $disc = FFProbe::read($f)->map(function ($e) { return $e->meta_disc_number; });
-        if ($disc->nonEmpty()) {
-            (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID_FULL, $file[MetadataTable::ID]))
-                ->set(MetadataTable::DISC_NUMBER_FULL, $disc->get())
-                ->update();
-        }
-        error_log(++$n);
-    });
-    echo "OK";
+
 });

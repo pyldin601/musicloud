@@ -81,22 +81,27 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 }]);
 
 homecloud.factory("Library", [function () {
-    return {
+    var obj = {
         groupAlbums: function (tracks) {
-            var albumsList = [],
-                index,
+            var albumsList = [];
+            obj.addToGroup(albumsList, tracks);
+            return albumsList;
+        },
+        addToGroup: function (coll, tracks) {
+            var index,
                 getAlbumIndex = function (album) {
-                    for (var j = 0; j < albumsList.length; j += 1) {
-                        if (albumsList[j].title == album) {
+                    for (var j = 0; j < coll.length; j += 1) {
+                        if (coll[j].title == album) {
                             return j;
                         }
                     }
                     return -1;
-                };
+                },
+                getAlbumIndexCached = getAlbumIndex.memoize();
             for (var i = 0; i < tracks.length; i += 1) {
-                index = getAlbumIndex(tracks[i].album);
+                index = getAlbumIndexCached.call(tracks[i].album);
                 if (index == -1) {
-                    albumsList.push({
+                    coll.push({
                         title: tracks[i].album,
                         cover_small: tracks[i].cover_small,
                         cover_middle: tracks[i].cover_middle,
@@ -106,13 +111,14 @@ homecloud.factory("Library", [function () {
                             tracks[i]
                         ]
                     });
+                    getAlbumIndexCached.reset();
                 } else {
-                    albumsList[index].tracks.push(tracks[i]);
+                    coll[index].tracks.push(tracks[i]);
                 }
             }
-            return albumsList;
         }
     };
+    return obj;
 }]);
 
 homecloud.factory("StatsService", ["$http", function ($http) {
@@ -128,12 +134,16 @@ homecloud.factory("StatsService", ["$http", function ($http) {
 
 homecloud.factory("SyncService", [function () {
     var trackSync = sync();
+    var artistSync = sync();
+    var albumSync = sync();
     return {
-        tracks: function (coll) {
-            return trackSync(coll);
-        },
-        track: function (track) {
-            return trackSync([ track ]).shift();
-        }
+        tracks:  function (coll)   { return trackSync(coll); },
+        track:   function (track)  { return trackSync([ track ]).shift(); },
+
+        artists: function (coll)   { return artistSync(coll); },
+        artist:  function (artist) { return artistSync([ artist ]).shift(); },
+
+        albums:  function (coll)   { return albumSync(coll); },
+        album:   function (album)  { return albumSync([ album ]).shift(); }
     }
 }]);
