@@ -28,11 +28,14 @@ use app\project\persistence\db\tables\StatsTable;
 class DoTracks implements RouteHandler {
 
     public function doGet(JsonResponse $response, Option $q,
-                          Option $artist_id, Option $album_id, Option $genre_id, LoggedIn $me) {
+                          Option $artist_id, Option $album_id, Option $genre_id,
+                          Option $shuffle_id, LoggedIn $me) {
 
         $art_id = $artist_id->toInt();
         $alb_id = $album_id->toInt();
         $gen_id = $genre_id->toInt();
+
+        $shuffle = $shuffle_id->toInt();
 
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
@@ -51,13 +54,17 @@ class DoTracks implements RouteHandler {
             ->select(MetaAlbumsTable::ALBUM_FULL)
             ->selectAlias(MetaArtistsTable::ARTIST_FULL, "album_artist")
             ->select(MetaGenresTable::GENRE_FULL)
-            ->selectAlias(MetaAlbumsTable::ID_FULL, "group_id")
+            ->selectAlias(MetaAlbumsTable::ID_FULL, "group_id");
 
-            ->orderBy(MetaArtistsTable::ARTIST_FULL)
-            ->orderBy(MetadataTable::DATE_FULL." DESC")
-            ->orderBy(MetaAlbumsTable::ALBUM_FULL)
-            ->orderBy(MetadataTable::DISC_NUMBER_FULL)
-            ->orderBy(MetadataTable::TRACK_NUMBER_FULL);
+            if ($shuffle->isEmpty()) {
+                $query  ->orderBy(MetaArtistsTable::ARTIST_FULL)
+                        ->orderBy(MetadataTable::DATE_FULL." DESC")
+                        ->orderBy(MetaAlbumsTable::ALBUM_FULL)
+                        ->orderBy(MetadataTable::DISC_NUMBER_FULL)
+                        ->orderBy(MetadataTable::TRACK_NUMBER_FULL);
+            } else {
+                $query  ->orderBy("RAND(".$shuffle->get().")");
+            }
 
         CatalogTools::commonSelectors($query);
 
