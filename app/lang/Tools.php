@@ -67,4 +67,17 @@ class Tools {
         return $result;
     }
 
+    public static function generateRandomKey($length = 10) {
+
+        $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        $key = "";
+        while ($length --) {
+            $key .= $charset[rand(0, strlen($charset) - 1)];
+        }
+
+        return $key;
+
+    }
+
 }

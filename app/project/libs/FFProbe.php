@@ -98,6 +98,7 @@ class FFProbe {
         $object->meta_disc_number   = $o_tags["disc"]           ->orEmpty();
         $object->meta_album_artist  = $o_tags["album_artist"]   ->orEmpty();
         $object->is_compilation     = $o_tags["compilation"]    ->toInt()->orZero();
+        $object->meta_comment       = $o_tags["comment"]        ->orEmpty();
 
         return Option::Some($object);
 

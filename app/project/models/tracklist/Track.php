@@ -31,6 +31,7 @@ use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\StatsTable;
+use app\project\persistence\db\tables\TSongs;
 use app\project\persistence\fs\FileServer;
 use app\project\persistence\fs\FSTool;
 
@@ -46,73 +47,66 @@ class Track {
 
     public function __construct($track_id) {
 
-        $this->me = resource(LoggedIn::class);
+        $this->settings     = resource(Settings::class);
+        $this->me           = resource(LoggedIn::class);
 
-        $query = new SelectQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $track_id);
+        $track = (new SelectQuery(TSongs::_NAME, TSongs::ID, $track_id))
+            ->fetchOneRow()
+            ->getOrThrow(TrackNotFoundException::class);
 
-        $track = $query->fetchOneRow()->getOrThrow(TrackNotFoundException::class);
-
-        assert($track[AudiosTable::USER_ID] == $this->me->getId(), BadAccessException::class);
+        assert($track[TSongs::USER_ID] == $this->me->getId(), BadAccessException::class);
 
         $this->track_id = $track_id;
-
         $this->track_data = $track;
-
-        $this->settings = Settings::getInstance();
 
     }
 
     public function upload($file_path, $file_name) {
 
-        $mime_type = MIME::mime_type($file_path);
-
-        assert($this->track_data[AudiosTable::FILE_ID] === null, AlreadyUploadedException::class);
+        assert($this->track_data[TSongs::FILE_ID] === null, AlreadyUploadedException::class);
 
         /** @var Metadata $metadata */
         $metadata = FFProbe::read($file_path)
             ->getOrThrow(InvalidAudioFileException::class);
 
-
-        $covers = FFProbe::readTempCover($file_path);
-
+        $covers  = FFProbe::readTempCover($file_path);
         $file_id = FileServer::register($file_path);
+
+        $query = (new UpdateQuery(TSongs::_NAME));
 
         if ($covers->nonEmpty()) {
 
-            $full_cover_id = FileServer::register($covers->get()[0]);
-            $middle_cover_id = FileServer::register($covers->get()[1]);
-            $small_cover_id = FileServer::register($covers->get()[2]);
+            $full_cover_id      = FileServer::register($covers->get()[0]);
+            $middle_cover_id    = FileServer::register($covers->get()[1]);
+            $small_cover_id     = FileServer::register($covers->get()[2]);
 
-            (new UpdateQuery(CoversTable::TABLE_NAME, CoversTable::ID_FULL, $this->track_id))
-                ->set(CoversTable::COVER_FULL_FULL, $full_cover_id)
-                ->set(CoversTable::COVER_MIDDLE_FULL, $middle_cover_id)
-                ->set(CoversTable::COVER_SMALL_FULL, $small_cover_id)
-                ->update();
+            $query  ->set(TSongs::C_SMALL_ID, $small_cover_id)
+                    ->set(TSongs::C_MID_ID, $middle_cover_id)
+                    ->set(TSongs::C_BIG_ID, $full_cover_id);
 
         }
 
-        (new UpdateQuery(AudiosTable::TABLE_NAME, AudiosTable::ID, $this->track_id))
-            ->set(AudiosTable::FILE_ID,             $file_id)
-            ->set(AudiosTable::FILE_NAME,           $file_name)
-            ->set(AudiosTable::CONTENT_TYPE,        $mime_type)
-            ->update();
+        $query  ->set(TSongs::FILE_ID,   $file_id)
+                ->set(TSongs::FILE_NAME, $file_name);
 
-        $artist_id = ArtistDao::getArtistId($metadata->meta_album_artist ?: "");
-        $genre_id  = GenreDao::getGenreId($metadata->meta_genre ?: "");
-        $album_id  = AlbumDao::getAlbumId($artist_id, $metadata->meta_album ?: "");
+        $query  ->set(TSongs::T_ARTIST,  $metadata->meta_artist)
+                ->set(TSongs::T_YEAR,    $metadata->meta_date)
+                ->set(TSongs::T_TITLE,   $metadata->meta_title)
+                ->set(TSongs::T_NUMBER,  $metadata->meta_track_number)
+                ->set(TSongs::DISC,      $metadata->meta_disc_number)
+                ->set(TSongs::BITRATE,   round($metadata->bitrate / 1000))
+                ->set(TSongs::LENGTH,    $metadata->duration)
+                ->set(TSongs::A_ARTIST,  $metadata->meta_album_artist)
+                ->set(TSongs::T_GENRE,   $metadata->meta_genre)
+                ->set(TSongs::T_ALBUM,   $metadata->meta_album)
+                ->set(TSongs::T_COMMENT, $metadata->meta_comment)
+                ->set(TSongs::IS_COMP,   $metadata->is_compilation)
+                ->set(TSongs::IS_FAV,    0)
+                ->set(TSongs::C_DATE,    time())
+                ->set(TSongs::T_PLAYED,  0)
+                ->set(TSongs::T_SKIPPED, 0);
 
-        (new UpdateQuery(MetadataTable::TABLE_NAME, MetadataTable::ID, $this->track_id))
-            ->set(MetadataTable::ARTIST,            $metadata->meta_artist)
-            ->set(MetadataTable::DATE,              $metadata->meta_date)
-            ->set(MetadataTable::TITLE,             $metadata->meta_title)
-            ->set(MetadataTable::TRACK_NUMBER,      $metadata->meta_track_number)
-            ->set(MetadataTable::DISC_NUMBER,       $metadata->meta_disc_number)
-            ->set(MetadataTable::BITRATE,           $metadata->bitrate)
-            ->set(MetadataTable::DURATION,          $metadata->duration)
-            ->set(MetadataTable::ARTIST_ID,         $artist_id)
-            ->set(MetadataTable::GENRE_ID,          $genre_id)
-            ->set(MetadataTable::ALBUM_ID,          $album_id)
-            ->update();
+        $query->update();
 
     }
 
@@ -121,15 +115,15 @@ class Track {
     }
 
     public function incrementPlays() {
-        (new UpdateQuery(StatsTable::TABLE_NAME, StatsTable::ID_FULL, $this->track_id))
-            ->increment(StatsTable::PLAYBACKS_FULL)
-            ->set(StatsTable::LAST_PLAYED_DATE_FULL, time())
+        (new UpdateQuery(TSongs::_NAME, TSongs::ID, $this->track_id))
+            ->increment(TSongs::T_PLAYED)
+            ->set(TSongs::LP_DATE, time())
             ->update();
     }
 
     public function incrementSkips() {
-        (new UpdateQuery(StatsTable::TABLE_NAME, StatsTable::ID_FULL, $this->track_id))
-            ->increment(StatsTable::SKIPS_FULL)
+        (new UpdateQuery(TSongs::_NAME, TSongs::ID, $this->track_id))
+            ->increment(TSongs::T_SKIPPED)
             ->update();
     }
 

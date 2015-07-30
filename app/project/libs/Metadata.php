@@ -25,5 +25,6 @@ class Metadata {
     public $meta_track_number;
     public $meta_disc_number;
     public $is_compilation;
+    public $meta_comment;
 
 }
