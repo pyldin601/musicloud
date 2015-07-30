@@ -38,41 +38,44 @@ homecloud.factory("TrackService", ["$http", function ($http) {
 
 homecloud.factory("SearchService", ["$http", function ($http) {
     return {
-        artists: function (offset, filter) {
-            return $http.get("/api/catalog/artists?o="+offset+"&q="+encodeURI(filter));
+        artists: function (opts, offset) {
+            var uri = {};
+
+            uri.o = offset;
+
+            if (opts.filter) { uri.filter = opts.filter }
+
+            return $http.get("/api/catalog/artists?" + serialize_uri(uri));
         },
-        albums: function (offset, filter) {
-            return $http.get("/api/catalog/albums?o="+offset+"&q="+encodeURI(filter));
+        albums: function (opts, offset) {
+            var uri = {};
+
+            uri.o = offset;
+
+            if (opts.filter) { uri.filter = opts.filter }
+
+            return $http.get("/api/catalog/albums?" + serialize_uri(uri));
         },
-        genres: function (offset, filter) {
-            return $http.get("/api/catalog/genres?o="+offset+"&q="+encodeURI(filter));
-        },
-        tracks: function (opts, offset) {
-            var uri = Empty;
+        genres: function (opts, offset) {
+            var uri = {};
 
             uri.o = offset;
 
             if (opts.filter) { uri.q = opts.filter }
-            if (opts.artist) { uri.artist = opts.artist }
-            if (opts.album)  { uri.album = opts.album }
-            if (opts.genre)  { uri.genre = opts.genre }
+
+            return $http.get("/api/catalog/genres?" + serialize_uri(uri));
+        },
+        tracks: function (opts, offset) {
+            var uri = {};
+
+            uri.o = offset;
+
+            if (opts.filter) { uri.q = opts.filter }
+            if (opts.artist_id) { uri.artist_id = opts.artist_id }
+            if (opts.album_id)  { uri.album_id = opts.album_id }
+            if (opts.genre_id)  { uri.genre_id = opts.genre_id }
 
             return $http.get("/api/catalog/tracks?" + serialize_uri(uri));
-        }
-    };
-}]);
-
-homecloud.factory("LibraryService", ["$http", function ($http) {
-    return {
-        tracksByArtist: function (artist) {
-            return $http.get("/api/catalog/tracks/by-artist/" + encodeURI(artist));
-        },
-        tracksByAlbum: function (album, artist) {
-            return $http.get("/api/catalog/tracks/by-album/" + encodeURI(artist) + "/" + encodeURI(album));
-        },
-
-        albumsByArtist: function (artist) {
-            return $http.get("/api/catalog/albums/by-artist/" + encodeURI(artist));
         }
     };
 }]);

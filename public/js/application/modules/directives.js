@@ -73,10 +73,9 @@ homecloud.directive("multiselectList", [function () {
                 lastSelected = null;
 
             elem.on("mousedown", function (event) {
-
                 event.preventDefault();
                 event.stopPropagation();
-
+                return false;
             });
 
             elem.on("click", function (event) {

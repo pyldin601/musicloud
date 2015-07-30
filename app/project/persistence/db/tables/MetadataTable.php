@@ -19,6 +19,7 @@ class MetadataTable {
     const ARTIST                = "artist";
     const TITLE                 = "title";
     const TRACK_NUMBER          = "track_number";
+    const DISC_NUMBER           = "disc_number";
     const ALBUM                 = "album";
     const GENRE                 = "genre";
     const DATE                  = "date";
@@ -37,6 +38,7 @@ class MetadataTable {
     const ARTIST_FULL           = self::TABLE_NAME . "." .self::ARTIST;
     const TITLE_FULL            = self::TABLE_NAME . "." .self::TITLE;
     const TRACK_NUMBER_FULL     = self::TABLE_NAME . "." .self::TRACK_NUMBER;
+    const DISC_NUMBER_FULL      = self::TABLE_NAME . "." .self::DISC_NUMBER;
     const ALBUM_FULL            = self::TABLE_NAME . "." .self::ALBUM;
     const GENRE_FULL            = self::TABLE_NAME . "." .self::GENRE;
     const DATE_FULL             = self::TABLE_NAME . "." .self::DATE;

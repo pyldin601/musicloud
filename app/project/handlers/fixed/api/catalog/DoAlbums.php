@@ -19,6 +19,7 @@ use app\project\CatalogTools;
 use app\project\libs\Metadata;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\AudiosTable;
+use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
@@ -31,10 +32,15 @@ class DoAlbums implements RouteHandler {
         $query = (new SelectQuery(MetaAlbumsTable::TABLE_NAME))
             ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID_FULL, MetaAlbumsTable::ARTIST_ID_FULL)
             ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ALBUM_ID_FULL, MetaAlbumsTable::ID_FULL)
+            ->innerJoin(CoversTable::TABLE_NAME, CoversTable::ID_FULL, MetadataTable::ID_FULL)
             ->select(MetaAlbumsTable::ID_FULL)
             ->select(MetaAlbumsTable::ALBUM_FULL)
             ->select(MetaArtistsTable::ARTIST_FULL)
-            ->select(MetadataTable::COVER_FILE_ID_FULL)
+
+            ->select(CoversTable::COVER_MIDDLE_FULL)
+            ->select(CoversTable::COVER_FULL_FULL)
+            ->select(CoversTable::COVER_SMALL_FULL)
+
             ->selectCount(MetadataTable::ID_FULL, "tracks_count")
             ->selectAlias(MetaArtistsTable::ID_FULL, "artist_id")
             ->where(MetaAlbumsTable::USER_ID_FULL, $me->getId())

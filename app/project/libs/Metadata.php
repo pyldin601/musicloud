@@ -23,6 +23,7 @@ class Metadata {
     public $meta_date;
     public $meta_album;
     public $meta_track_number;
+    public $meta_disc_number;
     public $is_compilation;
 
 }

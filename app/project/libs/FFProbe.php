@@ -95,6 +95,7 @@ class FFProbe {
         $object->meta_date          = $o_tags["date"]           ->map([self::class, "cp1251dec"])->orEmpty();
         $object->meta_album         = $o_tags["album"]          ->map([self::class, "cp1251dec"])->orEmpty();
         $object->meta_track_number  = $o_tags["track"]          ->map([self::class, "cp1251dec"])->orEmpty();
+        $object->meta_disc_number   = $o_tags["disc"]           ->map([self::class, "cp1251dec"])->orEmpty();
         $object->meta_album_artist  = $o_tags["album_artist"]   ->map([self::class, "cp1251dec"])->orEmpty();
         $object->is_compilation     = $o_tags["compilation"]    ->toInt()->orZero();
 

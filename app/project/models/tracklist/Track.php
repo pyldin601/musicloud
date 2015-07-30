@@ -106,6 +106,7 @@ class Track {
             ->set(MetadataTable::DATE,              $metadata->meta_date)
             ->set(MetadataTable::TITLE,             $metadata->meta_title)
             ->set(MetadataTable::TRACK_NUMBER,      $metadata->meta_track_number)
+            ->set(MetadataTable::DISC_NUMBER,       $metadata->meta_disc_number)
             ->set(MetadataTable::BITRATE,           $metadata->bitrate)
             ->set(MetadataTable::DURATION,          $metadata->duration)
             ->set(MetadataTable::ARTIST_ID,         $artist_id)

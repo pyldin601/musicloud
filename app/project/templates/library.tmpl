@@ -127,7 +127,7 @@
                 <span class="label">Library</span>
             </div>
             <ul class="section-list">
-                <li class="active">
+                <li>
                     <a href="#/artists/">
                         <span class="group">
                             <i class="icon-artists"></i>
@@ -137,12 +137,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#/albums/">
                         <span class="group">
                             <i class="icon-albums"></i>
                             <span class="label padded">Albums</span>
                         </span>
-
-                    <div class="badge right" ng-bind-template="{{ account.user.stats.albums_count | count}}">-</div>
+                        <div class="badge right" ng-bind-template="{{ account.user.stats.albums_count | count}}">-</div>
+                    </a>
                 </li>
                 <li>
                         <span class="group">

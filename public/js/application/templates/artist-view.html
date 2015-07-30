@@ -25,8 +25,8 @@
                             </ul>
                         </div>
                         <div class="position left">
-                            <div ng-hide="player.playlist.track.id == track.id" ng-bind-template="{{ $index + 1 }}."></div>
-                            <div ng-show="player.playlist.track.id == track.id"><i class="fa fa-volume-up"></i></div>
+                            <div ng-hide="player.playlist.track == track" ng-bind-template="{{ track.track_number }}."></div>
+                            <div ng-show="player.playlist.track == track"><i class="fa fa-volume-up"></i></div>
                         </div>
                         <div class="track-title">
                             <div class="first" ng-bind="track | getTitle"></div>

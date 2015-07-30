@@ -1,0 +1,18 @@
+<div class="library-body">
+    <div class="library-container">
+        <div class="album-wrapper list-view container" infinite-scroll="load()"
+             infinite-scroll-disabled="busy" infinite-scroll-distance="1">
+            <div class="artist-item square2" ng-repeat="album in albums">
+                <div class="artist-list-content">
+                    <div class="cover">
+                        <img ng-if="album.cover_middle" ng-src="/file/{{ album.cover_middle }}">
+                    </div>
+                    <div class="artist-name">
+                        <a ng-href="#/album/{{ album.id }}"
+                           ng-bind-template="{{ album.album | albumFilter }}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

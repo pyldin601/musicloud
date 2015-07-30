@@ -4,15 +4,15 @@
 
 var mediacloud = angular.module("HomeCloud");
 
-mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
+mediacloud.config(["$routeProvider", function ($routeProvider) {
     var templatePath = "/public/js/application/templates";
 
     $routeProvider.when("/artists/", {
         templateUrl: templatePath + "/artists-view.html",
         controller: "AllArtistsViewController",
         resolve: {
-            AllArtistsContent: ["SearchService", "$location", function (SearchService, $location) {
-                return SearchService.artists(0, "").then(function (response) {
+            Resolved: ["SearchService", "$location", function (SearchService, $location) {
+                return SearchService.artists(Empty, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");
@@ -21,12 +21,26 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         }
     });
 
-    $routeProvider.when("/artist/:artist?", {
+    $routeProvider.when("/albums/", {
+        templateUrl: templatePath + "/albums-view.html",
+        controller: "AllAlbumsViewController",
+        resolve: {
+            Resolved: ["SearchService", "$location", function (SearchService, $location) {
+                return SearchService.albums(Empty, 0).then(function (response) {
+                    return response.data;
+                }, function () {
+                    $location.url("/");
+                });
+            }]
+        }
+    });
+
+    $routeProvider.when("/artist/:artist", {
         templateUrl: templatePath + "/artist-view.html",
         controller: "ArtistViewController",
         resolve: {
             Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
-                return SearchService.tracks({ artist: $route.current.params.artist || "" }, 0).then(function (response) {
+                return SearchService.tracks({ artist_id: $route.current.params.artist }, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");
@@ -36,6 +50,6 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
     });
 
     $routeProvider.otherwise({
-        redirectTo: "/"
+        redirectTo: "/artists/"
     });
 }]);

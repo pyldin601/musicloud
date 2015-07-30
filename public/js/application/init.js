@@ -22,21 +22,15 @@ Function.prototype.rcurry = function () {
 };
 
 function sync() {
-    var cache = [];
+    var cache = {};
     return function (coll) {
-        var id, found = false, result = [];
+        var id, result = [];
         for (var i = 0; i < coll.length; i++) {
             id = coll[i].id;
-            found = false;
-            for (var j = 0; j < cache.length; j++) {
-                if (cache[j].id == id) {
-                    found = true;
-                    result.push(cache[j]);
-                    break;
-                }
-            }
-            if (!found) {
-                cache.push(coll[i]);
+            if (id in cache) {
+                result.push(cache[id]);
+            } else {
+                cache[id] = coll[i];
                 result.push(coll[i]);
             }
         }

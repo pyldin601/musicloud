@@ -28,7 +28,11 @@ use app\project\persistence\db\tables\StatsTable;
 class DoTracks implements RouteHandler {
 
     public function doGet(JsonResponse $response, Option $q,
-                          Option $artist, Option $album, Option $genre, LoggedIn $me) {
+                          Option $artist_id, Option $album_id, Option $genre_id, LoggedIn $me) {
+
+        $art_id = $artist_id->toInt();
+        $alb_id = $album_id->toInt();
+        $gen_id = $genre_id->toInt();
 
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
@@ -56,16 +60,16 @@ class DoTracks implements RouteHandler {
 
         Context::contextify($query);
 
-        if ($artist->nonEmpty()) {
-            $query->where(MetaArtistsTable::ARTIST_FULL, $artist->get());
+        if ($art_id->nonEmpty()) {
+            $query->where(MetaArtistsTable::ID_FULL, $art_id->get());
         }
 
-        if ($album->nonEmpty()) {
-            $query->where(MetaAlbumsTable::ALBUM_FULL, $album->get());
+        if ($alb_id->nonEmpty()) {
+            $query->where(MetaAlbumsTable::ID_FULL, $alb_id->get());
         }
 
-        if ($genre->nonEmpty()) {
-            $query->where(MetaGenresTable::GENRE_FULL, $genre->get());
+        if ($gen_id->nonEmpty()) {
+            $query->where(MetaGenresTable::ID_FULL, $gen_id->get());
         }
 
         if ($filter->nonEmpty()) {
