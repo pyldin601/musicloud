@@ -93,7 +93,7 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
     });
 
     $routeProvider.when("/genre/:genre", {
-        templateUrl: templatePath + "/grouped-view.html",
+        templateUrl: templatePath + "/view-group-genre.html",
         controller: "GenreViewController",
         resolve: {
             Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {

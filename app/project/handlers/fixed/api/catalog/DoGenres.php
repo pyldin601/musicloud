@@ -40,10 +40,11 @@ class DoGenres implements RouteHandler {
                 CoversTable::COVER_FULL_FULL,
                 CoversTable::COVER_SMALL_FULL
             )
-
+            ->orderBy(MetaGenresTable::GENRE_FULL)
             ->addGroupBy(MetaGenresTable::ID_FULL)
             ->having("COUNT(".MetadataTable::ID_FULL.") > 0")
             ->where(MetaGenresTable::USER_ID_FULL, $me->getId());
+
 
         Context::contextify($query);
 
