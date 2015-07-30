@@ -9,6 +9,8 @@
 namespace app\lang;
 
 
+use app\lang\option\Mapper;
+
 class Tools {
     /**
      * @param $args
@@ -78,6 +80,21 @@ class Tools {
 
         return $key;
 
+    }
+
+    /**
+     * @param $number
+     * @param array $numbers
+     * @return mixed
+     */
+    public static function closest($number, array $numbers) {
+        $closest = null;
+        foreach ($numbers as $item) {
+            if ($closest === null || abs($number - $closest) > abs($item - $number)) {
+                $closest = $item;
+            }
+        }
+        return $closest;
     }
 
 }
