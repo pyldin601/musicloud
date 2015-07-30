@@ -106,6 +106,8 @@ class Track {
                 ->set(TSongs::T_PLAYED,  0)
                 ->set(TSongs::T_SKIPPED, 0);
 
+        $query->where(TSongs::ID, $this->track_id);
+
         $query->update();
 
     }
