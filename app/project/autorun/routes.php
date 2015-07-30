@@ -7,6 +7,7 @@
  */
 
 
+use app\lang\Tools;
 use app\project\handlers\dynamic\catalog;
 use app\project\handlers\dynamic\content;
 
@@ -23,3 +24,7 @@ when("api/catalog/tracks/by-genre/:genre", catalog\DoTracksByGenre::class);
 
 when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::class);
 
+when("test", function () {
+
+
+});

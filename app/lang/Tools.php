@@ -53,4 +53,18 @@ class Tools {
         }
         return true;
     }
-} 
+
+    public static function join($src, $dst, $src_key, $dst_key) {
+        $indices = [];
+        $result = [];
+        foreach ($dst as $item) {
+            $indices[$item[$dst_key]] = $item;
+        }
+        foreach ($src as $item) if (isset($item[$src_key])) {
+            $item[$src_key] = $indices[$item[$src_key]] ?: null;
+            $result[] = $item;
+        }
+        return $result;
+    }
+
+}

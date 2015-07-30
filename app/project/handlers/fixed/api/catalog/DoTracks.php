@@ -37,6 +37,7 @@ class DoTracks implements RouteHandler {
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
         $query = (new SelectQuery(MetadataTable::TABLE_NAME))
+
             ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
             ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
             ->joinUsing(CoversTable::TABLE_NAME, CoversTable::ID)
