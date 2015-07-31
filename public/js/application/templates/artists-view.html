@@ -4,12 +4,12 @@
             <div class="list-item square2" ng-repeat="artist in artists">
                 <div class="artist-list-content">
                     <div class="cover">
-                        <img ng-if="artist.cover_middle" ng-src="/file/{{ artist.cover_middle }}">
+                        <img ng-if="artist.middle_cover_id" ng-src="/file/{{ artist.middle_cover_id }}">
                     </div>
                     <div class="artist-name">
-                        <i ng-show="player.playlist.track.artist_id === artist.id" class="fa fa-volume-up"></i>
-                        <a ng-href="#/artist/{{ artist.id }}"
-                           ng-bind-template="{{ artist | getArtist }}"></a>
+                        <!--<i ng-show="player.playlist.track.album_artist === artist.album_artist" class="fa fa-volume-up"></i>-->
+                        <a class="block" ng-href="#/tracks/grouped?artist={{ artist.album_artist }}"
+                           ng-bind-template="{{ artist.album_artist | artistFilter }}"></a>
                     </div>
                 </div>
             </div>

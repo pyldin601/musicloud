@@ -72,19 +72,14 @@ class Injector implements SingletonInterface {
      */
     public function create(\ReflectionClass $reflection) {
 
-        $constructor = $reflection->getConstructor();
-
-        $dependencies = $this->injectByFunctionArguments(
-            $constructor->getParameters());
-
         if (!$reflection->implementsInterface(Injectable::class)) {
             throw new InjectorException("Object could not be injected");
         }
 
         if ($reflection->implementsInterface(SingletonInterface::class)) {
-            return $reflection->getMethod("getInstance")->invokeArgs(null, $dependencies);
+            return $reflection->getMethod("getInstance")->invoke(null);
         } else {
-            return $reflection->newInstanceArgs($dependencies);
+            return $reflection->newInstance();
         }
 
 

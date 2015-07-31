@@ -53,7 +53,7 @@ homecloud.filter("getTitle", function () {
 homecloud.filter("getArtist", function () {
     return function (track) {
         if (!track) return;
-        return filters.artist(track.artist);
+        return filters.artist(track.track_artist);
     };
 });
 
@@ -64,28 +64,6 @@ homecloud.filter("getAlbumArtist", function () {
     };
 });
 
-homecloud.filter("groupBy", ["$timeout", function ($timeout) {
-    return function (data, key) {
-        if (!key) return data;
-        var outputPropertyName = '__groupBy__' + key;
-        if(!data[outputPropertyName]){
-            var result = {};
-            for (var i=0;i<data.length;i++) {
-                if (!result[data[i][key]])
-                    result[data[i][key]]=[];
-                result[data[i][key]].push(data[i]);
-            }
-            Object.defineProperty(data, outputPropertyName, {
-                enumerable: false,
-                configurable: true,
-                writable: false,
-                value: result
-            });
-            $timeout(function () { delete data[outputPropertyName] }, 0, false);
-        }
-        return data[outputPropertyName];
-    };
-}]);
 
 homecloud.filter("first", function () {
     return function (data) {

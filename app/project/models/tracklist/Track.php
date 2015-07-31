@@ -94,17 +94,14 @@ class Track {
                 ->set(TSongs::T_TITLE,   $metadata->meta_title)
                 ->set(TSongs::T_NUMBER,  $metadata->meta_track_number)
                 ->set(TSongs::DISC,      $metadata->meta_disc_number)
-                ->set(TSongs::BITRATE,   round($metadata->bitrate / 1000))
+                ->set(TSongs::BITRATE,   $metadata->bitrate)
                 ->set(TSongs::LENGTH,    $metadata->duration)
                 ->set(TSongs::A_ARTIST,  $metadata->meta_album_artist)
                 ->set(TSongs::T_GENRE,   $metadata->meta_genre)
                 ->set(TSongs::T_ALBUM,   $metadata->meta_album)
                 ->set(TSongs::T_COMMENT, $metadata->meta_comment)
                 ->set(TSongs::IS_COMP,   $metadata->is_compilation)
-                ->set(TSongs::IS_FAV,    0)
-                ->set(TSongs::C_DATE,    time())
-                ->set(TSongs::T_PLAYED,  0)
-                ->set(TSongs::T_SKIPPED, 0);
+                ->set(TSongs::C_DATE,    time());
 
         $query->where(TSongs::ID, $this->track_id);
 

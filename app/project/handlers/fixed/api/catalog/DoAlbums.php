@@ -23,35 +23,27 @@ use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
+use app\project\persistence\db\tables\TSongs;
 
 class DoAlbums implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
-        $query = (new SelectQuery(MetaAlbumsTable::TABLE_NAME))
-            ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID_FULL, MetaAlbumsTable::ARTIST_ID_FULL)
-            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ALBUM_ID_FULL, MetaAlbumsTable::ID_FULL)
-            ->innerJoin(CoversTable::TABLE_NAME, CoversTable::ID_FULL, MetadataTable::ID_FULL)
-            ->select(MetaAlbumsTable::ID_FULL)
-            ->select(MetaAlbumsTable::ALBUM_FULL)
-            ->select(MetaArtistsTable::ARTIST_FULL)
-
-            ->select(CoversTable::COVER_MIDDLE_FULL)
-            ->select(CoversTable::COVER_FULL_FULL)
-            ->select(CoversTable::COVER_SMALL_FULL)
-
-            ->selectCount(MetadataTable::ID_FULL, "tracks_count")
-            ->selectAlias(MetaArtistsTable::ID_FULL, "artist_id")
-            ->where(MetaAlbumsTable::USER_ID_FULL, $me->getId())
-            ->having("COUNT(".MetadataTable::ID_FULL.") > 0")
-            ->addGroupBy(MetaAlbumsTable::ID_FULL);
+        $query = (new SelectQuery(TSongs::_NAME))
+            ->where(TSongs::USER_ID, $me->getId())
+            ->select(TSongs::A_ARTIST)
+            ->select(TSongs::T_ALBUM)
+            ->select(TSongs::C_BIG_ID, TSongs::C_MID_ID, TSongs::C_SMALL_ID);
 
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
-            $query->match(MetaAlbumsTable::ALBUM_FULL, $filter->get());
+            $query->match(TSongs::T_ALBUM, $filter->get());
         }
+
+        $query->addGroupBy(TSongs::A_ARTIST);
+        $query->addGroupBy(TSongs::T_ALBUM);
 
         $catalog = $query->fetchAll();
 

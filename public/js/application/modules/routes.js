@@ -109,6 +109,23 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         }
     });
 
+    $routeProvider.when("/tracks/grouped", {
+        templateUrl: templatePath + "/grouped-view.html",
+        controller: "GroupViewController",
+        resolve: {
+            Resolved: ["SearchService", "$location", function (SearchService, $location) {
+                return SearchService.tracks($location.search(), 0).then(function (response) {
+                    return response.data;
+                }, function () {
+                    $location.url("/");
+                });
+            }]
+        },
+        special: {
+            section: "tracks"
+        }
+    });
+
     $routeProvider.otherwise({
         redirectTo: "/artists/"
     });

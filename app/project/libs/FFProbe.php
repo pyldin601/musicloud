@@ -94,8 +94,8 @@ class FFProbe {
         $object->meta_genre         = $o_tags["genre"]          ->orEmpty();
         $object->meta_date          = $o_tags["date"]           ->orEmpty();
         $object->meta_album         = $o_tags["album"]          ->orEmpty();
-        $object->meta_track_number  = $o_tags["track"]          ->orEmpty();
-        $object->meta_disc_number   = $o_tags["disc"]           ->orEmpty();
+        $object->meta_track_number  = $o_tags["track"]          ->toInt()->orNull();
+        $object->meta_disc_number   = $o_tags["disc"]           ->toInt()->orNull();
         $object->meta_album_artist  = $o_tags["album_artist"]   ->orEmpty();
         $object->is_compilation     = $o_tags["compilation"]    ->toInt()->orZero();
         $object->meta_comment       = $o_tags["comment"]        ->orEmpty();

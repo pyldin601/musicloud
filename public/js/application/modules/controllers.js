@@ -67,6 +67,37 @@ homecloud.controller("AlbumViewController", [
     }
 ]);
 
+// GroupViewController
+homecloud.controller("GroupViewController", [
+    "Resolved", "SearchService", "SyncService", "Library", "$scope", "$location",
+    function (Resolved, SearchService, SyncService, Library, $scope, $location) {
+
+        $scope.tracks = SyncService.tracks(Resolved.tracks);
+        $scope.albums = [];
+
+        $scope.tracks_selected = [];
+        $scope.busy = false;
+        $scope.end = false;
+
+        $scope.albums = Library.groupAlbums($scope.tracks);
+        $scope.fetch = SearchService.tracks.curry($location.search());
+
+        $scope.load = function () {
+            $scope.busy = true;
+            $scope.fetch($scope.tracks.length).success(function (data) {
+                if (data.tracks.length > 0) {
+                    $scope.tracks = $scope.tracks.concat(SyncService.tracks(data.tracks));
+                    Library.addToGroup($scope.albums, data.tracks);
+                    $scope.busy = false;
+                } else {
+                    $scope.end = true;
+                }
+            })
+        };
+
+    }
+]);
+
 homecloud.controller("GenreViewController", [
     "Resolved", "SearchService", "SyncService", "Library", "$scope", "$routeParams",
     function (Resolved, SearchService, SyncService, Library, $scope, $routeParams) {

@@ -11,6 +11,7 @@ namespace app\project\handlers\fixed\api\catalog;
 
 use app\core\db\builder\SelectQuery;
 use app\core\etc\Context;
+use app\core\http\HttpGet;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\lang\option\Mapper;
@@ -24,66 +25,54 @@ use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\MetaGenresTable;
 use app\project\persistence\db\tables\StatsTable;
+use app\project\persistence\db\tables\TSongs;
 
 class DoTracks implements RouteHandler {
 
-    public function doGet(JsonResponse $response, Option $q,
-                          Option $artist_id, Option $album_id, Option $genre_id,
-                          Option $shuffle_id, LoggedIn $me) {
+    public function doGet(JsonResponse $response, Option $q, HttpGet $get, LoggedIn $me) {
 
-        $art_id = $artist_id->toInt();
-        $alb_id = $album_id->toInt();
-        $gen_id = $genre_id->toInt();
+        $artist  = $get->get("artist")->reject("");
+        $album   = $get->get("album")->reject("");
+        $genre   = $get->get("genre")->reject("");
+        $shuffle = $get->get("shuffle_id")->toInt();
 
-        $shuffle = $shuffle_id->toInt();
+        $filter = $q->reject("")->map(Mapper::fulltext());
 
-        $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
+        $query = (new SelectQuery(TSongs::_NAME))
+            ->where(TSongs::USER_ID, $me->getId());
 
-        $query = (new SelectQuery(MetadataTable::TABLE_NAME))
-
-            ->joinUsing(AudiosTable::TABLE_NAME, AudiosTable::ID)
-            ->joinUsing(StatsTable::TABLE_NAME, StatsTable::ID)
-            ->joinUsing(CoversTable::TABLE_NAME, CoversTable::ID)
-
-            ->innerJoin(MetaAlbumsTable::TABLE_NAME,  MetaAlbumsTable::ID_FULL,  MetadataTable::ALBUM_ID_FULL)
-            ->innerJoin(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::ID_FULL, MetadataTable::ARTIST_ID_FULL)
-            ->innerJoin(MetaGenresTable::TABLE_NAME,  MetaGenresTable::ID_FULL,  MetadataTable::GENRE_ID_FULL)
-
-            ->where(MetadataTable::USER_ID_FULL, $me->getId())
-
-            ->select(MetaAlbumsTable::ALBUM_FULL)
-            ->selectAlias(MetaArtistsTable::ARTIST_FULL, "album_artist")
-            ->select(MetaGenresTable::GENRE_FULL)
-            ->selectAlias(MetaAlbumsTable::ID_FULL, "group_id");
-
-            if ($shuffle->isEmpty()) {
-                $query  ->orderBy(MetaArtistsTable::ARTIST_FULL)
-                        ->orderBy(MetadataTable::DATE_FULL." DESC")
-                        ->orderBy(MetaAlbumsTable::ALBUM_FULL)
-                        ->orderBy(MetadataTable::DISC_NUMBER_FULL)
-                        ->orderBy(MetadataTable::TRACK_NUMBER_FULL);
-            } else {
-                $query  ->orderBy("RAND(".$shuffle->get().")");
-            }
-
-        CatalogTools::commonSelectors($query);
+        if ($shuffle->isEmpty()) {
+            $query  ->orderBy(TSongs::A_ARTIST)
+                    ->orderBy(TSongs::T_YEAR)
+                    ->orderBy(TSongs::T_ALBUM)
+                    ->orderBy(TSongs::DISC)
+                    ->orderBy(TSongs::T_NUMBER);
+        } else {
+            $query  ->orderBy("RAND(".$shuffle->get().")");
+        }
 
         Context::contextify($query);
 
-        if ($art_id->nonEmpty()) {
-            $query->where(MetaArtistsTable::ID_FULL, $art_id->get());
+        if ($artist->nonEmpty()) {
+            $query->where(TSongs::A_ARTIST, $artist->get());
         }
 
-        if ($alb_id->nonEmpty()) {
-            $query->where(MetaAlbumsTable::ID_FULL, $alb_id->get());
+        if ($album->nonEmpty()) {
+            $query->where(TSongs::T_ALBUM, $album->get());
         }
 
-        if ($gen_id->nonEmpty()) {
-            $query->where(MetaGenresTable::ID_FULL, $gen_id->get());
+        if ($genre->nonEmpty()) {
+            $query->where(TSongs::T_GENRE, $genre->get());
         }
 
         if ($filter->nonEmpty()) {
-            $query->match(MetadataTable::TITLE_FULL, $filter->get());
+            $query->match(implode(",",[
+                TSongs::A_ARTIST,
+                TSongs::T_ARTIST,
+                TSongs::T_ALBUM,
+                TSongs::T_TITLE,
+                TSongs::T_GENRE
+            ]), $filter->get());
         }
 
         $catalog = $query->fetchAll();

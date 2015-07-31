@@ -5,11 +5,11 @@
             <div class="list-item square2" ng-repeat="genre in genres">
                 <div class="artist-list-content">
                     <div class="cover">
-                        <img ng-if="genre.cover_middle" ng-src="/file/{{ genre.cover_middle }}">
+                        <img ng-if="genre.middle_cover_id" ng-src="/file/{{ genre.middle_cover_id }}">
                     </div>
                     <div class="artist-name">
-                        <a ng-href="#/genre/{{ genre.id }}"
-                           ng-bind-template="{{ genre.genre | genreFilter }}"></a>
+                        <a ng-href="#/tracks/grouped?genre={{ genre.track_genre }}"
+                           ng-bind-template="{{ genre.track_genre | genreFilter }}"></a>
                     </div>
                 </div>
             </div>

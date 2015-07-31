@@ -22,33 +22,27 @@ use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
+use app\project\persistence\db\tables\TSongs;
 
 class DoArtists implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
-        $query = (new SelectQuery(MetaArtistsTable::TABLE_NAME))
-            ->innerJoin(MetadataTable::TABLE_NAME, MetadataTable::ARTIST_ID_FULL, MetaArtistsTable::ID_FULL)
-            ->innerJoin(CoversTable::TABLE_NAME, CoversTable::ID_FULL, MetadataTable::ID_FULL)
-            ->select(MetaArtistsTable::ID_FULL)
-            ->select(MetaArtistsTable::ARTIST_FULL)
-            ->select(CoversTable::COVER_MIDDLE_FULL)
-            ->select(CoversTable::COVER_FULL_FULL)
-            ->select(CoversTable::COVER_SMALL_FULL)
-            ->selectCount(MetadataTable::ID_FULL, "tracks_count")
-            ->selectCountDistinct(MetadataTable::ALBUM_ID_FULL, "albums_count")
-            ->addGroupBy(MetaArtistsTable::ID_FULL)
-            ->having("COUNT(".MetadataTable::ID_FULL.") > 0")
-            ->where(MetaArtistsTable::USER_ID_FULL, $me->getId());
-
-        $query->orderBy(MetaArtistsTable::ARTIST_FULL);
+        $query = (new SelectQuery(TSongs::_NAME))
+            ->where(TSongs::USER_ID, $me->getId())
+            ->select(TSongs::A_ARTIST)
+            ->select(TSongs::C_BIG_ID, TSongs::C_MID_ID, TSongs::C_SMALL_ID);
 
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
-            $query->match(MetaArtistsTable::ARTIST_FULL, $filter->get());
+            $query->match(TSongs::A_ARTIST, $filter->get());
         }
+
+        $query->addGroupBy(TSongs::A_ARTIST);
+
+        $query->orderBy(TSongs::A_ARTIST);
 
         $catalog = $query->fetchAll();
 

@@ -72,6 +72,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
             return $http.get("/api/catalog/genres?" + serialize_uri(uri));
         },
         tracks: function (opts, offset) {
+
             var uri = {};
 
             uri.o = offset;
@@ -79,14 +80,14 @@ homecloud.factory("SearchService", ["$http", function ($http) {
             if (opts.filter) {
                 uri.q = opts.filter
             }
-            if (opts.artist_id) {
-                uri.artist_id = opts.artist_id
+            if (opts.artist) {
+                uri.artist = opts.artist
             }
-            if (opts.album_id) {
-                uri.album_id = opts.album_id
+            if (opts.album) {
+                uri.album = opts.album
             }
-            if (opts.genre_id) {
-                uri.genre_id = opts.genre_id
+            if (opts.genre) {
+                uri.genre = opts.genre
             }
 
             return $http.get("/api/catalog/tracks?" + serialize_uri(uri));
@@ -103,9 +104,10 @@ homecloud.factory("Library", [function () {
         },
         addToGroup: function (coll, tracks) {
             var index,
+                key,
                 getAlbumIndex = function (album) {
                     for (var j = 0; j < coll.length; j += 1) {
-                        if (coll[j].album_id == album) {
+                        if (coll[j].key == album) {
                             return j;
                         }
                     }
@@ -113,17 +115,17 @@ homecloud.factory("Library", [function () {
                 },
                 getAlbumIndexCached = getAlbumIndex.memoize();
             for (var i = 0; i < tracks.length; i += 1) {
-                index = getAlbumIndexCached.call(tracks[i].album_id);
+                key = tracks[i].album_artist + "/" + tracks[i].track_album;
+                index = getAlbumIndexCached.call(key);
                 if (index == -1) {
                     coll.push({
-                        title: tracks[i].album,
+                        key: key,
+                        title: tracks[i].track_album,
                         album_artist: tracks[i].album_artist,
-                        artist_id: tracks[i].artist_id,
-                        album_id: tracks[i].album_id,
-                        cover_small: tracks[i].cover_small,
-                        cover_middle: tracks[i].cover_middle,
-                        cover_full: tracks[i].cover_full,
-                        date: tracks[i].date,
+                        small_cover_id: tracks[i].small_cover_id,
+                        middle_cover_id: tracks[i].middle_cover_id,
+                        big_cover_id: tracks[i].big_cover_id,
+                        year: tracks[i].track_year,
                         tracks: [
                             tracks[i]
                         ]

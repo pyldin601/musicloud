@@ -17,24 +17,23 @@ use app\project\persistence\db\tables\MetaAlbumsTable;
 use app\project\persistence\db\tables\MetaArtistsTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\MetaGenresTable;
+use app\project\persistence\db\tables\TSongs;
 
 class DoSelf implements RouteHandler {
     public function doGet(JsonResponse $response, LoggedIn $me) {
 
-        $artists = count(new SelectQuery(MetaArtistsTable::TABLE_NAME, MetaArtistsTable::USER_ID_FULL, $me->getId()));
-        $albums  = count(new SelectQuery(MetaAlbumsTable::TABLE_NAME,  MetaAlbumsTable::USER_ID_FULL,  $me->getId()));
-        $genres  = count(new SelectQuery(MetaGenresTable::TABLE_NAME,  MetaGenresTable::USER_ID_FULL,  $me->getId()));
-        $tracks  = count(new SelectQuery(MetadataTable::TABLE_NAME,    MetadataTable::USER_ID_FULL,    $me->getId()));
+        $stats   = (new SelectQuery(TSongs::_NAME))
+            ->selectCount(TSongs::ID, "tracks_count")
+            ->selectCountDistinct(TSongs::A_ARTIST, "artists_count")
+            ->selectCountDistinct(TSongs::A_ARTIST.",".TSongs::T_ALBUM, "albums_count")
+            ->selectCountDistinct(TSongs::T_GENRE, "genres_count")
+            ->where(TSongs::USER_ID, $me->getId())
+            ->fetchOneRow()->get();
 
         $response->write([
             "email" => $me->getEmail(),
             "id" => $me->getId(),
-            "stats" => [
-                "artists_count" => $artists,
-                "albums_count" => $albums,
-                "genres_count" => $genres,
-                "tracks_count" => $tracks
-            ]
+            "stats" => $stats
         ]);
 
     }
