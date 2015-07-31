@@ -83,7 +83,7 @@
                 </div>
                 <div class="text">
                     <div class="now-playing">
-                        <div class="track-title">{{ player.playlist.track | getArtist }} &mdash; {{ player.playlist.track | getTitle }}</div>
+                        <div class="track-title"><b>{{ player.playlist.track | getTitle }}</b> by {{ player.playlist.track | getArtist }}</div>
                     </div>
                     <div class="progress-background">
                         <div class="time-right" ng-bind="player.playlist.position.duration | mmss"></div>

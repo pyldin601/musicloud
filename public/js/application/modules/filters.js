@@ -46,7 +46,7 @@ homecloud.filter("genreFilter",  function () { return filters.genre });
 homecloud.filter("getTitle", function () {
     return function (track) {
         if (!track) return;
-        return track.title || track.file_name || "Unknown Title";
+        return track.track_title || track.file_name || "Unknown Title";
     };
 });
 
