@@ -31,9 +31,9 @@ class DoTracks implements RouteHandler {
 
     public function doGet(JsonResponse $response, Option $q, HttpGet $get, LoggedIn $me) {
 
-        $artist  = $get->get("artist")->reject("");
-        $album   = $get->get("album")->reject("");
-        $genre   = $get->get("genre")->reject("");
+        $artist  = $get->get("artist");
+        $album   = $get->get("album");
+        $genre   = $get->get("genre");
         $shuffle = $get->get("shuffle_id")->toInt();
 
         $filter = $q->reject("")->map(Mapper::fulltext());

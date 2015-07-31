@@ -77,16 +77,16 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset;
 
-            if (opts.filter) {
+            if (opts.filter !== undefined) {
                 uri.q = opts.filter
             }
-            if (opts.artist) {
+            if (opts.artist !== undefined) {
                 uri.artist = opts.artist
             }
-            if (opts.album) {
+            if (opts.album !== undefined) {
                 uri.album = opts.album
             }
-            if (opts.genre) {
+            if (opts.genre !== undefined) {
                 uri.genre = opts.genre
             }
 
