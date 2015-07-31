@@ -67,13 +67,17 @@ abstract class BaseQuery implements QueryBuilder {
 
     public function buildLimits() {
 
-        if (is_numeric($this->limit) && is_null($this->offset)) {
-            return "LIMIT " . $this->limit;
-        } else if (is_numeric($this->limit) && is_numeric($this->offset)) {
-            return "LIMIT " . $this->offset . "," . $this->limit;
-        } else {
-            return "";
+        $limits = [];
+
+        if (is_numeric($this->limit)) {
+            $limits[] = "LIMIT " . $this->limit;
         }
+
+        if (is_numeric($this->offset)) {
+            $limits[] = "OFFSET " . $this->offset;
+        }
+
+        return implode(" ", $limits);
 
     }
 

@@ -43,7 +43,7 @@ class DoTracks implements RouteHandler {
 
         if ($shuffle->isEmpty()) {
             $query  ->orderBy(TSongs::A_ARTIST)
-                    ->orderBy(TSongs::T_YEAR)
+                    ->orderBy(TSongs::T_YEAR . " DESC")
                     ->orderBy(TSongs::T_ALBUM)
                     ->orderBy(TSongs::DISC)
                     ->orderBy(TSongs::T_NUMBER);

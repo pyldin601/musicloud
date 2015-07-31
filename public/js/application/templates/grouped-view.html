@@ -21,7 +21,7 @@
                     <div class="right" ng-bind="album.year"></div>
                     <div class="album-sub">
                         <div class="inline name" ng-bind="album.title | albumFilter"></div>
-                        <div class="inline band">on <a href="#/tracks/grouped/?artist={{ album.album_artist }}"
+                        <div class="inline band">on <a href="#/tracks/grouped/?artist={{ album.album_artist | uri }}"
                                                        ng-bind="album.album_artist | artistFilter"></a></div>
                     </div>
                 </div>

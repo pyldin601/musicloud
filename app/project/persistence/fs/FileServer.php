@@ -19,7 +19,7 @@ use app\core\exceptions\status\PageNotFoundException;
 use app\core\http\HttpStatusCodes;
 use app\lang\Arrays;
 use app\project\exceptions\TrackNotFoundException;
-use app\project\persistence\db\tables\FilesTable;
+use app\project\persistence\db\tables\TFiles;
 use app\project\persistence\db\tables\MetadataTable;
 
 class FileServer {
@@ -41,7 +41,7 @@ class FileServer {
                 $key .= $charset[rand(0, strlen($charset) - 1)];
             }
 
-        } while (count(new SelectQuery(FilesTable::TABLE_NAME, FilesTable::UNIQUE_ID, $key)) > 0);
+        } while (count(new SelectQuery(TFiles::_NAME, TFiles::ID, $key)) > 0);
 
         return $key;
 
@@ -52,8 +52,8 @@ class FileServer {
         assert(file_exists($file_path), "Audio file uploaded incorrectly");
 
         $hash = FSTool::calculateHash($file_path);
-        $query = (new SelectQuery(FilesTable::TABLE_NAME, FilesTable::SHA1, $hash))
-            ->select(FilesTable::UNIQUE_ID);
+        $query = (new SelectQuery(TFiles::_NAME, TFiles::SHA1, $hash))
+            ->select(TFiles::ID);
         $file = $query->fetchOneColumn();
 
         if ($file->isEmpty()) {
@@ -62,13 +62,13 @@ class FileServer {
 
             $id = self::generateKey();
 
-            (new InsertQuery(FilesTable::TABLE_NAME))
-                ->values(FilesTable::UNIQUE_ID, $id)
-                ->values(FilesTable::SHA1, $hash)
-                ->values(FilesTable::SIZE, filesize($file_path))
-                ->values(FilesTable::USED, 1)
-                ->values(FilesTable::MTIME, filemtime($file_path))
-                ->values(FilesTable::CONTENT_TYPE, MIME::mime_type($file_path))
+            (new InsertQuery(TFiles::_NAME))
+                ->values(TFiles::ID, $id)
+                ->values(TFiles::SHA1, $hash)
+                ->values(TFiles::SIZE, filesize($file_path))
+                ->values(TFiles::USED, 1)
+                ->values(TFiles::MTIME, filemtime($file_path))
+                ->values(TFiles::CONTENT_TYPE, MIME::mime_type($file_path))
                 ->executeInsert();
 
             rename($file_path, FSTool::filename($hash));
@@ -79,9 +79,9 @@ class FileServer {
 
             $id = $file->get();
 
-            (new UpdateQuery(FilesTable::TABLE_NAME))
-                ->increment(FilesTable::USED)
-                ->where(FilesTable::UNIQUE_ID, $id)
+            (new UpdateQuery(TFiles::_NAME))
+                ->increment(TFiles::USED)
+                ->where(TFiles::ID, $id)
                 ->update();
 
             unlink($file_path);
@@ -99,16 +99,16 @@ class FileServer {
      */
     private static function write($file) {
 
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $file[FilesTable::MTIME]) . ' GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $file[TFiles::MTIME]) . ' GMT');
         header('Cache-Control: max-age=0');
-        header('Content-Type: ' . $file[FilesTable::CONTENT_TYPE]);
+        header('Content-Type: ' . $file[TFiles::CONTENT_TYPE]);
 
-        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $file[FilesTable::MTIME]) {
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $file[TFiles::MTIME]) {
             http_response_code(304);
             return;
         }
 
-        $filename = FSTool::filename($file[FilesTable::SHA1]);
+        $filename = FSTool::filename($file[TFiles::SHA1]);
         $filesize = filesize($filename);
 
         $fh = fopen($filename, "rb");
@@ -148,24 +148,24 @@ class FileServer {
 
     public static function unregister($file_id) {
 
-        $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::UNIQUE_ID, $file_id)
+        $file = (new SelectQuery(TFiles::_NAME))
+            ->where(TFiles::ID, $file_id)
             ->fetchOneRow();
 
         $file_data = $file->getOrThrow(ApplicationException::class, "File already unregistered");
 
-        if ($file_data[FilesTable::USED] > 1) {
-            (new UpdateQuery(FilesTable::TABLE_NAME))
-                ->decrement(FilesTable::USED)
-                ->where(FilesTable::UNIQUE_ID, $file_id)
+        if ($file_data[TFiles::USED] > 1) {
+            (new UpdateQuery(TFiles::_NAME))
+                ->decrement(TFiles::USED)
+                ->where(TFiles::ID, $file_id)
                 ->update();
         } else {
 
-            (new DeleteQuery(FilesTable::TABLE_NAME))
-                ->where(FilesTable::UNIQUE_ID, $file[FilesTable::UNIQUE_ID])
+            (new DeleteQuery(TFiles::_NAME))
+                ->where(TFiles::ID, $file[TFiles::ID])
                 ->update();
 
-            FSTool::delete($file_data[FilesTable::SHA1]);
+            FSTool::delete($file_data[TFiles::SHA1]);
 
         }
 
@@ -173,18 +173,18 @@ class FileServer {
 
     public static function getFileUsingId($file_id) {
 
-        $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::UNIQUE_ID, $file_id)
+        $file = (new SelectQuery(TFiles::_NAME))
+            ->where(TFiles::ID, $file_id)
             ->fetchOneRow()->getOrThrow(PageNotFoundException::class);
 
-        return FSTool::filename($file[FilesTable::SHA1]);
+        return FSTool::filename($file[TFiles::SHA1]);
 
     }
 
     public static function sendToClient($file_id) {
 
-        $file = (new SelectQuery(FilesTable::TABLE_NAME))
-            ->where(FilesTable::UNIQUE_ID, $file_id)
+        $file = (new SelectQuery(TFiles::_NAME))
+            ->where(TFiles::ID, $file_id)
             ->fetchOneRow()
             ->getOrThrow(PageNotFoundException::class);
 

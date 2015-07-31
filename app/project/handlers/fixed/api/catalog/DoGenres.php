@@ -29,17 +29,19 @@ class DoGenres implements RouteHandler {
 
         $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
 
-        $query = (new SelectQuery(TSongs::_NAME." a"))
-            ->where("a.".TSongs::USER_ID, $me->getId())
-            ->select("DISTINCT a." . TSongs::T_GENRE)
-            ->selectAlias("(SELECT ".TSongs::C_SMALL_ID." FROM ".TSongs::_NAME." WHERE ".TSongs::T_GENRE." = a.".TSongs::T_GENRE." LIMIT 1)", TSongs::C_SMALL_ID)
-            ->selectAlias("(SELECT ".TSongs::C_MID_ID." FROM ".TSongs::_NAME." WHERE ".TSongs::T_GENRE." = a.".TSongs::T_GENRE." LIMIT 1)", TSongs::C_MID_ID)
-            ->selectAlias("(SELECT ".TSongs::C_BIG_ID." FROM ".TSongs::_NAME." WHERE ".TSongs::T_GENRE." = a.".TSongs::T_GENRE." LIMIT 1)", TSongs::C_BIG_ID);
+        $query = (new SelectQuery(TSongs::_NAME))
+            ->where(TSongs::USER_ID, $me->getId())
+            ->select(TSongs::T_GENRE)
+            ->selectAlias("MIN(".TSongs::C_BIG_ID.")", TSongs::C_BIG_ID)
+            ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
+            ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
 
 
         Context::contextify($query);
 
-//        $query->addGroupBy(TSongs::T_GENRE);
+        $query->addGroupBy(TSongs::T_GENRE);
+
+        $query->orderBy(TSongs::T_GENRE);
 
         Context::contextify($query);
 

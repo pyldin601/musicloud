@@ -14,7 +14,7 @@ use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\project\exceptions\EmailExistsException;
-use app\project\persistence\db\tables\UsersTable;
+use app\project\persistence\db\tables\TUsers;
 
 class Users
 {
@@ -27,7 +27,7 @@ class Users
      */
     public static function isEmailExists($email)
     {
-        return (new SelectQuery(UsersTable::TABLE_NAME, UsersTable::EMAIL, $email))
+        return (new SelectQuery(TUsers::_NAME, TUsers::EMAIL, $email))
             ->fetchOneRow()->nonEmpty();
     }
 
@@ -40,9 +40,9 @@ class Users
      */
     public static function create($email, $password)
     {
-        $query = new InsertQuery(UsersTable::TABLE_NAME);
-        $query->values(UsersTable::EMAIL, $email);
-        $query->values(UsersTable::PASSWORD, password_hash($password, PASSWORD_DEFAULT));
+        $query = new InsertQuery(TUsers::_NAME);
+        $query->values(TUsers::EMAIL, $email);
+        $query->values(TUsers::PASSWORD, password_hash($password, PASSWORD_DEFAULT));
         try {
             $query->executeInsert();
         } catch (\PDOException $exception) {
@@ -58,9 +58,9 @@ class Users
      */
     public static function changePassword($email, $password)
     {
-        $query = new UpdateQuery(UsersTable::TABLE_NAME);
-        $query->where(UsersTable::EMAIL, $email);
-        $query->set(UsersTable::PASSWORD, password_hash($password, PASSWORD_DEFAULT));
+        $query = new UpdateQuery(TUsers::_NAME);
+        $query->where(TUsers::EMAIL, $email);
+        $query->set(TUsers::PASSWORD, password_hash($password, PASSWORD_DEFAULT));
     }
 
     /**
@@ -70,7 +70,7 @@ class Users
      */
     public static function delete($user_id)
     {
-        $query = new DeleteQuery(UsersTable::TABLE_NAME, UsersTable::ID, $user_id);
+        $query = new DeleteQuery(TUsers::_NAME, TUsers::ID, $user_id);
         $query->update();
     }
 

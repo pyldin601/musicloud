@@ -8,7 +8,7 @@
                         <img ng-if="genre.middle_cover_id" ng-src="/file/{{ genre.middle_cover_id }}">
                     </div>
                     <div class="artist-name">
-                        <a ng-href="#/tracks/grouped?genre={{ genre.track_genre }}"
+                        <a ng-href="#/tracks/grouped?genre={{ genre.track_genre | uri }}"
                            ng-bind-template="{{ genre.track_genre | genreFilter }}"></a>
                     </div>
                 </div>

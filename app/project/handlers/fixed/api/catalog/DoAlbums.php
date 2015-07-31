@@ -34,7 +34,9 @@ class DoAlbums implements RouteHandler {
             ->where(TSongs::USER_ID, $me->getId())
             ->select(TSongs::A_ARTIST)
             ->select(TSongs::T_ALBUM)
-            ->select(TSongs::C_BIG_ID, TSongs::C_MID_ID, TSongs::C_SMALL_ID);
+            ->selectAlias("MIN(".TSongs::C_BIG_ID.")", TSongs::C_BIG_ID)
+            ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
+            ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
 
         Context::contextify($query);
 
@@ -44,6 +46,8 @@ class DoAlbums implements RouteHandler {
 
         $query->addGroupBy(TSongs::A_ARTIST);
         $query->addGroupBy(TSongs::T_ALBUM);
+
+        $query->orderBy(TSongs::T_ALBUM);
 
         $catalog = $query->fetchAll();
 

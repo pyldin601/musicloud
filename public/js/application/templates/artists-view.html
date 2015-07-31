@@ -8,7 +8,7 @@
                     </div>
                     <div class="artist-name">
                         <!--<i ng-show="player.playlist.track.album_artist === artist.album_artist" class="fa fa-volume-up"></i>-->
-                        <a class="block" ng-href="#/tracks/grouped?artist={{ artist.album_artist }}"
+                        <a class="block" ng-href="#/tracks/grouped?artist={{ artist.album_artist | uri }}"
                            ng-bind-template="{{ artist.album_artist | artistFilter }}"></a>
                     </div>
                 </div>

@@ -78,3 +78,7 @@ homecloud.filter("keys", function () {
         return Object.keys(data);
     };
 });
+
+homecloud.filter("uri", function () {
+    return encodeURIComponent;
+});

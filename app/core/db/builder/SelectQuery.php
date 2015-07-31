@@ -119,7 +119,7 @@ class SelectQuery extends BaseQuery implements \Countable {
 
         $query = [];
 
-        $query[] = "SELECT SQL_NO_CACHE";
+        $query[] = "SELECT";
         $query[] = $this->buildSelect();
         $query[] = "FROM " . $this->tableName;
         $query[] = $this->buildInnerJoins();

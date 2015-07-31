@@ -25,7 +25,7 @@ class DoSelf implements RouteHandler {
         $stats   = (new SelectQuery(TSongs::_NAME))
             ->selectCount(TSongs::ID, "tracks_count")
             ->selectCountDistinct(TSongs::A_ARTIST, "artists_count")
-            ->selectCountDistinct(TSongs::A_ARTIST.",".TSongs::T_ALBUM, "albums_count")
+            ->selectCountDistinct(TSongs::T_ALBUM, "albums_count")
             ->selectCountDistinct(TSongs::T_GENRE, "genres_count")
             ->where(TSongs::USER_ID, $me->getId())
             ->fetchOneRow()->get();
