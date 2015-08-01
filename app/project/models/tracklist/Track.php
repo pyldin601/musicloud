@@ -104,8 +104,9 @@ class Track {
                 ->set(TSongs::C_DATE,    time());
 
         $query->where(TSongs::ID, $this->track_id);
+        $query->returning("*");
 
-        $query->update();
+        return $query->fetchAll();
 
     }
 

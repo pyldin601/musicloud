@@ -148,7 +148,6 @@ class Database implements SingletonInterface, Injectable {
         $resource = $this->pdo->prepare($queryString);
 
         if ($resource === false) {
-//            error_log(sprintf("ERROR : %s", $queryString));
             throw new ApplicationException($this->pdo->errorInfo()[2]);
         }
 
@@ -157,7 +156,6 @@ class Database implements SingletonInterface, Injectable {
 //        $end = microtime(true);
 
 //        error_log(sprintf("%0.4f : %s", $end - $begin, $queryString));
-
 
         if ($resource->errorCode() !== "00000") {
             throw new ApplicationException($resource->errorInfo()[2]);

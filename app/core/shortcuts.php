@@ -26,3 +26,7 @@ function whenRegExp($regexp, $callable) {
 function otherwise($callable) {
     Router::getInstance()->otherwise($callable);
 }
+
+function bool($value) {
+    return $value ? "true" : "false";
+}

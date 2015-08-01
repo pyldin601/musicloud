@@ -21,9 +21,9 @@ class DoUpload implements RouteHandler {
 
         $track = $file->getOrError("file");
 
-        $tm = new Track($track_id->isEmpty() ? Tracks::create() : $track_id->get());
+        $tm = new Track($track_id->orCall([Tracks::class, "create"]));
 
-        $tm->upload($track["tmp_name"], urldecode($track["name"]));
+        $response->write($tm->upload($track["tmp_name"], urldecode($track["name"])));
 
     }
 } 

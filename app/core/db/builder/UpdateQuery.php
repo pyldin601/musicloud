@@ -17,6 +17,12 @@ class UpdateQuery extends BaseQuery {
 
     private $sets = [];
     private $setsSingle = [];
+    protected $returning = null;
+
+    public function returning($id) {
+        $this->returning = $id;
+        return $this;
+    }
 
     function __construct($tableName, $key = null, $value = null) {
         $this->tableName = $tableName;
@@ -34,6 +40,10 @@ class UpdateQuery extends BaseQuery {
         $query[] = $this->buildWheres($pdo);
         $query[] = $this->buildOrderBy();
         $query[] = $this->buildLimits();
+
+        if ($this->returning !== null) {
+            $query[] = "RETURNING " . $this->returning;
+        }
 
         return implode(" ", $query);
 
