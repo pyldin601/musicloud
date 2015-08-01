@@ -30,23 +30,6 @@ class FileServer {
 
     }
 
-    public static function generateKey() {
-
-        $charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        do {
-
-            $length = 10; $key = "";
-            while ($length --) {
-                $key .= $charset[rand(0, strlen($charset) - 1)];
-            }
-
-        } while (count(new SelectQuery(TFiles::_NAME, TFiles::ID, $key)) > 0);
-
-        return $key;
-
-    }
-
     public static function register($file_path) {
 
         assert(file_exists($file_path), "Audio file uploaded incorrectly");
@@ -60,16 +43,15 @@ class FileServer {
 
             FSTool::createPathUsingHash($hash);
 
-            $id = self::generateKey();
-
-            (new InsertQuery(TFiles::_NAME))
-                ->values(TFiles::ID, $id)
+            $id = (new InsertQuery(TFiles::_NAME))
                 ->values(TFiles::SHA1, $hash)
                 ->values(TFiles::SIZE, filesize($file_path))
                 ->values(TFiles::USED, 1)
                 ->values(TFiles::MTIME, filemtime($file_path))
                 ->values(TFiles::CONTENT_TYPE, MIME::mime_type($file_path))
-                ->executeInsert();
+                ->returning(TFiles::ID)
+                ->fetchOneColumn()
+                ->get();
 
             rename($file_path, FSTool::filename($hash));
 

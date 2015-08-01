@@ -34,30 +34,15 @@ class Tracks {
      */
     public static function create() {
 
-        $max_retries = 1000;
-
-        do {
-
-            $key = Tools::generateRandomKey();
-            $query = new InsertQuery(TSongs::_NAME);
-            $query->values(TSongs::ID, $key);
-            $query->values(TSongs::USER_ID, self::$me->getId());
-
-            try {
-
-                $result = $query->executeInsert();
-
-            } catch (\PDOException $exception) {
-
-                $key = null;
-                $result = null;
-
-            }
-
-        } while ($result === null && $max_retries-- > 0);
+        $query = new InsertQuery(TSongs::_NAME);
+        $query->values(TSongs::USER_ID, self::$me->getId());
+        $query->returning(TSongs::ID);
+        $key = $query->fetchOneColumn()->get();
 
         if ($key === null) {
+
             throw new ApplicationException("Database couldn't generate unique id!");
+
         }
 
         return $key;
@@ -96,8 +81,8 @@ class Tracks {
         }
 
         // Remove tracks from database
-        (new DeleteQuery(AudiosTable::TABLE_NAME))
-            ->where(AudiosTable::ID, $track_ids)
+        (new DeleteQuery(TSongs::_NAME))
+            ->where(TSongs::ID, $track_ids)
             ->update();
 
     }

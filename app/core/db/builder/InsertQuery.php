@@ -14,6 +14,7 @@ class InsertQuery extends BaseQuery {
     protected $names = [];
     protected $duplicate = [];
     protected $duplicateSingle = [];
+    protected $returning = null;
 
     /**
      * @param $tableName
@@ -95,6 +96,11 @@ class InsertQuery extends BaseQuery {
 
     }
 
+    public function returning($id) {
+        $this->returning = $id;
+        return $this;
+    }
+
     public function getParameters() {
         return array_merge($this->parameters["INSERT"], $this->parameters["UPDATE"]);
     }
@@ -111,6 +117,10 @@ class InsertQuery extends BaseQuery {
 
         if (count($this->duplicate) + count($this->duplicateSingle) > 0) {
             $query[] = $this->buildDuplicates();
+        }
+
+        if ($this->returning !== null) {
+            $query[] = "RETURNING " . $this->returning;
         }
 
         return implode(" ", $query);

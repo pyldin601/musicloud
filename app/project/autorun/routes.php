@@ -24,6 +24,3 @@ when("api/catalog/tracks/by-genre/:genre", catalog\DoTracksByGenre::class);
 
 when("api/catalog/albums/by-artist/:artist", catalog\DoAlbumsByAlbumArtist::class);
 
-when("test", function () {
-    echo Tools::closest(240, [8,16,24,32,48,52,64,96,128,160,192,224,256,320]);
-});

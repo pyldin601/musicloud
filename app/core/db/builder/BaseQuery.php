@@ -112,13 +112,9 @@ abstract class BaseQuery implements QueryBuilder {
      */
     public function fetchOneRow() {
         return Database::doInConnection(function (Database $db) {
-            /** @var SelectQuery $query */
-            $query = clone $this;
-            $query->limit(1);
-
             return $db->fetchOneRow(
-                $query->getQuery($db->getPDO()),
-                $query->getParameters()
+                $this->getQuery($db->getPDO()),
+                $this->getParameters()
             );
         });
     }
@@ -129,13 +125,9 @@ abstract class BaseQuery implements QueryBuilder {
      */
     public function fetchOneColumn($column = 0) {
         return Database::doInConnection(function (Database $db) use (&$column) {
-            /** @var SelectQuery $query */
-            $query = clone $this;
-            $query->limit(1);
-
             return $db->fetchOneColumn(
-                $query->getQuery($db->getPDO()),
-                $query->getParameters(),
+                $this->getQuery($db->getPDO()),
+                $this->getParameters(),
                 $column
             );
         });
