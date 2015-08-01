@@ -128,11 +128,10 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
         },
         ended: function () {
             if (player.playlist.track) {
-                StatsService.incrementPlays(player.playlist.track.id).success(function () {
-                    player.playlist.track.playbacks_count += 1;
-                });
+                $rootScope.$applyAsync(player.playlist.track.times_played ++);
+                StatsService.incrementPlays(player.playlist.track.id);
+                player.doPlayNext();
             }
-            player.doPlayNext();
         },
         error: function () {
             player.doStop();

@@ -38,6 +38,7 @@
                                 <li class="fa fa-star-o"></li>
                             </ul>
                         </div>
+                        <div class="plays right" ng-bind="track.times_played"></div>
                         <div class="position left">
                             <div ng-hide="player.playlist.track == track"
                                  ng-bind-template="{{ $index + 1 }}."></div>
@@ -45,7 +46,7 @@
                         </div>
                         <div class="track-title">
                             <div class="first" ng-bind="track | getTitle"></div>
-                            <div class="second" ng-bind="track | getArtist"></div>
+                            <div class="second" ng-if="album.various_artists" ng-bind="track | getArtist"></div>
                         </div>
                     </div>
 

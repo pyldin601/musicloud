@@ -126,6 +126,7 @@ homecloud.factory("Library", [function () {
                         middle_cover_id: tracks[i].middle_cover_id,
                         big_cover_id: tracks[i].big_cover_id,
                         year: tracks[i].track_year,
+                        various_artists: (tracks[i].album_artist !== tracks[i].track_artist),
                         tracks: [
                             tracks[i]
                         ]
@@ -133,6 +134,9 @@ homecloud.factory("Library", [function () {
                     getAlbumIndexCached.reset();
                 } else {
                     coll[index].tracks.push(tracks[i]);
+                    if (tracks[i].album_artist !== tracks[i].track_artist) {
+                        coll[index].various_artists = true;
+                    }
                 }
             }
         }
