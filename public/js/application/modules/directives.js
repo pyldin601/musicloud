@@ -35,6 +35,15 @@ homecloud.directive("play", ["$rootScope", function ($rootScope) {
     }
 }]);
 
+homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
+    return {
+        restrict: "A",
+        link: function (scope, elem, attrs) {
+
+        }
+    }
+}]);
+
 homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     return {
         template: '<div class="progress-line"></div><div ng-show="player.playlist.position.duration > 0" class="progress-position"></div><div ng-show="player.playlist.position.duration > 0" class="progress-bulb"></div>',
