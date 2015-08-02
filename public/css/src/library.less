@@ -100,42 +100,56 @@
         text-align: center;
         font-size: 18px;
         position: relative;
-      }
-      .volume-controller {
-        display: none;
-        bottom: 32px;
-        position: absolute;
-        width: 32px;
-        height: 100px;
-        left: 50%;
-        margin-left: -16px;
-        background-color: #223344;
-        box-sizing: border-box;
-        .volume-background {
-          width: 5px;
-          height: 75px;
-          margin-left: 14px;
-          margin-top: 13px;
-          position: relative;
-          .background-line {
-            left: 2px;
+        padding: 14px 0;
+        &.ctrl-volume {
+          .volume-controller {
+            opacity: 0;
             position: absolute;
-            width: 1px;
-            background-color: #000000;
-            height: 100%;
-            z-index: 1;
+            width: 48px;
+            height: 100px;
+            bottom: -24px;
+            left: 50%;
+            margin-left: -24px;
+            background-color: #223344;
+            box-sizing: border-box;
+            border-radius: 4px 4px 0 0;
+            transition: linear all 0.1s;
+            .volume-background {
+              width: 5px;
+              height: 75px;
+              margin-left: 21px;
+              margin-top: 13px;
+              position: relative;
+              .background-line {
+                left: 2px;
+                position: absolute;
+                width: 3px;
+                background-color: #000000;
+                height: 100%;
+                z-index: 1;
+                border-radius: 1px;
+              }
+              .value-line {
+                left: 2px;
+                position: absolute;
+                width: 3px;
+                height: 100%;
+                z-index: 2;
+                background-color: #ff4141;
+                bottom: 0;
+                border-radius: 1px;
+              }
+            }
           }
-          .value-line {
-            left: 2px;
-            position: absolute;
-            width: 1px;
-            height: 50%;
-            z-index: 2;
-            background-color: #ff4141;
-            bottom: 0;
+          &:hover {
+            .volume-controller {
+              opacity: 1;
+              bottom: 32px;
+            }
           }
         }
       }
+
     }
   }
 
@@ -164,8 +178,18 @@
             overflow: hidden;
             padding-bottom: 2px;
             text-overflow: ellipsis;
-            font-size: 10pt;
+            font-size: 9pt;
             margin-top: 8px;
+            .current-track {
+              font-weight: 700;
+            }
+            .current-artist {
+              font-weight: 300;
+              &:before {
+                content: 'by';
+                padding-right: 4px;
+              }
+            }
           }
         }
         .progress-background {

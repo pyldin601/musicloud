@@ -8,6 +8,8 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
     var player = {
         isLoaded: false,
         isPlaying: false,
+        isBuffering: false,
+        volume: 1,
         playlist: {
             tracks: [],
             track: null,
@@ -41,6 +43,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
 
             player.isLoaded = true;
             player.isPlaying = true;
+            player.isBuffering = true;
 
         },
         doFetch: function () {
@@ -72,6 +75,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
 
                 player.isLoaded = false;
                 player.isPlaying = false;
+                player.isBuffering = false;
                 player.playlist.track = null;
                 player.playlist.tracks = [];
                 player.playlist.fetch = null;
@@ -148,6 +152,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
         },
         timeupdate: function (e) {
             $rootScope.$applyAsync(function () {
+                player.isBuffering ? player.isBuffering = false : undefined;
                 player.playlist.position.duration = e.jPlayer.status.duration;
                 player.playlist.position.position = e.jPlayer.status.currentTime;
             });

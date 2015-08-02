@@ -81,9 +81,11 @@
                     <img ng-if="player.playlist.track.small_cover_id"
                          ng-src="/file/{{ player.playlist.track.small_cover_id }}">
                 </div>
-                <div class="text">
+                <div class="text" ng-show="player.playlist.track">
                     <div class="now-playing">
-                        <div class="track-title"><b>{{ player.playlist.track | getTitle }}</b> by {{ player.playlist.track | getArtist }}</div>
+                        <div class="track-title">
+                            <span class="current-track" ng-bind="player.playlist.track | getTitle"></span>
+                            <span class="current-artist" ng-bind="player.playlist.track | getArtist"></span>
                     </div>
                     <div class="progress-background">
                         <div class="time-right" ng-bind="player.playlist.position.duration | mmss"></div>
@@ -109,7 +111,7 @@
                             <div class="value-line"></div>
                         </div>
                     </div>
-                    <i class="fa fa-volume-up"></i>
+                    <i class="fa" ng-class="{ 'fa-volume-none': player.volume == 0, 'fa-volume-down': player.volume > 0 && player.volume <= 0.5, 'fa-volume-up': player.volume > 0.5 }"></i>
                 </li>
             </ul>
         </li>
