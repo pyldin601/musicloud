@@ -103,21 +103,10 @@ homecloud.factory("Library", [function () {
             return albumsList;
         },
         addToGroup: function (coll, tracks) {
-            var index,
-                key,
-                getAlbumIndex = function (album) {
-                    for (var j = 0; j < coll.length; j += 1) {
-                        if (coll[j].key == album) {
-                            return j;
-                        }
-                    }
-                    return -1;
-                },
-                getAlbumIndexCached = getAlbumIndex.memoize();
+            var key, last;
             for (var i = 0; i < tracks.length; i += 1) {
-                key = tracks[i].album_artist + "/" + tracks[i].track_album;
-                index = getAlbumIndexCached.call(key);
-                if (index == -1) {
+                key = tracks[i].album_artist + " :: " + tracks[i].track_album;
+                if (coll.length == 0 || (last = coll[coll.length - 1]).key != key) {
                     coll.push({
                         key: key,
                         title: tracks[i].track_album,
@@ -131,11 +120,10 @@ homecloud.factory("Library", [function () {
                             tracks[i]
                         ]
                     });
-                    getAlbumIndexCached.reset();
                 } else {
-                    coll[index].tracks.push(tracks[i]);
+                    last.tracks.push(tracks[i]);
                     if (tracks[i].album_artist !== tracks[i].track_artist) {
-                        coll[index].various_artists = true;
+                        last.various_artists = true;
                     }
                 }
             }

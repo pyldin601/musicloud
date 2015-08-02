@@ -25,4 +25,5 @@ class LoggedIn extends User implements SingletonInterface, Injectable {
         parent::__construct($logged_in);
     }
 
+
 } 

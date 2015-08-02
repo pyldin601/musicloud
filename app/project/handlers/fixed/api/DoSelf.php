@@ -32,6 +32,7 @@ class DoSelf implements RouteHandler {
 
         $response->write([
             "email" => $me->getEmail(),
+            "name" => $me->getName(),
             "id" => $me->getId(),
             "stats" => $stats
         ]);

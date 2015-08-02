@@ -53,17 +53,25 @@ class User {
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId() {
         return $this->user[TUsers::ID];
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail() {
         return $this->user[TUsers::EMAIL];
     }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->user[TUsers::NAME];
+    }
+
 
 } 

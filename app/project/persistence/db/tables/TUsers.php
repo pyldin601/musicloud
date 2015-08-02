@@ -16,9 +16,11 @@ class TUsers {
     const ID                    = "id";
     const EMAIL                 = "email";
     const PASSWORD              = "password";
+    const NAME                  = "name";
 
     const ID_FULL               = self::_NAME . "." . self::ID;
     const EMAIL_FULL            = self::_NAME . "." . self::EMAIL;
     const PASSWORD_FULL         = self::_NAME . "." . self::PASSWORD;
+    const NAME_FULL             = self::_NAME . "." . self::NAME;
 
 }
