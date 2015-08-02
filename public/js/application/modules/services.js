@@ -146,11 +146,15 @@ homecloud.factory("Library", [function () {
 
 homecloud.factory("StatsService", ["$http", function ($http) {
     return {
-        incrementPlays: function (track_id) {
-            return $http.post("/api/stats/played", {id: track_id});
+        incrementPlays: function (track) {
+            return $http.post("/api/stats/played", {id: track.id}).success(function () {
+                track.times_played ++;
+            });
         },
-        incrementSkips: function (track_id) {
-            return $http.post("/api/stats/skipped", {id: track_id});
+        incrementSkips: function (track) {
+            return $http.post("/api/stats/skipped", {id: track.id}).success(function () {
+                track.times_skipped ++;
+            });
         }
     }
 }]);

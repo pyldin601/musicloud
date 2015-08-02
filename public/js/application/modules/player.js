@@ -13,9 +13,16 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
             track: null,
             fetch: null,
             position: {
-                duration: 0,
-                position: 0,
-                load: 0
+                duration: null,
+                position: null,
+                load: null
+            }
+        },
+        eventSkip: function () {
+            if (!(player.playlist.track && player.playlist.position.length))
+            var cent = 100 / player.playlist.position.duration * player.playlist.position.position;
+            if (cent < 10) {
+                SyncService.incrementSkips(player.playlist.track);
             }
         },
         doPlay: function (track, playlist, resolver) {
@@ -70,9 +77,9 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
                 player.playlist.fetch = null;
 
                 player.playlist.position = {
-                    duration: 0,
-                    position: 0,
-                    load: 0
+                    duration: null,
+                    position: null,
+                    load: null
                 };
 
             });
@@ -90,6 +97,8 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
             if (player.playlist.track === null) {
                 return;
             }
+
+            player.eventSkip();
 
             var index = player.playlist.tracks.indexOf(player.playlist.track);
 
@@ -112,6 +121,8 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
                 return;
             }
 
+            player.eventSkip();
+
             var index = player.playlist.tracks.indexOf(player.playlist.track);
 
             if (index > 0) {
@@ -128,8 +139,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", function ($rootScope
         },
         ended: function () {
             if (player.playlist.track) {
-                $rootScope.$applyAsync(player.playlist.track.times_played ++);
-                StatsService.incrementPlays(player.playlist.track.id);
+                StatsService.incrementPlays(player.playlist.track);
                 player.doPlayNext();
             }
         },
