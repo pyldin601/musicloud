@@ -10,6 +10,7 @@ use app\lang\option\Mapper;
 
 require_once "constants.php";
 require_once "core/shortcuts.php";
+require_once "lang/functional/functions.php";
 
 const STATIC_CLASS_INIT_METHOD = "class_init";
 
