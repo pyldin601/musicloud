@@ -117,15 +117,12 @@ class Database implements SingletonInterface, Injectable {
 
         $position = 0;
 
-        $arguments = preg_replace_callback("/(\\?)|(\\:\\w+)/", function ($match) use ($params, &$position) {
+        $arguments = preg_replace_callback("/(\\?)|(\\:\\[a-z]+)/", function ($match) use ($params, &$position) {
             $array_key = $match[0] === '?' ? $position++ : $match[0];
             if (!isset($params[$array_key])) {
                 return 'NULL';
             }
-            return is_numeric($params[$array_key])
-                ? $params[$array_key]
-                : $this->pdo->quote($params[$array_key],
-                    PDO::PARAM_STR);
+            return $this->pdo->quote($params[$array_key], PDO::PARAM_STR);
         }, $query);
 
 
@@ -151,11 +148,11 @@ class Database implements SingletonInterface, Injectable {
             throw new ApplicationException($this->pdo->errorInfo()[2]);
         }
 
-//        $begin = microtime(true);
+        $begin = microtime(true);
         $resource->execute();
-//        $end = microtime(true);
+        $end = microtime(true);
 
-//        error_log(sprintf("%0.4f : %s", $end - $begin, $queryString));
+        error_log(sprintf("%0.4f : %s", $end - $begin, $queryString));
 
         if ($resource->errorCode() !== "00000") {
             throw new ApplicationException($resource->errorInfo()[2]);

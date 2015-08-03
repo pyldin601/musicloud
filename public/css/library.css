@@ -423,6 +423,7 @@ a {
 }
 .library-player .player-display .display .text .now-playing .track-title .current-artist {
   font-weight: 300;
+  color: #f0f0f0;
 }
 .library-player .player-display .display .text .now-playing .track-title .current-artist:before {
   content: 'by';

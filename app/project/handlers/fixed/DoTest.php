@@ -21,9 +21,10 @@ class DoTest implements RouteHandler {
 }
 
 function shiftBits($number) {
-    $number = $number ^ 0xFF71A72371A7232C;
-    for ($i = 0; $i < 64; $i++) {
-        $to = ($i * 6) % 64;
+    $size = 0x20;
+    $number = $number ^ 0xFF71A723;
+    for ($i = 0; $i < $size; $i++) {
+        $to = ($i * 3) % $size;
         if ((($number >> $i) & 0x01) ^ (($number >> $to) & 0x01)) {
             $number = $number ^ ((1 << $i) + (1 << $to));
         }
@@ -33,10 +34,10 @@ function shiftBits($number) {
 
 function alpha($number) {
     $number = abs($number);
-    $chars = "ABCDEFGHIJKLMNO-PQRSTUVWXYZabcdefghijklmnopqrstuvwzyz0123456789";
+    $chars = "n92V1Dodry7FZzzY8lJ0svakSO6PpIHtBRcTgW45LUfNA-wqiuXMbCejGhKQmE3";
     $result = "";
     do {
-        $result .= $chars[($number * 12) % 0x40];
+        $result .= $chars[$number & 0x3F];
         $number >>= 6;
     } while ($number > 0);
     return $result;

@@ -93,7 +93,6 @@ class FileServer {
         $filename = FSTool::filename($file[TFiles::SHA1]);
         $filesize = filesize($filename);
 
-        $fh = fopen($filename, "rb");
 
         if (isset($_SERVER["HTTP_RANGE"])) {
             $range = str_replace("bytes=", "", $_SERVER["HTTP_RANGE"]);
@@ -113,18 +112,18 @@ class FileServer {
 
         header("Accept-Ranges: bytes");
 
-        if ($start > 0) {
-            fseek($fh, $start, SEEK_SET);
-        }
-
         set_time_limit(0);
 
-        while ($data = fread($fh, self::READ_BUFFER_SIZE)) {
-            echo $data;
-            flush();
-        }
+        withOpenedFile($filename, "rb", function ($fh) use ($start) {
 
-        fclose($fh);
+            if ($start > 0) fseek($fh, $start, SEEK_SET);
+
+            while ($data = fread($fh, self::READ_BUFFER_SIZE)) {
+                echo $data;
+                flush();
+            }
+
+        });
 
     }
 

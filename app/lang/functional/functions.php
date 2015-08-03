@@ -40,3 +40,20 @@ function any(array $array) {
 function zip(...$arrays) {
     return array_map(null, ...$arrays);
 }
+
+/**
+ * Doing $callable with opened file $filename with mode $mode and
+ * automatically closes file at finish.
+ *
+ * @param string $filename
+ * @param string $mode
+ * @param Callable $callable
+ */
+function withOpenedFile($filename, $mode, $callable) {
+    try {
+        $fh = fopen($filename, $mode);
+        $callable($fh);
+    } finally {
+        fclose($fh);
+    }
+}

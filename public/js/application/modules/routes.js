@@ -19,6 +19,7 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
                 });
             }]
         },
+        title: "Artists",
         special: {
             section: "artists"
         }
@@ -36,6 +37,7 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
                 });
             }]
         },
+        title: "Albums",
         special: {
             section: "albums"
         }
@@ -53,57 +55,7 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
                 });
             }]
         },
-        special: {
-            section: "genres"
-        }
-    });
-
-    $routeProvider.when("/artist/:artist", {
-        templateUrl: templatePath + "/grouped-view.html",
-        controller: "ArtistViewController",
-        resolve: {
-            Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
-                return SearchService.tracks({ artist_id: $route.current.params.artist }, 0).then(function (response) {
-                    return response.data;
-                }, function () {
-                    $location.url("/");
-                });
-            }]
-        },
-        special: {
-            section: "artists"
-        }
-    });
-
-    $routeProvider.when("/album/:album", {
-        templateUrl: templatePath + "/grouped-view.html",
-        controller: "AlbumViewController",
-        resolve: {
-            Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
-                return SearchService.tracks({ album_id: $route.current.params.album }, 0).then(function (response) {
-                    return response.data;
-                }, function () {
-                    $location.url("/");
-                });
-            }]
-        },
-        special: {
-            section: "albums"
-        }
-    });
-
-    $routeProvider.when("/genre/:genre", {
-        templateUrl: templatePath + "/view-group-genre.html",
-        controller: "GenreViewController",
-        resolve: {
-            Resolved: ["SearchService", "$route", "$location", function (SearchService, $route, $location) {
-                return SearchService.tracks({ genre_id: $route.current.params.genre }, 0).then(function (response) {
-                    return response.data;
-                }, function () {
-                    $location.url("/");
-                });
-            }]
-        },
+        title: "Genres",
         special: {
             section: "genres"
         }
@@ -113,14 +65,40 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         templateUrl: templatePath + "/grouped-view.html",
         controller: "GroupViewController",
         resolve: {
-            Resolved: ["SearchService", "$location", function (SearchService, $location) {
-                return SearchService.tracks($location.search(), 0).then(function (response) {
-                    return response.data;
-                }, function () {
-                    $location.url("/");
-                });
-            }]
+            Resolved: ["SearchService", "$location", "$route", "$filter",
+                function (SearchService, $location, $route, $filter) {
+                    var search  = $location.search(),
+                        acc = "";
+
+                    if (search.genre) {
+                        acc = acc.concat($filter("genreFilter")(search.genre));
+                    }
+
+                    if (search.artist !== undefined && search.album !== undefined) {
+                        if (acc.length > 0) {
+                            acc = acc.concat(" in ");
+                        }
+                        acc = acc.concat(
+                            $filter("albumFilter")(search.album) + " by " +
+                            $filter("artistFilter")(search.artist)
+                        )
+                    } else if (search.artist !== undefined) {
+                        if (acc.length > 0) {
+                            acc = acc.concat(" in ");
+                        }
+                        acc = acc.concat($filter("artistFilter")(search.artist));
+                    }
+
+                    $route.current.title = acc;
+                    return SearchService.tracks($location.search(), 0).then(function (response) {
+                        return response.data;
+                    }, function () {
+                        $location.url("/");
+                    });
+                }
+            ]
         },
+        title: "My Library",
         special: {
             section: "tracks"
         }
