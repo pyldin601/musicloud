@@ -15,15 +15,18 @@ use app\core\router\RouteHandler;
 
 class DoTest implements RouteHandler {
     public function doGet(HttpGet $httpGet) {
-        $value = $httpGet->get("id")
+        $httpGet->get("id")
             ->orThrow(ApplicationException::class, "ID not specified!")
             ->filter("is_numeric")
             ->orThrow(ApplicationException::class, "ID must be a number!")
             ->map("intval")
             ->reject(0)
-            ->getOrThrow(ApplicationException::class, "ID could not be zero!");
+            ->orThrow(ApplicationException::class, "ID could not be zero!")
+            ->then(function ($value) {
+                echo "Your ID is " . $value;
+            });
 
-        echo "Your ID is " . $value;
+
     }
 }
 
