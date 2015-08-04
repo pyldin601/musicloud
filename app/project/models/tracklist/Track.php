@@ -14,6 +14,7 @@ use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\core\etc\MIME;
 use app\core\etc\Settings;
+use app\core\exceptions\ApplicationException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\libs\WaveformGenerator;
 use app\project\exceptions\AlreadyUploadedException;
@@ -31,6 +32,7 @@ use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\StatsTable;
+use app\project\persistence\db\tables\TFiles;
 use app\project\persistence\db\tables\TSongs;
 use app\project\persistence\fs\FileServer;
 use app\project\persistence\fs\FSTool;
@@ -43,6 +45,7 @@ class Track {
     private $track_id;
     private $track_data;
 
+    /** @var Settings */
     private $settings;
 
     public function __construct($track_id) {
@@ -137,6 +140,24 @@ class Track {
         (new UpdateQuery(TSongs::_NAME, TSongs::ID, $this->track_id))
             ->set(TSongs::T_RATING, null)
             ->update();
+    }
+
+    public function preview() {
+
+        $filename = (new SelectQuery(TFiles::_NAME, TFiles::ID, $this->track_data[TSongs::FILE_ID]))
+            ->select(TFiles::SHA1)
+            ->fetchOneColumn()
+            ->map([FSTool::class, "filename"])
+            ->map("escapeshellarg")
+            ->getOrThrow(ApplicationException::class, "File associated with audio track not found");
+
+        $command = sprintf("%s -loglevel quiet -i %s -ab 96k -ac 2 -acodec libfdk_aac -f adts -",
+            $this->settings->get("tools", "ffmpeg_cmd"), $filename);
+
+        header("Content-Type: audio/aac");
+
+        passthru($command);
+
     }
 
 } 
