@@ -155,8 +155,8 @@ class Track {
             ->map("escapeshellarg")
             ->getOrThrow(ApplicationException::class, "File associated with audio track not found");
 
-        $command = sprintf("%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libmp3lame -f mp3 -",
-            $this->settings->get("tools", "ffmpeg_cmd"), $filename);
+        $command_template = "%s -loglevel quiet -i %s -ab 96k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts -";
+        $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename);
 
         header("Content-Type: audio/aac");
 
