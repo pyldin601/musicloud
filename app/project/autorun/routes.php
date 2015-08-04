@@ -13,6 +13,6 @@ use app\project\handlers\dynamic\content;
 
 
 when("preview/:id", content\DoGetPreview::class);
-when("file/:id", content\DoGetFile::class);
+when("file/:id",    content\DoGetFile::class);
 
 

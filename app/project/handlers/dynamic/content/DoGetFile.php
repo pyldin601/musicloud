@@ -13,7 +13,6 @@ use app\core\router\RouteHandler;
 use app\project\persistence\fs\FileServer;
 
 class DoGetFile implements RouteHandler {
-    // todo: Use this method anywhere
     public function doGet($id) {
         FileServer::sendToClient($id);
     }

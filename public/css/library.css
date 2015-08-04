@@ -395,10 +395,10 @@ a {
 .library-player .player-icons .icons li.ctrl-volume .volume-controller .volume-background .volume-bulb {
   opacity: 0;
   transition: 0.1s linear opacity;
-  margin-bottom: -3px;
+  margin-bottom: -6px;
   margin-left: -1px;
   position: absolute;
-  bottom: 0%;
+  bottom: 0;
   left: 0;
   width: 9px;
   height: 9px;

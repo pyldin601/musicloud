@@ -49,7 +49,7 @@ homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
                 if (event.which == 1) {
                     var offset = elem.offset().top - $(window).scrollTop(),
                         vol = 1 / elem.height() * (elem.height() - (event.clientY - offset));
-                    $rootScope.$applyAsync($rootScope.player.doVolume(vol));
+                    $rootScope.$applyAsync($rootScope.player.doVolume(Math.max(0, Math.min(1, vol))));
                 }
                 return false;
             });

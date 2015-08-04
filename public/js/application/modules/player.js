@@ -46,7 +46,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
 
                         player.playlist.track = track;
 
-                        jFrame.jPlayer("setMedia", {mp3: "/file/" + track.file_id}).jPlayer("play");
+                        jFrame.jPlayer("setMedia", {mp3: "/preview/" + track.id}).jPlayer("play");
 
                         player.playlist.position.duration = track.length;
 
