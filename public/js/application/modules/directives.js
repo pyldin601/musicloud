@@ -39,7 +39,21 @@ homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
     return {
         restrict: "A",
         link: function (scope, elem, attrs) {
-
+            var line = elem.find(".value-line"),
+                unbind = $rootScope.$watch("player.volume", function (value) {
+                    line.css("height", "" + parseInt(100 * value) + "%");
+                });
+            elem.on("mousedown mousemove", function (event) {
+                if (event.which == 1) {
+                    var offset = elem.offset().top - $(window).scrollTop(),
+                        vol = 1 / elem.height() * (elem.height() - (event.clientY - offset));
+                    $rootScope.$applyAsync($rootScope.player.doVolume(vol));
+                }
+                return false;
+            });
+            scope.$on("$destroy", function () {
+                unbind();
+            })
         }
     }
 }]);
@@ -65,7 +79,9 @@ homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
             elem.on("mousedown", function (event) {
                 var offset = elem.offset(),
                     width = elem.width();
-                $rootScope.player.doSeek(100 / width * (event.clientX - offset.left));
+                $rootScope.$applyAsync(function () {
+                    $rootScope.player.doSeek(100 / width * (event.clientX - offset.left))
+                });
             });
             scope.$on("$destroy", watcher);
         }
