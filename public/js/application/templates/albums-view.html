@@ -10,7 +10,7 @@
                     <div class="artist-name">
                         <a class="block" ng-href="#/tracks/grouped?artist={{ album.album_artist | uri }}&album={{ album.track_album | uri }}"
                            ng-bind="album.track_album | albumFilter"></a>
-                        <a class="block a-artist" ng-href="#/tracks/grouped?artist={{ album.album_artist | uri }}"
+                        <a class="block a-artist" ng-href="#/tracks/grouped?artist={{ album.album_artist | uri }}&album={{ album.track_album | uri }}"
                            ng-bind="album.album_artist | artistFilter"></a>
                     </div>
                 </div>
