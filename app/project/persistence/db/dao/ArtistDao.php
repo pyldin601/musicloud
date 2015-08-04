@@ -41,7 +41,7 @@ class ArtistDao {
             ->where(MetaArtistsTable::ARTIST, $artist)
             ->where(MetaArtistsTable::USER_ID, self::$me->getId())
             ->select(MetaAlbumsTable::ID)
-            ->fetchOneColumn()->toInt();
+            ->fetchColumn()->toInt();
         if ($artist_object->nonEmpty()) {
             return $artist_object->get();
         } else {

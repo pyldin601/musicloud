@@ -41,7 +41,7 @@ class GenreDao {
             ->where(MetaGenresTable::GENRE, $genre)
             ->where(MetaGenresTable::USER_ID, self::$me->getId())
             ->select(MetaGenresTable::ID)
-            ->fetchOneColumn()->toInt();
+            ->fetchColumn()->toInt();
         if ($genre_object->nonEmpty()) {
             return $genre_object->get();
         } else {

@@ -35,7 +35,7 @@ use app\project\persistence\db\tables\StatsTable;
 use app\project\persistence\db\tables\TFiles;
 use app\project\persistence\db\tables\TSongs;
 use app\project\persistence\fs\FileServer;
-use app\project\persistence\fs\FSTool;
+use app\project\persistence\fs\FSTools;
 
 class Track {
 
@@ -147,10 +147,11 @@ class Track {
      */
     public function preview() {
 
-        $filename = (new SelectQuery(TFiles::_NAME, TFiles::ID, $this->track_data[TSongs::FILE_ID]))
+        $filename = (new SelectQuery(TFiles::_NAME))
+            ->where(TFiles::ID, $this->track_data[TSongs::FILE_ID])
             ->select(TFiles::SHA1)
-            ->fetchOneColumn()
-            ->map([FSTool::class, "hashToFullPath"])
+            ->fetchColumn()
+            ->map([FSTools::class, "hashToFullPath"])
             ->map("escapeshellarg")
             ->getOrThrow(ApplicationException::class, "File associated with audio track not found");
 

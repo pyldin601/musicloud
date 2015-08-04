@@ -11,7 +11,7 @@ namespace app\project\persistence\fs;
 
 use app\core\etc\Settings;
 
-class FSTool {
+class FSTools {
     /**
      * @param $hash
      * @return string

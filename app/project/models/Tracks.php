@@ -37,7 +37,7 @@ class Tracks {
         $query = new InsertQuery(TSongs::_NAME);
         $query->values(TSongs::USER_ID, self::$me->getId());
         $query->returning(TSongs::ID);
-        $key = $query->fetchOneColumn()->get();
+        $key = $query->fetchColumn()->get();
 
         if ($key === null) {
 

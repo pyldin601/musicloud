@@ -123,7 +123,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @param int $column
      * @return Option
      */
-    public function fetchOneColumn($column = 0) {
+    public function fetchColumn($column = 0) {
         return Database::doInConnection(function (Database $db) use (&$column) {
             return $db->fetchOneColumn(
                 $this->getQuery($db->getPDO()),

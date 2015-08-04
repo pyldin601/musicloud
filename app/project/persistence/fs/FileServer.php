@@ -34,14 +34,14 @@ class FileServer {
 
         assert(file_exists($file_path), "Audio file uploaded incorrectly");
 
-        $hash = FSTool::calculateHash($file_path);
+        $hash = FSTools::calculateHash($file_path);
         $query = (new SelectQuery(TFiles::_NAME, TFiles::SHA1, $hash))
             ->select(TFiles::ID);
-        $file = $query->fetchOneColumn();
+        $file = $query->fetchColumn();
 
         if ($file->isEmpty()) {
 
-            FSTool::createPathUsingHash($hash);
+            FSTools::createPathUsingHash($hash);
 
             $id = (new InsertQuery(TFiles::_NAME))
                 ->values(TFiles::SHA1, $hash)
@@ -50,10 +50,10 @@ class FileServer {
                 ->values(TFiles::MTIME, filemtime($file_path))
                 ->values(TFiles::CONTENT_TYPE, MIME::mime_type($file_path))
                 ->returning(TFiles::ID)
-                ->fetchOneColumn()
+                ->fetchColumn()
                 ->get();
 
-            rename($file_path, FSTool::hashToFullPath($hash));
+            rename($file_path, FSTools::hashToFullPath($hash));
 
             error_log("Registering " . $file_path . ": NEW");
 
@@ -90,7 +90,7 @@ class FileServer {
             return;
         }
 
-        $filename = FSTool::hashToFullPath($file[TFiles::SHA1]);
+        $filename = FSTools::hashToFullPath($file[TFiles::SHA1]);
         $filesize = filesize($filename);
 
 
@@ -146,7 +146,7 @@ class FileServer {
                 ->where(TFiles::ID, $file[TFiles::ID])
                 ->update();
 
-            FSTool::delete($file_data[TFiles::SHA1]);
+            FSTools::delete($file_data[TFiles::SHA1]);
 
         }
 
@@ -158,7 +158,7 @@ class FileServer {
             ->where(TFiles::ID, $file_id)
             ->fetchOneRow()->getOrThrow(PageNotFoundException::class);
 
-        return FSTool::hashToFullPath($file[TFiles::SHA1]);
+        return FSTools::hashToFullPath($file[TFiles::SHA1]);
 
     }
 
