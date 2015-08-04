@@ -31,7 +31,7 @@ class FSTool {
      * @param $hash
      * @return string
      */
-    public static function filename($hash) {
+    public static function hashToFullPath($hash) {
         return self::hashToPath($hash) . "/" . $hash;
     }
 
@@ -47,6 +47,6 @@ class FSTool {
      * @param $hash
      */
     public static function delete($hash) {
-        unlink(self::filename($hash));
+        unlink(self::hashToFullPath($hash));
     }
 } 

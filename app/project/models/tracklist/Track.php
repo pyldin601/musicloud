@@ -150,7 +150,7 @@ class Track {
         $filename = (new SelectQuery(TFiles::_NAME, TFiles::ID, $this->track_data[TSongs::FILE_ID]))
             ->select(TFiles::SHA1)
             ->fetchOneColumn()
-            ->map([FSTool::class, "filename"])
+            ->map([FSTool::class, "hashToFullPath"])
             ->map("escapeshellarg")
             ->getOrThrow(ApplicationException::class, "File associated with audio track not found");
 

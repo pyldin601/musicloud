@@ -53,7 +53,7 @@ class FileServer {
                 ->fetchOneColumn()
                 ->get();
 
-            rename($file_path, FSTool::filename($hash));
+            rename($file_path, FSTool::hashToFullPath($hash));
 
             error_log("Registering " . $file_path . ": NEW");
 
@@ -90,7 +90,7 @@ class FileServer {
             return;
         }
 
-        $filename = FSTool::filename($file[TFiles::SHA1]);
+        $filename = FSTool::hashToFullPath($file[TFiles::SHA1]);
         $filesize = filesize($filename);
 
 
@@ -158,7 +158,7 @@ class FileServer {
             ->where(TFiles::ID, $file_id)
             ->fetchOneRow()->getOrThrow(PageNotFoundException::class);
 
-        return FSTool::filename($file[TFiles::SHA1]);
+        return FSTool::hashToFullPath($file[TFiles::SHA1]);
 
     }
 
