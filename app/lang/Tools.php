@@ -114,4 +114,12 @@ class Tools {
         return $number;
     }
 
+    public static function scan($path, $callable) {
+        $content = scandir($path);
+        print_r(array_filter("is_file", $content));
+
+//        array_map(function ($f) use ($callable) { self::scan($f, $callable); },
+//            array_filter("is_dir", $content));
+    }
+
 }

@@ -10,13 +10,14 @@ namespace app\project\handlers\fixed;
 
 
 use app\core\router\RouteHandler;
+use app\lang\Tools;
 
 class DoTest implements RouteHandler {
     public function doGet() {
         header("Content-Type: text/plain");
-        for ($i = 0; $i < 1000; $i++) {
-            echo alpha(shiftBits($i)) . PHP_EOL;
-        }
+        Tools::scan("/tmp", function ($file) {
+            echo $file . PHP_EOL;
+        });
     }
 }
 
