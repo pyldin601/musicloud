@@ -142,6 +142,9 @@ class Track {
             ->update();
     }
 
+    /**
+     * Reads audio file record from database and then generates preview.
+     */
     public function preview() {
 
         $filename = (new SelectQuery(TFiles::_NAME, TFiles::ID, $this->track_data[TSongs::FILE_ID]))
