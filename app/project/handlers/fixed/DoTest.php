@@ -14,8 +14,8 @@ use app\core\http\HttpGet;
 use app\core\router\RouteHandler;
 
 class DoTest implements RouteHandler {
-    public function doGet(HttpGet $get) {
-        $value = $get->get("id")
+    public function doGet(HttpGet $httpGet) {
+        $value = $httpGet->get("id")
             ->orThrow(ApplicationException::class, "ID not specified!")
             ->filter("is_numeric")
             ->orThrow(ApplicationException::class, "ID must be a number!")
