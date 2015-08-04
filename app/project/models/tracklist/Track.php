@@ -153,7 +153,7 @@ class Track {
             ->fetchColumn()
             ->map([FSTools::class, "hashToFullPath"])
             ->map("escapeshellarg")
-            ->orThrow(ApplicationException::class, "File associated with audio track not found");
+            ->getOrThrow(ApplicationException::class, "File associated with audio track not found");
 
         $command = sprintf("%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libmp3lame -f mp3 -",
             $this->settings->get("tools", "ffmpeg_cmd"), $filename);
