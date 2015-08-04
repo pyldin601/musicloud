@@ -18,7 +18,7 @@ class DoTest implements RouteHandler {
         $value = $get->get("id")
             ->orThrow(ApplicationException::class, "ID not specified!")
             ->filter("is_numeric")
-            ->orThrow(ApplicationException::class, "ID must me a number!")
+            ->orThrow(ApplicationException::class, "ID must be a number!")
             ->map("intval")
             ->reject(0)
             ->getOrThrow(ApplicationException::class, "ID could not be zero!");
