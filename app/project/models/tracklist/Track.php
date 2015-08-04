@@ -143,7 +143,7 @@ class Track {
     }
 
     /**
-     * Reads audio file record from database and then generates preview.
+     * Reads audio file record from database and generates audio preview.
      */
     public function preview() {
 
