@@ -435,9 +435,6 @@ a {
   content: 'by';
   padding-right: 4px;
 }
-.library-player .player-display .display .text .now-playing .track-title .current-rating {
-  margin-left: 4px;
-}
 .library-player .player-display .display .text .progress-background {
   box-sizing: border-box;
   padding: 0 16px;
@@ -513,12 +510,6 @@ a {
 }
 .library-player .player-display .display .text .progress-background:hover .progress-bulb {
   opacity: 1;
-}
-.library-player .player-display .display .text .progress-background:hover .progress-line {
-  box-shadow: 0 0 3px #000000;
-}
-.library-player .player-display .display .text .progress-background:hover .progress-position {
-  box-shadow: 0 0 3px #ff4141;
 }
 .library-sidebar {
   z-index: 10;
