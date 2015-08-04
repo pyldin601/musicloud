@@ -388,6 +388,24 @@ a {
   bottom: 0;
   border-radius: 1px;
 }
+.library-player .player-icons .icons li.ctrl-volume .volume-controller .volume-background .volume-bulb {
+  opacity: 0;
+  transition: 0.1s linear opacity;
+  margin-bottom: -3px;
+  margin-left: -1px;
+  position: absolute;
+  bottom: 0%;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #ff4141;
+  z-index: 2;
+  box-shadow: 0 0 4px #ff4141;
+}
+.library-player .player-icons .icons li.ctrl-volume .volume-controller .volume-background:hover .volume-bulb {
+  opacity: 1;
+}
 .library-player .player-icons .icons li.ctrl-volume:hover .volume-controller {
   opacity: 1;
   bottom: 32px;
@@ -454,10 +472,29 @@ a {
   height: 6px;
   cursor: pointer;
 }
+.library-player .player-display .display .text .progress-background .progress-area .progress-loader {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  border-radius: 1px;
+  background: #ff4141;
+  background: linear-gradient(45deg, #ff4141 0%, #ff4141 25%, #ff9995 25%, #ff9995 50%, #ff4141 50%, #ff4141 75%, #ff9995 75%, #ff9995);
+  background-size: 100px 100px;
+  animation: move 2s linear infinite;
+  z-index: 10;
+}
+@keyframes move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 0;
+  }
+}
 .library-player .player-display .display .text .progress-background .progress-area .progress-line {
   position: absolute;
   width: 100%;
-  height: 1px;
+  height: 3px;
   background-color: black;
   z-index: 0;
   border-radius: 1px;
@@ -466,7 +503,7 @@ a {
 .library-player .player-display .display .text .progress-background .progress-area .progress-position {
   position: absolute;
   width: 0;
-  height: 1px;
+  height: 3px;
   background-color: #ff4141;
   z-index: 1;
   border-radius: 1px;
@@ -474,7 +511,7 @@ a {
 .library-player .player-display .display .text .progress-background .progress-area .progress-bulb {
   opacity: 0;
   transition: 0.1s linear opacity;
-  margin-top: -4px;
+  margin-top: -3px;
   margin-left: -4px;
   position: absolute;
   left: 0;

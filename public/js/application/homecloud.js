@@ -2,7 +2,7 @@
  * Created by Roman on 27.07.2015.
  */
 
-var homecloud = angular.module("HomeCloud", ["ngRoute", "httpPostFix", "infinite-scroll"]);
+var homecloud = angular.module("HomeCloud", ["ngRoute", "ngCookies", "httpPostFix", "infinite-scroll"]);
 
 homecloud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {
     $rootScope.title = "My Library";

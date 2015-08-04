@@ -34,9 +34,8 @@ class DoTracks implements RouteHandler {
         $artist  = $get->get("artist");
         $album   = $get->get("album");
         $genre   = $get->get("genre");
-        $shuffle = $get->get("shuffle_id")->toInt();
 
-        $filter = $q->reject("")->map(Mapper::fulltext());
+        $filter = $q->reject("");
 
         $query = (new SelectQuery(TSongs::_NAME))
             ->where(TSongs::USER_ID, $me->getId());
@@ -46,16 +45,6 @@ class DoTracks implements RouteHandler {
             TSongs::T_NUMBER, TSongs::T_COMMENT, TSongs::T_YEAR, TSongs::T_RATING, TSongs::IS_FAV,
             TSongs::DISC, TSongs::A_ARTIST, TSongs::T_PLAYED, TSongs::T_SKIPPED, TSongs::LP_DATE,
             TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID);
-
-        if ($shuffle->isEmpty()) {
-            $query  ->orderBy(TSongs::A_ARTIST)
-                    ->orderBy(TSongs::T_YEAR . " DESC")
-                    ->orderBy(TSongs::T_ALBUM)
-                    ->orderBy(TSongs::DISC)
-                    ->orderBy(TSongs::T_NUMBER);
-        } else {
-            $query  ->orderBy("RAND(".$shuffle->get().")");
-        }
 
         Context::contextify($query);
 
@@ -73,6 +62,12 @@ class DoTracks implements RouteHandler {
 
         if ($filter->nonEmpty()) {
             $query->where(TSongs::FTS_ANY . " @@ plainto_tsquery(?)", [$filter->get()]);
+        } else {
+            $query->orderBy(TSongs::A_ARTIST)
+                ->orderBy(TSongs::T_YEAR . " DESC")
+                ->orderBy(TSongs::T_ALBUM)
+                ->orderBy(TSongs::DISC)
+                ->orderBy(TSongs::T_NUMBER);
         }
 
         $catalog = $query->fetchAll();

@@ -27,7 +27,7 @@ use app\project\persistence\db\tables\TSongs;
 class DoArtists implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
-        $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
+        $filter = $q->map("trim")->reject("");
 
         $query = (new SelectQuery(TSongs::_NAME))
             ->select(TSongs::A_ARTIST)

@@ -40,8 +40,10 @@ homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
         restrict: "A",
         link: function (scope, elem, attrs) {
             var line = elem.find(".value-line"),
+                bulb = elem.find(".volume-bulb"),
                 unbind = $rootScope.$watch("player.volume", function (value) {
                     line.css("height", "" + parseInt(100 * value) + "%");
+                    bulb.css("bottom", "" + parseInt(100 * value) + "%");
                 });
             elem.on("mousedown mousemove", function (event) {
                 if (event.which == 1) {
@@ -60,7 +62,10 @@ homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
 
 homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     return {
-        template: '<div class="progress-line"></div><div ng-show="player.playlist.position.duration > 0" class="progress-position"></div><div ng-show="player.playlist.position.duration > 0" class="progress-bulb"></div>',
+        template: '<div class="progress-line"></div>' +
+        '<div ng-show="player.isLoaded && !player.isBuffering" class="progress-position"></div>' +
+        '<div ng-show="player.isLoaded && !player.isBuffering" class="progress-bulb"></div>' +
+        '<div ng-show="player.isBuffering" class="progress-loader"></div>',
         link: function (scope, elem, attrs) {
             var bulb = elem.find(".progress-bulb"),
                 line = elem.find(".progress-position"),
