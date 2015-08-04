@@ -9,37 +9,20 @@
 namespace app\project\handlers\fixed;
 
 
+use app\core\exceptions\ApplicationException;
+use app\core\http\HttpGet;
 use app\core\router\RouteHandler;
-use app\lang\Tools;
 
 class DoTest implements RouteHandler {
-    public function doGet() {
-        header("Content-Type: text/plain");
-        Tools::scan("/tmp", function ($file) {
-            echo $file . PHP_EOL;
-        });
+    public function doGet(HttpGet $get) {
+        $value = $get->get("id")
+            ->orThrow(ApplicationException::class, "ID not specified!")
+            ->filter("is_number")
+            ->orThrow(ApplicationException::class, "ID must me a number!")
+            ->reject(0)
+            ->getOrThrow(ApplicationException::class, "ID could not be zero!");
+
+        echo "Your ID is " . $value;
     }
 }
 
-function shiftBits($number) {
-    $size = 0x20;
-    $number = $number ^ 0xFF71A723;
-    for ($i = 0; $i < $size; $i++) {
-        $to = ($i * 3) % $size;
-        if ((($number >> $i) & 0x01) ^ (($number >> $to) & 0x01)) {
-            $number = $number ^ ((1 << $i) + (1 << $to));
-        }
-    }
-    return $number;
-}
-
-function alpha($number) {
-    $number = abs($number);
-    $chars = "n92V1Dodry7FZzzY8lJ0svakSO6PpIHtBRcTgW45LUfNA-wqiuXMbCejGhKQmE3";
-    $result = "";
-    do {
-        $result .= $chars[$number & 0x3F];
-        $number >>= 6;
-    } while ($number > 0);
-    return $result;
-}
