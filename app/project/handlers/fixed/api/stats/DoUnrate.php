@@ -16,6 +16,6 @@ use app\project\models\tracklist\Track;
 class DoUnrate implements RouteHandler {
     public function doPost(JsonResponse $response, $id) {
         $track = new Track($id);
-        $track->unsetRating();
+        $track->removeRating();
     }
 } 

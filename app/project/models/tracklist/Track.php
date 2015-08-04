@@ -136,7 +136,7 @@ class Track {
             ->update();
     }
 
-    public function unsetRating() {
+    public function removeRating() {
         (new UpdateQuery(TSongs::_NAME, TSongs::ID, $this->track_id))
             ->set(TSongs::T_RATING, null)
             ->update();
