@@ -153,3 +153,22 @@ homecloud.directive("activeTab", ["$location", "$route", function ($location, $r
         }
     };
 }]);
+
+homecloud.directive("trackRating", ["StatsService", function (StatsService) {
+    return {
+        scope: {
+            track: "=trackRating"
+        },
+        template: '<ul ng-show="track" class="rating-body" ng-class="{shaded: track.track_rating === null}">\
+        <li class="rating-star fa" ng-class="{ \'fa-star\': track.track_rating >= n, \'fa-star-o\': track.track_rating < n }" ng-click="rate(n)" ng-repeat="n in [5,4,3,2,1]"></li><li class="rating-remove" ng-click="unrate()">&nbsp;</li>\
+        </ul>',
+        link: function(scope, elem, attr) {
+            scope.rate = function (value) {
+                StatsService.rateTrack(scope.track, value);
+            };
+            scope.unrate = function () {
+                StatsService.unrateTrack(scope.track);
+            };
+        }
+    }
+}]);

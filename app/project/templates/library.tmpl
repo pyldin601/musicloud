@@ -86,6 +86,7 @@
                         <div class="track-title">
                             <span class="current-track" ng-bind="player.playlist.track | getTitle"></span>
                             <span class="current-artist" ng-bind="player.playlist.track | getArtist"></span>
+                            <span class="current-rating" track-rating="player.playlist.track"></span>
                     </div>
                     <div class="progress-background">
                         <div class="time-right" ng-bind="player.playlist.position.duration | mmss"></div>

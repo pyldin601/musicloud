@@ -100,15 +100,21 @@
   unicode-bidi: bidi-override;
   direction: rtl;
   font-weight: 600;
+  transition: linear 100ms opacity;
+  display: inline-block;
 }
 .rating-body > li {
   cursor: pointer;
   display: inline-block;
   position: relative;
+  padding-right: 2px;
 }
-.rating-body > li:hover:before,
-.rating-body > li:hover ~ li:before {
+.rating-body > li.rating-star:hover:before,
+.rating-body > li:hover ~ li.rating-star:before {
   content: "\f005";
+}
+.rating-body.shaded:not(:hover) {
+  opacity: 0.3;
 }
 .list-view .list-item {
   position: relative;
@@ -428,6 +434,9 @@ a {
 .library-player .player-display .display .text .now-playing .track-title .current-artist:before {
   content: 'by';
   padding-right: 4px;
+}
+.library-player .player-display .display .text .now-playing .track-title .current-rating {
+  margin-left: 8px;
 }
 .library-player .player-display .display .text .progress-background {
   box-sizing: border-box;
@@ -868,6 +877,9 @@ a {
 .library-body .library-container .album-wrapper .content .album-tracks .track .plays {
   margin-right: 16px;
   text-align: right;
+}
+.library-body .library-container .album-wrapper .content .album-tracks .track .rating {
+  width: 96px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .position {
   width: 36px;

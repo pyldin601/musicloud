@@ -25,9 +25,7 @@ use app\project\persistence\db\tables\MetaGenresTable;
 use app\project\persistence\db\tables\TSongs;
 
 class DoGenres implements RouteHandler {
-    public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
-
-        $filter = $q->map("trim")->reject("")->map(Mapper::fulltext());
+    public function doGet(JsonResponse $response, LoggedIn $me) {
 
         $query = (new SelectQuery(TSongs::_NAME))
             ->where(TSongs::USER_ID, $me->getId())
@@ -44,10 +42,6 @@ class DoGenres implements RouteHandler {
         $query->orderBy(TSongs::T_GENRE);
 
         Context::contextify($query);
-
-        if ($filter->nonEmpty()) {
-            $query->match(TSongs::T_GENRE, $filter->get());
-        }
 
         $catalog = $query->fetchAll();
 

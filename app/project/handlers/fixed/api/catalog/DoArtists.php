@@ -32,26 +32,22 @@ class DoArtists implements RouteHandler {
         $query = (new SelectQuery(TSongs::_NAME))
             ->select(TSongs::A_ARTIST)
             ->where(TSongs::USER_ID, $me->getId())
-            ->selectAlias("ARRAY_TO_JSON((ARRAY_AGG(DISTINCT ".TSongs::C_BIG_ID."))[1:4])", TSongs::C_BIG_ID)
-            ->selectAlias("ARRAY_TO_JSON((ARRAY_AGG(DISTINCT ".TSongs::C_MID_ID."))[1:4])", TSongs::C_MID_ID)
-            ->selectAlias("ARRAY_TO_JSON((ARRAY_AGG(DISTINCT ".TSongs::C_SMALL_ID."))[1:4])", TSongs::C_SMALL_ID);
+            ->selectAlias("MIN(".TSongs::C_BIG_ID.")", TSongs::C_BIG_ID)
+            ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
+            ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
 
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
-            $query->match(TSongs::A_ARTIST, $filter->get());
+            //songs.fts_artist @@ plainto_tsquery('Robert Miles');
+            $query->where(TSongs::FTS_ARTIST . " @@ plainto_tsquery(?)", [$filter->get()]);
         }
 
         $query->addGroupBy(TSongs::A_ARTIST);
 
         $query->orderBy(TSongs::A_ARTIST);
 
-        $catalog = $query->fetchAll(null, function ($row) {
-            $row[TSongs::C_BIG_ID]   = json_decode($row[TSongs::C_BIG_ID], true);
-            $row[TSongs::C_MID_ID]   = json_decode($row[TSongs::C_MID_ID], true);
-            $row[TSongs::C_SMALL_ID] = json_decode($row[TSongs::C_SMALL_ID], true);
-            return $row;
-        });
+        $catalog = $query->fetchAll();
 
         $response->write([
             "artists" => $catalog

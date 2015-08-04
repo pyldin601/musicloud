@@ -41,7 +41,7 @@ class DoAlbums implements RouteHandler {
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
-            $query->match(TSongs::T_ALBUM, $filter->get());
+            $query->where(TSongs::FTS_ALBUM . " @@ plainto_tsquery(?)", [$filter->get()]);
         }
 
         $query->addGroupBy(TSongs::A_ARTIST);

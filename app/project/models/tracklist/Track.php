@@ -110,9 +110,9 @@ class Track {
 
     }
 
-    public function getPeaks() {
-        return WaveformGenerator::generate(FileServer::getFileUsingId($this->track_data[AudiosTable::FILE_ID]));
-    }
+//    public function getPeaks() {
+//        return WaveformGenerator::generate(FileServer::getFileUsingId($this->track_data[AudiosTable::FILE_ID]));
+//    }
 
     public function incrementPlays() {
         (new UpdateQuery(TSongs::_NAME, TSongs::ID, $this->track_id))
@@ -127,5 +127,16 @@ class Track {
             ->update();
     }
 
+    public function setRating($rating) {
+        (new UpdateQuery(TSongs::_NAME, TSongs::ID, $this->track_id))
+            ->set(TSongs::T_RATING, $rating)
+            ->update();
+    }
+
+    public function unsetRating() {
+        (new UpdateQuery(TSongs::_NAME, TSongs::ID, $this->track_id))
+            ->set(TSongs::T_RATING, null)
+            ->update();
+    }
 
 } 

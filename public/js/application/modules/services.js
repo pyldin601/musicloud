@@ -143,6 +143,14 @@ homecloud.factory("StatsService", ["$http", function ($http) {
             return $http.post("/api/stats/skipped", {id: track.id}).success(function () {
                 track.times_skipped ++;
             });
+        },
+        rateTrack: function (track, rating) {
+            track.track_rating = rating;
+            return $http.post("/api/stats/rate", {id: track.id, rating: rating});
+        },
+        unrateTrack: function (track) {
+            track.track_rating = null;
+            return $http.post("/api/stats/unrate", {id: track.id});
         }
     }
 }]);

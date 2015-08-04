@@ -2,13 +2,20 @@
   unicode-bidi: bidi-override;
   direction: rtl;
   font-weight: 600;
+  transition: linear 100ms opacity;
+  display: inline-block;
   & > li {
     cursor: pointer;
     display: inline-block;
     position: relative;
-    &:hover:before,
-    &:hover ~ li:before {
+    padding-right: 2px;
+    &.rating-star:hover:before,
+    &:hover ~ li.rating-star:before {
       content: "\f005";
     }
+    &.rating-remove {  }
+  }
+  &.shaded:not(:hover) {
+    opacity: 0.3;
   }
 }

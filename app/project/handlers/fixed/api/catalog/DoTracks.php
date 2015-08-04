@@ -41,6 +41,12 @@ class DoTracks implements RouteHandler {
         $query = (new SelectQuery(TSongs::_NAME))
             ->where(TSongs::USER_ID, $me->getId());
 
+        $query->select(TSongs::ID, TSongs::FILE_ID, TSongs::FILE_NAME, TSongs::BITRATE,
+            TSongs::LENGTH, TSongs::T_TITLE, TSongs::T_ARTIST, TSongs::T_ALBUM, TSongs::T_GENRE,
+            TSongs::T_NUMBER, TSongs::T_COMMENT, TSongs::T_YEAR, TSongs::T_RATING, TSongs::IS_FAV,
+            TSongs::DISC, TSongs::A_ARTIST, TSongs::T_PLAYED, TSongs::T_SKIPPED, TSongs::LP_DATE,
+            TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID);
+
         if ($shuffle->isEmpty()) {
             $query  ->orderBy(TSongs::A_ARTIST)
                     ->orderBy(TSongs::T_YEAR . " DESC")
@@ -66,13 +72,7 @@ class DoTracks implements RouteHandler {
         }
 
         if ($filter->nonEmpty()) {
-            $query->match(implode(",",[
-                TSongs::A_ARTIST,
-                TSongs::T_ARTIST,
-                TSongs::T_ALBUM,
-                TSongs::T_TITLE,
-                TSongs::T_GENRE
-            ]), $filter->get());
+            $query->where(TSongs::FTS_ANY . " @@ plainto_tsquery(?)", [$filter->get()]);
         }
 
         $catalog = $query->fetchAll();
