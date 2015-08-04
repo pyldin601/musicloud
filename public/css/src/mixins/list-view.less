@@ -2,22 +2,6 @@
   .list-item {
     position: relative;
     margin-bottom: 38px;
-    .artist-name {
-      position: absolute;
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.5);
-      padding: 4px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      bottom: -26px;
-      text-align: center;
-      font-size: 9pt;
-      a {
-        text-decoration: none;
-        color: #000000;
-      }
-    }
     .artist-list-content {
       background: #f0f0f0 url("/public/images/default.directory.jpg") no-repeat center center;
       background-size: cover;
@@ -26,6 +10,7 @@
       bottom: 4px;
       top: 4px;
       position: absolute;
+      overflow: visible;
       .cover {
         position: absolute;
         width: 100%;
@@ -36,7 +21,25 @@
           height: 100%;
         }
       }
-
+      .artist-name {
+        margin-top: -38px;
+        position: absolute;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        font-size: 9pt;
+        a {
+          text-decoration: none;
+          color: #000000;
+          &.a-artist {
+            margin-top: 6px;
+            color: #505050;
+          }
+        }
+      }
     }
   }
 }

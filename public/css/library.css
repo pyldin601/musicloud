@@ -120,22 +120,6 @@
   position: relative;
   margin-bottom: 38px;
 }
-.list-view .list-item .artist-name {
-  position: absolute;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 4px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  bottom: -26px;
-  text-align: center;
-  font-size: 9pt;
-}
-.list-view .list-item .artist-name a {
-  text-decoration: none;
-  color: #000000;
-}
 .list-view .list-item .artist-list-content {
   background: #f0f0f0 url("/public/images/default.directory.jpg") no-repeat center center;
   background-size: cover;
@@ -144,6 +128,7 @@
   bottom: 4px;
   top: 4px;
   position: absolute;
+  overflow: visible;
 }
 .list-view .list-item .artist-list-content .cover {
   position: absolute;
@@ -154,6 +139,25 @@
   vertical-align: middle;
   width: 100%;
   height: 100%;
+}
+.list-view .list-item .artist-list-content .artist-name {
+  margin-top: -38px;
+  position: absolute;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 9pt;
+}
+.list-view .list-item .artist-list-content .artist-name a {
+  text-decoration: none;
+  color: #000000;
+}
+.list-view .list-item .artist-list-content .artist-name a.a-artist {
+  margin-top: 6px;
+  color: #505050;
 }
 body {
   font-family: 'Open Sans', sans-serif;

@@ -64,8 +64,7 @@ homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     return {
         template: '<div class="progress-line"></div>' +
         '<div ng-show="player.isLoaded && !player.isBuffering" class="progress-position"></div>' +
-        '<div ng-show="player.isLoaded && !player.isBuffering" class="progress-bulb"></div>' +
-        '<div ng-show="player.isBuffering" class="progress-loader"></div>',
+        '<div ng-show="player.isLoaded && !player.isBuffering" class="progress-bulb"></div>',
         link: function (scope, elem, attrs) {
             var bulb = elem.find(".progress-bulb"),
                 line = elem.find(".progress-position"),

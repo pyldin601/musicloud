@@ -8,7 +8,6 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
             player = {
                 isLoaded: false,
                 isPlaying: false,
-                isBuffering: false,
                 volume: 1,
                 playlist: {
                     tracks: [],
@@ -47,13 +46,10 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
 
                         player.playlist.track = track;
 
-                        jFrame
-                            .jPlayer("clearMedia")
-                            .jPlayer("setMedia", {mp3: "/file/" + track.file_id}).jPlayer("play");
+                        jFrame.jPlayer("setMedia", {mp3: "/file/" + track.file_id}).jPlayer("play");
 
                         player.isLoaded = true;
                         player.isPlaying = true;
-                        player.isBuffering = true;
 
                     });
 
@@ -87,7 +83,6 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
 
                         player.isLoaded = false;
                         player.isPlaying = false;
-                        player.isBuffering = false;
                         player.playlist.track = null;
                         player.playlist.tracks = [];
                         player.playlist.fetch = null;
@@ -164,9 +159,6 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
             },
             timeupdate: function (e) {
                 $rootScope.$applyAsync(function () {
-                    if (player.isBuffering && player.playlist.position.position) {
-                        player.isBuffering = false
-                    }
                     player.playlist.position.duration = e.jPlayer.status.duration;
                     player.playlist.position.position = e.jPlayer.status.currentTime;
                 });
