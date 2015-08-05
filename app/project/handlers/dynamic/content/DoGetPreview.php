@@ -10,11 +10,11 @@ namespace app\project\handlers\dynamic\content;
 
 
 use app\core\router\RouteHandler;
-use app\project\models\tracklist\Track;
+use app\project\models\tracklist\Song;
 
 class DoGetPreview implements RouteHandler {
     public function doGet($id) {
-        $track = new Track($id);
+        $track = new Song($id);
         $track->preview();
     }
 }

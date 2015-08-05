@@ -24,7 +24,7 @@ use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\TSongs;
 use app\project\persistence\fs\FileServer;
 
-class Tracks {
+class Songs {
 
     /** @var LoggedIn */
     private static $me;
@@ -100,11 +100,11 @@ class Tracks {
     }
 
     public static function wipeOldPreviews() {
-        SongDao::buildQueryForUnusedPreviews()->eachRow(function ($row) {
-                Logger::printf("Wiping old track preview (file id %s)", $row[TSongs::PREVIEW_ID]);
-            FileServer::unregister($row[TSongs::PREVIEW_ID]);
-               SongDao::unsetPreviewUsingId($row[TSongs::ID]);
-        });
+        foreach (SongDao::getListOfUnusedPreviews() as $song) {
+                Logger::printf("Wiping old track preview (file id %s)", $song[TSongs::PREVIEW_ID]);
+            FileServer::unregister($song[TSongs::PREVIEW_ID]);
+               SongDao::updateSongUsingId($song[TSongs::ID], [TSongs::PREVIEW_ID => null]);
+        }
     }
 
     private static function validateListOfTrackIds($track_ids) {

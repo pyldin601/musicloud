@@ -11,10 +11,10 @@ namespace app\project\handlers\fixed\api\track;
 
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\project\models\tracklist\Tracks;
+use app\project\models\tracklist\Songs;
 
 class DoDelete implements RouteHandler {
     public function doPost(JsonResponse $response, $track_id) {
-        Tracks::delete($track_id);
+        Songs::delete($track_id);
     }
 } 

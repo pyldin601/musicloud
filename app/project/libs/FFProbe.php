@@ -29,7 +29,7 @@ class FFProbe {
      * @param $filename
      * @return Option
      */
-    public static function readTempCover($filename) {
+    public static function readTempCovers($filename) {
 
         $escaped_filename = escapeshellarg($filename);
 

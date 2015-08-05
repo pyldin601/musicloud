@@ -11,10 +11,10 @@ namespace app\project\handlers\fixed\api\track;
 
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\project\models\tracklist\Tracks;
+use app\project\models\tracklist\Songs;
 
 class DoCreate implements RouteHandler {
     public function doPost(JsonResponse $response) {
-        $response->write(Tracks::create(), 201);
+        $response->write(Songs::create(), 201);
     }
 } 

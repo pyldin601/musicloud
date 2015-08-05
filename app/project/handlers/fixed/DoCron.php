@@ -11,12 +11,12 @@ namespace app\project\handlers\fixed;
 
 use app\core\router\RouteHandler;
 use app\project\models\single\LoggedIn;
-use app\project\models\tracklist\Tracks;
+use app\project\models\tracklist\Songs;
 
 class DoCron implements RouteHandler {
     public function doGet(LoggedIn $me) {
         if ($me->getId() === 0) {
-            Tracks::wipeOldPreviews();
+            Songs::wipeOldPreviews();
         }
     }
 } 

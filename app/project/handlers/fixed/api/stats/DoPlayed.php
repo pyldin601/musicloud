@@ -11,11 +11,11 @@ namespace app\project\handlers\fixed\api\stats;
 
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\project\models\tracklist\Track;
+use app\project\models\tracklist\Song;
 
 class DoPlayed implements RouteHandler {
     public function doPost(JsonResponse $response, $id) {
-        $track = new Track($id);
+        $track = new Song($id);
         $track->incrementPlays();
     }
 }

@@ -11,7 +11,7 @@ namespace app\project\handlers\dynamic\content;
 
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\project\models\tracklist\Track;
+use app\project\models\tracklist\Song;
 
 class DoWavePeaks implements RouteHandler {
     public function doGet(JsonResponse $response, $id) {
