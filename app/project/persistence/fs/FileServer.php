@@ -166,8 +166,9 @@ class FileServer {
     public static function findFileUsingId($file_id) {
 
         return (new SelectQuery(TFiles::_NAME))
+            ->select(TFiles::SHA1)
             ->where(TFiles::ID, $file_id)
-            ->fetchOneRow()
+            ->fetchColumn()
             ->map(array(FSTools::class, "hashToFullPath"));
 
     }
