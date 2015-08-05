@@ -52,7 +52,7 @@ class Tracks {
 
         $track_ids = in_string(",", $track_id) ? explode(",", $track_id) : $track_id;
 
-        self::verifyTrackIds($track_ids);
+        self::validateListOfTrackIds($track_ids);
 
         $track_objects = self::getTracksListById($track_ids);
 
@@ -65,7 +65,7 @@ class Tracks {
         }
 
         foreach ($track_objects as $track) {
-            self::removeUsedFiles($track);
+            self::removeFilesUsedByTrack($track);
         }
 
         self::deleteTracksById($track_ids);
@@ -80,7 +80,7 @@ class Tracks {
         (new DeleteQuery(TSongs::_NAME))->where(TSongs::ID, $id)->update();
     }
 
-    private static function removeUsedFiles($track) {
+    private static function removeFilesUsedByTrack($track) {
 
         if ($track[TSongs::C_BIG_ID])
             FileServer::unregister($track[TSongs::C_BIG_ID]);
@@ -107,17 +107,15 @@ class Tracks {
         });
     }
 
-    private static function verifyTrackIds($track_ids) {
+    private static function validateListOfTrackIds($track_ids) {
         switch (gettype($track_ids)) {
             case "string":
-                if (is_empty($track_ids)) {
+                if (is_empty($track_ids))
                     throw new ControllerException("Incorrect file id(s) specified");
-                }
                 break;
             case "array":
-                if (Arrays::any("is_empty", $track_ids)) {
+                if (Arrays::any("is_empty", $track_ids))
                     throw new ControllerException("Incorrect file id(s) specified");
-                }
                 break;
             default:
                 throw new ApplicationException("Incorrect type of argument");
