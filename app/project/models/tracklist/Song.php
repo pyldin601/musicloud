@@ -181,20 +181,20 @@ class Song {
         Logger::printf("Track preview is unavailable");
         Logger::printf("Generating new track preview in real time");
 
-        header("Content-Type: audio/aac");
+        header("Content-Type: " . PREVIEW_MIME);
 
-        $temp_file = TempFileProvider::generate("preview", ".aac");
+        $temp_file = TempFileProvider::generate("preview", ".mp3");
 
         $filename = FileServer::findFileUsingId($this->track_data[TSongs::FILE_ID])
             ->map("escapeshellarg")
             ->getOrThrow(PageNotFoundException::class);
 
-        $command_template = "%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libmp3lame -f mp3 - -f mp3 %s";
+        $command_template = "%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libmp3lame -f mp3 %s -f mp3 -";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename, $temp_file);
 
         passthru($command);
 
-        $temp_file_id = FileServer::register($temp_file, "audio/mpeg");
+        $temp_file_id = FileServer::register($temp_file, PREVIEW_MIME);
 
         Logger::printf("New preview generated and registered with file_id %s", $temp_file_id);
 

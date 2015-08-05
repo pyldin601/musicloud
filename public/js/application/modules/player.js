@@ -1,13 +1,15 @@
 var homecloud = angular.module("HomeCloud");
 
-homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
+homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeout",
 
-    function ($rootScope, StatsService, SyncService, $cookies) {
+    function ($rootScope, StatsService, SyncService, $cookies, $timeout) {
 
         var jFrame = $("<div>").appendTo("body"),
+            timeout,
             player = {
                 isLoaded: false,
                 isPlaying: false,
+                isBuffering: false,
                 volume: 1,
                 playlist: {
                     tracks: [],
@@ -175,6 +177,17 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
             swfPath: "/public/js/application/libs/jplayer/",
             supplied: "mp3",
             solution: "html, flash"
+        });
+
+        jFrame.bind($.jPlayer.event.canplay, function(){
+            $timeout.cancel(timeout);
+            $rootScope.$applyAsync(player.isBuffering = false)
+        });
+
+        jFrame.bind($.jPlayer.event.waiting, function(){
+            timeout = $timeout(function () {
+                player.isBuffering = true
+            }, 500);
         });
 
         player.doVolume(Math.min(1, parseFloat($cookies.get("volume")) || 1));

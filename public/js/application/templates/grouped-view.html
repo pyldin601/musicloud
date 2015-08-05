@@ -37,7 +37,9 @@
                         <div class="position left">
                             <div ng-hide="player.playlist.track == track"
                                  ng-bind-template="{{ $index + 1 }}."></div>
-                            <div ng-show="player.playlist.track == track"><i class="fa fa-volume-up"></i></div>
+                            <div ng-show="player.playlist.track == track">
+                                <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                            </div>
                         </div>
                         <div class="track-title">
                             <div class="first" ng-bind="track | getTitle"></div>

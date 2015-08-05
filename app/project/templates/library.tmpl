@@ -68,8 +68,7 @@
                     <i class="fa fa-backward"></i>
                 </li>
                 <li class="ctrl-play" ng-click="player.doPlayPause()">
-                    <i ng-hide="player.isPlaying" class="fa fa-play"></i>
-                    <i ng-show="player.isPlaying" class="fa fa-pause"></i>
+                    <i class="fa" ng-class="{'fa-refresh rotate': player.isBuffering && player.isPlaying, 'fa-play': !player.isPlaying, 'fa-pause': !player.isBuffering && player.isPlaying}"></i>
                 </li>
                 <li class="ctrl-next" ng-click="player.doPlayNext()">
                     <i class="fa fa-forward"></i>
@@ -88,11 +87,12 @@
                             <span class="current-track" ng-bind="player.playlist.track | getTitle"></span>
                             <span class="current-artist" ng-bind="player.playlist.track | getArtist"></span>
                             <span class="current-rating" track-rating="player.playlist.track"></span>
-                    </div>
-                    <div class="progress-background">
-                        <div class="time-right" ng-bind="player.playlist.position.duration | mmss"></div>
-                        <div class="time-left" ng-bind="player.playlist.position.position | mmss"></div>
-                        <div class="progress-area" playback-progress>
+                        </div>
+                        <div class="progress-background">
+                            <div class="time-right" ng-bind="player.playlist.position.duration | mmss"></div>
+                            <div class="time-left" ng-bind="player.playlist.position.position | mmss"></div>
+                            <div class="progress-area" playback-progress>
+                            </div>
                         </div>
                     </div>
                 </div>
