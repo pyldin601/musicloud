@@ -183,29 +183,26 @@ class Song {
 
         header("Content-Type: " . PREVIEW_MIME);
 
-        $temp_file = escapeshellarg(TempFileProvider::generate("preview", ".mp3"));
+        $temp_file = TempFileProvider::generate("preview", ".mp3");
 
         $filename = FileServer::findFileUsingId($this->track_data[TSongs::FILE_ID])
             ->map("escapeshellarg")
             ->getOrThrow(PageNotFoundException::class);
 
-        $command_template = "%s -i %s -ab 128k -ac 2 -acodec libmp3lame -f mp3 -";
+        $command_template = "%s -i %s -bufsize 256k -vn -ab 128k -ac 2 -acodec libmp3lame -f mp3 - | tee %s";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename, $temp_file);
 
         Logger::printf("Passing...");
         passthru($command);
         Logger::printf("Done");
 
-//        $temp_file_id = FileServer::register($temp_file, PREVIEW_MIME);
-//
-//        Logger::printf("New preview generated and registered with file_id %s", $temp_file_id);
-//
-//        (new UpdateQuery(TSongs::_NAME))
-//            ->where(TSongs::ID, $this->track_id)
-//            ->set(TSongs::PREVIEW_ID, $temp_file_id)
-//            ->update();
-//
-//        Logger::printf("New track preview saved into database");
+        $temp_file_id = FileServer::register($temp_file, PREVIEW_MIME);
+
+        Logger::printf("New preview registered under file_id %s", $temp_file_id);
+
+        SongDao::updateSongUsingId($this->track_id, [
+            TSongs::PREVIEW_ID => $temp_file_id
+        ]);
 
     }
 

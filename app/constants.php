@@ -10,4 +10,4 @@ const DYNAMIC_ROUTES_PATH       = "app/project/handlers/dynamic/";
 
 const INI_FILE_NAME             = "app/config.ini";
 
-const PREVIEW_MIME              = "audio/mp3";
+const PREVIEW_MIME              = "audio/mpeg";
