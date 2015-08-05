@@ -189,7 +189,7 @@ class Song {
             ->map("escapeshellarg")
             ->getOrThrow(PageNotFoundException::class);
 
-        $command_template = "%s -i %s -bufsize 256k -vn -ab 128k -ac 2 -acodec libmp3lame -f mp3 - | tee %s";
+        $command_template = "%s -i %s -bufsize 256k -vn -ab 128k -ac 2 -acodec libmp3lame -f mp3 - | stdbuf -o32M tee %s";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename, $temp_file);
 
         Logger::printf("Passing...");
