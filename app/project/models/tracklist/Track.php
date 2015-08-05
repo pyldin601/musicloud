@@ -152,7 +152,7 @@ class Track {
             ->map("escapeshellarg")
             ->getOrThrow(PageNotFoundException::class);
 
-        $command_template = "%s -loglevel quiet -re -i %s -ab 128k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts -";
+        $command_template = "%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts -";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename);
 
         header("Content-Type: audio/aac");

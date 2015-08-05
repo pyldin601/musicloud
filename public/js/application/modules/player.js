@@ -98,11 +98,19 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
                     });
 
                 },
-                doSeek: function (position) {
+                doSeek: function (percent) {
 
-                    if (!player.isLoaded) return;
+                    var timeIndex;
 
-                    jFrame.jPlayer("playHead", position);
+                    if (!(player.isLoaded && jFrame.data("jPlayer"))) return;
+
+                    timeIndex = player.playlist.position.duration / 100 * percent;
+
+                    if ( jFrame.data("jPlayer").status.paused ) {
+                        jFrame.jPlayer( "pause", timeIndex );
+                    } else {
+                        jFrame.jPlayer( "play", timeIndex );
+                    }
 
                 },
                 doPlayNext: function () {
