@@ -9,6 +9,7 @@
 namespace app\project\models\single;
 
 
+use app\core\http\HttpServer;
 use app\core\http\HttpSession;
 use app\core\injector\Injectable;
 use app\lang\singleton\Singleton;
@@ -20,8 +21,13 @@ class LoggedIn extends User implements SingletonInterface, Injectable {
     use Singleton;
 
     public function __construct() {
-        $logged_in = HttpSession::getInstance()->get("auth", "id")
-            ->getOrThrow(UnauthorizedException::class);
+        $request = HttpServer::getInstance();
+        if ($request->getRemoteAddress() == $request->getServerAddress()) {
+            $logged_in = 0;
+        } else {
+            $logged_in = HttpSession::getInstance()->get("auth", "id")
+                ->getOrThrow(UnauthorizedException::class);
+        }
         parent::__construct($logged_in);
     }
 

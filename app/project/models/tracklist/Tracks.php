@@ -12,10 +12,13 @@ namespace app\project\models\tracklist;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
+use app\core\db\builder\UpdateQuery;
 use app\core\exceptions\ApplicationException;
 use app\core\exceptions\ControllerException;
+use app\core\logging\Logger;
 use app\lang\Arrays;
 use app\project\models\single\LoggedIn;
+use app\project\persistence\db\dao\SongDao;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\TSongs;
@@ -88,9 +91,20 @@ class Tracks {
         if ($track[TSongs::C_SMALL_ID])
             FileServer::unregister($track[TSongs::C_SMALL_ID]);
 
+        if ($track[TSongs::PREVIEW_ID])
+            FileServer::unregister($track[TSongs::PREVIEW_ID]);
+
         if ($track[TSongs::FILE_ID])
             FileServer::unregister($track[TSongs::FILE_ID]);
 
+    }
+
+    public static function wipeOldPreviews() {
+        SongDao::buildQueryForUnusedPreviews()->eachRow(function ($row) {
+                Logger::printf("Wiping old track preview (file id %s)", $row[TSongs::PREVIEW_ID]);
+            FileServer::unregister($row[TSongs::PREVIEW_ID]);
+               SongDao::unsetPreviewUsingId($row[TSongs::ID]);
+        });
     }
 
     private static function verifyTrackIds($track_ids) {
@@ -109,4 +123,5 @@ class Tracks {
                 throw new ApplicationException("Incorrect type of argument");
         }
     }
+
 }
