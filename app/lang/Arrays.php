@@ -52,7 +52,7 @@ class Arrays {
             return $temp;
         }
     }
-    public static function all($callback, array $array) {
+    public static function allMatches($callback, array $array) {
         if (empty($array)) {
             return true;
         }

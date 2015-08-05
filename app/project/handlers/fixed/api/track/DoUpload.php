@@ -14,7 +14,7 @@ use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\lang\option\Option;
 use app\project\models\tracklist\Track;
-use app\project\models\Tracks;
+use app\project\models\tracklist\Tracks;
 
 class DoUpload implements RouteHandler {
     public function doPost(JsonResponse $response, Option $track_id, HttpFile $file) {

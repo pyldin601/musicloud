@@ -9,6 +9,7 @@ use app\lang\option\Consumer;
 use app\lang\option\Mapper;
 
 require_once "constants.php";
+require_once "lang/extend.php";
 require_once "core/shortcuts.php";
 require_once "lang/functional/functions.php";
 

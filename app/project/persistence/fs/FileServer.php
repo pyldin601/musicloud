@@ -18,6 +18,7 @@ use app\core\exceptions\ApplicationException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\core\http\HttpStatusCodes;
 use app\lang\Arrays;
+use app\lang\option\Option;
 use app\project\exceptions\TrackNotFoundException;
 use app\project\persistence\db\tables\TFiles;
 use app\project\persistence\db\tables\MetadataTable;
@@ -154,11 +155,20 @@ class FileServer {
 
     public static function getFileUsingId($file_id) {
 
-        $file = (new SelectQuery(TFiles::_NAME))
-            ->where(TFiles::ID, $file_id)
-            ->fetchOneRow()->getOrThrow(PageNotFoundException::class);
+        return self::findFileUsingId($file_id)->getOrThrow(PageNotFoundException::class);
 
-        return FSTools::hashToFullPath($file[TFiles::SHA1]);
+    }
+
+    /**
+     * @param $file_id
+     * @return Option
+     */
+    public static function findFileUsingId($file_id) {
+
+        return (new SelectQuery(TFiles::_NAME))
+            ->where(TFiles::ID, $file_id)
+            ->fetchOneRow()
+            ->map(array(FSTools::class, "hashToFullPath"));
 
     }
 

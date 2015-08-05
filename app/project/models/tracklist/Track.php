@@ -16,6 +16,7 @@ use app\core\etc\MIME;
 use app\core\etc\Settings;
 use app\core\exceptions\ApplicationException;
 use app\core\exceptions\status\PageNotFoundException;
+use app\lang\option\Some;
 use app\libs\WaveformGenerator;
 use app\project\exceptions\AlreadyUploadedException;
 use app\project\exceptions\BackendException;
@@ -147,21 +148,28 @@ class Track {
      */
     public function preview() {
 
-        $filename = (new SelectQuery(TFiles::_NAME))
-            ->where(TFiles::ID, $this->track_data[TSongs::FILE_ID])
-            ->select(TFiles::SHA1)
-            ->fetchColumn()
-            ->map([FSTools::class, "hashToFullPath"])
+        $filename = FileServer::findFileUsingId($this->track_data[TSongs::ID])
             ->map("escapeshellarg")
-            ->getOrThrow(ApplicationException::class, "File associated with audio track not found");
+            ->getOrThrow(PageNotFoundException::class);
 
-        $command_template = "%s -loglevel quiet -i %s -ab 96k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts -";
+        $command_template = "%s -loglevel quiet -re -i %s -ab 128k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts -";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename);
 
         header("Content-Type: audio/aac");
 
         passthru($command);
 
+    }
+
+    /**
+     * @param $id
+     * @return \app\lang\option\Option
+     */
+    private function getFileHashById($id) {
+        return (new SelectQuery(TFiles::_NAME))
+            ->where(TFiles::ID, $this->track_data[TSongs::FILE_ID])
+            ->select(TFiles::SHA1)
+            ->fetchColumn();
     }
 
 } 
