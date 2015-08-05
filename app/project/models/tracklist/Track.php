@@ -148,7 +148,7 @@ class Track {
      */
     public function preview() {
 
-        $filename = FileServer::findFileUsingId($this->track_data[TSongs::ID])
+        $filename = FileServer::findFileUsingId($this->track_data[TSongs::FILE_ID])
             ->map("escapeshellarg")
             ->getOrThrow(PageNotFoundException::class);
 
@@ -159,17 +159,6 @@ class Track {
 
         passthru($command);
 
-    }
-
-    /**
-     * @param $id
-     * @return \app\lang\option\Option
-     */
-    private function getFileHashById($id) {
-        return (new SelectQuery(TFiles::_NAME))
-            ->where(TFiles::ID, $this->track_data[TSongs::FILE_ID])
-            ->select(TFiles::SHA1)
-            ->fetchColumn();
     }
 
 } 
