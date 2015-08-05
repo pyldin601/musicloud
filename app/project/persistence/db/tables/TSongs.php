@@ -19,6 +19,7 @@ class TSongs {
     const FILE_NAME = "file_name";
     const BITRATE = "bitrate";
     const LENGTH = "length";
+    const FORMAT = "format";
     const T_TITLE = "track_title";
     const T_ARTIST = "track_artist";
     const T_ALBUM = "track_album";

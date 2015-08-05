@@ -110,7 +110,8 @@ class Song {
               ->set(TSongs::T_GENRE,   $metadata->meta_genre)
               ->set(TSongs::T_ALBUM,   $metadata->meta_album)
               ->set(TSongs::T_COMMENT, $metadata->meta_comment)
-              ->set(TSongs::IS_COMP,   $metadata->is_compilation);
+              ->set(TSongs::IS_COMP,   $metadata->is_compilation)
+              ->set(TSongs::FORMAT,    $metadata->format_name);
 
     }
 
@@ -188,12 +189,12 @@ class Song {
             ->map("escapeshellarg")
             ->getOrThrow(PageNotFoundException::class);
 
-        $command_template = "%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts - -f adts %s";
+        $command_template = "%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libmp3lame -f mp3 - -f mp3 %s";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename, $temp_file);
 
         passthru($command);
 
-        $temp_file_id = FileServer::register($temp_file, "audio/aac");
+        $temp_file_id = FileServer::register($temp_file, "audio/mpeg");
 
         Logger::printf("New preview generated and registered with file_id %s", $temp_file_id);
 

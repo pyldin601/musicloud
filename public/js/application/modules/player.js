@@ -169,7 +169,6 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies",
             },
             timeupdate: function (e) {
                 $rootScope.$applyAsync(function () {
-                    //player.playlist.position.duration = e.jPlayer.status.duration;
                     player.playlist.position.position = e.jPlayer.status.currentTime;
                 });
             },
