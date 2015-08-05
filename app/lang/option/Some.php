@@ -170,12 +170,4 @@ final class Some extends Option {
         return $this->offsetExists($offset) ? Option::Some($this->get()[$offset]) : Option::None();
     }
 
-    /**
-     * @param $value
-     * @return Option
-     */
-    public static function of($value) {
-        return new self($value);
-    }
-
 }
