@@ -31,7 +31,7 @@ class FileServer {
 
     }
 
-    public static function register($file_path) {
+    public static function register($file_path, $content_type = null) {
 
         assert(file_exists($file_path), "Audio file uploaded incorrectly");
 
@@ -49,7 +49,7 @@ class FileServer {
                 ->values(TFiles::SIZE, filesize($file_path))
                 ->values(TFiles::USED, 1)
                 ->values(TFiles::MTIME, filemtime($file_path))
-                ->values(TFiles::CONTENT_TYPE, MIME::mime_type($file_path))
+                ->values(TFiles::CONTENT_TYPE, $content_type ?: MIME::mime_type($file_path))
                 ->returning(TFiles::ID)
                 ->fetchColumn()
                 ->get();

@@ -9,6 +9,7 @@
 namespace app\project\models\tracklist;
 
 
+use app\core\cache\TempFileProvider;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
@@ -16,6 +17,7 @@ use app\core\etc\MIME;
 use app\core\etc\Settings;
 use app\core\exceptions\ApplicationException;
 use app\core\exceptions\status\PageNotFoundException;
+use app\core\logging\Logger;
 use app\lang\option\Some;
 use app\libs\WaveformGenerator;
 use app\project\exceptions\AlreadyUploadedException;
@@ -148,17 +150,45 @@ class Track {
      */
     public function preview() {
 
+        Logger::printf("Requested preview for track %s", $this->track_id);
+
+        if ($this->hasPreview()) {
+            Logger::printf("Track preview is available (file_id is %s)", $this->track_data[TSongs::PREVIEW_ID]);
+            FileServer::sendToClient($this->track_data[TSongs::PREVIEW_ID]);
+            return;
+        }
+
+        Logger::printf("Track preview is unavailable");
+        Logger::printf("Generating new track preview in real time");
+
+        header("Content-Type: audio/aac");
+
+        $temp_file = TempFileProvider::generate("preview", ".aac");
+
         $filename = FileServer::findFileUsingId($this->track_data[TSongs::FILE_ID])
             ->map("escapeshellarg")
             ->getOrThrow(PageNotFoundException::class);
 
-        $command_template = "%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts -";
-        $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename);
-
-        header("Content-Type: audio/aac");
+        $command_template = "%s -loglevel quiet -i %s -ab 128k -ac 2 -acodec libfdk_aac -profile:a aac_he_v2 -f adts - -f adts %s";
+        $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename, $temp_file);
 
         passthru($command);
 
+        $temp_file_id = FileServer::register($temp_file, "audio/aac");
+
+        Logger::printf("New preview generated and registered with file_id %s", $temp_file_id);
+
+        (new UpdateQuery(TSongs::_NAME))
+            ->where(TSongs::ID, $this->track_id)
+            ->set(TSongs::PREVIEW_ID, $temp_file_id)
+            ->update();
+
+        Logger::printf("New track preview saved into database");
+
     }
 
-} 
+    private function hasPreview() {
+        return $this->track_data[TSongs::PREVIEW_ID] !== null;
+    }
+
+}
