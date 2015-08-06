@@ -29,7 +29,7 @@ class Context {
 
     public static function contextify(SelectQuery $query) {
 
-        $limit = self::$request->get("l")->filter(Filter::isNumber());
+        $limit = self::$request->get("l")->filter(Filter::isNumber())->filter(Filter::isPositiveNumber());
         $offset = self::$request->get("o")->filter(Filter::isNumber());
 
         $sort_field = self::$request->get("sf");

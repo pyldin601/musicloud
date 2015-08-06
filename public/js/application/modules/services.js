@@ -47,6 +47,8 @@ homecloud.factory("SearchService", ["$http", function ($http) {
                 uri.filter = opts.filter
             }
 
+            uri.l = opts.limit || 50;
+
             return $http.get("/api/catalog/artists?" + serialize_uri(uri));
         },
         albums: function (opts, offset) {
@@ -58,6 +60,8 @@ homecloud.factory("SearchService", ["$http", function ($http) {
                 uri.filter = opts.filter
             }
 
+            uri.l = opts.limit || 50;
+
             return $http.get("/api/catalog/albums?" + serialize_uri(uri));
         },
         genres: function (opts, offset) {
@@ -68,6 +72,8 @@ homecloud.factory("SearchService", ["$http", function ($http) {
             if (opts.filter) {
                 uri.q = opts.filter
             }
+
+            uri.l = opts.limit || 50;
 
             return $http.get("/api/catalog/genres?" + serialize_uri(uri));
         },
@@ -89,6 +95,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
             if (opts.genre !== undefined) {
                 uri.genre = opts.genre
             }
+            uri.l = opts.limit || 50;
 
             return $http.get("/api/catalog/tracks?" + serialize_uri(uri));
         }

@@ -118,7 +118,7 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
                         $filter("artistFilter")(artist)
                     );
 
-                    return SearchService.tracks({artist: artist, album: album}, 0).then(function (response) {
+                    return SearchService.tracks({artist: artist, album: album, limit: -1}, 0).then(function (response) {
                         return response.data;
                     }, function () {
                         $location.url("/");
