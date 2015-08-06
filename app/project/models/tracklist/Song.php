@@ -10,10 +10,13 @@ namespace app\project\models\tracklist;
 
 
 use app\core\cache\TempFileProvider;
+use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\core\etc\Settings;
+use app\core\exceptions\ControllerException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\core\logging\Logger;
+use app\libs\WaveformGenerator;
 use app\project\exceptions\AlreadyUploadedException;
 use app\project\exceptions\BadAccessException;
 use app\project\exceptions\InvalidAudioFileException;
@@ -203,6 +206,33 @@ class Song {
     }
 
     /**
+     * @return mixed
+     * @throws ControllerException
+     */
+    public function getPeaks() {
+
+        if (!$this->hasPeaks()) {
+
+            $new_peaks = WaveformGenerator::generate($this->getFilePath());
+
+            SongDao::updateSongUsingId($this->track_id, [
+                "peaks" => "{" . implode(",", $new_peaks) . "}"
+            ]);
+
+            return json_encode($new_peaks);
+
+        } else {
+
+            return (new SelectQuery(TSongs::_NAME))
+                ->where(TSongs::ID, $this->track_id)
+                ->select("ARRAY_TO_JSON(" . TSongs::PEAKS . ")")
+                ->fetchColumn()
+                ->get();
+        }
+
+    }
+
+    /**
      * @return bool
      */
     private function hasPreview() {
@@ -212,8 +242,22 @@ class Song {
     /**
      * @return bool
      */
+    private function hasPeaks() {
+        return $this->track_data[TSongs::PEAKS] !== null;
+    }
+
+    /**
+     * @return bool
+     */
     private function isUploaded() {
         return $this->track_data[TSongs::FILE_ID] !== null;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getFilePath() {
+        return FileServer::getFileUsingId($this->track_data[TSongs::FILE_ID]);
     }
 
 }

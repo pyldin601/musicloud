@@ -14,8 +14,11 @@ use app\core\view\JsonResponse;
 use app\project\models\tracklist\Song;
 
 class DoWavePeaks implements RouteHandler {
-    public function doGet(JsonResponse $response, $id) {
-//        $tm = new Track($id);
-//        $response->write($tm->getPeaks());
+    public function doGet($id) {
+        $tm = new Song($id);
+        $peaks = $tm->getPeaks();
+        header("Content-Type: application/json");
+        ob_start("ob_gzhandler");
+        echo $peaks;
     }
 } 

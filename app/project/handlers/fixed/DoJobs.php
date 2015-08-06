@@ -21,18 +21,23 @@ use app\project\persistence\fs\FileServer;
 class DoJobs implements RouteHandler {
     public function doGet(LoggedIn $me) {
         if ($me->getId() === 0) {
-            $jobs = (new SelectQuery(TSongs::_NAME))
-                ->where(TSongs::PEAKS . " IS NULL")
-                ->where(TSongs::FILE_ID . " IS NOT NULL")
-                ->limit(50);
-            $jobs->eachRow(function ($row) {
+            $limit = 50;
+            while ($limit-- > 0) {
                 set_time_limit(30);
-                Logger::printf("Creating peaks for file: %s", $row[TSongs::FILE_NAME]);
-                $peaks = WaveformGenerator::generate(FileServer::getFileUsingId($row[TSongs::FILE_ID]));
-                SongDao::updateSongUsingId($row[TSongs::ID], [
-                    "peaks" => "{" . implode(",", $peaks) . "}"
-                ]);
-            });
+                (new SelectQuery(TSongs::_NAME))
+                    ->select(TSongs::FILE_NAME, TSongs::FILE_ID, TSongs::ID)
+                    ->where(TSongs::PEAKS . " IS NULL")
+                    ->where(TSongs::FILE_ID . " IS NOT NULL")
+                    ->limit(1)
+                    ->eachRow(function ($row) {
+                        Logger::printf("Creating peaks for file: %s", $row[TSongs::FILE_NAME]);
+                        $peaks = WaveformGenerator::generate(FileServer::getFileUsingId($row[TSongs::FILE_ID]));
+                        SongDao::updateSongUsingId($row[TSongs::ID], [
+                            "peaks" => "{" . implode(",", $peaks) . "}"
+                        ]);
+                    });
+                sleep(1);
+            }
         }
     }
 } 

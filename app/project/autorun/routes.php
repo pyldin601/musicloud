@@ -7,12 +7,11 @@
  */
 
 
-use app\lang\Tools;
-use app\project\handlers\dynamic\catalog;
 use app\project\handlers\dynamic\content;
 
 
 when("preview/:id", content\DoGetPreview::class);
 when("file/:id",    content\DoGetFile::class);
+when("peaks/:id",   content\DoWavePeaks::class);
 
 

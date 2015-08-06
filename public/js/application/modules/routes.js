@@ -104,6 +104,12 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         }
     });
 
+    $routeProvider.when("/album/:artist/:album", {
+        controller: function () {
+            console.log("hello, world!");
+        }
+    });
+
     $routeProvider.otherwise({
         redirectTo: "/artists/"
     });

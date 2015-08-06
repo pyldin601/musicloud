@@ -10,7 +10,6 @@ namespace app\libs;
 
 
 use app\core\cache\TempFileProvider;
-use app\core\logging\Logger;
 
 class WaveformGenerator {
     const PEAKS_RESOLUTION = 1600;
