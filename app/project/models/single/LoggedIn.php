@@ -22,14 +22,14 @@ class LoggedIn extends User implements SingletonInterface, Injectable {
 
     public function __construct() {
         $request = HttpServer::getInstance();
-//        if ($request->getRemoteAddress() == $request->getServerAddress()) {
-//            $logged_in = 0;
-//        } else {
+        if ($request->getRemoteAddress() == $request->getServerAddress()) {
+            $logged_in = 0;
+        } else {
 //            $logged_in = HttpSession::getInstance()->get("auth", "id")
 //                ->getOrThrow(UnauthorizedException::class);
-//        }
-//        parent::__construct($logged_in);
-        parent::__construct(2);
+            $logged_in = 2;
+        }
+        parent::__construct($logged_in);
     }
 
 

@@ -48,11 +48,13 @@ function zip(...$arrays) {
  * @param string $filename
  * @param string $mode
  * @param Callable $callable
+ * @return array
  */
 function withOpenedFile($filename, $mode, $callable) {
     try {
         $fh = fopen($filename, $mode);
-        $callable($fh);
+        $result = $callable($fh);
+        return ($result instanceof \Traversable) ? iterator_to_array($result) : $result;
     } finally {
         fclose($fh);
     }

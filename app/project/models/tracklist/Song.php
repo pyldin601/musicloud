@@ -184,17 +184,13 @@ class Song {
         header("Content-Type: " . PREVIEW_MIME);
 
         $temp_file = TempFileProvider::generate("preview", ".mp3");
+        $filename  = FileServer::getFileUsingId($this->track_data[TSongs::FILE_ID]);
 
-        $filename = FileServer::findFileUsingId($this->track_data[TSongs::FILE_ID])
-            ->map("escapeshellarg")
-            ->getOrThrow(PageNotFoundException::class);
+        $command_template = "%s -i %s -bufsize 256k -vn -ab 128k -ac 2 -acodec libmp3lame -f mp3 - | tee %s";
+        $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"),
+            escapeshellarg($filename), escapeshellarg($temp_file));
 
-        $command_template = "%s -i %s -bufsize 256k -vn -ab 128k -ac 2 -acodec libmp3lame -f mp3 - | stdbuf -o32M tee %s";
-        $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"), $filename, $temp_file);
-
-        Logger::printf("Passing...");
         passthru($command);
-        Logger::printf("Done");
 
         $temp_file_id = FileServer::register($temp_file, PREVIEW_MIME);
 
@@ -206,10 +202,16 @@ class Song {
 
     }
 
+    /**
+     * @return bool
+     */
     private function hasPreview() {
         return $this->track_data[TSongs::PREVIEW_ID] !== null;
     }
 
+    /**
+     * @return bool
+     */
     private function isUploaded() {
         return $this->track_data[TSongs::FILE_ID] !== null;
     }

@@ -38,21 +38,56 @@ homecloud.directive("play", ["$rootScope", function ($rootScope) {
 homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
     return {
         restrict: "A",
-        link: function (scope, elem, attrs) {
-            var line = elem.find(".value-line"),
-                bulb = elem.find(".volume-bulb"),
+        link: function (scope, element, attrs) {
+            var line = element.find(".value-line"),
+                bulb = element.find(".volume-bulb"),
+                doc = $(document),
                 unbind = $rootScope.$watch("player.volume", function (value) {
                     line.css("height", "" + parseInt(100 * value) + "%");
                     bulb.css("bottom", "" + parseInt(100 * value) + "%");
-                });
-            elem.on("mousedown mousemove", function (event) {
-                if (event.which == 1) {
-                    var offset = elem.offset().top - $(window).scrollTop(),
-                        vol = 1 / elem.height() * (elem.height() - (event.clientY - offset));
-                    $rootScope.$applyAsync($rootScope.player.doVolume(Math.max(0, Math.min(1, vol))));
-                }
-                return false;
-            });
+                }),
+                dragEvents = {
+                    mousePos: 0,
+                    mouseOffset: 0,
+                    dragStart: function (event) {
+                        dragEvents.mouseOffset = element.height() - (event.clientY - element.offset().top - $(window).scrollTop());
+                        dragEvents.mousePos    = event.clientY;
+                        doc .bind("mousemove",     mouseEvents.mousemove)
+                            .bind("mouseup",       mouseEvents.mouseup);
+                        $(".ctrl-volume").addClass("drag");
+                    },
+                    drag: function (event) {
+                        var delta = dragEvents.mousePos - event.clientY,
+                            value = Math.min(element.height(), Math.max(0, dragEvents.mouseOffset + delta)),
+                            vol = 1 / element.height() * value;
+                            $rootScope.$applyAsync($rootScope.player.doVolume(vol));
+                    },
+                    dragStop: function () {
+                        doc .unbind("mousemove",   mouseEvents.mousemove)
+                            .unbind("mouseup",     mouseEvents.mouseup);
+                        $(".ctrl-volume").removeClass("drag");
+                    }
+                },
+                mouseEvents = {
+                    mousedown: function (event) {
+                        dragEvents.dragStart(event);
+                        event.stopPropagation();
+                        event.preventDefault();
+                    },
+                    mousemove: function (event) {
+                        dragEvents.drag(event);
+                        event.stopPropagation();
+                        event.preventDefault();
+                    },
+                    mouseup: function (event) {
+                        dragEvents.dragStop(event);
+                        event.stopPropagation();
+                        event.preventDefault();
+                    }
+                };
+
+            element.bind("mousedown", mouseEvents.mousedown);
+
             scope.$on("$destroy", function () {
                 unbind();
             })

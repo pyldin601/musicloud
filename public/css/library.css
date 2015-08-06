@@ -425,9 +425,13 @@ a {
 .library-player .player-icons .icons li.ctrl-volume .volume-controller .volume-background:hover .volume-bulb {
   opacity: 1;
 }
-.library-player .player-icons .icons li.ctrl-volume:hover .volume-controller {
+.library-player .player-icons .icons li.ctrl-volume:hover .volume-controller,
+.library-player .player-icons .icons li.ctrl-volume.drag .volume-controller {
   opacity: 1;
   bottom: 32px;
+}
+.library-player .player-icons .icons li.ctrl-volume.drag .volume-bulb {
+  opacity: 1 !important;
 }
 .library-player .player-display {
   position: relative;

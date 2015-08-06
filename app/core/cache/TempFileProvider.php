@@ -9,9 +9,24 @@
 namespace app\core\cache;
 
 
+use app\core\logging\Logger;
+
 class TempFileProvider {
 
     public static $temp_path;
+
+    private static $temp_files = [];
+
+    public static function class_init() {
+        register_shutdown_function(function () {
+            foreach (self::$temp_files as $temp_file) {
+                if (file_exists($temp_file)) {
+                    Logger::printf("Removing temp file %s", $temp_file);
+                    unlink($temp_file);
+                }
+            }
+        });
+    }
 
     /**
      * @param $temp_path
@@ -27,10 +42,11 @@ class TempFileProvider {
      */
     public static function generate($prefix = "file", $suffix = "") {
         do {
-            $file = self::$temp_path . "/{$prefix}_" . md5(rand(0, 1000000000)) . $suffix;
-        } while (file_exists($file));
-        delete_on_shutdown($file);
-        return $file;
+            $temp_file = self::$temp_path . "/{$prefix}_" . md5(rand(0, 1000000000)) . $suffix;
+        } while (file_exists($temp_file));
+        Logger::printf("Generating temp file %s", $temp_file);
+        self::$temp_files[] = $temp_file;
+        return $temp_file;
     }
 
 } 

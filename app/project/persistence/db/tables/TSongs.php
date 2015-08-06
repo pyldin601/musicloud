@@ -40,6 +40,7 @@ class TSongs {
     const C_MID_ID = "middle_cover_id";
     const C_BIG_ID = "big_cover_id";
     const PREVIEW_ID = "preview_id";
+    const PEAKS = "peaks";
 
     const FTS_ARTIST = "fts_artist";
     const FTS_ALBUM = "fts_album";

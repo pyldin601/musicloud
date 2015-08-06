@@ -16,7 +16,9 @@ use app\project\models\tracklist\Songs;
 class DoCron implements RouteHandler {
     public function doGet(LoggedIn $me) {
         if ($me->getId() === 0) {
-            Songs::wipeOldPreviews();
+            if (date("i") % 5 == 0) {
+                Songs::wipeOldPreviews();
+            }
         }
     }
 } 

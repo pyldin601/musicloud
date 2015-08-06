@@ -17,6 +17,7 @@ use app\core\etc\MIME;
 use app\core\exceptions\ApplicationException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\core\http\HttpStatusCodes;
+use app\core\logging\Logger;
 use app\lang\Arrays;
 use app\lang\option\Option;
 use app\project\exceptions\TrackNotFoundException;
@@ -33,7 +34,9 @@ class FileServer {
 
     public static function register($file_path, $content_type = null) {
 
-        assert(file_exists($file_path), "Audio file uploaded incorrectly");
+        assert(file_exists($file_path), sprintf("Audio file %s uploaded incorrectly", $file_path));
+
+        Logger::printf("Registering file %s on file server", $file_path);
 
         $hash = FSTools::calculateHash($file_path);
         $query = (new SelectQuery(TFiles::_NAME, TFiles::SHA1, $hash))
@@ -41,6 +44,8 @@ class FileServer {
         $file = $query->fetchColumn();
 
         if ($file->isEmpty()) {
+
+            Logger::printf("File hash %s is unique. Creating new.", $hash);
 
             FSTools::createPathUsingHash($hash);
 
@@ -56,11 +61,11 @@ class FileServer {
 
             rename($file_path, FSTools::hashToFullPath($hash));
 
-            error_log("Registering " . $file_path . ": NEW");
-
         } else {
 
             $id = $file->get();
+
+            Logger::printf("File hash %s exists. Using existing.", $hash);
 
             (new UpdateQuery(TFiles::_NAME))
                 ->increment(TFiles::USED)
@@ -68,8 +73,6 @@ class FileServer {
                 ->update();
 
             unlink($file_path);
-
-            error_log("Registering " . $file_path . ": EXISTS");
 
         }
 

@@ -161,10 +161,15 @@
               }
             }
           }
-          &:hover {
+          &:hover, &.drag {
             .volume-controller {
               opacity: 1;
               bottom: 32px;
+            }
+          }
+          &.drag {
+            .volume-bulb {
+              opacity: 1 !important;
             }
           }
         }
