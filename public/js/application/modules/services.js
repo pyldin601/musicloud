@@ -139,10 +139,13 @@ homecloud.factory("Library", [function () {
     return obj;
 }]);
 
-homecloud.factory("StatsService", ["$http", function ($http) {
+homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter) {
     return {
         incrementPlays: function (track) {
+            // todo: maybe it will be good if stats will return an updated track data
             return $http.post("/api/stats/played", {id: track.id}).success(function () {
+                track.last_played_date = new Date().getTime() / 1000;
+                console.log(track.last_played_date);
                 track.times_played ++;
             });
         },

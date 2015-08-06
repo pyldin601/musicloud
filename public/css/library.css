@@ -207,7 +207,7 @@
 }
 @import-once "adaptive";
 .album-header {
-  background-color: #000000;
+  background-color: #1a232f;
   position: relative;
   overflow: hidden;
 }
@@ -231,10 +231,6 @@
 .album-header .artwork-section {
   position: relative;
   z-index: 1;
-}
-.album-header .artwork-section .cover-background {
-  width: 200px !important;
-  height: 200px !important;
 }
 .album-header .description-section {
   position: relative;
@@ -379,7 +375,7 @@ a {
   color: #ffffff;
 }
 .plain-list > .plain-list-item.header {
-  margin-bottom: 4px;
+  margin-bottom: 12px;
   color: #818384;
 }
 .plain-list.tracks-list .last-played {
@@ -412,7 +408,7 @@ a {
   padding-bottom: 1px;
 }
 .plain-list.tracks-list .track-artist {
-  width: 25%;
+  width: 20%;
   text-align: left;
   overflow: hidden;
 }

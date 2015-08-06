@@ -36,7 +36,7 @@
             <div class="plain-list-item" multiselect-item="track" ng-repeat="track in tracks"
                  action-play="track" action-context="tracks" action-resolver="null">
 
-                <div class="last-played right" ng-bind="track.last_played_date | dateFilter : 'dd.mm.yyyy hh:mm:ss'"></div>
+                <div class="last-played right" ng-bind="track.last_played_date | dateFilter"></div>
                 <div class="rating right" track-rating="track"></div>
                 <div class="skips right" title="Times skipped">
                     <span class="times-played" ng-visible="track.times_skipped > 0" ng-bind="track.times_skipped"></span>

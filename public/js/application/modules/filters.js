@@ -84,10 +84,10 @@ homecloud.filter("uri", function () {
 });
 
 homecloud.filter("dateFilter", ["$filter", function ($filter) {
-    return function (value, format) {
+    return function (value) {
         if (!value) {
             return "-"
         }
-        return $filter("date")(value * 1000, format);
+        return $filter("date")(value * 1000, dateFormat);
     }
 }]);

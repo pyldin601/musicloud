@@ -1,5 +1,6 @@
 var Empty = {},
-    Nil = [];
+    Nil = [],
+    dateFormat = "dd.MM.yyyy HH:mm:ss";
 
 Function.prototype.curry = function () {
     var args1 = Array.prototype.slice.call(arguments),
