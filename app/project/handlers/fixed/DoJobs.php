@@ -29,7 +29,6 @@ class DoJobs implements RouteHandler {
                 set_time_limit(30);
                 Logger::printf("Creating peaks for file: %s", $row[TSongs::FILE_NAME]);
                 $peaks = WaveformGenerator::generate(FileServer::getFileUsingId($row[TSongs::FILE_ID]));
-                Logger::printf("Peaks count: %d", count($peaks));
                 SongDao::updateSongUsingId($row[TSongs::ID], [
                     "peaks" => "{" . implode(",", $peaks) . "}"
                 ]);
