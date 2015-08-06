@@ -1,7 +1,7 @@
 @import-once "adaptive";
 
 .album-header {
-  background-color: #111111;
+  background-color: #000000;
   position: relative;
   overflow: hidden;
   .artwork-blurred {
@@ -15,14 +15,12 @@
     opacity: 0.7;
     .blur(50px);
   }
-  .dyn-pad-h();
-  .dyn-pad-v();
   .artwork-section {
     position: relative;
     z-index: 1;
     .cover-background {
-      width: 120px !important;
-      height: 120px !important;
+      width: 200px !important;
+      height: 200px !important;
     }
   }
   .description-section {
@@ -37,7 +35,7 @@
       padding: 0 2px;
     }
     .album-title {
-//      .dyn-mar-top;
+      .dyn-mar-top;
       .dyn-mar-left;
       font-size: 20pt;
       font-weight: 300;

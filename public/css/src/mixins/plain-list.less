@@ -16,14 +16,15 @@
     &.header {
       margin-bottom: 4px;
       color: #818384;
-      & > * {
-        text-align: center !important;
-      }
     }
   }
 }
 
 .plain-list.tracks-list {
+  .last-played {
+    width: 150px;
+    text-align: right;
+  }
   .duration {
     width: 50px;
     text-align: center;
@@ -32,9 +33,13 @@
     width: 32px;
     text-align: center;
   }
+  .skips {
+    width: 32px;
+    text-align: center;
+  }
   .rating {
     width: 96px;
-    text-align: center;
+    text-align: right;
   }
   .position {
     width: 36px;
@@ -43,7 +48,7 @@
       .ellipsis;
   }
   .track-artist {
-    width: 35%;
+    width: 25%;
     text-align: left;
     overflow: hidden;
     .inner {

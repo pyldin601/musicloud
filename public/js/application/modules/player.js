@@ -70,6 +70,10 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                 },
                 doPlayPause: function () {
 
+                    if (!player.isLoaded) {
+                        return;
+                    }
+
                     if (player.isPlaying) {
                         player.isPlaying = false;
                         jFrame.jPlayer("pause");
@@ -117,7 +121,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                 },
                 doPlayNext: function () {
 
-                    if (player.playlist.track === null) {
+                    if (!player.isLoaded) {
                         return;
                     }
 
@@ -140,7 +144,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                 },
                 doPlayPrev: function () {
 
-                    if (player.playlist.track === null) {
+                    if (!player.isLoaded) {
                         return;
                     }
 

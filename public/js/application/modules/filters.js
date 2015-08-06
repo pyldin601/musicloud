@@ -82,3 +82,12 @@ homecloud.filter("keys", function () {
 homecloud.filter("uri", function () {
     return encodeURIComponent;
 });
+
+homecloud.filter("dateFilter", ["$filter", function ($filter) {
+    return function (value, format) {
+        if (!value) {
+            return "-"
+        }
+        return $filter("date")(value * 1000, format);
+    }
+}]);

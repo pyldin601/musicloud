@@ -207,13 +207,9 @@
 }
 @import-once "adaptive";
 .album-header {
-  background-color: #111111;
+  background-color: #000000;
   position: relative;
   overflow: hidden;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 24px;
-  padding-bottom: 24px;
 }
 .album-header .artwork-blurred {
   margin-top: -50%;
@@ -232,53 +228,13 @@
   filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=50px);
   filter: url("data:image/svg+xml;utf9,<svg%20version='1.1'%20xmlns='http://www.w3.org/20…%20id='blur'><feGaussianBlur%20stdDeviation='10'%20/></filter></svg>#blur");
 }
-@media (max-width: 1024px) {
-  .album-header {
-    padding-left: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-left: 8px;
-  }
-}
-@media (max-width: 1024px) {
-  .album-header {
-    padding-right: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-right: 8px;
-  }
-}
-@media (max-width: 1024px) {
-  .album-header {
-    padding-top: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-top: 8px;
-  }
-}
-@media (max-width: 1024px) {
-  .album-header {
-    padding-bottom: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-bottom: 8px;
-  }
-}
 .album-header .artwork-section {
   position: relative;
   z-index: 1;
 }
 .album-header .artwork-section .cover-background {
-  width: 120px !important;
-  height: 120px !important;
+  width: 200px !important;
+  height: 200px !important;
 }
 .album-header .description-section {
   position: relative;
@@ -293,9 +249,20 @@
   padding: 0 2px;
 }
 .album-header .description-section .album-title {
+  margin-top: 24px;
   margin-left: 24px;
   font-size: 20pt;
   font-weight: 300;
+}
+@media (max-width: 1024px) {
+  .album-header .description-section .album-title {
+    margin-top: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .album-header .description-section .album-title {
+    margin-top: 8px;
+  }
 }
 @media (max-width: 1024px) {
   .album-header .description-section .album-title {
@@ -415,8 +382,9 @@ a {
   margin-bottom: 4px;
   color: #818384;
 }
-.plain-list > .plain-list-item.header > * {
-  text-align: center !important;
+.plain-list.tracks-list .last-played {
+  width: 150px;
+  text-align: right;
 }
 .plain-list.tracks-list .duration {
   width: 50px;
@@ -426,9 +394,13 @@ a {
   width: 32px;
   text-align: center;
 }
+.plain-list.tracks-list .skips {
+  width: 32px;
+  text-align: center;
+}
 .plain-list.tracks-list .rating {
   width: 96px;
-  text-align: center;
+  text-align: right;
 }
 .plain-list.tracks-list .position {
   width: 36px;
@@ -440,7 +412,7 @@ a {
   padding-bottom: 1px;
 }
 .plain-list.tracks-list .track-artist {
-  width: 35%;
+  width: 25%;
   text-align: left;
   overflow: hidden;
 }

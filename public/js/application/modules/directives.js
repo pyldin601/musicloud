@@ -35,6 +35,22 @@ homecloud.directive("play", ["$rootScope", function ($rootScope) {
     }
 }]);
 
+homecloud.directive("ngVisible", [function () {
+    return {
+        scope: {
+            ngVisible: "="
+        },
+        restrict: "A",
+        link: function (scope, element, attrs) {
+            var valueChanged = function (value) {
+                element.css("visibility", value ? "visible" : "hidden")
+            };
+            scope.$on("ngVisible", valueChanged);
+            valueChanged(scope.ngVisible);
+        }
+    }
+}]);
+
 homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
     return {
         restrict: "A",
@@ -71,6 +87,7 @@ homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
                 mouseEvents = {
                     mousedown: function (event) {
                         dragEvents.dragStart(event);
+                        dragEvents.drag(event);
                         event.stopPropagation();
                         event.preventDefault();
                     },
@@ -218,6 +235,9 @@ homecloud.directive("trackRating", ["StatsService", function (StatsService) {
         <li class="rating-star fa" ng-class="{ \'fa-star\': track.track_rating >= n, \'fa-star-o\': track.track_rating < n }" ng-click="rate(n)" ng-repeat="n in [5,4,3,2,1]"></li><li class="rating-remove" ng-click="unrate()">&nbsp;</li>\
         </ul>',
         link: function(scope, elem, attr) {
+            elem.on("click", function (event) {
+                return false;
+            });
             scope.rate = function (value) {
                 StatsService.rateTrack(scope.track, value);
             };

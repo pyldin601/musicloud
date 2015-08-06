@@ -20,7 +20,9 @@
                 <div class="album-title">
                     <div class="right" ng-bind="album.year"></div>
                     <div class="album-sub">
-                        <div class="inline name" ng-bind="album.title | albumFilter"></div>
+                        <div class="inline name">
+                            <a ng-bind="album.title | albumFilter" ng-href="#/album/{{ album.album_artist | uri }}/{{ album.title | uri }}"></a>
+                        </div>
                         <div class="inline band">on <a href="#/tracks/grouped/?artist={{ album.album_artist | uri }}"
                                                        ng-bind="album.album_artist | artistFilter"></a></div>
                     </div>
@@ -36,7 +38,7 @@
                         </div>
                         <div class="position left">
                             <div ng-hide="player.playlist.track == track"
-                                 ng-bind-template="{{ $index + 1 }}."></div>
+                                 ng-bind="$index + 1"></div>
                             <div ng-show="player.playlist.track == track">
                                 <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
                             </div>
