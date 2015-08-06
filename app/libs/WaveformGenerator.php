@@ -40,7 +40,11 @@ class WaveformGenerator {
 
         $peaks = withOpenedFile($temp_file, "r", function ($fh) use (&$chunk_size) {
             while ($data = fread($fh, $chunk_size)) {
-                yield max(array_map("abs", array_map(self::decrement(128), array_map("ord", str_split($data)))));
+                $bytes_array    = str_split($data);
+                $codes_array    = array_map("ord", $bytes_array);
+                $lowered_array  = array_map(self::decrement(128), $codes_array);
+                $absolute_array = array_map("abs", $lowered_array);
+                yield max($absolute_array);
             }
         });
 
