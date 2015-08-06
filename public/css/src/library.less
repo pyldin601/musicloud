@@ -3,6 +3,7 @@
 @import "mixins/ui";
 @import "mixins/list-view";
 @import "mixins/album-header";
+@import "mixins/plain-list";
 @import "common";
 
 
@@ -368,6 +369,11 @@
   padding-bottom: 48px;
 
   .dyn-body-margin;
+
+  .album-view-container {
+    .dyn-mar-v-sm;
+    .dyn-mar-h;
+  }
 
   .library-container {
     .dyn-mar-v;

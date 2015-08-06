@@ -13,7 +13,7 @@
     right: -1%;
     z-index: 0;
     opacity: 0.7;
-    .blur(20px);
+    .blur(50px);
   }
   .dyn-pad-h();
   .dyn-pad-v();
@@ -32,11 +32,12 @@
     color: #ffffff;
     line-height: 1.5em;
     text-shadow: 1px 1px 8px #000000;
-    .dyn-mar-top;
+    padding-top: 2px;
     .separator {
-      padding: 0 5px;
+      padding: 0 2px;
     }
     .album-title {
+//      .dyn-mar-top;
       .dyn-mar-left;
       font-size: 20pt;
       font-weight: 300;
@@ -48,6 +49,11 @@
       .album-artist {
         &:before {
           content: 'by ';
+        }
+      }
+      .tracks-count {
+        &:after {
+          content: " track(s)";
         }
       }
       .fa {

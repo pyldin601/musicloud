@@ -224,12 +224,12 @@
   right: -1%;
   z-index: 0;
   opacity: 0.7;
-  filter: blur(20px);
-  -webkit-filter: blur(20px);
-  -moz-filter: blur(20px);
-  -o-filter: blur(20px);
-  -ms-filter: blur(20px);
-  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=20px);
+  filter: blur(50px);
+  -webkit-filter: blur(50px);
+  -moz-filter: blur(50px);
+  -o-filter: blur(50px);
+  -ms-filter: blur(50px);
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=50px);
   filter: url("data:image/svg+xml;utf9,<svg%20version='1.1'%20xmlns='http://www.w3.org/20…%20id='blur'><feGaussianBlur%20stdDeviation='10'%20/></filter></svg>#blur");
 }
 @media (max-width: 1024px) {
@@ -287,20 +287,10 @@
   color: #ffffff;
   line-height: 1.5em;
   text-shadow: 1px 1px 8px #000000;
-  margin-top: 24px;
-}
-@media (max-width: 1024px) {
-  .album-header .description-section {
-    margin-top: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header .description-section {
-    margin-top: 8px;
-  }
+  padding-top: 2px;
 }
 .album-header .description-section .separator {
-  padding: 0 5px;
+  padding: 0 2px;
 }
 .album-header .description-section .album-title {
   margin-left: 24px;
@@ -345,8 +335,124 @@
 .album-header .description-section .album-info .album-artist:before {
   content: 'by ';
 }
+.album-header .description-section .album-info .tracks-count:after {
+  content: " track(s)";
+}
 .album-header .description-section .album-info .fa {
   margin-right: 2px;
+}
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  overflow-y: scroll;
+  cursor: default;
+}
+b {
+  font-weight: 600;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.clear-fix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.colored {
+  background-color: aquamarine;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline-block;
+}
+.group .padded {
+  padding-left: 6px;
+}
+.right {
+  float: right;
+}
+.left {
+  float: left;
+}
+.badge {
+  font-size: 8pt;
+  padding: 2px 4px;
+  width: 32px;
+  text-align: right;
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 1px;
+}
+.table {
+  display: table;
+}
+.table .row {
+  display: table-row;
+}
+.table .row .cell {
+  display: table-cell;
+}
+.plain-list > .plain-list-item {
+  margin-right: -8px;
+  margin-left: -8px;
+  padding: 6px 8px;
+}
+.plain-list > .plain-list-item > * {
+  padding: 0 4px;
+}
+.plain-list > .plain-list-item.selected {
+  border-radius: 4px;
+  background-color: #334455;
+  color: #ffffff;
+}
+.plain-list > .plain-list-item.header {
+  margin-bottom: 4px;
+  color: #818384;
+}
+.plain-list > .plain-list-item.header > * {
+  text-align: center !important;
+}
+.plain-list.tracks-list .duration {
+  width: 50px;
+  text-align: center;
+}
+.plain-list.tracks-list .plays {
+  width: 32px;
+  text-align: center;
+}
+.plain-list.tracks-list .rating {
+  width: 96px;
+  text-align: center;
+}
+.plain-list.tracks-list .position {
+  width: 36px;
+}
+.plain-list.tracks-list .track-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 1px;
+}
+.plain-list.tracks-list .track-artist {
+  width: 35%;
+  text-align: left;
+  overflow: hidden;
+}
+.plain-list.tracks-list .track-artist .inner {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 1px;
+}
+.plain-list.tracks-list .position {
+  width: 26px;
+  text-align: right;
 }
 body {
   font-family: 'Open Sans', sans-serif;
@@ -905,6 +1011,52 @@ a {
 @media (max-width: 640px) {
   .library-body {
     margin-left: 140px;
+  }
+}
+.library-body .album-view-container {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+@media (max-width: 1024px) {
+  .library-body .album-view-container {
+    margin-top: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .album-view-container {
+    margin-top: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .library-body .album-view-container {
+    margin-bottom: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .album-view-container {
+    margin-bottom: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .library-body .album-view-container {
+    margin-left: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .album-view-container {
+    margin-left: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .library-body .album-view-container {
+    margin-right: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .album-view-container {
+    margin-right: 8px;
   }
 }
 .library-body .library-container {
