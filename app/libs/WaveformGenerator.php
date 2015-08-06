@@ -26,10 +26,9 @@ class WaveformGenerator {
      */
     public static function generate($file_name) {
 
-        $file_name_esc = escapeshellarg($file_name);
-        $temp_file = TempFileProvider::generate("peaks", "raw");
-        $command = sprintf("%s -v quiet -i %s -ac 1 -ar 128 -f u8 -acodec pcm_u8 %s",
-            self::$ffmpeg_cmd, $file_name_esc, $temp_file);
+        $temp_file = TempFileProvider::generate("peaks", ".raw");
+        $command = sprintf("%s -v quiet -i %s -ac 1 -ar 256 -f u8 -acodec pcm_u8 %s",
+            self::$ffmpeg_cmd, escapeshellarg($file_name), escapeshellarg($temp_file));
 
         shell_exec($command);
 
@@ -41,13 +40,16 @@ class WaveformGenerator {
 
         $peaks = withOpenedFile($temp_file, "r", function ($fh) use (&$chunk_size) {
             while ($data = fread($fh, $chunk_size)) {
-                yield max(array_map("abs", array_map("ord", str_split($data))));
+                yield max(array_map("abs", array_map(self::decrement(128), array_map("ord", str_split($data)))));
             }
         });
+
+        TempFileProvider::delete($temp_file);
 
         return $peaks;
 
     }
+
 
     /**
      * @param $amount

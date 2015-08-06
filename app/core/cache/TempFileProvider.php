@@ -21,7 +21,6 @@ class TempFileProvider {
         register_shutdown_function(function () {
             foreach (self::$temp_files as $temp_file) {
                 if (file_exists($temp_file)) {
-                    Logger::printf("Removing temp file %s", $temp_file);
                     unlink($temp_file);
                 }
             }
@@ -48,5 +47,15 @@ class TempFileProvider {
         self::$temp_files[] = $temp_file;
         return $temp_file;
     }
+
+    /**
+     * @param $file_name
+     */
+    public static function delete($file_name) {
+        if (in_array($file_name, self::$temp_files)) {
+            unlink($file_name);
+        }
+    }
+
 
 } 
