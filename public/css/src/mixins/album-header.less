@@ -1,0 +1,58 @@
+@import-once "adaptive";
+
+.album-header {
+  background-color: #111111;
+  position: relative;
+  overflow: hidden;
+  .artwork-blurred {
+    margin-top: -50%;
+    position: absolute;
+    width: 102%;
+    top: -1%;
+    left: -1%;
+    right: -1%;
+    z-index: 0;
+    opacity: 0.7;
+    .blur(20px);
+  }
+  .dyn-pad-h();
+  .dyn-pad-v();
+  .artwork-section {
+    position: relative;
+    z-index: 1;
+    .cover-background {
+      width: 120px !important;
+      height: 120px !important;
+    }
+  }
+  .description-section {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: #ffffff;
+    line-height: 1.5em;
+    text-shadow: 1px 1px 8px #000000;
+    .dyn-mar-top;
+    .separator {
+      padding: 0 5px;
+    }
+    .album-title {
+      .dyn-mar-left;
+      font-size: 20pt;
+      font-weight: 300;
+    }
+    .album-info {
+      .dyn-mar-top-xs;
+      .dyn-mar-left;
+      font-size: 12pt;
+      .album-artist {
+        &:before {
+          content: 'by ';
+        }
+      }
+      .fa {
+        margin-right: 2px;
+      }
+    }
+  }
+}

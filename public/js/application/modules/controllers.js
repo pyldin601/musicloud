@@ -4,70 +4,6 @@
 
 var homecloud = angular.module("HomeCloud");
 
-homecloud.controller("ArtistViewController", [
-    "Resolved", "SearchService", "SyncService", "Library", "$scope", "$routeParams",
-    function (Resolved, SearchService, SyncService, Library, $scope, $routeParams) {
-
-        $scope.artist = $routeParams.artist;
-        $scope.tracks = SyncService.tracks(Resolved.tracks);
-        $scope.albums = [];
-
-        $scope.tracks_selected = [];
-        $scope.busy = false;
-        $scope.end = false;
-
-        $scope.albums = Library.groupAlbums($scope.tracks);
-
-        $scope.fetch = SearchService.tracks.curry({ artist_id: $scope.artist });
-
-        $scope.load = function () {
-            $scope.busy = true;
-            $scope.fetch($scope.tracks.length).success(function (data) {
-                if (data.tracks.length > 0) {
-                    $scope.tracks = $scope.tracks.concat(SyncService.tracks(data.tracks));
-                    Library.addToGroup($scope.albums, data.tracks);
-                    $scope.busy = false;
-                } else {
-                    $scope.end = true;
-                }
-            })
-        };
-
-    }
-]);
-
-
-homecloud.controller("AlbumViewController", [
-    "Resolved", "SearchService", "SyncService", "Library", "$scope", "$routeParams",
-    function (Resolved, SearchService, SyncService, Library, $scope, $routeParams) {
-
-        $scope.tracks = SyncService.tracks(Resolved.tracks);
-        $scope.albums = [];
-
-        $scope.tracks_selected = [];
-        $scope.busy = false;
-        $scope.end = false;
-
-        $scope.albums = Library.groupAlbums($scope.tracks);
-        $scope.fetch = SearchService.tracks.curry({ album_id: $routeParams.album });
-
-        $scope.load = function () {
-            $scope.busy = true;
-            $scope.fetch($scope.tracks.length).success(function (data) {
-                if (data.tracks.length > 0) {
-                    $scope.tracks = $scope.tracks.concat(SyncService.tracks(data.tracks));
-                    Library.addToGroup($scope.albums, data.tracks);
-                    $scope.busy = false;
-                } else {
-                    $scope.end = true;
-                }
-            })
-        };
-
-    }
-]);
-
-// GroupViewController
 homecloud.controller("GroupViewController", [
     "Resolved", "SearchService", "SyncService", "Library", "$scope", "$location",
     function (Resolved, SearchService, SyncService, Library, $scope, $location) {
@@ -98,33 +34,18 @@ homecloud.controller("GroupViewController", [
     }
 ]);
 
-homecloud.controller("GenreViewController", [
-    "Resolved", "SearchService", "SyncService", "Library", "$scope", "$routeParams",
-    function (Resolved, SearchService, SyncService, Library, $scope, $routeParams) {
-
+homecloud.controller("AlbumViewController", [
+    "Resolved", "$scope", "SyncService", function (Resolved, $scope, SyncService) {
         $scope.tracks = SyncService.tracks(Resolved.tracks);
-        $scope.albums = [];
-
-        $scope.tracks_selected = [];
-        $scope.busy = false;
-        $scope.end = false;
-
-        $scope.albums = Library.groupAlbums($scope.tracks);
-        $scope.fetch = SearchService.tracks.curry({ genre_id: $routeParams.genre });
-
-        $scope.load = function () {
-            $scope.busy = true;
-            $scope.fetch($scope.tracks.length).success(function (data) {
-                if (data.tracks.length > 0) {
-                    $scope.tracks = $scope.tracks.concat(SyncService.tracks(data.tracks));
-                    Library.addToGroup($scope.albums, data.tracks);
-                    $scope.busy = false;
-                } else {
-                    $scope.end = true;
-                }
-            })
+        $scope.album = {
+            album_title  : $scope.tracks[0].track_album,
+            album_artist : $scope.tracks[0].album_artist,
+            album_year   : $scope.tracks[0].track_year,
+            cover_id     : $scope.tracks.map(function (t) { return t.middle_cover_id }).reduce(or),
+            length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum)
         };
-
+        $scope.tracks_selected = [];
+        $scope.fetch = null;
     }
 ]);
 

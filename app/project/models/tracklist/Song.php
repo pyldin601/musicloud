@@ -228,6 +228,7 @@ class Song {
                 ->select("ARRAY_TO_JSON(" . TSongs::PEAKS . ")")
                 ->fetchColumn()
                 ->get();
+
         }
 
     }

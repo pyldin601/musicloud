@@ -104,13 +104,36 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         }
     });
 
-    $routeProvider.when("/album/:artist/:album", {
-        controller: function () {
-            console.log("hello, world!");
+    $routeProvider.when("/album/:artist?/:album?", {
+        controller: "AlbumViewController",
+        templateUrl: templatePath + "/album-view.html",
+        resolve: {
+            Resolved: ["SearchService", "$location", "$route", "$filter",
+                function (SearchService, $location, $route, $filter) {
+                    var artist = $route.current.params.artist || "",
+                        album  = $route.current.params.album || "";
+
+                    $route.current.title = String.prototype.concat(
+                        $filter("albumFilter")(album) + " by " +
+                        $filter("artistFilter")(artist)
+                    );
+
+                    return SearchService.tracks({artist: artist, album: album}, 0).then(function (response) {
+                        return response.data;
+                    }, function () {
+                        $location.url("/");
+                    });
+
+                }
+            ]
+        },
+        title: "Album",
+        special: {
+            section: "albums"
         }
     });
 
-    $routeProvider.otherwise({
-        redirectTo: "/artists/"
-    });
+    //$routeProvider.otherwise({
+    //    redirectTo: "/artists/"
+    //});
 }]);
