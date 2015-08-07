@@ -86,6 +86,20 @@ class AudioScrobbler {
 
     }
 
+    public function getTrackInfo($title, $artist) {
+
+        return self::exec(self::API_URL, array(
+            "format"        => "json",
+            "method"        => "track.getInfo",
+            "api_key"       => self::API_KEY,
+            "username"      => $_COOKIE["fm_user"] ?: null,
+            "artist"        => $artist,
+            "track"         => $title,
+            "autocorrect"   => "1"
+        ));
+
+    }
+
     /**
      * Authorizes user on Last.fm services using $token.
      *
@@ -99,7 +113,7 @@ class AudioScrobbler {
         $expire = time() + 3600 * 24 * 365;
 
         setcookie('fm_sk',      $key_data["key"],   $expire, '/');
-        setcookie('fm_user',    $key_data["user"],  $expire, '/');
+        setcookie('fm_user',    $key_data["name"],  $expire, '/');
         setcookie('fm_enabled', 'on',               $expire, '/');
 
     }
@@ -148,6 +162,8 @@ class AudioScrobbler {
         }
         $acc = array();
         foreach ($data as $key => $value) {
+            if ($value === null)
+                continue;
             $acc[] = $key . "=" . urlencode($value);
         }
         return implode("&", $acc);
@@ -161,7 +177,7 @@ class AudioScrobbler {
         ksort($data);
         $acc = "";
         foreach ($data as $key => $value) {
-            if ($key == "format" || $key == "callback")
+            if ($key == "format" || $key == "callback" || $value === null)
                 continue;
             $acc .= $key . $value;
         }

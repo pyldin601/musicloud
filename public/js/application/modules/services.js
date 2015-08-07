@@ -145,12 +145,12 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
             // todo: maybe it will be good if stats will return an updated track data
             return $http.post("/api/stats/played", {id: track.id}).success(function () {
                 track.last_played_date = new Date().getTime() / 1000;
-                track.times_played ++;
+                track.times_played++;
             });
         },
         incrementSkips: function (track) {
             return $http.post("/api/stats/skipped", {id: track.id}).success(function () {
-                track.times_skipped ++;
+                track.times_skipped++;
             });
         },
         rateTrack: function (track, rating) {
@@ -162,11 +162,53 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
             return $http.post("/api/stats/unrate", {id: track.id});
         },
         nowPlaying: function (track) {
-            track.track_rating = null;
             return $http.post("/api/stats/playing", {id: track.id});
+        },
+        scrobbleStart: function (track) {
+            return $http.post("/api/scrobbler/nowPlaying", {id: track.id});
+        },
+        scrobbleFinish: function (track) {
+            return $http.post("/api/scrobbler/scrobble", {id: track.id});
         }
     }
 }]);
+
+homecloud.run(["$interval", "StatsService", "$rootScope",
+    function ($interval, StatsService, $rootScope) {
+        var handle = null,
+            timeout = 0,
+            track = null,
+            timer = function () {
+                if ($rootScope.player.isPlaying) {
+                    timeout--;
+                    console.log(timeout);
+                    if (timeout < 1) {
+                        StatsService.scrobbleFinish(track);
+                        resetTimeout();
+                    }
+                }
+            },
+            resetTimeout = function () {
+                timeout = 0;
+                $interval.cancel(handle);
+            },
+            npRepeater = function () {
+                if (track && track.track_artist && track.track_title && track.isPlaying) {
+                    StatsService.scrobbleStart(track);
+                }
+            };
+        $interval(npRepeater(), 30000);
+        $rootScope.$watch("player.playlist.track", function (updated) {
+            track = updated;
+            resetTimeout();
+            if (track && track.track_artist && track.track_title) {
+                StatsService.scrobbleStart(track);
+                timeout = parseInt(Math.min(120000, track.length / 2));
+                handle = $interval(timer, 1000);
+            }
+        });
+    }
+]);
 
 homecloud.factory("SyncService", [function () {
     var trackSync = sync();
