@@ -91,3 +91,11 @@ homecloud.filter("dateFilter", ["$filter", function ($filter) {
         return $filter("date")(value * 1000, dateFormat);
     }
 }]);
+
+
+homecloud.filter("bitrateFilter", [function () {
+    var bitrates = [8, 16, 24, 32, 48, 52, 64, 96, 112, 128, 160, 224, 256, 320];
+    return function (value) {
+        return "" + (value / 1000) + " kbps";
+    };
+}]);

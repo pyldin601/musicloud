@@ -44,7 +44,7 @@ class DoTracks implements RouteHandler {
             TSongs::LENGTH, TSongs::T_TITLE, TSongs::T_ARTIST, TSongs::T_ALBUM, TSongs::T_GENRE,
             TSongs::T_NUMBER, TSongs::T_COMMENT, TSongs::T_YEAR, TSongs::T_RATING, TSongs::IS_FAV,
             TSongs::DISC, TSongs::A_ARTIST, TSongs::T_PLAYED, TSongs::T_SKIPPED, TSongs::LP_DATE,
-            TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID);
+            TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID, TSongs::FORMAT);
 
         Context::contextify($query);
 

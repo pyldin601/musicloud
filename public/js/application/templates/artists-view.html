@@ -1,7 +1,7 @@
 <div class="library-body">
     <div class="library-container">
         <div class="artist-wrapper list-view container" infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-            <div class="list-item square2" ng-repeat="artist in artists">
+            <div class="list-item square1 square2bg square3md square6sm" ng-repeat="artist in artists">
                 <div class="artist-list-content">
                     <div class="cover">
                         <img ng-if="artist.middle_cover_id" ng-src="/file/{{ artist.middle_cover_id }}">

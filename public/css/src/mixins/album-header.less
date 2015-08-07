@@ -4,6 +4,8 @@
   background-color: #1a232f;
   position: relative;
   overflow: hidden;
+  .dyn-pad-v;
+  .dyn-pad-h;
   .artwork-blurred {
     margin-top: -50%;
     position: absolute;
@@ -18,10 +20,6 @@
   .artwork-section {
     position: relative;
     z-index: 1;
-//    .cover-background {
-//      width: 200px !important;
-//      height: 200px !important;
-//    }
   }
   .description-section {
     position: relative;
@@ -35,13 +33,12 @@
       padding: 0 2px;
     }
     .album-title {
-      .dyn-pad-top;
       .dyn-pad-left;
-      font-size: 20pt;
+      .dyn-attr(font-size, 20pt, 16pt, 12pt);
       font-weight: 300;
     }
     .album-info {
-      font-size: 12pt;
+      .dyn-attr(font-size, 12pt, 10pt, 9pt);
       padding-bottom: 2px;
       .dyn-pad-top-xs;
       .dyn-pad-left;
