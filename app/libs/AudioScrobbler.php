@@ -34,8 +34,8 @@ class AudioScrobbler {
             "method"    => "track.updateNowPlaying",
             "api_key"   => self::API_KEY,
             "sk"        => $_COOKIE["fm_sk"],
-            "artist" => $artist,
-            "track"  => $title
+            "artist"    => $artist,
+            "track"     => $title
         ));
 
     }
@@ -57,8 +57,8 @@ class AudioScrobbler {
             "method"    => "track.scrobble",
             "api_key"   => self::API_KEY,
             "sk"        => $_COOKIE["fm_sk"],
-            "artist" => $artist,
-            "track"  => $title,
+            "artist"    => $artist,
+            "track"     => $title,
             "timestamp" => $time ?: time()
         ));
 
@@ -80,8 +80,8 @@ class AudioScrobbler {
             "method"    => "track.love",
             "api_key"   => self::API_KEY,
             "sk"        => $_COOKIE["fm_sk"],
-            "artist" => $artist,
-            "track"  => $title,
+            "artist"    => $artist,
+            "track"     => $title,
         ));
 
     }
