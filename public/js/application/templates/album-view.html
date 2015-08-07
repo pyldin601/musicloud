@@ -25,13 +25,14 @@
         <div class="plain-list tracks-list">
             <div class="plain-list-item header">
                 <div class="last-played right md-visible" title="Date of last playback">Last played</div>
-                <div class="rating right sm-visible" title="Track rating">Rating</div>
+
+                <div class="skips right lg-visible" title="Skipped times"><i class="fa fa-thumbs-down"></i></div>
+                <div class="plays right sm-visible" title="Played times"><i class="fa fa-headphones"></i></div>
 
                 <div class="bitrate right lg-visible" title="Track bitrate">Bitrate</div>
                 <div class="format right lg-visible" title="Track format">Format</div>
 
-                <div class="skips right lg-visible" title="Skipped times"><i class="fa fa-thumbs-down"></i></div>
-                <div class="plays right sm-visible" title="Played times"><i class="fa fa-headphones"></i></div>
+                <div class="rating right sm-visible" title="Track rating">Rating</div>
 
                 <div class="position left" title="Item number">#</div>
                 <div class="inner-info">
@@ -48,10 +49,6 @@
                  action-play="track" action-context="tracks" action-resolver="null">
 
                 <div class="last-played right md-visible" ng-bind="track.last_played_date | dateFilter"></div>
-                <div class="rating right  sm-visible" track-rating="track"></div>
-
-                <div class="bitrate right lg-visible" ng-bind="track.bitrate | bitrateFilter"></div>
-                <div class="format right lg-visible" ng-bind="track.format"></div>
 
                 <div class="skips right lg-visible" title="Times skipped">
                     <span class="times-played" ng-visible="track.times_skipped > 0" ng-bind="track.times_skipped"></span>
@@ -60,6 +57,11 @@
                 <div class="plays right sm-visible" title="Times played">
                     <span class="times-played" ng-visible="track.times_played > 0" ng-bind="track.times_played"></span>
                 </div>
+
+                <div class="bitrate right lg-visible" ng-bind="track.bitrate | bitrateFilter"></div>
+                <div class="format right lg-visible" ng-bind="track.format"></div>
+
+                <div class="rating right  sm-visible" track-rating="track"></div>
 
                 <div class="position left">
                     <div ng-hide="player.playlist.track == track" ng-bind="track.track_number"></div>

@@ -22,11 +22,14 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                     }
                 },
                 eventSkip: function () {
-                    if (!(player.playlist.track && player.playlist.position.length))
+                    var percentPlayed;
+                    if (!player.isPlaying)
                         return;
 
-                    if (100 / player.playlist.position.duration * player.playlist.position.position < 10) {
-                        SyncService.incrementSkips(player.playlist.track);
+                    percentPlayed = 100 / player.playlist.position.duration * player.playlist.position.position;
+
+                    if (percentPlayed > 10 && percentPlayed < 90) {
+                        StatsService.incrementSkips(player.playlist.track);
                     }
                 },
                 doVolume: function (vol) {
