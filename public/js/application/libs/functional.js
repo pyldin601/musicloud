@@ -27,6 +27,15 @@ Array.prototype.first = function () {
     return this[0];
 };
 
+Array.prototype.isVarious = function () {
+    var first;
+    if (this.length == 0) {
+        return false;
+    }
+    first = this.first();
+    return !this.any(function (e) { return e !== first });
+};
+
 Function.prototype.curry = function () {
     var args1 = Array.prototype.slice.call(arguments),
         that = this;
