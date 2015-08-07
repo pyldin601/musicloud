@@ -27,6 +27,26 @@ Array.prototype.first = function () {
     return this[0];
 };
 
+Function.prototype.curry = function () {
+    var args1 = Array.prototype.slice.call(arguments),
+        that = this;
+    return function () {
+        var args2 = Array.prototype.slice.call(arguments);
+        return that.apply(that, args1.concat(args2));
+    };
+};
+
+Function.prototype.lcurry = Function.prototype.curry;
+
+Function.prototype.rcurry = function () {
+    var args1 = Array.prototype.slice.call(arguments),
+        that = this;
+    return function () {
+        var args2 = Array.prototype.slice.call(arguments);
+        return that.apply(that, args2.concat(args1));
+    };
+};
+
 /*
     Arithmetical functions
  */

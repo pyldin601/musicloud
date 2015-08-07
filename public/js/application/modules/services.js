@@ -207,9 +207,9 @@ homecloud.run(["$interval", "StatsService", "$rootScope",
 ]);
 
 homecloud.factory("SyncService", [function () {
-    var trackSync = sync();
-    var artistSync = sync();
-    var albumSync = sync();
+    var trackSync = sync("id");
+    var artistSync = sync("id");
+    var albumSync = sync("id");
     return {
         tracks: function (coll) {
             return trackSync(coll);

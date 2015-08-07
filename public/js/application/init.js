@@ -2,50 +2,18 @@ var Empty = {},
     Nil = [],
     dateFormat = "dd.MM.yyyy HH:mm:ss";
 
-Function.prototype.curry = function () {
-    var args1 = Array.prototype.slice.call(arguments),
-        that = this;
-    return function () {
-        var args2 = Array.prototype.slice.call(arguments);
-        return that.apply(that, args1.concat(args2));
-    };
-};
-
-Function.prototype.lcurry = Function.prototype.curry;
-
-Function.prototype.rcurry = function () {
-    var args1 = Array.prototype.slice.call(arguments),
-        that = this;
-    return function () {
-        var args2 = Array.prototype.slice.call(arguments);
-        return that.apply(that, args2.concat(args1));
-    };
-};
-
-Function.prototype.memoize = function () {
-    var cache = {}, that = this;
-    return {
-        call: function () {
-            var args = Array.prototype.slice.call(arguments),
-                key = JSON.stringify(args);
-            if (key in cache) {
-                return cache[key];
-            } else {
-                return cache[key] = that.apply(that, args);
-            }
-        },
-        reset: function () {
-            cache = {};
-        }
-    };
-};
-
-function sync() {
+/**
+ * Returns function for synchronizing one-typed objects
+ * returned by REST API where {key} is unique key.
+ *
+ * @returns {Function}
+ */
+function sync(key) {
     var cache = {};
     return function (coll) {
         var id, result = [];
         for (var i = 0; i < coll.length; i++) {
-            id = coll[i].id;
+            id = coll[i][key];
             if (id in cache) {
                 result.push(cache[id]);
             } else {
