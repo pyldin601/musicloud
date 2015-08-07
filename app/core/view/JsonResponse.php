@@ -36,7 +36,7 @@ class JsonResponse implements SingletonInterface, Injectable {
 
                 header("Content-Type: ".self::MIME."; charset=".DEFAULT_CHARSET);
 
-                echo json_encode($this->data ?: self::DEFAULT_RESULT, JSON_UNESCAPED_UNICODE);
+                echo json_encode(is_null($this->data) ? self::DEFAULT_RESULT : $this->data, JSON_UNESCAPED_UNICODE);
 
             } else {
 

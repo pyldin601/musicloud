@@ -144,13 +144,13 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
         incrementPlays: function (track) {
             // todo: maybe it will be good if stats will return an updated track data
             return $http.post("/api/stats/played", {id: track.id}).success(function () {
+                track.times_played += 1;
                 track.last_played_date = new Date().getTime() / 1000;
-                track.times_played++;
             });
         },
         incrementSkips: function (track) {
             return $http.post("/api/stats/skipped", {id: track.id}).success(function () {
-                track.times_skipped++;
+                track.times_skipped += 1;
             });
         },
         rateTrack: function (track, rating) {
@@ -160,9 +160,6 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
         unrateTrack: function (track) {
             track.track_rating = null;
             return $http.post("/api/stats/unrate", {id: track.id});
-        },
-        nowPlaying: function (track) {
-            return $http.post("/api/stats/playing", {id: track.id});
         },
         scrobbleStart: function (track) {
             return $http.post("/api/scrobbler/nowPlaying", {id: track.id});
@@ -197,7 +194,7 @@ homecloud.run(["$interval", "StatsService", "$rootScope",
                     StatsService.scrobbleStart(track);
                 }
             };
-        $interval(npRepeater(), 30000);
+        $interval(npRepeater, 30000);
         $rootScope.$watch("player.playlist.track", function (updated) {
             track = updated;
             resetTimeout();

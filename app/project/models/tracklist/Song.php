@@ -262,4 +262,25 @@ class Song {
         return FileServer::getFileUsingId($this->track_data[TSongs::FILE_ID]);
     }
 
+    /**
+     * @param $playcount
+     * @return mixed
+     */
+    public function updateAndGetPlayCount($playcount) {
+        if ($playcount > $this->track_data[TSongs::T_PLAYED]) {
+            SongDao::updateSongUsingId($this->track_id, [
+                "times_played" => $playcount
+            ]);
+            return $playcount;
+        }
+        return $this->track_data[TSongs::T_PLAYED];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getObject() {
+        return $this->track_data;
+    }
+
 }
