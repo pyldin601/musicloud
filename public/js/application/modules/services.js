@@ -193,7 +193,7 @@ homecloud.run(["$interval", "StatsService", "$rootScope",
                 $interval.cancel(handle);
             },
             npRepeater = function () {
-                if (track && track.track_artist && track.track_title && track.isPlaying) {
+                if (track && track.track_artist && track.track_title && $rootScope.player.isPlaying) {
                     StatsService.scrobbleStart(track);
                 }
             };
