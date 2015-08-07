@@ -64,6 +64,7 @@ class FFProbe {
         $command = sprintf("%s -i %s -v quiet -print_format json -show_format",
             self::$settings->get("tools", "ffprobe_cmd"), $escaped_filename);
 
+
         exec($command, $result, $status);
 
         if ($status != 0) {

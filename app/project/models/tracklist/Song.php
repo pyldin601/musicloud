@@ -131,7 +131,6 @@ class Song {
             throw new AlreadyUploadedException;
         }
 
-        $file_id = FileServer::register($file_path);
         $query   = (new UpdateQuery(TSongs::_NAME));
 
         $query->where(TSongs::ID, $this->track_id);
@@ -139,9 +138,15 @@ class Song {
         $this->loadCoversFromSongIntoQuery($file_path, $query);
         $this->loadMetadataFromSongIntoQuery($file_path, $query);
 
+        // Warning! Due to speed increase FileServer deletes
+        // source file after registration.
+        $file_id = FileServer::register($file_path);
+
         $query->set(TSongs::FILE_ID, $file_id)
               ->set(TSongs::FILE_NAME, $file_name)
-              ->set(TSongs::C_DATE, time());
+              ->set(TSongs::C_DATE, time())
+              ->set(TSongs::T_SKIPPED, 0)
+              ->set(TSongs::T_PLAYED, 0);
 
         $query->returning("*");
 
