@@ -68,10 +68,3 @@ function serialize_uri(obj) {
     return str;
 }
 
-function sum(a, b) {
-    return a + b
-}
-
-function or(a, b) {
-    return a || b
-}

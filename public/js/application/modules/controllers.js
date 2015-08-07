@@ -43,7 +43,8 @@ homecloud.controller("AlbumViewController", [
             album_year   : $scope.tracks[0].track_year,
             album_genre  : $scope.tracks.map(function (t) { return t.track_genre }).reduce(or),
             cover_id     : $scope.tracks.map(function (t) { return t.middle_cover_id }).reduce(or),
-            length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum)
+            length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum),
+            is_various   : $scope.tracks.any(function (t) { return t.track_artist !== t.album_artist })
         };
         $scope.tracks_selected = [];
         $scope.fetch = null;

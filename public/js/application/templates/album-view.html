@@ -35,11 +35,13 @@
 
                 <div class="position left" title="Item number">#</div>
                 <div class="inner-info">
-                    <div class="left inner-title">Title</div>
-                    <div class="left inner-title">
-                        <div class="track-duration left"><i class="fa fa-clock-o"></i></div>
-                        <div class="inner-artist">Artist</div>
+                    <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
+                        <div class="track-duration right">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <div class="inner">Title</div>
                     </div>
+                    <div class="left inner-artist" ng-show="album.is_various">Artist</div>
                 </div>
             </div>
             <div class="plain-list-item" multiselect-item="track" ng-repeat="track in tracks"
@@ -67,14 +69,12 @@
                 </div>
 
                 <div class="inner-info">
-                    <div class="left inner-title">
+                    <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
+                        <div class="track-duration right" ng-bind="track.length | mmss"></div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
-                    <div class="left inner-title">
-                        <div class="track-duration left" ng-bind="track.length | mmss"></div>
-                        <div class="inner-artist">
+                    <div class="left inner-artist" ng-show="album.is_various">
                             <div class="ellipsis" ng-bind="track | getArtist"></div>
-                        </div>
                     </div>
                 </div>
 
