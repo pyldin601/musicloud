@@ -211,23 +211,17 @@ homecloud.factory("SyncService", [function () {
     var artistSync = sync("id");
     var albumSync = sync("id");
     return {
-        tracks: function (coll) {
-            return trackSync(coll);
-        },
+        tracks: trackSync,
         track: function (track) {
             return trackSync([track]).shift();
         },
 
-        artists: function (coll) {
-            return artistSync(coll);
-        },
+        artists: artistSync,
         artist: function (artist) {
             return artistSync([artist]).shift();
         },
 
-        albums: function (coll) {
-            return albumSync(coll);
-        },
+        albums: albumSync,
         album: function (album) {
             return albumSync([album]).shift();
         }
