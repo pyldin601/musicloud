@@ -152,12 +152,12 @@ class Song {
     public function playingCompleted() {
         SongDao::incrementUsingId($this->track_id, TSongs::T_PLAYED);
         $scrobbler = new AudioScrobbler();
-        $scrobbler->scrobble($this->track_data["track_artist"], $this->track_data["track_title"]);
+        $scrobbler->scrobble($this->track_data["track_title"], $this->track_data["track_artist"]);
     }
 
     public function playingStarted() {
         $scrobbler = new AudioScrobbler();
-        $scrobbler->nowPlaying($this->track_data["track_artist"], $this->track_data["track_title"]);
+        $scrobbler->nowPlaying($this->track_data["track_title"], $this->track_data["track_artist"]);
     }
 
     public function incrementSkips() {

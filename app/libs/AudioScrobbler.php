@@ -15,8 +15,6 @@ class AudioScrobbler {
 
     const API_KEY        = "b065b504b26346b67e7678ec61d7b907";
     const SECRET         = "b5858ee5842425f5bf7e4049e63c58be";
-    const CLIENT_ID      = "tst";
-    const CLIENT_VERSION = "1.0";
 
     const API_URL        = "http://ws.audioscrobbler.com/2.0/";
 
