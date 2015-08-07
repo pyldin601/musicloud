@@ -18,6 +18,12 @@ class AudioScrobbler {
 
     const API_URL        = "http://ws.audioscrobbler.com/2.0/";
 
+    /**
+     * Marks track as 'Now Playing'.
+     *
+     * @param $title
+     * @param $artist
+     */
     public function nowPlaying($title, $artist) {
 
         if (empty($_COOKIE["fm_sk"]))
@@ -34,6 +40,13 @@ class AudioScrobbler {
 
     }
 
+    /**
+     * Scrobbles track.
+     *
+     * @param $title
+     * @param $artist
+     * @param null|int $time
+     */
     public function scrobble($title, $artist, $time = null) {
 
         if (empty($_COOKIE["fm_sk"]))
@@ -51,6 +64,12 @@ class AudioScrobbler {
 
     }
 
+    /**
+     * Marks track as loved.
+     *
+     * @param $title
+     * @param $artist
+     */
     public function love($title, $artist) {
 
         if (empty($_COOKIE["fm_sk"]))
@@ -67,6 +86,12 @@ class AudioScrobbler {
 
     }
 
+    /**
+     * Authorizes user on Last.fm services using $token.
+     *
+     * @param $token
+     * @throws ControllerException
+     */
     public function login($token) {
 
         $key_data = $this->getKey($token);
@@ -149,10 +174,13 @@ class AudioScrobbler {
      * @return mixed
      */
     private function exec($url, array $post = null) {
+
         $ch = curl_init($url);
+
         if ($post !== null) {
             $post["api_sig"] = $this->arrayToSignatureString($post);
         }
+
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_USERAGENT, "musicLoud Audio Scrobbler Library");
         curl_setopt($ch, CURLOPT_POSTFIELDS, self::arrayToPostData($post));
@@ -160,9 +188,13 @@ class AudioScrobbler {
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
+
         $result = json_decode(curl_exec($ch), true);
+
         curl_close($ch);
+
         return $result;
+
     }
 
 }
