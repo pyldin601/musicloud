@@ -187,18 +187,11 @@ homecloud.run(["$interval", "StatsService", "$rootScope",
             resetTimeout = function () {
                 timeout = 0;
                 $interval.cancel(handle);
-            },
-            npRepeater = function () {
-                if (track && track.track_artist && track.track_title && $rootScope.player.isPlaying) {
-                    StatsService.scrobbleStart(track);
-                }
             };
-        $interval(npRepeater, 30000);
         $rootScope.$watch("player.playlist.track", function (updated) {
             track = updated;
             resetTimeout();
             if (track && track.track_artist && track.track_title) {
-                StatsService.scrobbleStart(track);
                 timeout = parseInt(Math.min(120000, track.length / 2));
                 handle = $interval(timer, 1000);
             }
