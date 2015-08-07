@@ -192,6 +192,7 @@ homecloud.run(["$interval", "StatsService", "$rootScope",
             track = updated;
             resetTimeout();
             if (track && track.track_artist && track.track_title) {
+                StatsService.scrobbleStart(track);
                 timeout = parseInt(Math.min(120000, track.length / 2));
                 handle = $interval(timer, 1000);
             }

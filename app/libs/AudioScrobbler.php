@@ -23,8 +23,9 @@ class AudioScrobbler {
      *
      * @param $title
      * @param $artist
+     * @param $album
      */
-    public function nowPlaying($title, $artist) {
+    public function nowPlaying($title, $artist, $album = null) {
 
         if (empty($_COOKIE["fm_sk"]))
             return;
@@ -35,7 +36,8 @@ class AudioScrobbler {
             "api_key"   => self::API_KEY,
             "sk"        => $_COOKIE["fm_sk"],
             "artist"    => $artist,
-            "track"     => $title
+            "track"     => $title,
+            "album"     => $album ?: null
         ));
 
     }
@@ -45,9 +47,10 @@ class AudioScrobbler {
      *
      * @param $title
      * @param $artist
+     * @param $album
      * @param null|int $time
      */
-    public function scrobble($title, $artist, $time = null) {
+    public function scrobble($title, $artist, $album = null, $time = null) {
 
         if (empty($_COOKIE["fm_sk"]))
             return;
@@ -59,6 +62,7 @@ class AudioScrobbler {
             "sk"        => $_COOKIE["fm_sk"],
             "artist"    => $artist,
             "track"     => $title,
+            "album"     => $album ?: null,
             "timestamp" => $time ?: time()
         ));
 
