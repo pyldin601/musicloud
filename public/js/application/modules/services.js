@@ -145,7 +145,6 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
             // todo: maybe it will be good if stats will return an updated track data
             return $http.post("/api/stats/played", {id: track.id}).success(function () {
                 track.last_played_date = new Date().getTime() / 1000;
-                console.log(track.last_played_date);
                 track.times_played ++;
             });
         },
@@ -161,6 +160,10 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
         unrateTrack: function (track) {
             track.track_rating = null;
             return $http.post("/api/stats/unrate", {id: track.id});
+        },
+        nowPlaying: function (track) {
+            track.track_rating = null;
+            return $http.post("/api/stats/playing", {id: track.id});
         }
     }
 }]);

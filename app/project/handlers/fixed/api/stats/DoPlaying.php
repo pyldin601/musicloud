@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: roman
- * Date: 29.07.15
- * Time: 21:04
+ * User: Roman
+ * Date: 07.08.2015
+ * Time: 15:31
  */
 
 namespace app\project\handlers\fixed\api\stats;
@@ -11,12 +11,11 @@ namespace app\project\handlers\fixed\api\stats;
 
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\libs\AudioScrobbler;
 use app\project\models\tracklist\Song;
 
-class DoPlayed implements RouteHandler {
+class DoPlaying implements RouteHandler {
     public function doPost(JsonResponse $response, $id) {
         $song = new Song($id);
-        $song->playingCompleted();
+        $song->playingStarted();
     }
-}
+} 

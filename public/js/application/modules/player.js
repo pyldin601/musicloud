@@ -55,6 +55,8 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                         player.isLoaded = true;
                         player.isPlaying = true;
 
+                        StatsService.nowPlaying(track);
+
                     });
 
                 },

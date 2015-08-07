@@ -16,6 +16,7 @@ use app\core\etc\Settings;
 use app\core\exceptions\ControllerException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\core\logging\Logger;
+use app\libs\AudioScrobbler;
 use app\libs\WaveformGenerator;
 use app\project\exceptions\AlreadyUploadedException;
 use app\project\exceptions\BadAccessException;
@@ -148,8 +149,15 @@ class Song {
 
     }
 
-    public function incrementPlays() {
+    public function playingCompleted() {
         SongDao::incrementUsingId($this->track_id, TSongs::T_PLAYED);
+        $scrobbler = new AudioScrobbler();
+        $scrobbler->scrobble($this->track_data["track_artist"], $this->track_data["track_title"]);
+    }
+
+    public function playingStarted() {
+        $scrobbler = new AudioScrobbler();
+        $scrobbler->nowPlaying($this->track_data["track_artist"], $this->track_data["track_title"]);
     }
 
     public function incrementSkips() {

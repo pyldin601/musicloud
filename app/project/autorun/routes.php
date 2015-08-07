@@ -7,11 +7,8 @@
  */
 
 
-use app\project\handlers\dynamic\content;
+when("preview/:id", app\project\handlers\dynamic\content\DoGetPreview::class);
+when("file/:id",    app\project\handlers\dynamic\content\DoGetFile::class);
+when("peaks/:id",   app\project\handlers\dynamic\content\DoWavePeaks::class);
 
-
-when("preview/:id", content\DoGetPreview::class);
-when("file/:id",    content\DoGetFile::class);
-when("peaks/:id",   content\DoWavePeaks::class);
-
-
+when("lastfm-callback", app\project\handlers\dynamic\scrobbler\DoCallback::class);
