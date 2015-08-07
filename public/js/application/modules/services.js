@@ -178,7 +178,6 @@ homecloud.run(["$interval", "StatsService", "$rootScope",
             timer = function () {
                 if ($rootScope.player.isPlaying) {
                     timeout--;
-                    console.log(timeout);
                     if (timeout < 1) {
                         StatsService.scrobbleFinish(track);
                         resetTimeout();

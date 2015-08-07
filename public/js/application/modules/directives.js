@@ -45,7 +45,7 @@ homecloud.directive("ngVisible", [function () {
             var valueChanged = function (value) {
                 element.css("visibility", value ? "visible" : "hidden")
             };
-            scope.$on("ngVisible", valueChanged);
+            scope.$watch("ngVisible", valueChanged);
             valueChanged(scope.ngVisible);
         }
     }
