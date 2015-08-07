@@ -20,6 +20,13 @@ Array.prototype.all = function (predicate) {
     return true;
 };
 
+Array.prototype.first = function () {
+    if (this.length == 0) {
+        return undefined;
+    }
+    return this[0];
+};
+
 /*
     Arithmetical functions
  */

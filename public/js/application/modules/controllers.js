@@ -38,9 +38,9 @@ homecloud.controller("AlbumViewController", [
     "Resolved", "$scope", "SyncService", function (Resolved, $scope, SyncService) {
         $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.album = {
-            album_title  : $scope.tracks[0].track_album,
-            album_artist : $scope.tracks[0].album_artist,
-            album_year   : $scope.tracks[0].track_year,
+            album_title  : $scope.tracks.first().track_album,
+            album_artist : $scope.tracks.first().album_artist,
+            album_year   : $scope.tracks.first().track_year,
             album_genre  : $scope.tracks.map(function (t) { return t.track_genre }).reduce(or),
             cover_id     : $scope.tracks.map(function (t) { return t.middle_cover_id }).reduce(or),
             length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum),
