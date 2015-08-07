@@ -380,50 +380,6 @@
   background-color: #1a232f;
   position: relative;
   overflow: hidden;
-  padding-top: 24px;
-  padding-bottom: 24px;
-  padding-left: 24px;
-  padding-right: 24px;
-}
-@media (max-width: 1024px) {
-  .album-header {
-    padding-top: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-top: 8px;
-  }
-}
-@media (max-width: 1024px) {
-  .album-header {
-    padding-bottom: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-bottom: 8px;
-  }
-}
-@media (max-width: 1024px) {
-  .album-header {
-    padding-left: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-left: 8px;
-  }
-}
-@media (max-width: 1024px) {
-  .album-header {
-    padding-right: 16px;
-  }
-}
-@media (max-width: 640px) {
-  .album-header {
-    padding-right: 8px;
-  }
 }
 .album-header .artwork-blurred {
   margin-top: -50%;
@@ -454,18 +410,29 @@
   line-height: 1.5em;
   text-shadow: 1px 1px 4px #000000;
   padding-top: 2px;
+  margin-top: 16px;
+}
+@media (max-width: 1024px) {
+  .album-header .description-section {
+    margin-top: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .album-header .description-section {
+    margin-top: 8px;
+  }
 }
 .album-header .description-section .separator {
   padding: 0 2px;
 }
 .album-header .description-section .album-title {
-  padding-left: 24px;
+  padding-left: 16px;
   font-size: 20pt;
   font-weight: 300;
 }
 @media (max-width: 1024px) {
   .album-header .description-section .album-title {
-    padding-left: 16px;
+    padding-left: 8px;
   }
 }
 @media (max-width: 640px) {
@@ -487,7 +454,7 @@
   font-size: 12pt;
   padding-bottom: 2px;
   padding-top: 12px;
-  padding-left: 24px;
+  padding-left: 16px;
 }
 @media (max-width: 1024px) {
   .album-header .description-section .album-info {
@@ -511,7 +478,7 @@
 }
 @media (max-width: 1024px) {
   .album-header .description-section .album-info {
-    padding-left: 16px;
+    padding-left: 8px;
   }
 }
 @media (max-width: 640px) {
