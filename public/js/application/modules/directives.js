@@ -247,3 +247,17 @@ homecloud.directive("trackRating", ["StatsService", function (StatsService) {
         }
     }
 }]);
+
+homecloud.directive("progressBar", [function () {
+    return {
+        scope: {
+            progressBar: "="
+        },
+        restrict: "A",
+        link: function (scope, element, attributes) {
+            scope.$watch("progressBar", function (value) {
+                element.css("width", "" + value + "%");
+            });
+        }
+    }
+}]);

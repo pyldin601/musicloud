@@ -37,6 +37,8 @@
     <script src="/public/js/application/modules/directives.js"></script>
     <script src="/public/js/application/modules/player.js"></script>
 
+    <script src="/public/js/application/modules/upload.js"></script>
+
 </head>
 <body>
 <div class="library-header">
@@ -126,7 +128,7 @@
         <div class="section">
             <div class="section-title">
                 <div class="right actions">
-                    <div class="upload">
+                    <div class="upload" ng-click="upload.action.add()">
                         <i class="fa fa-cloud-upload"></i>
                     </div>
                 </div>
@@ -210,6 +212,30 @@
     </div>
 </div>
 <div ng-view="" autoscroll="true"></div>
-
+<div class="library-upload" ng-show="upload.data.uploading" ng-controller="UploadController">
+    <div class="inner">
+        <div class="caption">
+            <div class="cancel-block right" ng-click="upload.action.cancel()">
+                <i class="fa fa-times"></i>
+            </div>
+            <div class="title-block">Uploading</div>
+        </div>
+        <div class="content">
+            <div class="current-file clear-fix">
+                <div class="count right" ng-show="upload.data.queue.length">
+                    <span>Left:</span>
+                    <span ng-bind="upload.data.queue.length"></span>
+                </div>
+                <div class="name" ng-bind="upload.data.current.name"></div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-back">
+                    <div class="progress-percent">{{ upload.data.progress.percent }}%</div>
+                    <div class="progress-handle" progress-bar="upload.data.progress.percent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

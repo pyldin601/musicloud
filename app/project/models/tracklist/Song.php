@@ -110,7 +110,7 @@ class Song {
               ->set(TSongs::DISC,      $metadata->meta_disc_number)
               ->set(TSongs::BITRATE,   $metadata->bitrate)
               ->set(TSongs::LENGTH,    $metadata->duration)
-              ->set(TSongs::A_ARTIST,  $metadata->meta_album_artist)
+              ->set(TSongs::A_ARTIST,  $metadata->meta_album_artist ?: $metadata->meta_artist)
               ->set(TSongs::T_GENRE,   $metadata->meta_genre)
               ->set(TSongs::T_ALBUM,   $metadata->meta_album)
               ->set(TSongs::T_COMMENT, $metadata->meta_comment)

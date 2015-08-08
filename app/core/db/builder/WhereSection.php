@@ -104,7 +104,7 @@ trait WhereSection {
             }
         }
 
-        return "WHERE " . (count($build) > 0 ? implode(" {$this->whereGlue} ", $build) : "1");
+        return (count($build) > 0 ? "WHERE " . implode(" {$this->whereGlue} ", $build) : "");
 
     }
 

@@ -17,11 +17,11 @@ use app\project\models\tracklist\Song;
 use app\project\models\tracklist\Songs;
 
 class DoUpload implements RouteHandler {
-    public function doPost(JsonResponse $response, Option $track_id, HttpFile $file) {
+    public function doPost(JsonResponse $response, $track_id, HttpFile $file) {
 
         $track = $file->getOrError("file");
 
-        $tm = new Song($track_id->orCall([Songs::class, "create"]));
+        $tm = new Song($track_id);
 
         $response->write($tm->upload($track["tmp_name"], urldecode($track["name"])));
 

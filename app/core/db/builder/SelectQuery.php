@@ -34,9 +34,9 @@ class SelectQuery extends BaseQuery implements \Countable {
      * @return int
      */
     public function count() {
-        return Database::doInConnection(function (Database $db) use (&$className, &$ctor_args) {
+        return Database::doInConnection(function (Database $db) {
             $query = clone $this;
-            $query->selectNone()->selCount();
+            $query->selectNone()->select("COUNT(*)");
             $query->limit(null);
             $query->offset(null);
             $query->orderBy(null);
@@ -93,7 +93,7 @@ class SelectQuery extends BaseQuery implements \Countable {
      * @return $this
      */
     public function limit($limit) {
-        if ($limit !== null && !is_numeric($limit) && $limit < 0) {
+        if (($limit !== null && !is_numeric($limit)) || $limit < 0) {
             throw new ApplicationException("Invalid limit");
         }
         $this->limit = $limit;
@@ -106,7 +106,7 @@ class SelectQuery extends BaseQuery implements \Countable {
      * @return $this
      */
     public function offset($offset) {
-        if ($offset !== null && !is_numeric($offset) && $offset < 0) {
+        if (($offset !== null && !is_numeric($offset)) || $offset < 0) {
             throw new ApplicationException("Invalid offset");
         }
         $this->offset = $offset;

@@ -36,12 +36,16 @@ class DoArtists implements RouteHandler {
             ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
             ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
 
+        $count = (new SelectQuery(TSongs::_NAME))
+            ->select("COUNT(DISTINCT ".TSongs::A_ARTIST.")");
+
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
-            //songs.fts_artist @@ plainto_tsquery('Robert Miles');
             $query->where(TSongs::FTS_ARTIST . " @@ plainto_tsquery(?)", [$filter->get()]);
+            $count->where(TSongs::FTS_ARTIST . " @@ plainto_tsquery(?)", [$filter->get()]);
         }
+
 
         $query->addGroupBy(TSongs::A_ARTIST);
 
@@ -50,7 +54,8 @@ class DoArtists implements RouteHandler {
         $catalog = $query->fetchAll();
 
         $response->write([
-            "artists" => $catalog
+            "artists" => $catalog,
+            "count" => $count->fetchColumn()->toInt()
         ]);
 
     }

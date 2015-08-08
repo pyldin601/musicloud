@@ -52,7 +52,7 @@ class DoAlbums implements RouteHandler {
         $catalog = $query->fetchAll();
 
         $response->write([
-            "albums" => $catalog
+            "albums" => $catalog,
         ]);
 
     }

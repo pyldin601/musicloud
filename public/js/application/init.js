@@ -1,6 +1,7 @@
 var Empty = {},
     Nil = [],
-    dateFormat = "dd.MM.yyyy HH:mm:ss";
+    dateFormat = "dd.MM.yyyy HH:mm:ss",
+    maxFileSize = 512 * 1024 * 1024;
 
 /**
  * Returns function for synchronizing one-typed objects
