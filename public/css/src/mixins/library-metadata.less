@@ -1,0 +1,78 @@
+.library-metadata {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(192,192,192,.5);
+  z-index: 50;
+  .dialog {
+    position: relative;
+    width: 512px;
+    margin: 64px auto auto ;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 32px #909090;
+    .header {
+      background-color: #334455;
+      overflow: hidden;
+      position: relative;
+      color: #eeeeee;
+      .backing {
+        position: absolute;
+        width: 102%;
+        display: block;
+        z-index: 0;
+        margin-left: -1px;
+        margin-right: -1px;
+        margin-top: -45%;
+        .blur(50px);
+      }
+      .artwork-holder {
+        position: relative;
+        width: 96px;
+        height: 96px;
+      }
+      .info-holder {
+        position: relative;
+        overflow: hidden;
+        .line1 {
+          margin-left: 16px;
+          margin-top: 24px;
+          font-size: 18pt;
+          font-weight: 300;
+        }
+        .line2 {
+          margin-left: 16px;
+          margin-top: 4px;
+          font-size: 12pt;
+          font-weight: 300;
+        }
+      }
+    }
+    .metadata {
+      padding: 32px;
+      .meta-row {
+        overflow: hidden;
+        margin-bottom: 8px;
+        .field {
+          width: 70%;
+        }
+        .label {
+          overflow: hidden;
+        }
+        label.boxed {
+          display: block;
+          padding-top: 8px;
+          text-align: right;
+          padding-right: 10px;
+        }
+      }
+      input[type="text"] {
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+      }
+    }
+  }
+}

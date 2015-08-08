@@ -41,8 +41,7 @@ homecloud.factory("TrackService", ["$http", function ($http) {
             return $http.post("/api/track/delete", data);
         },
         edit: function (data) {
-            // todo: Implement this method
-            throw new Error("Method not implemented");
+            return $http.post("/api/track/edit", data);
         }
     };
 }]);
@@ -212,9 +211,9 @@ homecloud.run(["$interval", "StatsService", "$rootScope",
 ]);
 
 homecloud.factory("SyncService", [function () {
-    var trackSync = sync("id");
+    var trackSync  = sync("id");
     var artistSync = sync("id");
-    var albumSync = sync("id");
+    var albumSync  = sync("id");
     return {
         tracks: trackSync,
         track: function (track) {
@@ -233,3 +232,47 @@ homecloud.factory("SyncService", [function () {
     }
 }]);
 
+
+
+homecloud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope", "$compile",
+    function ($templateRequest, $controller, $rootScope, $compile) {
+        var defaults = {
+            controller: null,
+            data: {},
+            scope: null
+        };
+        return function (opts) {
+            var options = angular.extend(defaults, opts);
+
+            if (!options.template) {
+                throw new Error("Template not set!");
+            }
+
+            $templateRequest(options.template).then(function (template) {
+
+                var newScope = angular.isObject(options.scope) ? options.scope.$new() : $rootScope.$new(),
+                    modal = angular.element(template).appendTo("body");
+
+                newScope.closeThisWindow = function () {
+                    modal.remove()
+                };
+
+                for (var k in options.data) if (options.data.hasOwnProperty(k)) {
+                    newScope[k] = options.data[k]
+                }
+
+                $compile(modal)(newScope);
+
+                if (options.controller) {
+                    var controllerInstance = $controller(options.controller, {
+                        $scope: newScope,
+                        $element: modal
+                    });
+                    modal.data('$modalWindowController', controllerInstance);
+                }
+
+
+            });
+        };
+    }
+]);

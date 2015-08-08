@@ -36,6 +36,16 @@ Array.prototype.isVarious = function () {
     return !this.any(function (e) { return e !== first });
 };
 
+Array.prototype.distinct = function () {
+    var acc = [];
+    for (var i = 0; i < this.length; i += 1) {
+        if (acc.indexOf(this[i]) == -1) {
+            acc.push(this[i])
+        }
+    }
+    return acc;
+};
+
 Function.prototype.curry = function () {
     var args1 = Array.prototype.slice.call(arguments),
         that = this;

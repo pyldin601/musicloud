@@ -2,10 +2,10 @@
  * Created by Roman on 27.07.2015.
  */
 
+
 var mediacloud = angular.module("HomeCloud");
 
 mediacloud.config(["$routeProvider", function ($routeProvider) {
-    var templatePath = "/public/js/application/templates";
 
     $routeProvider.when("/artists/", {
         templateUrl: templatePath + "/artists-view.html",

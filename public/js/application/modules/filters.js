@@ -36,12 +36,14 @@ homecloud.filter("mmss", function () {
 var filters = {
     artist: function (artist) { return artist || "Unknown Artist" },
     album:  function (album)  { return album || "Unknown Album" },
-    genre:  function (genre)  { return genre || "Unknown Genre" }
+    genre:  function (genre)  { return genre || "Unknown Genre" },
+    title:  function (title)  { return title || "Unknown Title" }
 };
 
 homecloud.filter("albumFilter",  function () { return filters.album });
 homecloud.filter("artistFilter", function () { return filters.artist });
 homecloud.filter("genreFilter",  function () { return filters.genre });
+homecloud.filter("titleFilter",  function () { return filters.title });
 
 homecloud.filter("getTitle", function () {
     return function (track) {

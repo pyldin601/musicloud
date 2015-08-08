@@ -1,0 +1,53 @@
+<div class="library-metadata">
+    <div class="dialog">
+        <div class="header">
+            <img class="backing" ng-src="/public/images/stub/GM003.jpg">
+            <div class="left artwork-section">
+                <div class="artwork-holder">
+                    <img ng-src="/public/images/stub/GM003.jpg">
+                </div>
+            </div>
+            <div class="info-holder">
+                <div class="line1" ng-bind="selected.artists"></div>
+                <div class="line2" ng-bind="selected.songs"></div>
+            </div>
+        </div>
+        <div class="metadata">
+            <div class="meta-row">
+                <div class="right field">
+                    <input name="track-title" id="track-title" type="text"
+                           ng-model="fields.track_title" ng-disabled="!modify.track_title">
+                </div>
+                <label class="label boxed" for="track-title">Title</label>
+            </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input name="track-artist" id="track-artist" type="text"
+                           ng-model="fields.track_artist" ng-disabled="!modify.track_artist">
+                </div>
+                <label class="label boxed" for="track-artist">Artist</label>
+            </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input name="track-album" id="track-album" type="text"
+                           ng-model="fields.track_album" ng-disabled="!modify.track_album">
+                </div>
+                <label class="label boxed" for="track-album">Album</label>
+            </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input name="album-artist" id="album-artist" type="text"
+                           ng-model="fields.album_artist" ng-disabled="!modify.album_artist">
+                </div>
+                <label class="label boxed" for="album-artist">Album artist</label>
+            </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input type="checkbox" name="is-compilation" id="is-compilation"
+                           ng-model="fields.is_compilation" ng-disabled="!modify.album_artist">
+                    <label for="is-compilation">Selected items are part of compilation</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

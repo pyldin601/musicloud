@@ -331,6 +331,16 @@
   height: 100%;
   vertical-align: middle;
 }
+input[type="text"] {
+  display: block;
+  border: none;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
 .list-view .list-item {
   position: relative;
   margin-bottom: 42px;
@@ -552,6 +562,18 @@ a {
 .table .row .cell {
   display: table-cell;
 }
+.artwork-holder {
+  background: #fcfcfc url("/public/images/default.directory.jpg") center center no-repeat;
+  background-size: cover;
+}
+.artwork-holder img {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+.half {
+  width: 50%;
+}
 .plain-list > .plain-list-item {
   margin-right: -8px;
   margin-left: -8px;
@@ -671,6 +693,90 @@ a {
   background-color: #f08080;
   border: 1px solid #ff8c8c;
 }
+.library-metadata {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(192, 192, 192, 0.5);
+  z-index: 50;
+}
+.library-metadata .dialog {
+  position: relative;
+  width: 512px;
+  margin: 64px auto auto ;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 32px #909090;
+}
+.library-metadata .dialog .header {
+  background-color: #334455;
+  overflow: hidden;
+  position: relative;
+  color: #eeeeee;
+}
+.library-metadata .dialog .header .backing {
+  position: absolute;
+  width: 102%;
+  display: block;
+  z-index: 0;
+  margin-left: -1px;
+  margin-right: -1px;
+  margin-top: -45%;
+  filter: blur(50px);
+  -webkit-filter: blur(50px);
+  -moz-filter: blur(50px);
+  -o-filter: blur(50px);
+  -ms-filter: blur(50px);
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=50px);
+  filter: url("data:image/svg+xml;utf9,<svg%20version='1.1'%20xmlns='http://www.w3.org/20…%20id='blur'><feGaussianBlur%20stdDeviation='10'%20/></filter></svg>#blur");
+}
+.library-metadata .dialog .header .artwork-holder {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+.library-metadata .dialog .header .info-holder {
+  position: relative;
+  overflow: hidden;
+}
+.library-metadata .dialog .header .info-holder .line1 {
+  margin-left: 16px;
+  margin-top: 24px;
+  font-size: 18pt;
+  font-weight: 300;
+}
+.library-metadata .dialog .header .info-holder .line2 {
+  margin-left: 16px;
+  margin-top: 4px;
+  font-size: 12pt;
+  font-weight: 300;
+}
+.library-metadata .dialog .metadata {
+  padding: 32px;
+}
+.library-metadata .dialog .metadata .meta-row {
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.library-metadata .dialog .metadata .meta-row .field {
+  width: 70%;
+}
+.library-metadata .dialog .metadata .meta-row .label {
+  overflow: hidden;
+}
+.library-metadata .dialog .metadata .meta-row label.boxed {
+  display: block;
+  padding-top: 8px;
+  text-align: right;
+  padding-right: 10px;
+}
+.library-metadata .dialog .metadata input[type="text"] {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -727,6 +833,18 @@ a {
 }
 .table .row .cell {
   display: table-cell;
+}
+.artwork-holder {
+  background: #fcfcfc url("/public/images/default.directory.jpg") center center no-repeat;
+  background-size: cover;
+}
+.artwork-holder img {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+.half {
+  width: 50%;
 }
 .library-header {
   position: fixed;

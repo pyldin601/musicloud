@@ -5,6 +5,7 @@
 var homecloud = angular.module("HomeCloud");
 
 
+
 homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
     return {
         scope: {
