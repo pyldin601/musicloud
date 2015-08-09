@@ -14,7 +14,7 @@ use app\core\view\JsonResponse;
 use app\project\models\tracklist\Songs;
 
 class DoDelete implements RouteHandler {
-    public function doPost(JsonResponse $response, $track_id) {
-        Songs::delete($track_id);
+    public function doPost(JsonResponse $response, $song_id) {
+        Songs::delete($song_id);
     }
 } 

@@ -33,7 +33,7 @@ homecloud.controller("MetadataController", ["$scope", "TrackService", "SyncServi
             artists: (artists_list.length == 1) ? $filter("artistFilter")(artists_list.first()) :
                      "" + artists_list.length + " artist(s)",
             songs: (songs.length == 1) ? $filter("getTitle")(songs.first()) :
-                   (albums_list.length == 1) ? albums_list.first() :
+                   (albums_list.length == 1 && albums_list.first() != "") ? albums_list.first() :
                    "" + songs.length + " song(s)"
         };
 

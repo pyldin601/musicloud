@@ -35,23 +35,42 @@ homecloud.controller("GroupViewController", [
 ]);
 
 homecloud.controller("AlbumViewController", [
-    "Resolved", "$scope", "SyncService", "MonitorSongs",
-    function (Resolved, $scope, SyncService, MonitorSongs) {
+    "Resolved", "$scope", "SyncService", "MonitorSongs", "$location",
+    function (Resolved, $scope, SyncService, MonitorSongs, $location) {
+
         $scope.tracks = SyncService.tracks(Resolved.tracks);
-        $scope.album = {
-            album_title  : $scope.tracks.first().track_album,
-            album_artist : $scope.tracks.first().album_artist,
-            album_year   : $scope.tracks.map(field("track_year")).reduce(or),
-            album_genre  : $scope.tracks.map(field("track_genre")).reduce(or),
-            cover_id     : $scope.tracks.map(field("middle_cover_id")).reduce(or),
-            length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum),
-            is_various   : $scope.tracks.any(function (t) { return t.track_artist !== t.album_artist })
+        $scope.tracks_selected = [];
+        $scope.album = {};
+
+        $scope.readAlbum = function () {
+
+            if ($scope.tracks.length == 0) {
+                $location.url("/albums/");
+                return;
+            }
+
+            var genres = $scope.tracks.map(field("track_genre")).distinct();
+
+            $scope.album = {
+                album_title  : $scope.tracks.first().track_album,
+                album_artist : $scope.tracks.first().album_artist,
+                album_year   : $scope.tracks.map(field("track_year")).reduce(or),
+                album_genre  : (genres.length == 1) ? genres.first() :
+                               (genres.length == 2) ? genres.join(", ") :
+                               "Multiple Genres",
+                cover_id     : $scope.tracks.map(field("middle_cover_id")).reduce(or),
+                length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum),
+                is_various   : $scope.tracks.any(function (t) { return t.track_artist !== t.album_artist })
+            };
         };
+
         $scope.tracks_selected = [];
         $scope.fetch = null;
 
+        $scope.$watch("tracks", $scope.readAlbum, true);
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
+
     }
 ]);
 

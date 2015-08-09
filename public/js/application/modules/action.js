@@ -9,6 +9,7 @@
     homecloud.run(["$rootScope", "TrackService", "ModalWindow", function ($rootScope, TrackService, ModalWindow) {
         $rootScope.action = {
             deleteSongs: function (coll) {
+
                 var song_ids;
 
                 if (!coll || coll.length == 0)
@@ -18,10 +19,12 @@
 
                 if (confirm("Are you sure want to delete selected songs?")) {
                     $rootScope.$broadcast("songs.deleted", coll);
-                    TrackService.unlink(song_ids).success();
+                    TrackService.unlink({ song_id: song_ids });
                 }
+
             },
             editSongs: function (coll) {
+
                 if (!coll || coll.length == 0)
                     return;
 
@@ -31,7 +34,8 @@
                     data: {
                         songs: coll
                     }
-                })
+                });
+
             }
         };
     }]);
@@ -39,16 +43,29 @@
     homecloud.factory("MonitorSongs", [function () {
         return function (coll, scope) {
             scope.$on("songs.deleted", function (e, data) {
-                for (var i = 0; i < coll.length; i += 1) {
-                    for (var j = 0; j < data.length; j += 1) {
-                        if (coll[i].id == data[j].id) {
-                            console.log(coll[i].track_title);
-                            coll.splice(i, 1);
-                            break;
+                console.log(coll);
+                scope.$applyAsync(function () {
+                    for (var i = 0; i < coll.length; i += 1) {
+                        for (var j = 0; j < data.length; j += 1) {
+                            if (coll[i].id === data[j].id) {
+                                coll.splice(i, 1);
+                                break;
+                            }
                         }
                     }
-                }
-                scope.$applyAsync();
+                });
+            });
+            scope.$on("songs.updated", function (e, data) {
+                scope.$applyAsync(function () {
+                    for (var i = 0; i < coll.length; i += 1) {
+                        for (var j = 0; j < data.length; j += 1) {
+                            if (coll[i].id === data[j].id) {
+                                angular.copy(data[j], coll[i]);
+                                break;
+                            }
+                        }
+                    }
+                });
             });
         }
     }]);

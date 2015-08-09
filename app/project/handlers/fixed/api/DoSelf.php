@@ -33,9 +33,10 @@ class DoSelf implements RouteHandler {
             "id" => $me->getId(),
             "stats" => [
                 "tracks_count" => $songs_count,
-                "artists_count" => $artists_count,
-                "albums_count" => $albums_count,
-                "genres_count" => $genres_count
+                "artists_count" => 0,
+                "albums_count" => 0,
+                "genres_count" => 0,
+                "compilations_count" => 0
             ]
         ]);
 
