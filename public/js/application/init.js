@@ -42,3 +42,7 @@ function serialize_uri(obj) {
     return str;
 }
 
+
+function iif(expression, onTrue, onFalse) {
+    return expression ? onTrue : onFalse
+}

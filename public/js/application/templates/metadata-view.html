@@ -1,10 +1,10 @@
 <div class="library-metadata">
     <div class="dialog">
         <div class="header">
-            <img class="backing" ng-src="/public/images/stub/GM003.jpg">
+            <img class="backing" ng-if="current_cover" ng-src="/file/{{ current_cover }}">
             <div class="left artwork-section">
                 <div class="artwork-holder">
-                    <img ng-src="/public/images/stub/GM003.jpg">
+                    <img ng-if="current_cover" ng-src="/file/{{ current_cover }}">
                 </div>
             </div>
             <div class="info-holder">
@@ -13,41 +13,64 @@
             </div>
         </div>
         <div class="metadata">
-            <div class="meta-row">
+            <div class="meta-row" ng-show="songs.length == 1">
                 <div class="right field">
-                    <input name="track-title" id="track-title" type="text"
-                           ng-model="fields.track_title" ng-disabled="!modify.track_title">
+                    <input name="track-title" id="track-title" type="text" ng-model="fields.track_title">
                 </div>
                 <label class="label boxed" for="track-title">Title</label>
             </div>
             <div class="meta-row">
                 <div class="right field">
-                    <input name="track-artist" id="track-artist" type="text"
-                           ng-model="fields.track_artist" ng-disabled="!modify.track_artist">
+                    <input name="track-artist" id="track-artist" type="text" ng-model="fields.track_artist">
                 </div>
                 <label class="label boxed" for="track-artist">Artist</label>
             </div>
             <div class="meta-row">
                 <div class="right field">
-                    <input name="track-album" id="track-album" type="text"
-                           ng-model="fields.track_album" ng-disabled="!modify.track_album">
+                    <input name="track-album" id="track-album" type="text" ng-model="fields.track_album">
                 </div>
                 <label class="label boxed" for="track-album">Album</label>
             </div>
             <div class="meta-row">
                 <div class="right field">
-                    <input name="album-artist" id="album-artist" type="text"
-                           ng-model="fields.album_artist" ng-disabled="!modify.album_artist">
+                    <input name="album-artist" id="album-artist" type="text" ng-model="fields.album_artist">
                 </div>
                 <label class="label boxed" for="album-artist">Album artist</label>
             </div>
             <div class="meta-row">
                 <div class="right field">
-                    <input type="checkbox" name="is-compilation" id="is-compilation"
-                           ng-model="fields.is_compilation" ng-disabled="!modify.album_artist">
+                    <input name="track-number" id="track-number" type="text" ng-model="fields.track_number">
+                </div>
+                <label class="label boxed" for="track-number">Track #</label>
+            </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input name="disc-number" id="disc-number" type="text" ng-model="fields.disc_number">
+                </div>
+                <label class="label boxed" for="disc-number">Disc #</label>
+            </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input type="checkbox" name="is-compilation" id="is-compilation" ng-model="flags.is_compilation">
                     <label for="is-compilation">Selected items are part of compilation</label>
                 </div>
             </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input name="album-artist" id="track-genre" type="text" ng-model="fields.track_genre">
+                </div>
+                <label class="label boxed" for="track-genre">Genre</label>
+            </div>
+            <div class="meta-row">
+                <div class="right field">
+                    <input name="album-artist" id="track-year" type="text" ng-model="fields.track_year">
+                </div>
+                <label class="label boxed" for="track-year">Year</label>
+            </div>
+        </div>
+        <div class="buttons clear-fix">
+            <input type="button" class="dialog-button right" ng-click="closeThisWindow()" value="Cancel">
+            <input type="button" class="dialog-button right" ng-click="save()" value="Save">
         </div>
     </div>
 </div>

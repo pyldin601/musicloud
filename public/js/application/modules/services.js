@@ -240,21 +240,22 @@ homecloud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope
             controller: null,
             data: {},
             scope: null
-        };
+        },
+            $an = angular;
         return function (opts) {
-            var options = angular.extend(defaults, opts);
 
-            if (!options.template) {
-                throw new Error("Template not set!");
-            }
+            var options = $an.copy(defaults);
+
+            $an.extend(options, opts);
 
             $templateRequest(options.template).then(function (template) {
 
-                var newScope = angular.isObject(options.scope) ? options.scope.$new() : $rootScope.$new(),
-                    modal = angular.element(template).appendTo("body");
+                var newScope = $an.isObject(options.scope) ? options.scope.$new() : $rootScope.$new(),
+                    modal = $an.element(template).appendTo("body");
 
                 newScope.closeThisWindow = function () {
-                    modal.remove()
+                    modal.remove();
+                    newScope.$destroy();
                 };
 
                 for (var k in options.data) if (options.data.hasOwnProperty(k)) {

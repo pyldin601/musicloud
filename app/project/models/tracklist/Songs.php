@@ -17,6 +17,7 @@ use app\core\exceptions\ApplicationException;
 use app\core\exceptions\ControllerException;
 use app\core\logging\Logger;
 use app\lang\Arrays;
+use app\project\libs\FFProbe;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\dao\SongDao;
 use app\project\persistence\db\tables\AudiosTable;
@@ -120,6 +121,120 @@ class Songs {
             default:
                 throw new ApplicationException("Incorrect type of argument");
         }
+    }
+
+    /**
+     * @param $song_id
+     * @param array $metadata
+     * @return array
+     */
+    public static function edit($song_id, array $metadata) {
+
+        $available_keys = [
+            TSongs::T_TITLE, TSongs::T_ARTIST, TSongs::T_ALBUM, TSongs::A_ARTIST,
+            TSongs::IS_COMP, TSongs::T_GENRE, TSongs::T_YEAR, TSongs::T_NUMBER, TSongs::DISC
+        ];
+        $numeric_keys = [TSongs::T_NUMBER, TSongs::DISC];
+
+        $query = (new UpdateQuery(TSongs::_NAME))
+            ->where(TSongs::ID, explode(",", $song_id))
+            ->where(TSongs::USER_ID, self::$me->getId());
+
+        foreach ($metadata as $key => $value) {
+            if (in_array($key, $available_keys)) {
+                if (in_array($key, $numeric_keys)) {
+                    $query->set($key, is_numeric($value) ? $value : null);
+                } else {
+                    $query->set($key, $value);
+                }
+            }
+        }
+
+        $query->returning(TSongs::defaultSelection());
+
+        return $query->fetchAll();
+    }
+
+    public static function removeCover($song_id) {
+
+        $song_ids = explode(",", $song_id);
+
+        $song_objects = (new SelectQuery(TSongs::_NAME))
+            ->where(TSongs::ID, $song_ids)
+            ->where(TSongs::USER_ID, self::$me->getId())
+            ->fetchAll();
+
+        foreach ($song_objects as $song) {
+
+            if ($song[TSongs::C_SMALL_ID]) {
+                FileServer::unregister($song[TSongs::C_SMALL_ID]);
+            }
+            if ($song[TSongs::C_MID_ID]) {
+                FileServer::unregister($song[TSongs::C_MID_ID]);
+            }
+            if ($song[TSongs::C_BIG_ID]) {
+                FileServer::unregister($song[TSongs::C_BIG_ID]);
+            }
+
+        }
+
+        $query = (new UpdateQuery(TSongs::_NAME))
+            ->where(TSongs::ID, $song_ids)
+            ->where(TSongs::USER_ID, self::$me->getId())
+            ->set(TSongs::C_SMALL_ID, null)
+            ->set(TSongs::C_MID_ID, null)
+            ->set(TSongs::C_BIG_ID, null)
+            ->returning(implode(",", [TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID]));
+
+        return $query->fetchAll();
+
+    }
+
+    public static function changeCover($song_id, $cover_file) {
+
+        $song_ids = explode(",", $song_id);
+
+        $song_objects = (new SelectQuery(TSongs::_NAME))
+            ->where(TSongs::ID, $song_ids)
+            ->where(TSongs::USER_ID, self::$me->getId())
+            ->fetchAll();
+
+        foreach ($song_objects as $song) {
+
+            if ($song[TSongs::C_SMALL_ID]) {
+                FileServer::unregister($song[TSongs::C_SMALL_ID]);
+            }
+            if ($song[TSongs::C_MID_ID]) {
+                FileServer::unregister($song[TSongs::C_MID_ID]);
+            }
+            if ($song[TSongs::C_BIG_ID]) {
+                FileServer::unregister($song[TSongs::C_BIG_ID]);
+            }
+
+        }
+
+        $covers = FFProbe::readTempCovers($cover_file);
+
+        $query = (new UpdateQuery(TSongs::_NAME))
+            ->where(TSongs::ID, $song_ids)
+            ->where(TSongs::USER_ID, self::$me->getId());
+
+        if ($covers->nonEmpty()) {
+
+            $full_cover_id   = FileServer::register($covers->get()[0]);
+            $middle_cover_id = FileServer::register($covers->get()[1]);
+            $small_cover_id  = FileServer::register($covers->get()[2]);
+
+            $query  ->set(TSongs::C_SMALL_ID, $small_cover_id)
+                    ->set(TSongs::C_MID_ID, $middle_cover_id)
+                    ->set(TSongs::C_BIG_ID, $full_cover_id);
+
+        }
+
+        $query->returning(implode(",", [TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID]));
+
+        return $query->fetchAll();
+
     }
 
 }

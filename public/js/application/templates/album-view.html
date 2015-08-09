@@ -7,7 +7,12 @@
             </div>
         </div>
         <div class="description-section">
-            <div class="album-title" ng-bind="album.album_title | albumFilter"></div>
+            <div class="album-title">
+                <div class="right icons">
+                    <i ng-click="editMetadata(tracks)" class="fa fa-ellipsis-v"></i>
+                </div>
+                <div class="inner" ng-bind="album.album_title | albumFilter"></div>
+            </div>
             <div class="album-info">
                 <span class="album-artist" ng-bind="album.album_artist | artistFilter"></span>
                 <span class="separator">&middot;</span>

@@ -32,18 +32,15 @@ class DoArtists implements RouteHandler {
         $query = (new SelectQuery(TSongs::_NAME))
             ->select(TSongs::A_ARTIST)
             ->where(TSongs::USER_ID, $me->getId())
+            ->where(TSongs::IS_COMP, "0")
             ->selectAlias("MIN(".TSongs::C_BIG_ID.")", TSongs::C_BIG_ID)
             ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
             ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
-
-        $count = (new SelectQuery(TSongs::_NAME))
-            ->select("COUNT(DISTINCT ".TSongs::A_ARTIST.")");
 
         Context::contextify($query);
 
         if ($filter->nonEmpty()) {
             $query->where(TSongs::FTS_ARTIST . " @@ plainto_tsquery(?)", [$filter->get()]);
-            $count->where(TSongs::FTS_ARTIST . " @@ plainto_tsquery(?)", [$filter->get()]);
         }
 
 
@@ -54,8 +51,7 @@ class DoArtists implements RouteHandler {
         $catalog = $query->fetchAll();
 
         $response->write([
-            "artists" => $catalog,
-            "count" => $count->fetchColumn()->toInt()
+            "artists" => $catalog
         ]);
 
     }

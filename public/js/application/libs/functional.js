@@ -73,3 +73,12 @@ function sum (a, b) { return a + b }
 function sub (a, b) { return a - b }
 function or  (a, b) { return a || b }
 function and (a, b) { return a && b }
+
+/*
+    Help functions for Map
+ */
+function field(name) {
+    return function (obj) {
+        return obj[name];
+    }
+}

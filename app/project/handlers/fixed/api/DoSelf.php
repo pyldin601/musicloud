@@ -22,19 +22,21 @@ use app\project\persistence\db\tables\TSongs;
 class DoSelf implements RouteHandler {
     public function doGet(JsonResponse $response, LoggedIn $me) {
 
-        $stats   = (new SelectQuery(TSongs::_NAME))
-            ->selectCount(TSongs::ID, "tracks_count")
-            ->selectCountDistinct(TSongs::A_ARTIST, "artists_count")
-            ->selectCountDistinct(TSongs::T_ALBUM, "albums_count")
-            ->selectCountDistinct(TSongs::T_GENRE, "genres_count")
+        $songs_count = (new SelectQuery(TSongs::_NAME))
+            ->select("COUNT(".TSongs::ID.")")
             ->where(TSongs::USER_ID, $me->getId())
-            ->fetchOneRow()->get();
+            ->fetchColumn()->get();
 
         $response->write([
             "email" => $me->getEmail(),
             "name" => $me->getName(),
             "id" => $me->getId(),
-            "stats" => $stats
+            "stats" => [
+                "tracks_count" => $songs_count,
+                "artists_count" => $artists_count,
+                "albums_count" => $albums_count,
+                "genres_count" => $genres_count
+            ]
         ]);
 
     }
