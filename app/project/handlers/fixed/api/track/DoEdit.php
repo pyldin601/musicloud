@@ -9,6 +9,7 @@
 namespace app\project\handlers\fixed\api\track;
 
 
+use app\core\exceptions\ControllerException;
 use app\core\http\HttpPost;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
@@ -20,7 +21,8 @@ class DoEdit implements RouteHandler {
         $song_id = $post->get("song_id")->reject("")->get();
         $metadata = $post->get("metadata")->filter("is_array")->get();
 
-        $result = Songs::edit($song_id, $metadata);
+        $result = (count($metadata) == 0) ? array() :
+            Songs::edit($song_id, $metadata);
 
         $response->write(["tracks" => $result]);
 

@@ -35,19 +35,23 @@ homecloud.controller("GroupViewController", [
 ]);
 
 homecloud.controller("AlbumViewController", [
-    "Resolved", "$scope", "SyncService", function (Resolved, $scope, SyncService) {
+    "Resolved", "$scope", "SyncService", "MonitorSongs",
+    function (Resolved, $scope, SyncService, MonitorSongs) {
         $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.album = {
             album_title  : $scope.tracks.first().track_album,
             album_artist : $scope.tracks.first().album_artist,
-            album_year   : $scope.tracks.map(function (t) { return t.track_year }).reduce(or),
-            album_genre  : $scope.tracks.map(function (t) { return t.track_genre }).reduce(or),
-            cover_id     : $scope.tracks.map(function (t) { return t.middle_cover_id }).reduce(or),
+            album_year   : $scope.tracks.map(field("track_year")).reduce(or),
+            album_genre  : $scope.tracks.map(field("track_genre")).reduce(or),
+            cover_id     : $scope.tracks.map(field("middle_cover_id")).reduce(or),
             length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum),
             is_various   : $scope.tracks.any(function (t) { return t.track_artist !== t.album_artist })
         };
         $scope.tracks_selected = [];
         $scope.fetch = null;
+
+        MonitorSongs($scope.tracks, $scope);
+        MonitorSongs($scope.tracks_selected, $scope);
     }
 ]);
 

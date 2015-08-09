@@ -4,6 +4,7 @@
 
 var homecloud = angular.module("HomeCloud");
 
+
 homecloud.factory("AccountService", ["$http", function ($http) {
     return {
         login: function (data) {

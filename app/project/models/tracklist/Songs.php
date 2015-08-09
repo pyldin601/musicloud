@@ -130,23 +130,25 @@ class Songs {
      */
     public static function edit($song_id, array $metadata) {
 
-        $available_keys = [
+        $allowed_keys = [
             TSongs::T_TITLE, TSongs::T_ARTIST, TSongs::T_ALBUM, TSongs::A_ARTIST,
-            TSongs::IS_COMP, TSongs::T_GENRE, TSongs::T_YEAR, TSongs::T_NUMBER, TSongs::DISC
+            TSongs::IS_COMP, TSongs::T_GENRE, TSongs::T_YEAR,
+            TSongs::T_NUMBER, TSongs::DISC
         ];
+
         $numeric_keys = [TSongs::T_NUMBER, TSongs::DISC];
+
+        $filtered_metadata = array_intersect_key($metadata, array_flip($allowed_keys));
 
         $query = (new UpdateQuery(TSongs::_NAME))
             ->where(TSongs::ID, explode(",", $song_id))
             ->where(TSongs::USER_ID, self::$me->getId());
 
-        foreach ($metadata as $key => $value) {
-            if (in_array($key, $available_keys)) {
-                if (in_array($key, $numeric_keys)) {
-                    $query->set($key, is_numeric($value) ? $value : null);
-                } else {
-                    $query->set($key, $value);
-                }
+        foreach ($filtered_metadata as $key => $value) {
+            if (in_array($key, $numeric_keys)) {
+                $query->set($key, is_numeric($value) ? $value : null);
+            } else {
+                $query->set($key, $value);
             }
         }
 

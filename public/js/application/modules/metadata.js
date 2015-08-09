@@ -1,19 +1,5 @@
 var homecloud = angular.module("HomeCloud");
 
-homecloud.run(["$rootScope", "ModalWindow", function ($rootScope, ModalWindow) {
-    $rootScope.editMetadata = function (coll) {
-        if (!coll || coll.length == 0)
-            return;
-        ModalWindow({
-            template: templatePath + "/metadata-view.html",
-            controller: "MetadataController",
-            data: {
-                songs: coll
-            }
-        })
-    }
-}]);
-
 homecloud.controller("MetadataController", ["$scope", "TrackService", "SyncService", "$filter",
     function ($scope, TrackService, SyncService, $filter) {
 
