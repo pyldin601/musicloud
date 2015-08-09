@@ -40,13 +40,16 @@
         };
     }]);
 
-    homecloud.factory("MonitorSongs", [function () {
+    homecloud.factory("MonitorSongs", ["$rootScope", function ($rootScope) {
         return function (coll, scope) {
             scope.$on("songs.deleted", function (e, data) {
-                console.log(coll);
                 scope.$applyAsync(function () {
-                    for (var i = 0; i < coll.length; i += 1) {
-                        for (var j = 0; j < data.length; j += 1) {
+                    for (var j = 0; j < data.length; j += 1) {
+                        //if ($rootScope.player.isPlaying &&
+                        //    $rootScope.player.playlist.track.id == data[j].id) {
+                        //    $rootScope.player.doStop();
+                        //}
+                        for (var i = coll.length - 1; i >= 0; i -= 1) {
                             if (coll[i].id === data[j].id) {
                                 coll.splice(i, 1);
                                 break;
@@ -57,8 +60,8 @@
             });
             scope.$on("songs.updated", function (e, data) {
                 scope.$applyAsync(function () {
-                    for (var i = 0; i < coll.length; i += 1) {
-                        for (var j = 0; j < data.length; j += 1) {
+                    for (var j = 0; j < data.length; j += 1) {
+                        for (var i = coll.length - 1; i >= 0; i += 0) {
                             if (coll[i].id === data[j].id) {
                                 angular.copy(data[j], coll[i]);
                                 break;
