@@ -1,4 +1,4 @@
-@media (max-width: 2000px) {
+@media (max-width: 1600px) {
   .xl-visible {
     display: none;
   }
@@ -654,6 +654,9 @@ a {
 }
 .plain-list.tracks-list .position {
   width: 36px;
+}
+.plain-list.tracks-list .genre {
+  width: 96px;
 }
 .plain-list.tracks-list .track-duration {
   width: 50px;
@@ -1432,6 +1435,52 @@ a {
 }
 @media (max-width: 640px) {
   .library-body .album-view-container {
+    margin-right: 8px;
+  }
+}
+.library-body .tracks-view-container {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  margin-left: 24px;
+  margin-right: 24px;
+}
+@media (max-width: 1024px) {
+  .library-body .tracks-view-container {
+    margin-top: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .tracks-view-container {
+    margin-top: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .library-body .tracks-view-container {
+    margin-bottom: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .tracks-view-container {
+    margin-bottom: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .library-body .tracks-view-container {
+    margin-left: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .tracks-view-container {
+    margin-left: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .library-body .tracks-view-container {
+    margin-right: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .library-body .tracks-view-container {
     margin-right: 8px;
   }
 }

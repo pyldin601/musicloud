@@ -29,17 +29,21 @@ class Context {
 
     public static function contextify(SelectQuery $query) {
 
-        $limit = self::$request->get("l")->filter(Filter::isNumber())->filter(Filter::isPositiveNumber());
-        $offset = self::$request->get("o")->filter(Filter::isNumber());
+        $limit  = self::$request->get("l")
+            ->filter(Filter::isNumber())
+            ->filter(Filter::isPositiveNumber());
+
+        $offset = self::$request->get("o")
+            ->filter(Filter::isNumber())
+            ->filter(Filter::isPositiveNumber());
 
         $sort_field = self::$request->get("sf");
         $sort_order = self::$request->get("so");
 
-        $offset->then(Mapper::call($query, "offset"));
-
         $max_limit = self::$settings->get("catalog", "items_per_request_limit");
 
         $query->limit($limit->filter(Filter::isLessThan($max_limit))->getOrElse($max_limit));
+        $query->offset($offset->orZero());
 
     }
 } 

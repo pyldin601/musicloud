@@ -77,7 +77,9 @@ abstract class BaseQuery implements QueryBuilder {
             $limits[] = "OFFSET " . $this->offset;
         }
 
-        return implode(" ", $limits);
+        $result = implode(" ", $limits);
+
+        return $result;
 
     }
 

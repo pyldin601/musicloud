@@ -44,9 +44,17 @@ function sync(key) {
 }
 
 function array_copy(src, dst) {
-    dst.splice(0, dst.length);
+    while (dst.length) {
+        dst.pop()
+    }
     for (var i = 0; i < src.length; i += 1) {
         dst[i] = src[i];
+    }
+}
+
+function array_add(src, dst) {
+    for (var i = 0; i < src.length; i += 1) {
+        dst.push(src[i]);
     }
 }
 

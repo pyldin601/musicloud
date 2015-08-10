@@ -45,7 +45,7 @@ class DoGenres implements RouteHandler {
 
         $query->addGroupBy(TSongs::T_GENRE);
 
-        $query->orderBy(TSongs::T_GENRE);
+        $query->orderBy(TSongs::T_GENRE)->orderBy(TSongs::ID);
 
         Context::contextify($query);
 

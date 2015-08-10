@@ -107,21 +107,21 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         }
     });
 
-    $routeProvider.when("/album/:artist?/:album?", {
+    $routeProvider.when("/tracks/album", {
         controller: "AlbumViewController",
         templateUrl: templatePath + "/album-view.html",
         resolve: {
             Resolved: ["SearchService", "$location", "$route", "$filter",
                 function (SearchService, $location, $route, $filter) {
-                    var artist = $route.current.params.artist || "",
-                        album  = $route.current.params.album || "";
+                    var artist = $location.search().artist || "",
+                        album  = $location.search().album  || "";
 
                     $route.current.title = String.prototype.concat(
                         $filter("albumFilter")(album) + " by " +
                         $filter("artistFilter")(artist)
                     );
 
-                    return SearchService.tracks({artist: artist, album: album, limit: -1}, 0).then(function (response) {
+                    return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).then(function (response) {
                         return response.data;
                     }, function () {
                         $location.url("/");
@@ -133,6 +133,28 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         title: "Album",
         special: {
             section: "albums"
+        }
+    });
+
+    $routeProvider.when("/tracks", {
+        controller: "TracksViewController",
+        templateUrl: templatePath + "/tracks-view.html",
+        resolve: {
+            Resolved: ["SearchService", "$location",
+                function (SearchService, $location) {
+                    var q = $location.search().q;
+                    return SearchService.tracks({ q: q }, 0).then(function (response) {
+                        return response.data;
+                    }, function () {
+                        $location.url("/");
+                    });
+
+                }
+            ]
+        },
+        title: "Tracks",
+        special: {
+            section: "tracks"
         }
     });
 

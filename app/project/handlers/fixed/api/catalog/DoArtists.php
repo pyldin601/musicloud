@@ -45,7 +45,7 @@ class DoArtists implements RouteHandler {
 
         $query->addGroupBy(TSongs::A_ARTIST);
 
-        $query->orderBy(TSongs::A_ARTIST);
+        $query->orderBy(TSongs::A_ARTIST)->orderBy(TSongs::ID);
 
         $catalog = $query->fetchAll();
 

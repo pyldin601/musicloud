@@ -4,6 +4,7 @@
 
 var homecloud = angular.module("HomeCloud", ["ngRoute", "ngCookies", "httpPostFix", "infinite-scroll"]);
 
+
 homecloud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {
     $rootScope.title = "My Library";
     $rootScope.account = { authorized: false };
@@ -16,7 +17,10 @@ homecloud.run(["AccountService", "$rootScope", function (AccountService, $rootSc
     $rootScope.$on("$routeChangeSuccess", function (e, $route) {
         if ($route.title) {
             document.title = $route.title + " - Music Library";
+        } else {
+            document.title = "Music Library";
         }
     });
+
 }]);
 

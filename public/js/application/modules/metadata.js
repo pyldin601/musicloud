@@ -64,8 +64,8 @@ homecloud.controller("MetadataController", ["$scope", "TrackService", "SyncServi
                 submission.metadata.is_compilation = $scope.flags.is_compilation
             }
 
-            TrackService.edit(submission).success(function () {
-                $route.reload();
+            TrackService.edit(submission).success(function (updated) {
+                SyncService.tracks(updated.tracks);
                 $scope.closeThisWindow();
             });
 

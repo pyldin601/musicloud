@@ -35,7 +35,7 @@ class DoTracks implements RouteHandler {
         $album   = $get->get("album");
         $genre   = $get->get("genre");
 
-        $filter = $q->reject("");
+        $filter = $q->map("trim")->reject("");
 
         $query = (new SelectQuery(TSongs::_NAME))
             ->where(TSongs::USER_ID, $me->getId());
@@ -63,7 +63,8 @@ class DoTracks implements RouteHandler {
                 ->orderBy(TSongs::T_YEAR . " DESC")
                 ->orderBy(TSongs::T_ALBUM)
                 ->orderBy(TSongs::DISC)
-                ->orderBy(TSongs::T_NUMBER);
+                ->orderBy(TSongs::T_NUMBER)
+                ->orderBy(TSongs::ID);
         }
 
         $catalog = $query->fetchAll();

@@ -81,12 +81,11 @@
             </ul>
         </li>
         <li class="player-display">
-            <div class="display">
+            <div class="display" ng-show="player.isLoaded">
                 <div class="cover">
-                    <img ng-if="player.playlist.track.small_cover_id"
-                         ng-src="/file/{{ player.playlist.track.small_cover_id }}">
+                    <img ng-if="player.playlist.track.small_cover_id" ng-src="/file/{{ player.playlist.track.small_cover_id }}">
                 </div>
-                <div class="text" ng-show="player.playlist.track">
+                <div class="text">
                     <div class="now-playing">
                         <div class="track-title">
                             <span class="current-track" ng-bind="player.playlist.track | getTitle"></span>
@@ -138,7 +137,7 @@
             </div>
             <ul class="section-list">
                 <li active-tab="artists">
-                    <a class="block" href="#/artists/">
+                    <a class="block" href="#/artists">
                         <span class="group">
                             <i class="icon-artists"></i>
                             <span class="label padded">Artists</span>
@@ -147,7 +146,7 @@
                     </a>
                 </li>
                 <li active-tab="albums">
-                    <a class="block" href="#/albums/">
+                    <a class="block" href="#/albums">
                         <span class="group">
                             <i class="icon-albums"></i>
                             <span class="label padded">Albums</span>
@@ -156,7 +155,7 @@
                     </a>
                 </li>
                 <li active-tab="compilations">
-                    <a class="block" href="#/compilations/">
+                    <a class="block" href="#/compilations">
                         <span class="group">
                             <i class="icon-albums"></i>
                             <span class="label padded">Compilations</span>
@@ -165,7 +164,7 @@
                     </a>
                 </li>
                 <li active-tab="genres">
-                    <a class="block" href="#/genres/">
+                    <a class="block" href="#/genres">
                         <span class="group">
                             <i class="icon-genres"></i>
                             <span class="label padded">Genres</span>
@@ -173,11 +172,11 @@
                         <div class="badge right" ng-bind="account.user.stats.genres_count | count"></div>
                     </a>
                 </li>
-                <li active-tab="songs">
-                    <a class="block" href="#/songs/">
+                <li active-tab="tracks">
+                    <a class="block" href="#/tracks">
                         <span class="group">
                             <i class="icon-songs"></i>
-                            <span class="label padded">Songs</span>
+                            <span class="label padded">Tracks</span>
                         </span>
                         <div class="badge right" ng-bind-template="{{ account.user.stats.tracks_count | count }}">-</div>
                     </a>

@@ -1,0 +1,72 @@
+<div class="library-body">
+    <div ng-include="'/public/js/application/templates/do-with-selection.html'"></div>
+    <div class="tracks-view-container" multiselect-list="selected" multiselect-destination="tracks_selected"
+            infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
+        <div class="plain-list tracks-list">
+            <div class="plain-list-item header">
+                <div class="last-played right md-visible" title="Date of last playback">Last played</div>
+
+                <div class="skips right lg-visible" title="Skipped times"><i class="fa fa-thumbs-down"></i></div>
+                <div class="plays right sm-visible" title="Played times"><i class="fa fa-headphones"></i></div>
+
+                <div class="bitrate right lg-visible" title="Track bitrate">Bitrate</div>
+                <div class="format right lg-visible" title="Track format">Format</div>
+
+                <div class="rating right sm-visible" title="Track rating">Rating</div>
+
+                <div class="genre right xl-visible" title="Track rating">Genre</div>
+
+                <div class="position left" title="Item number">#</div>
+                <div class="inner-info">
+                    <div class="left inner-title">
+                        <div class="track-duration right">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <div class="inner">Title</div>
+                    </div>
+                    <div class="left inner-artist">Artist</div>
+                </div>
+            </div>
+            <div class="plain-list-item" multiselect-item="track" ng-repeat="track in tracks"
+                 action-play="track" action-context="tracks" action-resolver="null">
+
+                <div class="last-played right md-visible" ng-bind="track.last_played_date | dateFilter"></div>
+
+                <div class="skips right lg-visible" title="Times skipped">
+                    <div class="times-played" ng-visible="track.times_skipped > 0" ng-bind="track.times_skipped"></div>
+                </div>
+
+                <div class="plays right sm-visible" title="Times played">
+                    <div class="times-played" ng-visible="track.times_played > 0" ng-bind="track.times_played"></div>
+                </div>
+
+                <div class="bitrate right lg-visible" ng-bind="track.bitrate | bitrateFilter"></div>
+                <div class="format right lg-visible" ng-bind="track.format"></div>
+
+                <div class="rating right  sm-visible" track-rating="track"></div>
+
+                <div class="genre right xl-visible">
+                    <div class="ellipsis" ng-bind="track.track_genre"></div>
+                </div>
+
+                <div class="position left">
+                    <div ng-hide="player.playlist.track == track" ng-bind="track.track_number"></div>
+                    <div ng-show="player.playlist.track == track">
+                        <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                    </div>
+                </div>
+
+                <div class="inner-info">
+                    <div class="left inner-title">
+                        <div class="track-duration right" ng-bind="track.length | mmss"></div>
+                        <div class="ellipsis" ng-bind="track | getTitle"></div>
+                    </div>
+                    <div class="left inner-artist">
+                        <div class="ellipsis" ng-bind="track | getArtist"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
