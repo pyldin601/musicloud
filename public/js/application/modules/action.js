@@ -40,33 +40,22 @@
         };
     }]);
 
-    homecloud.factory("MonitorSongs", ["$rootScope", function ($rootScope) {
+    homecloud.factory("MonitorSongs", ["$rootScope", "SyncService", function ($rootScope, SyncService) {
         return function (coll, scope) {
             scope.$on("songs.deleted", function (e, data) {
                 scope.$applyAsync(function () {
+                    var player = $rootScope.player;
                     for (var j = 0; j < data.length; j += 1) {
-                        //if ($rootScope.player.isPlaying &&
-                        //    $rootScope.player.playlist.track.id == data[j].id) {
-                        //    $rootScope.player.doStop();
-                        //}
+                        if (player.isPlaying && player.playlist.track.id == data[j].id) {
+                            $rootScope.player.doStop();
+                        }
                         for (var i = coll.length - 1; i >= 0; i -= 1) {
                             if (coll[i].id === data[j].id) {
                                 coll.splice(i, 1);
                                 break;
                             }
                         }
-                    }
-                });
-            });
-            scope.$on("songs.updated", function (e, data) {
-                scope.$applyAsync(function () {
-                    for (var j = 0; j < data.length; j += 1) {
-                        for (var i = coll.length - 1; i >= 0; i += 0) {
-                            if (coll[i].id === data[j].id) {
-                                angular.copy(data[j], coll[i]);
-                                break;
-                            }
-                        }
+                        SyncService.tracks.remove(data);
                     }
                 });
             });

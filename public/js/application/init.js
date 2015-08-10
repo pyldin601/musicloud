@@ -11,11 +11,12 @@ var Empty = {},
  * @returns {Function}
  */
 function sync(key) {
+
     var cache = {};
 
-    return function (coll) {
+    function func(coll) {
         var id, result = [];
-        for (var i = 0; i < coll.length; i++) {
+        for (var i = 0; i < coll.length; i += 1) {
             id = coll[i][key];
             if (id in cache) {
                 for (var k in coll[i]) if (coll[i].hasOwnProperty(k)) {
@@ -29,6 +30,17 @@ function sync(key) {
         }
         return result;
     }
+
+    func.remove = function (coll) {
+        for (var i = 0; i < coll.length; i += 1) {
+            if (coll[i].id in cache) {
+                delete cache[coll[i].id]
+            }
+        }
+    };
+
+    return func;
+
 }
 
 function serialize_uri(obj) {

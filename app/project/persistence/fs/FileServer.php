@@ -9,6 +9,7 @@
 namespace app\project\persistence\fs;
 
 
+use app\core\cache\TempFileProvider;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
@@ -20,9 +21,7 @@ use app\core\http\HttpStatusCodes;
 use app\core\logging\Logger;
 use app\lang\Arrays;
 use app\lang\option\Option;
-use app\project\exceptions\TrackNotFoundException;
 use app\project\persistence\db\tables\TFiles;
-use app\project\persistence\db\tables\MetadataTable;
 
 class FileServer {
 
@@ -30,6 +29,12 @@ class FileServer {
 
     public static function class_init() {
 
+    }
+
+    public static function registerByContent($file_content, $content_type) {
+        $temp_file = TempFileProvider::generate();
+        file_put_contents($temp_file, $file_content);
+        self::register($temp_file, $content_type);
     }
 
     public static function register($file_path, $content_type = null) {
@@ -133,6 +138,8 @@ class FileServer {
 
     public static function unregister($file_id) {
 
+        Logger::printf("Un-registering file %s on file server", $file_id);
+
         $file = (new SelectQuery(TFiles::_NAME))
             ->where(TFiles::ID, $file_id)
             ->fetchOneRow();
@@ -140,11 +147,17 @@ class FileServer {
         $file_data = $file->getOrThrow(ApplicationException::class, "File already unregistered");
 
         if ($file_data[TFiles::USED] > 1) {
+
+            Logger::printf("Decreasing usage count");
+
             (new UpdateQuery(TFiles::_NAME))
                 ->decrement(TFiles::USED)
                 ->where(TFiles::ID, $file_id)
                 ->update();
+
         } else {
+
+            Logger::printf("Removing file completely");
 
             (new DeleteQuery(TFiles::_NAME))
                 ->where(TFiles::ID, $file[TFiles::ID])

@@ -1,8 +1,8 @@
 var homecloud = angular.module("HomeCloud");
 
-homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeout",
+homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeout", "MonitorSongs",
 
-    function ($rootScope, StatsService, SyncService, $cookies, $timeout) {
+    function ($rootScope, StatsService, SyncService, $cookies, $timeout, MonitorSongs) {
 
         var jFrame = $("<div>").appendTo("body"),
             timeout,
@@ -42,7 +42,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                     $rootScope.$applyAsync(function () {
 
                         if (playlist !== undefined && playlist !== player.playlist.tracks) {
-                            player.playlist.tracks = playlist;
+                            angular.copy(playlist, player.playlist.tracks);
                         }
 
                         if (resolver !== undefined) {
@@ -64,7 +64,9 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
                 },
                 doFetch: function () {
-                    if (!player.playlist.fetch) return;
+                    if (!player.playlist.fetch)
+                        return;
+
                     player.playlist.fetch(player.playlist.tracks.length).success(function (data) {
                         if (data.tracks.length > 0) {
                             player.playlist.tracks = player.playlist.tracks.concat(SyncService.tracks(data.tracks));
@@ -92,12 +94,12 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
                     $rootScope.$applyAsync(function () {
 
-                        jFrame.jPlayer("stop").jPlayer("clearMedia");
+                        jFrame.jPlayer("clearMedia");
 
                         player.isLoaded = false;
                         player.isPlaying = false;
                         player.playlist.track = null;
-                        player.playlist.tracks = [];
+                        angular.copy([], player.playlist.tracks) ;
                         player.playlist.fetch = null;
 
                         player.playlist.position = {
@@ -141,8 +143,6 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                     }
 
                     if (index + 1 == player.playlist.tracks.length - 1 && player.playlist.fetch) {
-                        // If it's last try to fetch new tracks
-                        console.log("Fetching new tracks...");
                         player.doFetch();
                     }
 
@@ -203,6 +203,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
         $rootScope.player = player;
 
+        MonitorSongs($rootScope.player.playlist.tracks, $rootScope);
 
     }
 

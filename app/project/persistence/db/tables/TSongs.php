@@ -45,6 +45,7 @@ class TSongs {
     const FTS_ARTIST = "fts_artist";
     const FTS_ALBUM = "fts_album";
     const FTS_ANY = "fts_any";
+    const FTS_GENRE = "fts_genre";
 
     public static function defaultSelection() {
         return implode(",", [

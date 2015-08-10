@@ -12,7 +12,8 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         controller: "AllArtistsViewController",
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
-                return SearchService.artists(Empty, 0).then(function (response) {
+                var q = $location.search().q;
+                return SearchService.artists({ q: q }, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");
@@ -30,7 +31,8 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         controller: "AllAlbumsViewController",
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
-                return SearchService.albums(Empty, 0).then(function (response) {
+                var q = $location.search().q;
+                return SearchService.albums({ q: q }, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");
@@ -48,7 +50,8 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         controller: "AllGenresViewController",
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
-                return SearchService.genres(Empty, 0).then(function (response) {
+                var q = $location.search().q;
+                return SearchService.genres({ q: q }, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");

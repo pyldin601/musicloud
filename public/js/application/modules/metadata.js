@@ -1,7 +1,7 @@
 var homecloud = angular.module("HomeCloud");
 
-homecloud.controller("MetadataController", ["$scope", "TrackService", "SyncService", "$filter",
-    function ($scope, TrackService, SyncService, $filter) {
+homecloud.controller("MetadataController", ["$scope", "TrackService", "SyncService", "$filter", "$route",
+    function ($scope, TrackService, SyncService, $filter, $route) {
 
         var songs        = $scope.songs,
             artists_list = songs.map(field("album_artist")).distinct(),
@@ -64,8 +64,8 @@ homecloud.controller("MetadataController", ["$scope", "TrackService", "SyncServi
                 submission.metadata.is_compilation = $scope.flags.is_compilation
             }
 
-            TrackService.edit(submission).success(function (updated) {
-                SyncService.tracks(updated.tracks);
+            TrackService.edit(submission).success(function () {
+                $route.reload();
                 $scope.closeThisWindow();
             });
 

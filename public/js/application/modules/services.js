@@ -54,8 +54,8 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset;
 
-            if (opts.filter) {
-                uri.filter = opts.filter
+            if (opts.q) {
+                uri.q = opts.q
             }
 
             uri.l = opts.limit || 50;
@@ -67,8 +67,8 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset;
 
-            if (opts.filter) {
-                uri.filter = opts.filter
+            if (opts.q) {
+                uri.q = opts.q
             }
 
             uri.l = opts.limit || 50;
@@ -80,8 +80,8 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset;
 
-            if (opts.filter) {
-                uri.q = opts.filter
+            if (opts.q) {
+                uri.q = opts.q
             }
 
             uri.l = opts.limit || 50;
