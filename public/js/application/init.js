@@ -43,6 +43,13 @@ function sync(key) {
 
 }
 
+function array_copy(src, dst) {
+    dst.splice(0, dst.length);
+    for (var i = 0; i < src.length; i += 1) {
+        dst[i] = src[i];
+    }
+}
+
 function serialize_uri(obj) {
     var str = "";
     for (var key in obj) if (obj.hasOwnProperty(key)) {

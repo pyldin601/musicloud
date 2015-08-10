@@ -43,7 +43,6 @@ class DoArtists implements RouteHandler {
             $query->where(TSongs::FTS_ARTIST . " @@ plainto_tsquery(?)", [$filter->get()]);
         }
 
-
         $query->addGroupBy(TSongs::A_ARTIST);
 
         $query->orderBy(TSongs::A_ARTIST);

@@ -42,7 +42,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                     $rootScope.$applyAsync(function () {
 
                         if (playlist !== undefined && playlist !== player.playlist.tracks) {
-                            angular.copy(playlist, player.playlist.tracks);
+                            array_copy(playlist, player.playlist.tracks);
                         }
 
                         if (resolver !== undefined) {
@@ -99,7 +99,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                         player.isLoaded = false;
                         player.isPlaying = false;
                         player.playlist.track = null;
-                        angular.copy([], player.playlist.tracks) ;
+                        array_copy([], player.playlist.tracks) ;
                         player.playlist.fetch = null;
 
                         player.playlist.position = {
@@ -136,15 +136,20 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
                     var index = player.playlist.tracks.indexOf(player.playlist.track);
 
-                    if (index < player.playlist.tracks.length - 1) {
-                        player.doPlay(player.playlist.tracks[index + 1])
+                    if (index != -1 && index < player.playlist.tracks.length - 1) {
+
+                        player.doPlay(player.playlist.tracks[index + 1]);
+
+                        if (index + 1 == player.playlist.tracks.length - 1 && player.playlist.fetch) {
+                            player.doFetch();
+                        }
+
                     } else {
+
                         player.doStop();
+
                     }
 
-                    if (index + 1 == player.playlist.tracks.length - 1 && player.playlist.fetch) {
-                        player.doFetch();
-                    }
 
                 },
                 doPlayPrev: function () {

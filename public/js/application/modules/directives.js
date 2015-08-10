@@ -157,7 +157,7 @@ homecloud.directive("multiselectList", [function () {
 
                 var all = elem.find("." + scope.multiselectList + "[multiselect-item]");
 
-                angular.copy(all.map(function () {
+                array_copy(all.map(function () {
                     var el = angular.element(this);
                     return el.scope()[el.attr("multiselect-item")]
                 }).toArray(), scope.multiselectDestination);

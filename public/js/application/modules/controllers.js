@@ -38,16 +38,16 @@ homecloud.controller("AlbumViewController", [
     "Resolved", "$scope", "SyncService", "MonitorSongs", "$location",
     function (Resolved, $scope, SyncService, MonitorSongs, $location) {
 
+        if (Resolved.tracks.length == 0) {
+            $location.url("/albums/");
+            return;
+        }
+
         $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.tracks_selected = [];
         $scope.album = {};
 
         $scope.readAlbum = function () {
-
-            if ($scope.tracks.length == 0) {
-                $location.url("/albums/");
-                return;
-            }
 
             var genres = $scope.tracks.map(field("track_genre")).distinct();
 
@@ -55,7 +55,7 @@ homecloud.controller("AlbumViewController", [
                 album_title  : $scope.tracks.first().track_album,
                 album_artist : $scope.tracks.first().album_artist,
                 album_year   : $scope.tracks.map(field("track_year")).reduce(or),
-                album_genre  : (genres.length == 1) ? genres.first() :
+                album_genre  : (genres.length == 1) ? genres.first()    :
                                (genres.length == 2) ? genres.join(", ") :
                                "Multiple Genres",
                 cover_id     : $scope.tracks.map(field("middle_cover_id")).reduce(or),
