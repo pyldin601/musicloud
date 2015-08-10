@@ -532,7 +532,7 @@ input[type="button"] {
 }
 body {
   font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   overflow-y: scroll;
   cursor: default;
 }
@@ -822,7 +822,7 @@ a {
 }
 body {
   font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   overflow-y: scroll;
   cursor: default;
 }

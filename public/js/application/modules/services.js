@@ -134,6 +134,8 @@ homecloud.factory("Library", [function () {
                         big_cover_id: tracks[i].big_cover_id,
                         year: tracks[i].track_year,
                         various_artists: (tracks[i].album_artist !== tracks[i].track_artist),
+                        artist_url: tracks[i].artist_url,
+                        album_url: tracks[i].album_url,
                         tracks: [
                             tracks[i]
                         ]

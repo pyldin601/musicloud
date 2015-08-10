@@ -45,9 +45,13 @@ class DoArtists implements RouteHandler {
 
         $query->addGroupBy(TSongs::A_ARTIST);
 
-        $query->orderBy(TSongs::A_ARTIST)->orderBy(TSongs::ID);
+        $query->orderBy(TSongs::A_ARTIST);
 
-        $catalog = $query->fetchAll();
+        $catalog = $query->fetchAll(null, function ($row) {
+            $artist_encoded = urlencode($row["album_artist"]);
+            $row["artist_url"] = "#/tracks/grouped?artist={$artist_encoded}";
+            return $row;
+        });
 
         $response->write([
             "artists" => $catalog

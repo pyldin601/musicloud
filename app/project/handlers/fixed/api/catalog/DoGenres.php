@@ -45,11 +45,15 @@ class DoGenres implements RouteHandler {
 
         $query->addGroupBy(TSongs::T_GENRE);
 
-        $query->orderBy(TSongs::T_GENRE)->orderBy(TSongs::ID);
+        $query->orderBy(TSongs::T_GENRE);
 
         Context::contextify($query);
 
-        $catalog = $query->fetchAll();
+        $catalog = $query->fetchAll(null, function ($row) {
+            $genre_encoded = urlencode($row["track_genre"]);
+            $row["genre_url"] = "#/tracks/grouped?genre={$genre_encoded}";
+            return $row;
+        });
 
         $response->write([
             "genres" => $catalog

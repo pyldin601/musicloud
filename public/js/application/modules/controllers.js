@@ -48,11 +48,6 @@ homecloud.controller("AlbumViewController", [
     "Resolved", "$scope", "SyncService", "MonitorSongs", "$location",
     function (Resolved, $scope, SyncService, MonitorSongs, $location) {
 
-        if (Resolved.tracks.length == 0) {
-            $location.url("/albums/");
-            return;
-        }
-
         $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.tracks_selected = [];
         $scope.album = {};
@@ -62,17 +57,23 @@ homecloud.controller("AlbumViewController", [
             var genres = $scope.tracks.map(field("track_genre")).distinct(),
                 years  = $scope.tracks.map(field("track_year")).distinct();
 
+            if ($scope.tracks.length == 0) {
+                $location.url("/albums/");
+                return;
+            }
+
             $scope.album = {
-                album_title  : $scope.tracks.map(field("track_album")).reduce(or),
-                album_artist : $scope.tracks.map(field("album_artist")).reduce(or),
-                cover_id     : $scope.tracks.map(field("middle_cover_id")).reduce(or),
+                album_title  : $scope.tracks.map(field("track_album")).reduce(or, ""),
+                album_url    : $scope.tracks.map(field("album_url")).reduce(or, ""),
+                album_artist : $scope.tracks.map(field("album_artist")).reduce(or, ""),
+                cover_id     : $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
                 album_year   : (years.length == 1) ? years.first() :
                                (years.length == 2) ? genres.join(", ") :
                                (genres.min() + " - " + genres.max()),
                 album_genre  : (genres.length == 1) ? genres.first() :
                                (genres.length == 2) ? genres.join(", ") :
                                "Multiple Genres",
-                length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum),
+                length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum, 0),
                 is_various   : $scope.tracks.any(function (t) { return t.track_artist !== t.album_artist })
             };
 

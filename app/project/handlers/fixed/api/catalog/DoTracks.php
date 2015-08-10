@@ -57,17 +57,27 @@ class DoTracks implements RouteHandler {
         }
 
         if ($filter->nonEmpty()) {
-            $query->where(TSongs::FTS_ANY . " @@ plainto_tsquery(?)", [$filter->get()]);
+
+            $query  ->where(TSongs::FTS_ANY . " @@ plainto_tsquery(?)", [$filter->get()]);
+
         } else {
-            $query->orderBy(TSongs::A_ARTIST)
-                ->orderBy(TSongs::T_YEAR . " DESC")
-                ->orderBy(TSongs::T_ALBUM)
-                ->orderBy(TSongs::DISC)
-                ->orderBy(TSongs::T_NUMBER)
-                ->orderBy(TSongs::ID);
+
+            $query  ->orderBy(TSongs::A_ARTIST)
+                    ->orderBy(TSongs::T_YEAR . " DESC")
+                    ->orderBy(TSongs::T_ALBUM)
+                    ->orderBy(TSongs::DISC)
+                    ->orderBy(TSongs::T_NUMBER)
+                    ->orderBy(TSongs::ID);
+
         }
 
-        $catalog = $query->fetchAll();
+        $catalog = $query->fetchAll(null, function ($row) {
+            $artist_encoded = urlencode($row["album_artist"]);
+            $album_encoded  = urlencode($row["track_album"]);
+            $row["artist_url"] = "#/tracks/grouped?artist={$artist_encoded}";
+            $row["album_url"]  = "#/tracks/album?artist={$artist_encoded}&album={$album_encoded}";
+            return $row;
+        });
 
         $response->write([
             "tracks" => $catalog
