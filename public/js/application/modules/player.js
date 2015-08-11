@@ -4,7 +4,13 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
     function ($rootScope, StatsService, SyncService, $cookies, $timeout, MonitorSongs) {
 
-        var jFrame = $("<div>").appendTo("body"),
+        var audio = document.createElement("audio"),
+
+            jFrame = $("<div>").appendTo("body"),
+            supportedFormats = {
+                mp3: audio.canPlayType("audio/mp3") !== "",
+                mp4: audio.canPlayType("audio/mp4") !== ""
+            },
             timeout,
             player = {
                 isLoaded: false,
@@ -52,7 +58,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                         player.playlist.track = track;
 
                         jFrame.jPlayer("setMedia", {
-                            mp3: (track.format == "mp3") ? ("/file/" + track.file_id) : ("/preview/" + track.id)
+                            mp3: (track.format == "mp33") ? ("/file/" + track.file_id) : ("/preview/" + track.id)
                         }).jPlayer("play");
 
                         player.playlist.position.duration = track.length;
@@ -190,7 +196,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
             },
             swfPath: "/public/js/application/libs/jplayer/",
             supplied: "mp3",
-            solution: "html, flash"
+            solution: "html"
         });
 
         jFrame.bind($.jPlayer.event.canplay, function(){

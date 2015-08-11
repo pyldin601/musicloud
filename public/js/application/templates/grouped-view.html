@@ -1,4 +1,5 @@
 <div class="library-body">
+    <div ng-include="'/public/js/application/templates/do-with-selection.html'"></div>
     <div class="library-container" multiselect-list="selected" multiselect-destination="tracks_selected"
          infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
         <div class="album-wrapper clear-fix" ng-repeat="album in albums">
@@ -6,15 +7,15 @@
                 <div class="cover-background">
                     <img ng-if="album.middle_cover_id" ng-src="/file/{{ album.middle_cover_id }}">
                 </div>
-                <div class="album-ratio">
-                    <ul class="rating-body">
-                        <li class="fa fa-star-o"></li>
-                        <li class="fa fa-star-o"></li>
-                        <li class="fa fa-star-o"></li>
-                        <li class="fa fa-star-o"></li>
-                        <li class="fa fa-star-o"></li>
-                    </ul>
-                </div>
+                <!--<div class="album-ratio">-->
+                    <!--<ul class="rating-body">-->
+                        <!--<li class="fa fa-star-o"></li>-->
+                        <!--<li class="fa fa-star-o"></li>-->
+                        <!--<li class="fa fa-star-o"></li>-->
+                        <!--<li class="fa fa-star-o"></li>-->
+                        <!--<li class="fa fa-star-o"></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
             </div>
             <div class="content">
                 <div class="album-title">
@@ -36,8 +37,7 @@
                             <i class="fa fa-headphones"></i>
                         </div>
                         <div class="position left">
-                            <div ng-hide="player.playlist.track == track"
-                                 ng-bind="$index + 1"></div>
+                            <div ng-hide="player.playlist.track == track" ng-bind="$index + 1"></div>
                             <div ng-show="player.playlist.track == track">
                                 <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
                             </div>
