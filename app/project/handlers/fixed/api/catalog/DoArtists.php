@@ -27,6 +27,9 @@ use app\project\persistence\db\tables\TSongs;
 class DoArtists implements RouteHandler {
     public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
 
+        // todo: Do this as soon as possible
+        // select count(distinct track_album), count(id), sum(length) from songs where album_artist = 'Robert Miles';
+
         $filter = $q->map("trim")->reject("");
 
         $query = (new SelectQuery(TSongs::_NAME))
