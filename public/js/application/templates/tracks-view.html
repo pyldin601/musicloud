@@ -4,6 +4,7 @@
             infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
         <div class="plain-list tracks-list">
             <div class="plain-list-item header">
+                <div class="last-played right xl-visible" title="Date of last playback">Added</div>
                 <div class="last-played right md-visible" title="Date of last playback">Last played</div>
 
                 <div class="skips right lg-visible" title="Skipped times"><i class="fa fa-thumbs-down"></i></div>
@@ -30,6 +31,7 @@
             <div class="plain-list-item" multiselect-item="track" ng-repeat="track in tracks"
                  action-play="track" action-context="tracks" action-resolver="null">
 
+                <div class="last-played right xl-visible" ng-bind="track.created_date | dateFilter"></div>
                 <div class="last-played right md-visible" ng-bind="track.last_played_date | dateFilter"></div>
 
                 <div class="skips right lg-visible" title="Times skipped">

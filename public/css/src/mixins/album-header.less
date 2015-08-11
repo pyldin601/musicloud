@@ -14,7 +14,7 @@
     left: -1%;
     right: -1%;
     z-index: 0;
-    opacity: 0.7;
+    opacity: 0.9;
     .blur(50px);
   }
   .artwork-section {
@@ -29,32 +29,39 @@
     line-height: 1.5em;
     text-shadow: 1px 1px 4px #000000;
     padding-top: 2px;
-    .dyn-mar-top;
+    .dyn-mar-top-xs;
     .separator {
       padding: 0 2px;
     }
+    .album-artist {
+      .dyn-pad-h-sm;
+      .dyn-pad-bottom-xs;
+      .dyn-attr(font-size, 12pt, 10pt, 9pt);
+    }
     .album-title {
-      .dyn-pad-h;
+      .dyn-pad-h-sm;
+      .dyn-pad-bottom;
       .dyn-attr(font-size, 20pt, 16pt, 12pt);
-      font-weight: 300;
+      font-weight: 600;
     }
     .album-info {
+      .dyn-pad-h-sm;
       .dyn-attr(font-size, 12pt, 10pt, 9pt);
-      padding-bottom: 2px;
-      .dyn-pad-top-xs;
-      .dyn-pad-h;
-      .album-artist {
-        &:before {
-          content: 'by ';
+      table {
+        text-transform: uppercase;
+        max-width: 100%;
+        table-layout: fixed;
+        text-align: left;
+        th, td {
+          padding-right: 20px;
+          .ellipsis;
         }
-      }
-      .tracks-count {
-        &:after {
-          content: " track(s)";
+        th {
+          .dyn-attr(font-size, 10pt, 9pt, 8pt);
         }
-      }
-      .fa {
-        margin-right: 2px;
+        td {
+          .dyn-attr(font-size, 14pt, 12pt, 9pt);
+        }
       }
     }
   }

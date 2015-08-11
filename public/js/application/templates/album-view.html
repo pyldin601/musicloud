@@ -8,6 +8,9 @@
             </div>
         </div>
         <div class="description-section">
+            <div class="album-artist">
+                <div class="inner" ng-bind="album.album_artist | artistFilter"></div>
+            </div>
             <div class="album-title">
                 <div class="right icons">
                     <i ng-click="action.editSongs(tracks)" class="fa fa-ellipsis-v"></i>
@@ -15,15 +18,32 @@
                 <div class="inner" ng-bind="album.album_title | albumFilter"></div>
             </div>
             <div class="album-info">
-                <span class="album-artist" ng-bind="album.album_artist | artistFilter"></span>
-                <span class="separator">&middot;</span>
-                <span class="album-year" ng-bind="album.album_year"></span>
-                <span class="separator">&middot;</span>
-                <span class="album-genre" ng-bind="album.album_genre | genreFilter"></span>
-                <span class="separator">&middot;</span>
-                <span class="album-length" ng-bind="album.length | mmss"></span>
-                <span class="separator">&middot;</span>
-                <span class="tracks-count" ng-bind="tracks.length"></span>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Release Date</th>
+                            <th>Tracks Count</th>
+                            <th>Duration</th>
+                            <th>Genre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="album-year" ng-bind="album.album_year"></span>
+                            </td>
+                            <td>
+                                <span class="tracks-count" ng-bind="tracks.length"></span>
+                            </td>
+                            <td>
+                                <span class="album-length" ng-bind="album.length | mmss"></span>
+                            </td>
+                            <td>
+                                <span class="album-genre" ng-bind="album.album_genre | genreFilter"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

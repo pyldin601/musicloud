@@ -55,12 +55,13 @@ class FFProbe {
      * Reads audio file metadata and returns Metadata object.
      *
      * @param string $filename
-     * @param string $file_name
+     * @param string $original_filename
      * @return Some
      */
-    public static function read($filename, $file_name = null) {
+    public static function read($filename, $original_filename = null) {
 
         $escaped_filename = escapeshellarg($filename);
+        $file_format = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
 
         $command = sprintf("%s -i %s -v quiet -print_format json -show_format",
             self::$settings->get("tools", "ffprobe_cmd"), $escaped_filename);
@@ -84,14 +85,7 @@ class FFProbe {
 
         $object = new Metadata();
 
-        $object->format_name = Option::Some($file_name)
-            ->reject(null)
-            ->map("pathinfo")
-            ->sel("extension")
-            ->map("strtolower")
-            ->flatMap("part_audio_type")
-            ->orElse($o_format["format_name"])
-            ->getOrElse("application/octet-stream");
+        $object->format_name        = $file_format;
 
         $object->filename           = $o_format["filename"]     ->get();
         $object->duration           = $o_format["duration"]     ->map("doubleval")

@@ -26,7 +26,7 @@ homecloud.controller("UploadController", ["$rootScope", "TrackService", "$route"
                     add: function () {
                         var selector = $("<input>");
                         selector.attr("type", "file");
-                        selector.attr("accept", "audio/*");
+                        selector.attr("accept", "audio/*;audio/flac");
                         selector.attr("multiple", "multiple");
                         selector.attr("name", "file");
                         selector.on("change", function () {

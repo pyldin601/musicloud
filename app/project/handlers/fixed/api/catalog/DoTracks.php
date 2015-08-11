@@ -35,10 +35,13 @@ class DoTracks implements RouteHandler {
         $album   = $get->get("album");
         $genre   = $get->get("genre");
 
+        $order_field = $get->getOrElse("sort", "auto");
+
         $filter = $q->map("trim")->reject("");
 
         $query = (new SelectQuery(TSongs::_NAME))
-            ->where(TSongs::USER_ID, $me->getId());
+            ->where(TSongs::USER_ID, $me->getId())
+            ->where(TSongs::FILE_ID . " IS NOT NULL");
 
         $query->select(TSongs::defaultSelection());
 
@@ -62,12 +65,19 @@ class DoTracks implements RouteHandler {
 
         } else {
 
-            $query  ->orderBy(TSongs::A_ARTIST)
-                    ->orderBy(TSongs::T_YEAR . " DESC")
-                    ->orderBy(TSongs::T_ALBUM)
-                    ->orderBy(TSongs::DISC)
-                    ->orderBy(TSongs::T_NUMBER)
-                    ->orderBy(TSongs::ID);
+            switch ($order_field) {
+                case 'upload':
+                    $query  ->orderBy(TSongs::C_DATE . " DESC");
+                    break;
+                default:
+                    $query  ->orderBy(TSongs::A_ARTIST)
+                            ->orderBy(TSongs::T_YEAR . " DESC")
+                            ->orderBy(TSongs::T_ALBUM)
+                            ->orderBy(TSongs::DISC)
+                            ->orderBy(TSongs::T_NUMBER)
+                            ->orderBy(TSongs::ID);
+            }
+
 
         }
 
