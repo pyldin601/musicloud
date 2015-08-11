@@ -820,6 +820,86 @@ a {
 .library-metadata .dialog .buttons {
   padding: 0 32px 32px;
 }
+.search-background {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (max-width: 1024px) {
+  .search-background {
+    padding-left: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-background {
+    padding-left: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .search-background {
+    padding-right: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-background {
+    padding-right: 8px;
+  }
+}
+.search-results {
+  position: absolute;
+  background-color: #ffffff;
+  top: 100%;
+  width: 100%;
+  margin-top: 1px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
+  color: #000000;
+}
+@media (max-width: 1024px) {
+  .search-results {
+    padding-top: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results {
+    padding-top: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .search-results {
+    padding-bottom: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results {
+    padding-bottom: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .search-results {
+    padding-left: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results {
+    padding-left: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .search-results {
+    padding-right: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results {
+    padding-right: 8px;
+  }
+}
+.search-results .query-loader:after {
+  content: "Loading...";
+}
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
@@ -911,6 +991,7 @@ a {
   vertical-align: middle;
   display: table-cell;
   height: 48px;
+  position: relative;
 }
 .library-header ul.items > li > .group {
   padding-left: 24px;

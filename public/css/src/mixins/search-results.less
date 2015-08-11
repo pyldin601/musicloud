@@ -1,0 +1,21 @@
+.search-background {
+  .dyn-pad-h;
+}
+
+.search-results {
+  position: absolute;
+  background-color: #ffffff;
+  top: 100%;
+  width: 100%;
+  margin-top: 1px;
+  .dyn-pad-v;
+  .dyn-pad-h;
+  box-sizing: border-box;
+  color: #000000;
+
+  .query-loader {
+    &:after {
+      content: "Loading...";
+    }
+  }
+}

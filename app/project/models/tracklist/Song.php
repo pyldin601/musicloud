@@ -15,6 +15,7 @@ use app\core\db\builder\UpdateQuery;
 use app\core\etc\Settings;
 use app\core\exceptions\ControllerException;
 use app\core\exceptions\status\PageNotFoundException;
+use app\core\http\HttpStatusCodes;
 use app\core\logging\Logger;
 use app\libs\AudioScrobbler;
 use app\libs\WaveformGenerator;
@@ -48,8 +49,13 @@ class Song {
         $this->settings = resource(Settings::class);
         $this->me       = resource(LoggedIn::class);
 
-        $this->track_data = SongDao::getSongUsingId($track_id);
-        $this->track_id   = $track_id;
+        if (is_array($track_id)) {
+            $this->track_data = $track_id;
+        } else {
+            $this->track_data = SongDao::getSongUsingId($track_id);
+        }
+
+        $this->track_id   = $this->track_data[TSongs::ID];
 
         $this->checkPermission();
 
@@ -220,22 +226,18 @@ class Song {
         if (!$this->hasPeaks()) {
 
             $new_peaks = WaveformGenerator::generate($this->getFilePath());
+            $file_id = FileServer::registerByContent(json_encode($new_peaks), "application/json");
 
-            SongDao::updateSongUsingId($this->track_id, [
-                "peaks" => "{" . implode(",", $new_peaks) . "}"
-            ]);
-
-            return json_encode($new_peaks);
+            SongDao::updateSongUsingId($this->track_id, [TSongs::PEAKS_ID => $file_id]);
 
         } else {
 
-            return (new SelectQuery(TSongs::_NAME))
-                ->where(TSongs::ID, $this->track_id)
-                ->select("ARRAY_TO_JSON(" . TSongs::PEAKS . ")")
-                ->fetchColumn()
-                ->get();
+            $file_id = $this->track_data[TSongs::PEAKS_ID];
 
         }
+
+        http_response_code(HttpStatusCodes::HTTP_MOVED_PERMANENTLY);
+        header("Location: /file/" . $file_id);
 
     }
 
@@ -250,7 +252,7 @@ class Song {
      * @return bool
      */
     private function hasPeaks() {
-        return $this->track_data[TSongs::PEAKS] !== null;
+        return $this->track_data[TSongs::PEAKS_ID] !== null;
     }
 
     /**

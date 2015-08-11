@@ -40,14 +40,15 @@ class TSongs {
     const C_MID_ID = "middle_cover_id";
     const C_BIG_ID = "big_cover_id";
     const PREVIEW_ID = "preview_id";
-    const PEAKS = "peaks";
+    const PEAKS_ID = "peaks_id";
 
     const FTS_ARTIST = "fts_artist";
     const FTS_ALBUM = "fts_album";
     const FTS_ANY = "fts_any";
     const FTS_GENRE = "fts_genre";
 
-    public static function defaultSelection() {
+
+    static function defaultSelection() {
         return implode(",", [
             TSongs::ID, TSongs::FILE_ID, TSongs::FILE_NAME, TSongs::BITRATE,
             TSongs::LENGTH, TSongs::T_TITLE, TSongs::T_ARTIST, TSongs::T_ALBUM, TSongs::T_GENRE,

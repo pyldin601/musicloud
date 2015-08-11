@@ -14,6 +14,7 @@ use app\core\router\RouteHandler;
 class DoTest implements RouteHandler {
     public function doGet() {
 
+
     }
 }
 

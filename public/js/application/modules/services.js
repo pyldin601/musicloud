@@ -52,7 +52,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
         artists: function (opts, offset) {
             var uri = {};
 
-            uri.o = offset;
+            uri.o = offset || 0;
 
             if (opts.q) {
                 uri.q = opts.q
@@ -65,7 +65,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
         albums: function (opts, offset) {
             var uri = {};
 
-            uri.o = offset;
+            uri.o = offset || 0;
 
             if (opts.q) {
                 uri.q = opts.q
@@ -78,7 +78,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
         genres: function (opts, offset) {
             var uri = {};
 
-            uri.o = offset;
+            uri.o = offset || 0;
 
             if (opts.q) {
                 uri.q = opts.q
@@ -92,7 +92,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             var uri = {};
 
-            uri.o = offset;
+            uri.o = offset || 0;
 
             if (opts.q !== undefined) {
                 uri.q = opts.q

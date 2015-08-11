@@ -55,7 +55,7 @@ homecloud.controller("AlbumViewController", [
         $scope.readAlbum = function () {
 
             var genres = $scope.tracks.map(field("track_genre")).distinct(),
-                years  = $scope.tracks.map(field("track_year")).distinct();
+                years = $scope.tracks.map(field("track_year")).distinct();
 
             if ($scope.tracks.length == 0) {
                 $location.url("/albums/");
@@ -63,18 +63,22 @@ homecloud.controller("AlbumViewController", [
             }
 
             $scope.album = {
-                album_title  : $scope.tracks.map(field("track_album")).reduce(or, ""),
-                album_url    : $scope.tracks.map(field("album_url")).reduce(or, ""),
-                album_artist : $scope.tracks.map(field("album_artist")).reduce(or, ""),
-                cover_id     : $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
-                album_year   : (years.length == 1) ? years.first() :
-                               (years.length == 2) ? genres.join(", ") :
-                               (genres.min() + " - " + genres.max()),
-                album_genre  : (genres.length == 1) ? genres.first() :
-                               (genres.length == 2) ? genres.join(", ") :
-                               "Multiple Genres",
-                length       : $scope.tracks.map(function (t) { return parseFloat(t.length) }).reduce(sum, 0),
-                is_various   : $scope.tracks.any(function (t) { return t.track_artist !== t.album_artist })
+                album_title: $scope.tracks.map(field("track_album")).reduce(or, ""),
+                album_url: $scope.tracks.map(field("album_url")).reduce(or, ""),
+                album_artist: $scope.tracks.map(field("album_artist")).reduce(or, ""),
+                cover_id: $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
+                album_year: (years.length == 1) ? years.first() :
+                    (years.length == 2) ? genres.join(", ") :
+                        (genres.min() + " - " + genres.max()),
+                album_genre: (genres.length == 1) ? genres.first() :
+                    (genres.length == 2) ? genres.join(", ") :
+                        "Multiple Genres",
+                length: $scope.tracks.map(function (t) {
+                    return parseFloat(t.length)
+                }).reduce(sum, 0),
+                is_various: $scope.tracks.any(function (t) {
+                    return t.track_artist !== t.album_artist
+                })
             };
 
         };
@@ -99,7 +103,7 @@ homecloud.controller("TracksViewController", [
         $scope.end = false;
 
         $scope.tracks_selected = [];
-        $scope.fetch = SearchService.tracks.curry({ q : $location.search().q });
+        $scope.fetch = SearchService.tracks.curry({q: $location.search().q});
 
         $scope.load = function () {
             $scope.busy = true;
@@ -128,7 +132,7 @@ homecloud.controller("AllArtistsViewController", [
 
         $scope.load = function () {
             $scope.busy = true;
-            SearchService.artists({ q: $location.search().q }, $scope.artists.length).success(function (data) {
+            SearchService.artists({q: $location.search().q}, $scope.artists.length).success(function (data) {
                 if (data.artists.length > 0) {
                     array_add(data.artists, $scope.artists);
                     $scope.busy = false;
@@ -150,7 +154,7 @@ homecloud.controller("AllAlbumsViewController", [
 
         $scope.load = function () {
             $scope.busy = true;
-            SearchService.albums({ q: $location.search().q }, $scope.albums.length).success(function (data) {
+            SearchService.albums({q: $location.search().q}, $scope.albums.length).success(function (data) {
                 if (data.albums.length > 0) {
                     array_add(data.albums, $scope.albums);
                     $scope.busy = false;
@@ -172,7 +176,7 @@ homecloud.controller("AllGenresViewController", [
 
         $scope.load = function () {
             $scope.busy = true;
-            SearchService.genres({ q: $location.search().q }, $scope.genres.length).success(function (data) {
+            SearchService.genres({q: $location.search().q}, $scope.genres.length).success(function (data) {
                 if (data.genres.length > 0) {
                     array_add(data.genres, $scope.genres);
                     $scope.busy = false;
@@ -180,6 +184,66 @@ homecloud.controller("AllGenresViewController", [
                     $scope.end = true;
                 }
             })
+        };
+
+    }
+]);
+
+
+homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService",
+
+    function ($scope, SearchService, $timeout, SyncService) {
+        var promise, delay = 200;
+
+        $scope.query = "";
+        $scope.results = {};
+
+        $scope.$watch("query", function (newValue) {
+            if (!newValue) {
+                $scope.reset();
+                return;
+            }
+            $timeout.cancel(promise);
+            promise = $timeout($scope.search, delay);
+        });
+
+        $scope.search = function () {
+
+            $scope.results.artists_busy = true;
+            $scope.results.albums_busy = true;
+            $scope.results.tracks_busy = true;
+
+            SearchService.tracks({ q: $scope.query, limit: 5 }).success(function (response) {
+                $scope.results.tracks = SyncService.tracks(response.tracks);
+                $scope.results.tracks_busy = false;
+            });
+
+            SearchService.artists({ q: $scope.query, limit: 5 }).success(function (response) {
+                $scope.results.artists = response.artists;
+                $scope.results.artists_busy = false;
+            });
+
+            SearchService.albums({ q: $scope.query, limit: 5 }).success(function (response) {
+                $scope.results.albums = response.albums;
+                $scope.results.albums_busy = false;
+            });
+
+        };
+
+        $scope.$on("$routeChangeSuccess", function () {
+            $scope.reset();
+        });
+
+        $scope.reset = function () {
+            $scope.query = "";
+            $scope.results = {
+                artists: [],
+                albums: [],
+                tracks: [],
+                artists_busy: false,
+                albums_busy: false,
+                tracks_busy: false
+            };
         };
 
     }

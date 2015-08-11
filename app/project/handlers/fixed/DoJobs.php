@@ -26,15 +26,14 @@ class DoJobs implements RouteHandler {
                 set_time_limit(30);
                 (new SelectQuery(TSongs::_NAME))
                     ->select(TSongs::FILE_NAME, TSongs::FILE_ID, TSongs::ID)
-                    ->where(TSongs::PEAKS . " IS NULL")
+                    ->where(TSongs::PEAKS_ID . " IS NULL")
                     ->where(TSongs::FILE_ID . " IS NOT NULL")
                     ->limit(1)
                     ->eachRow(function ($row) {
                         Logger::printf("Creating peaks for file: %s", $row[TSongs::FILE_NAME]);
                         $peaks = WaveformGenerator::generate(FileServer::getFileUsingId($row[TSongs::FILE_ID]));
-                        SongDao::updateSongUsingId($row[TSongs::ID], [
-                            "peaks" => "{" . implode(",", $peaks) . "}"
-                        ]);
+                        $file_id = FileServer::registerByContent(json_encode($peaks), "application/json");
+                        SongDao::updateSongUsingId($row[TSongs::ID], [TSongs::PEAKS_ID => $file_id]);
                     });
                 sleep(1);
             }

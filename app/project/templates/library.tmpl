@@ -51,11 +51,67 @@
                     <span class="padded logo">Media Library</span>
                 </span>
         </li>
-        <li class="nav-search">
-                <span class="group">
-                    <i class="fa fa-search"></i>
-                    <span class="padded label">Search</span>
-                </span>
+        <li class="nav-search" ng-controller="SearchController">
+            <div class="search-background">
+                <input class="main-search-box" type="text" ng-model="query" placeholder="Search">
+            </div>
+            <div class="search-results" ng-show="query.length > 0">
+                <div class="search-group">
+                    <!-- ARTISTS -->
+                    <div class="search-title">
+                        <i class="icon-artists"></i>
+                        <span class="title">
+                            <a href="#/artists?q={{ query | uri }}">In Artists</a>
+                        </span>
+                    </div>
+                    <div class="query-loader" ng-show="results.artists_busy"></div>
+                    <div class="search-content" ng-hide="results.artists_busy">
+                        <div class="content-item" ng-repeat="artist in results.artists">
+                            <div class="title">
+                                <a ng-href="{{ artist.artist_url }}" ng-bind="artist.album_artist | artistFilter"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ALBUMS -->
+                    <div class="search-title">
+                        <i class="icon-artists"></i>
+                        <span class="title">
+                            <a href="#/albums?q={{ query | uri }}">In Albums</a>
+                        </span>
+                    </div>
+                    <div class="query-loader" ng-show="results.albums_busy"></div>
+                    <div class="search-content" ng-hide="results.albums_busy">
+                        <div class="content-item" ng-repeat="album in results.albums">
+                            <div class="title">
+                                <a ng-href="{{ album.album_url }}">
+                                    <span class="artist" ng-bind="album.album_artist | artistFilter"></span>
+                                    -
+                                    <span class="album" ng-bind="album.track_album | albumFilter"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TRACKS -->
+                    <div class="search-title">
+                        <i class="icon-artists"></i>
+                        <span class="title">
+                            <a href="#/tracks?q={{ query | uri }}">In Tracks</a>
+                        </span>
+                    </div>
+                    <div class="query-loader" ng-show="results.tracks_busy"></div>
+                    <div class="search-content" ng-hide="results.tracks_busy">
+                        <div class="content-item" ng-repeat="track in results.tracks">
+                            <div class="title">
+                                <a ng-href="{{ track.album_url }}">
+                                    <span class="artist" ng-bind="track | getArtist"></span>
+                                    -
+                                    <span class="title" ng-bind="track | getTitle"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </li>
         <li class="nav-profile">
                 <span class="group">
@@ -73,7 +129,8 @@
                     <i class="fa fa-backward"></i>
                 </li>
                 <li class="ctrl-play" ng-click="player.doPlayPause()">
-                    <i class="fa" ng-class="{'fa-refresh rotate': player.isBuffering && player.isPlaying, 'fa-play': !player.isPlaying, 'fa-pause': !player.isBuffering && player.isPlaying}"></i>
+                    <i class="fa"
+                       ng-class="{'fa-refresh rotate': player.isBuffering && player.isPlaying, 'fa-play': !player.isPlaying, 'fa-pause': !player.isBuffering && player.isPlaying}"></i>
                 </li>
                 <li class="ctrl-next" ng-click="player.doPlayNext()">
                     <i class="fa fa-forward"></i>
@@ -83,7 +140,8 @@
         <li class="player-display">
             <div class="display" ng-show="player.isLoaded">
                 <div class="cover">
-                    <img ng-if="player.playlist.track.small_cover_id" ng-src="/file/{{ player.playlist.track.small_cover_id }}">
+                    <img ng-if="player.playlist.track.small_cover_id"
+                         ng-src="/file/{{ player.playlist.track.small_cover_id }}">
                 </div>
                 <div class="text">
                     <div class="now-playing">
@@ -118,7 +176,8 @@
                             <div class="volume-bulb"></div>
                         </div>
                     </div>
-                    <i class="fa" ng-class="{'fa-volume-off': player.volume <= 0.3, 'fa-volume-down': player.volume > 0.3 && player.volume <= 0.6, 'fa-volume-up': player.volume > 0.6}"></i>
+                    <i class="fa"
+                       ng-class="{'fa-volume-off': player.volume <= 0.3, 'fa-volume-down': player.volume > 0.3 && player.volume <= 0.6, 'fa-volume-up': player.volume > 0.6}"></i>
                 </li>
             </ul>
         </li>
@@ -142,6 +201,7 @@
                             <i class="icon-artists"></i>
                             <span class="label padded">Artists</span>
                         </span>
+
                         <div class="badge right" ng-bind="account.user.stats.artists_count | count"></div>
                     </a>
                 </li>
@@ -151,6 +211,7 @@
                             <i class="icon-albums"></i>
                             <span class="label padded">Albums</span>
                         </span>
+
                         <div class="badge right" ng-bind="account.user.stats.albums_count | count"></div>
                     </a>
                 </li>
@@ -160,6 +221,7 @@
                             <i class="icon-albums"></i>
                             <span class="label padded">Compilations</span>
                         </span>
+
                         <div class="badge right" ng-bind="account.user.stats.compilations_count | count"></div>
                     </a>
                 </li>
@@ -169,6 +231,7 @@
                             <i class="icon-genres"></i>
                             <span class="label padded">Genres</span>
                         </span>
+
                         <div class="badge right" ng-bind="account.user.stats.genres_count | count"></div>
                     </a>
                 </li>
@@ -178,7 +241,9 @@
                             <i class="icon-songs"></i>
                             <span class="label padded">Tracks</span>
                         </span>
-                        <div class="badge right" ng-bind-template="{{ account.user.stats.tracks_count | count }}">-</div>
+
+                        <div class="badge right" ng-bind-template="{{ account.user.stats.tracks_count | count }}">-
+                        </div>
                     </a>
                 </li>
             </ul>
@@ -193,30 +258,30 @@
                 <span class="label">Playlists</span>
             </div>
             <ul class="section-list">
-<!--                <li>
-                    <div class="group">
-                        <i class="fa fa-music"></i>
-                        <span class="label padded">Best of All</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="group">
-                        <i class="fa fa-music"></i>
-                        <span class="label padded">Slow Motion</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="group">
-                        <i class="fa fa-music"></i>
-                        <span class="label padded">The Beatles</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="group">
-                        <i class="fa fa-music"></i>
-                        <span class="label padded">Michael Jackson</span>
-                    </div>
-                </li>-->
+                <!--                <li>
+                                    <div class="group">
+                                        <i class="fa fa-music"></i>
+                                        <span class="label padded">Best of All</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group">
+                                        <i class="fa fa-music"></i>
+                                        <span class="label padded">Slow Motion</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group">
+                                        <i class="fa fa-music"></i>
+                                        <span class="label padded">The Beatles</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="group">
+                                        <i class="fa fa-music"></i>
+                                        <span class="label padded">Michael Jackson</span>
+                                    </div>
+                                </li>-->
             </ul>
         </div>
     </div>

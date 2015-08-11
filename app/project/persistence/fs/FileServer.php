@@ -34,7 +34,7 @@ class FileServer {
     public static function registerByContent($file_content, $content_type) {
         $temp_file = TempFileProvider::generate();
         file_put_contents($temp_file, $file_content);
-        self::register($temp_file, $content_type);
+        return self::register($temp_file, $content_type);
     }
 
     public static function register($file_path, $content_type = null) {
