@@ -35,7 +35,7 @@ homecloud.controller("GroupViewController", [
             $scope.albums = Library.groupAlbums($scope.tracks);
         };
 
-        $scope.$watch($scope.tracks, $scope.group, true);
+        $scope.$watch("tracks", $scope.group, true);
 
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);

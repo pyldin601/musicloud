@@ -101,12 +101,12 @@ class Song {
      *
      * @param $file_path
      * @param UpdateQuery $query
-     * @throws InvalidAudioFileException
+     * @param string $file_name to be used for file type detection
      */
-    private function loadMetadataFromSongIntoQuery($file_path, UpdateQuery $query) {
+    private function loadMetadataFromSongIntoQuery($file_path, UpdateQuery $query, $file_name = null) {
 
         /** @var Metadata $metadata */
-        $metadata = FFProbe::read($file_path)
+        $metadata = FFProbe::read($file_path, $file_name)
             ->getOrThrow(InvalidAudioFileException::class);
 
         $query->set(TSongs::T_ARTIST,  $metadata->meta_artist)
@@ -116,7 +116,7 @@ class Song {
               ->set(TSongs::DISC,      $metadata->meta_disc_number)
               ->set(TSongs::BITRATE,   $metadata->bitrate)
               ->set(TSongs::LENGTH,    $metadata->duration)
-              ->set(TSongs::A_ARTIST,  $metadata->meta_album_artist ?: $metadata->meta_artist)
+              ->set(TSongs::A_ARTIST,  $metadata->meta_album_artist)
               ->set(TSongs::T_GENRE,   $metadata->meta_genre)
               ->set(TSongs::T_ALBUM,   $metadata->meta_album)
               ->set(TSongs::T_COMMENT, $metadata->meta_comment)
@@ -142,7 +142,7 @@ class Song {
         $query->where(TSongs::ID, $this->track_id);
 
         $this->loadCoversFromSongIntoQuery($file_path, $query);
-        $this->loadMetadataFromSongIntoQuery($file_path, $query);
+        $this->loadMetadataFromSongIntoQuery($file_path, $query, $file_name);
 
         // Warning! Due to speed increase FileServer deletes
         // source file after registration.

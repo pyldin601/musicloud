@@ -55,15 +55,15 @@ class FFProbe {
      * Reads audio file metadata and returns Metadata object.
      *
      * @param string $filename
+     * @param string $file_name
      * @return Some
      */
-    public static function read($filename) {
+    public static function read($filename, $file_name = null) {
 
         $escaped_filename = escapeshellarg($filename);
 
         $command = sprintf("%s -i %s -v quiet -print_format json -show_format",
             self::$settings->get("tools", "ffprobe_cmd"), $escaped_filename);
-
 
         exec($command, $result, $status);
 
@@ -84,21 +84,35 @@ class FFProbe {
 
         $object = new Metadata();
 
+        $object->format_name = Option::Some($file_name)
+            ->reject(null)
+            ->map("pathinfo")
+            ->sel("extension")
+            ->map("strtolower")
+            ->flatMap("part_audio_type")
+            ->orElse($o_format["format_name"])
+            ->getOrElse("application/octet-stream");
+
         $object->filename           = $o_format["filename"]     ->get();
-        $object->format_name        = $o_format["format_name"]  ->get();
-        $object->duration           = $o_format["duration"]     ->map("doubleval")->get();
-        $object->size               = $o_format["size"]         ->toInt()->get();
-        $object->bitrate            = $o_format["bit_rate"]     ->toInt()->get();
+        $object->duration           = $o_format["duration"]     ->map("doubleval")
+                                                                ->get();
+        $object->size               = $o_format["size"]         ->toInt()
+                                                                ->get();
+        $object->bitrate            = $o_format["bit_rate"]     ->toInt()
+                                                                ->get();
 
         $object->meta_artist        = $o_tags["artist"]         ->orEmpty();
         $object->meta_title         = $o_tags["title"]          ->orEmpty();
         $object->meta_genre         = $o_tags["genre"]          ->orEmpty();
         $object->meta_date          = $o_tags["date"]           ->orEmpty();
         $object->meta_album         = $o_tags["album"]          ->orEmpty();
-        $object->meta_track_number  = $o_tags["track"]          ->toInt()->orNull();
-        $object->meta_disc_number   = $o_tags["disc"]           ->toInt()->orNull();
+        $object->meta_track_number  = $o_tags["track"]          ->toInt()
+                                                                ->orNull();
+        $object->meta_disc_number   = $o_tags["disc"]           ->toInt()
+                                                                ->orNull();
         $object->meta_album_artist  = $o_tags["album_artist"]   ->orEmpty();
-        $object->is_compilation     = $o_tags["compilation"]    ->map("bool")->getOrElse("false");
+        $object->is_compilation     = $o_tags["compilation"]    ->map("bool")
+                                                                ->getOrElse("false");
         $object->meta_comment       = $o_tags["comment"]        ->orEmpty();
 
         return Option::Some($object);
