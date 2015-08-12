@@ -43,6 +43,14 @@ homecloud.factory("TrackService", ["$http", function ($http) {
         },
         edit: function (data) {
             return $http.post("/api/track/edit", data);
+        },
+        changeArtwork: function (data) {
+            return $http.post("/api/track/artwork", data, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            });
         }
     };
 }]);
@@ -60,7 +68,7 @@ homecloud.factory("HeadersService", ["$http", function ($http) {
 
 homecloud.factory("SearchService", ["$http", function ($http) {
     return {
-        artists: function (opts, offset) {
+        artists: function (opts, offset, special) {
             var uri = {};
 
             uri.o = offset || 0;
@@ -69,9 +77,9 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/artists?" + serialize_uri(uri));
+            return $http.get("/api/catalog/artists?" + serialize_uri(uri), special);
         },
-        albums: function (opts, offset) {
+        albums: function (opts, offset, special) {
             var uri = {};
 
             uri.o = offset || 0;
@@ -80,9 +88,9 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/albums?" + serialize_uri(uri));
+            return $http.get("/api/catalog/albums?" + serialize_uri(uri), special);
         },
-        genres: function (opts, offset) {
+        genres: function (opts, offset, special) {
             var uri = {};
 
             uri.o = offset || 0;
@@ -91,9 +99,9 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/genres?" + serialize_uri(uri));
+            return $http.get("/api/catalog/genres?" + serialize_uri(uri), special);
         },
-        tracks: function (opts, offset) {
+        tracks: function (opts, offset, special) {
 
             var uri = {};
 
@@ -101,12 +109,13 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             if (opts.q !== undefined) { uri.q = opts.q }
             if (opts.s !== undefined) { uri.sort = opts.s }
+            if (opts.compilations !== undefined) { uri.compilations = opts.compilations }
             if (opts.artist !== undefined) { uri.artist = opts.artist }
             if (opts.album !== undefined) { uri.album = opts.album }
             if (opts.genre !== undefined) { uri.genre = opts.genre }
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/tracks?" + serialize_uri(uri));
+            return $http.get("/api/catalog/tracks?" + serialize_uri(uri), special);
         }
     };
 }]);

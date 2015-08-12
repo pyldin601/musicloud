@@ -15,7 +15,7 @@ use app\lang\option\Option;
 use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 
-class HttpFile extends AbstractRepository implements SingletonInterface, Injectable {
+class HttpFiles extends AbstractRepository implements SingletonInterface, Injectable {
 
     use Singleton;
 

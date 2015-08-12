@@ -215,10 +215,13 @@ homecloud.controller("AllGenresViewController", [
 ]);
 
 
-homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService",
+homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService", "$q",
 
-    function ($scope, SearchService, $timeout, SyncService) {
-        var promise, delay = 200;
+    function ($scope, SearchService, $timeout, SyncService, $q) {
+
+        var promise,
+            delay = 200,
+            canceller;
 
         $scope.query = "";
         $scope.results = {};
@@ -234,21 +237,26 @@ homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout",
 
         $scope.search = function () {
 
+            if (canceller) canceller.resolve();
+
+            canceller = $q.defer();
+
             $scope.results.artists_busy = true;
             $scope.results.albums_busy = true;
             $scope.results.tracks_busy = true;
 
-            SearchService.tracks({ q: $scope.query, limit: 5 }).success(function (response) {
+
+            SearchService.tracks({ q: $scope.query, limit: 5 }, 0, { timeout: canceller.promise }).success(function (response) {
                 $scope.results.tracks = SyncService.tracks(response.tracks);
                 $scope.results.tracks_busy = false;
             });
 
-            SearchService.artists({ q: $scope.query, limit: 5 }).success(function (response) {
+            SearchService.artists({ q: $scope.query, limit: 5 }, 0, { timeout: canceller.promise }).success(function (response) {
                 $scope.results.artists = response.artists;
                 $scope.results.artists_busy = false;
             });
 
-            SearchService.albums({ q: $scope.query, limit: 5 }).success(function (response) {
+            SearchService.albums({ q: $scope.query, limit: 5 }, 0, { timeout: canceller.promise }).success(function (response) {
                 $scope.results.albums = response.albums;
                 $scope.results.albums_busy = false;
             });

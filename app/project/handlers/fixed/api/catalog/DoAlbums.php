@@ -18,6 +18,7 @@ use app\lang\option\Option;
 use app\project\CatalogTools;
 use app\project\libs\Metadata;
 use app\project\models\single\LoggedIn;
+use app\project\models\tracklist\Songs;
 use app\project\persistence\db\tables\AudiosTable;
 use app\project\persistence\db\tables\CoversTable;
 use app\project\persistence\db\tables\MetaAlbumsTable;
@@ -33,11 +34,14 @@ class DoAlbums implements RouteHandler {
         $query = (new SelectQuery(TSongs::_NAME))
             ->where(TSongs::USER_ID, $me->getId())
             ->where(TSongs::IS_COMP, "0")
+            ->where(TSongs::T_ALBUM . " != ''")
             ->select(TSongs::A_ARTIST)
             ->select(TSongs::T_ALBUM)
             ->selectAlias("MIN(".TSongs::C_BIG_ID.")", TSongs::C_BIG_ID)
             ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
             ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
+
+        $query->where(TSongs::IS_COMP, "0");
 
         Context::contextify($query);
 

@@ -22,14 +22,20 @@ homecloud.filter("count", function () {
 
 homecloud.filter("mmss", function () {
     return function (value) {
-        var sec_num = parseInt(value, 10);
-        var minutes = Math.floor(sec_num / 60);
-        var seconds = sec_num - (minutes * 60);
+        var sec_num = parseInt(value, 10),
+            hours   = Math.floor(sec_num / 3600),
+            minutes = Math.floor(sec_num / 60) % 60,
+            seconds = sec_num % 60,
+            result = [];
 
-        if (minutes < 10) {minutes = "0"+minutes;}
-        if (seconds < 10) {seconds = "0"+seconds;}
+        if (hours > 0) {
+            result.push(((hours < 10) ? "0" : "") + hours);
+        }
 
-        return minutes+':'+seconds;
+        result.push(((minutes < 10) ? "0" : "") + minutes);
+        result.push(((seconds < 10) ? "0" : "") + seconds);
+
+        return result.join(":");
     }
 });
 

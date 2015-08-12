@@ -102,9 +102,9 @@ class Songs {
 
     public static function wipeOldPreviews() {
         foreach (SongDao::getListOfUnusedPreviews() as $song) {
-                Logger::printf("Wiping old track preview (file id %s)", $song[TSongs::PREVIEW_ID]);
+            Logger::printf("Wiping old track preview (file id %s)", $song[TSongs::PREVIEW_ID]);
             FileServer::unregister($song[TSongs::PREVIEW_ID]);
-               SongDao::updateSongUsingId($song[TSongs::ID], [TSongs::PREVIEW_ID => null]);
+            SongDao::updateSongUsingId($song[TSongs::ID], [TSongs::PREVIEW_ID => null]);
         }
     }
 
@@ -201,6 +201,7 @@ class Songs {
             ->where(TSongs::USER_ID, self::$me->getId())
             ->fetchAll();
 
+        // Delete exists covers
         foreach ($song_objects as $song) {
 
             if ($song[TSongs::C_SMALL_ID]) {
@@ -215,30 +216,32 @@ class Songs {
 
         }
 
-        $covers = FFProbe::readTempCovers($cover_file);
+        $covers = FFProbe::readTempCovers($cover_file)->get();
 
         $query = (new UpdateQuery(TSongs::_NAME))
             ->where(TSongs::ID, $song_ids)
             ->where(TSongs::USER_ID, self::$me->getId());
 
-        if ($covers->nonEmpty()) {
+        $full_cover_id = FileServer::register($covers[0]);
+        $middle_cover_id = FileServer::register($covers[1]);
+        $small_cover_id = FileServer::register($covers[2]);
 
-            $full_cover_id   = FileServer::register($covers->get()[0]);
-            $middle_cover_id = FileServer::register($covers->get()[1]);
-            $small_cover_id  = FileServer::register($covers->get()[2]);
+        $query  ->set(TSongs::C_SMALL_ID, $small_cover_id)
+                ->set(TSongs::C_MID_ID, $middle_cover_id)
+                ->set(TSongs::C_BIG_ID, $full_cover_id);
 
-            $query  ->set(TSongs::C_SMALL_ID, $small_cover_id)
-                    ->set(TSongs::C_MID_ID, $middle_cover_id)
-                    ->set(TSongs::C_BIG_ID, $full_cover_id);
-
-        }
-
-        $query->returning(implode(",", [TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID]));
+        $query->returning(implode(",", [
+            TSongs::ID, TSongs::C_SMALL_ID,
+            TSongs::C_MID_ID, TSongs::C_BIG_ID
+        ]));
 
         return $query->fetchAll();
 
     }
 
+    public static function checkRights($track_id) {
+
+    }
 
 
 }

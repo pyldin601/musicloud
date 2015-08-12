@@ -48,6 +48,9 @@
             <div class="left cover">
                 <div class="cover-background">
                     <img ng-if="album.middle_cover_id" ng-src="/file/{{ album.middle_cover_id }}">
+                    <div class="artwork-chooser">
+                        <div class="ml-button" change-artwork="album.tracks"><i class="fa fa-picture-o"></i> Change</div>
+                    </div>
                 </div>
             </div>
             <div class="content">
@@ -57,7 +60,6 @@
                         <div class="inline name">
                             <a ng-bind="album.title | albumFilter" ng-href="{{ album.album_url }}"></a>
                         </div>
-                        <div class="inline band">on <a href="{{ album.artist_url }}" ng-bind="album.album_artist | artistFilter"></a></div>
                     </div>
                 </div>
                 <div class="album-tracks">

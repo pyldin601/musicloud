@@ -36,6 +36,7 @@ class DoGenres implements RouteHandler {
             ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
             ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
 
+//        $query->where(TSongs::IS_COMP, "0");
 
         Context::contextify($query);
 

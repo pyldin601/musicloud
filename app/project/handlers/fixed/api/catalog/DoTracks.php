@@ -29,7 +29,7 @@ use app\project\persistence\db\tables\TSongs;
 
 class DoTracks implements RouteHandler {
 
-    public function doGet(JsonResponse $response, Option $q, HttpGet $get, LoggedIn $me) {
+    public function doGet(JsonResponse $response, Option $q, HttpGet $get, LoggedIn $me, Option $compilations) {
 
         $artist  = $get->get("artist");
         $album   = $get->get("album");
@@ -44,6 +44,10 @@ class DoTracks implements RouteHandler {
             ->where(TSongs::FILE_ID . " IS NOT NULL");
 
         $query->select(TSongs::defaultSelection());
+
+        if ($compilations->nonEmpty()) {
+            $query->where(TSongs::IS_COMP, $compilations->get());
+        }
 
         Context::contextify($query);
 

@@ -4,7 +4,36 @@
 
 var homecloud = angular.module("HomeCloud");
 
-
+homecloud.directive("changeArtwork", ["TrackService", "SyncService", function (TrackService, SyncService) {
+    return {
+        scope: {
+            tracks: "=changeArtwork"
+        },
+        restrict: "A",
+        link: function (scope, elem, attrs) {
+            var onClickEvent = function (event) {
+                var selector = $("<input>");
+                selector.attr("type", "file");
+                selector.attr("accept", "image/jpeg,image/mjpeg,image/png,image/gif");
+                selector.attr("name", "artwork_file");
+                selector.on("change", function () {
+                    if (this.files.length == 0) return;
+                    var that = this.files[0];
+                    var track_id = scope.tracks.map(field("id")).join(",");
+                    console.log(that);
+                    var form = new FormData();
+                    form.append("artwork_file", that);
+                    form.append("track_id", track_id);
+                    TrackService.changeArtwork(form).success(function (data) {
+                        SyncService.tracks(data);
+                    });
+                });
+                selector.click();
+            };
+            elem.bind("click", onClickEvent);
+        }
+    }
+}]);
 
 homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
     return {
@@ -16,7 +45,11 @@ homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
         restrict: "A",
         link: function (scope, elem, attrs) {
             elem.on("dblclick", function () {
-                $rootScope.player.doPlay(scope.actionPlay, scope.actionContext, scope.actionResolver);
+                $rootScope.player.doPlay(
+                    scope.actionPlay,
+                    scope.actionContext,
+                    scope.actionResolver
+                );
             });
         }
     }

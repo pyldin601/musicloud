@@ -48,6 +48,9 @@
             <div class="left cover">
                 <div class="cover-background">
                     <img ng-if="album.middle_cover_id" ng-src="/file/{{ album.middle_cover_id }}">
+                    <div class="artwork-chooser">
+                        <div class="ml-button" change-artwork="album.tracks"><i class="fa fa-picture-o"></i> Change</div>
+                    </div>
                 </div>
             </div>
             <div class="content">

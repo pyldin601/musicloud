@@ -43,7 +43,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                 function (SearchService, $location, $route, $filter) {
                     var artist = decodeUriPlus($route.current.params.artist);
                     $route.current.title = $filter("artistFilter")(artist);
-                    return SearchService.tracks({ artist: artist, limit: -1 }, 0).then(function (response) {
+                    return SearchService.tracks({ artist: artist, limit: -1, compilations: 0 }, 0).then(function (response) {
                         return response.data;
                     });
                 }
@@ -161,7 +161,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                 function (SearchService, $location) {
                     var q = $location.search().q,
                         s = $location.search().s;
-                    return SearchService.tracks({ q: q, s: s }, 0).then(function (response) {
+                    return SearchService.tracks({ q: q, s: s, compilations: 0 }, 0).then(function (response) {
                         return response.data;
                     }, function () {
                         $location.url("/");

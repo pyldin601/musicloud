@@ -5,6 +5,9 @@
         <div class="artwork-section left">
             <div class="cover-background">
                 <img ng-if="album.cover_id" ng-src="/file/{{ album.cover_id }}">
+                <div class="artwork-chooser">
+                    <div class="ml-button" change-artwork="tracks"><i class="fa fa-picture-o"></i> Change</div>
+                </div>
             </div>
         </div>
         <div class="description-section">
@@ -72,7 +75,7 @@
                     <div class="left inner-artist" ng-show="album.is_various">Artist</div>
                 </div>
             </div>
-            <div class="plain-list-item" multiselect-item="track" ng-repeat="track in tracks"
+            <div class="plain-list-item track-item" multiselect-item="track" ng-repeat="track in tracks"
                  action-play="track" action-context="tracks" action-resolver="null">
 
                 <div class="last-played right xl-visible" ng-bind="track.created_date | dateFilter"></div>
@@ -101,9 +104,12 @@
                 <div class="inner-info">
                     <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
                         <div class="track-duration right" ng-bind="track.length | mmss"></div>
+                        <div class="track-menu right">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
-                    <div class="left inner-artist" ng-show="album.is_various">
+                    <div class="left inner-artist ellipsis" ng-show="album.is_various">
                             <div class="ellipsis" ng-bind="track | getArtist"></div>
                     </div>
                 </div>
