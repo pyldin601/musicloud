@@ -47,6 +47,17 @@ homecloud.factory("TrackService", ["$http", function ($http) {
     };
 }]);
 
+homecloud.factory("HeadersService", ["$http", function ($http) {
+    return {
+        artist: function (album_artist) {
+            return $http.get("/api/headers/artist?" + serialize_uri({ album_artist: album_artist }));
+        },
+        genre: function (genre) {
+            return $http.get("/api/headers/genre?" + serialize_uri({ genre: genre }));
+        }
+    }
+}]);
+
 homecloud.factory("SearchService", ["$http", function ($http) {
     return {
         artists: function (opts, offset) {
@@ -54,9 +65,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset || 0;
 
-            if (opts.q) {
-                uri.q = opts.q
-            }
+            if (opts.q) { uri.q = opts.q }
 
             uri.l = opts.limit || 50;
 
@@ -67,9 +76,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset || 0;
 
-            if (opts.q) {
-                uri.q = opts.q
-            }
+            if (opts.q) { uri.q = opts.q }
 
             uri.l = opts.limit || 50;
 
@@ -80,9 +87,7 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset || 0;
 
-            if (opts.q) {
-                uri.q = opts.q
-            }
+            if (opts.q) { uri.q = opts.q }
 
             uri.l = opts.limit || 50;
 
@@ -94,21 +99,11 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset || 0;
 
-            if (opts.q !== undefined) {
-                uri.q = opts.q
-            }
-            if (opts.s !== undefined) {
-                uri.sort = opts.s
-            }
-            if (opts.artist !== undefined) {
-                uri.artist = opts.artist
-            }
-            if (opts.album !== undefined) {
-                uri.album = opts.album
-            }
-            if (opts.genre !== undefined) {
-                uri.genre = opts.genre
-            }
+            if (opts.q !== undefined) { uri.q = opts.q }
+            if (opts.s !== undefined) { uri.sort = opts.s }
+            if (opts.artist !== undefined) { uri.artist = opts.artist }
+            if (opts.album !== undefined) { uri.album = opts.album }
+            if (opts.genre !== undefined) { uri.genre = opts.genre }
             uri.l = opts.limit || 50;
 
             return $http.get("/api/catalog/tracks?" + serialize_uri(uri));

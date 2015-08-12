@@ -82,10 +82,10 @@ class DoTracks implements RouteHandler {
         }
 
         $catalog = $query->fetchAll(null, function ($row) {
-            $artist_encoded = urlencode($row["album_artist"]);
-            $album_encoded  = urlencode($row["track_album"]);
-            $row["artist_url"] = "#/tracks/grouped?artist={$artist_encoded}";
-            $row["album_url"]  = "#/tracks/album?artist={$artist_encoded}&album={$album_encoded}";
+            $artist_encoded = escape_url($row["album_artist"]);
+            $album_encoded  = escape_url($row["track_album"]);
+            $row["artist_url"] = "artist/{$artist_encoded}";
+            $row["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
             return $row;
         });
 

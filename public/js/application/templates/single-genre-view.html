@@ -1,0 +1,89 @@
+<div class="library-body">
+    <div ng-include="'/public/js/application/templates/do-with-selection.html'"></div>
+    <div class="view-header clear-fix">
+        <img ng-if="header.middle_cover_id" ng-src="/file/{{ header.middle_cover_id }}" class="artwork-blurred">
+        <div class="artwork-section left">
+            <div class="cover-background">
+                <img ng-if="header.middle_cover_id" ng-src="/file/{{ header.middle_cover_id }}">
+            </div>
+        </div>
+        <div class="description-section">
+            <div class="album-artist">
+                <div class="inner"></div>
+            </div>
+            <div class="album-title">
+                <div class="right icons">
+                    <i ng-click="action.editSongs(tracks)" class="fa fa-ellipsis-v"></i>
+                </div>
+                <div class="inner" ng-bind="header.genre | genreFilter"></div>
+            </div>
+            <div class="album-info">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Albums Count</th>
+                        <th>Tracks Count</th>
+                        <th>Duration</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <span class="album-year" ng-bind="header.albums_count"></span>
+                        </td>
+                        <td>
+                            <span class="tracks-count" ng-bind="header.tracks_count"></span>
+                        </td>
+                        <td>
+                            <span class="album-length" ng-bind="header.tracks_duration | mmss"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="library-container" multiselect-list="selected" multiselect-destination="tracks_selected">
+        <div class="album-wrapper clear-fix" ng-repeat="album in albums">
+            <div class="left cover">
+                <div class="cover-background">
+                    <img ng-if="album.middle_cover_id" ng-src="/file/{{ album.middle_cover_id }}">
+                </div>
+            </div>
+            <div class="content">
+                <div class="album-title">
+                    <div class="right" ng-bind="album.year"></div>
+                    <div class="album-sub">
+                        <div class="inline name">
+                            <a ng-bind="album.title | albumFilter" ng-href="{{ album.album_url }}"></a>
+                        </div>
+                        <div class="inline band">on <a href="{{ album.artist_url }}" ng-bind="album.album_artist | artistFilter"></a></div>
+                    </div>
+                </div>
+                <div class="album-tracks">
+                    <div class="track" multiselect-item="track" ng-repeat="track in album.tracks" action-play="track"
+                         action-context="tracks" action-resolver="fetch">
+                        <div class="duration right" ng-bind-template="{{ track.length | mmss }}"></div>
+                        <div class="rating right" track-rating="track"></div>
+                        <div class="plays right" ng-show="track.times_played" title="Times played">
+                            <span class="times-played" ng-bind="track.times_played"></span>
+                            <i class="fa fa-headphones"></i>
+                        </div>
+                        <div class="position left">
+                            <div ng-hide="player.playlist.track == track" ng-bind="$index + 1"></div>
+                            <div ng-show="player.playlist.track == track">
+                                <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                            </div>
+                        </div>
+                        <div class="track-title">
+                            <div class="first" ng-bind="track | getTitle"></div>
+                            <div class="second" ng-if="album.various_artists" ng-bind="track | getArtist"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="empty-placeholder" ng-show="end == true && tracks.length == 0">Nothing to show</div>
+    </div>
+</div>

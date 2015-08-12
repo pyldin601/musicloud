@@ -12,3 +12,5 @@ when("file/:id",    app\project\handlers\dynamic\content\DoGetFile::class);
 when("peaks/:id",   app\project\handlers\dynamic\content\DoWavePeaks::class);
 
 when("lastfm-callback", app\project\handlers\dynamic\scrobbler\DoCallback::class);
+
+whenRegExp("/library\\/.+/", app\project\handlers\fixed\DoLibrary::class);

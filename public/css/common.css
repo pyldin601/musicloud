@@ -44,7 +44,6 @@ a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
 .table {
   display: table;

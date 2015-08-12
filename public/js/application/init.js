@@ -73,3 +73,7 @@ function serialize_uri(obj) {
 function iif(expression, onTrue, onFalse) {
     return expression ? onTrue : onFalse
 }
+
+function decodeUriPlus(uri) {
+    return decodeURIComponent(uri.replace(/^_$/g, '').replace(/\+/g, '%20'));
+}

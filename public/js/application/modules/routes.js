@@ -5,7 +5,10 @@
 
 var mediacloud = angular.module("HomeCloud");
 
-mediacloud.config(["$routeProvider", function ($routeProvider) {
+mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
+
+    $locationProvider.html5Mode(true);
+    $locationProvider.baseHref = "/library/";
 
     $routeProvider.when("/artists/", {
         templateUrl: templatePath + "/artists-view.html",
@@ -23,6 +26,61 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         title: "Artists",
         special: {
             section: "artists"
+        }
+    });
+
+    $routeProvider.when("/artist/:artist", {
+        templateUrl: templatePath + "/single-artist-view.html",
+        controller: "ArtistViewController",
+        resolve: {
+            Header: ["$route", "HeadersService", function ($route, HeadersService) {
+                var artist = decodeUriPlus($route.current.params.artist);
+                return HeadersService.artist(artist).then(function (response) {
+                    return response.data;
+                });
+            }],
+            Resolved: ["SearchService", "$location", "$route", "$filter",
+                function (SearchService, $location, $route, $filter) {
+                    var artist = decodeUriPlus($route.current.params.artist);
+                    $route.current.title = $filter("artistFilter")(artist);
+                    return SearchService.tracks({ artist: artist, limit: -1 }, 0).then(function (response) {
+                        return response.data;
+                    });
+                }
+            ]
+        },
+        title: "Contents by Album Artist",
+        special: {
+            section: "artist"
+        }
+    });
+
+    $routeProvider.when("/artist/:artist/:album", {
+        controller: "AlbumViewController",
+        templateUrl: templatePath + "/album-view.html",
+        resolve: {
+            Resolved: ["SearchService", "$location", "$route", "$filter",
+                function (SearchService, $location, $route, $filter) {
+                    var artist = decodeUriPlus($route.current.params.artist),
+                        album = decodeUriPlus($route.current.params.album);
+
+                    $route.current.title = String.prototype.concat(
+                        $filter("albumFilter")(album) + " by " +
+                        $filter("artistFilter")(artist)
+                    );
+
+                    return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).then(function (response) {
+                        return response.data;
+                    }, function () {
+                        $location.url("/");
+                    });
+
+                }
+            ]
+        },
+        title: "Album",
+        special: {
+            section: "albums"
         }
     });
 
@@ -64,77 +122,36 @@ mediacloud.config(["$routeProvider", function ($routeProvider) {
         }
     });
 
-    $routeProvider.when("/tracks/grouped", {
-        templateUrl: templatePath + "/grouped-view.html",
-        controller: "GroupViewController",
+    $routeProvider.when("/genre/:genre", {
+        templateUrl: templatePath + "/single-genre-view.html",
+        controller: "GenreViewController",
         resolve: {
+            Header: ["$route", "HeadersService", function ($route, HeadersService) {
+                var genre = decodeUriPlus($route.current.params.genre);
+                return HeadersService.genre(genre).then(function (response) {
+                    return response.data;
+                });
+            }],
             Resolved: ["SearchService", "$location", "$route", "$filter",
                 function (SearchService, $location, $route, $filter) {
-                    var search  = $location.search(),
-                        acc = "";
 
-                    if (search.genre) {
-                        acc = acc.concat($filter("genreFilter")(search.genre));
-                    }
+                    var genre = decodeUriPlus($route.current.params.genre);
 
-                    if (search.artist !== undefined && search.album !== undefined) {
-                        if (acc.length > 0) {
-                            acc = acc.concat(" in ");
-                        }
-                        acc = acc.concat(
-                            $filter("albumFilter")(search.album) + " by " +
-                            $filter("artistFilter")(search.artist)
-                        )
-                    } else if (search.artist !== undefined) {
-                        if (acc.length > 0) {
-                            acc = acc.concat(" in ");
-                        }
-                        acc = acc.concat($filter("artistFilter")(search.artist));
-                    }
+                    $route.current.title = $filter("genreFilter")(genre);
 
-                    $route.current.title = acc;
-                    return SearchService.tracks($location.search(), 0).then(function (response) {
+                    return SearchService.tracks({ genre: genre }, 0).then(function (response) {
                         return response.data;
-                    }, function () {
-                        $location.url("/");
                     });
                 }
             ]
         },
-        title: "My Library",
+        title: "Track Genres",
         special: {
-            section: "tracks"
+            section: "genres"
         }
     });
 
-    $routeProvider.when("/tracks/album", {
-        controller: "AlbumViewController",
-        templateUrl: templatePath + "/album-view.html",
-        resolve: {
-            Resolved: ["SearchService", "$location", "$route", "$filter",
-                function (SearchService, $location, $route, $filter) {
-                    var artist = $location.search().artist || "",
-                        album  = $location.search().album  || "";
 
-                    $route.current.title = String.prototype.concat(
-                        $filter("albumFilter")(album) + " by " +
-                        $filter("artistFilter")(artist)
-                    );
-
-                    return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).then(function (response) {
-                        return response.data;
-                    }, function () {
-                        $location.url("/");
-                    });
-
-                }
-            ]
-        },
-        title: "Album",
-        special: {
-            section: "albums"
-        }
-    });
 
     $routeProvider.when("/tracks", {
         controller: "TracksViewController",

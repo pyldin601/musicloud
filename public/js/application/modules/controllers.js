@@ -4,10 +4,35 @@
 
 var homecloud = angular.module("HomeCloud");
 
-homecloud.controller("GroupViewController", [
-    "Resolved", "SearchService", "SyncService", "Library", "$scope", "$location", "MonitorSongs",
-    function (Resolved, SearchService, SyncService, Library, $scope, $location, MonitorSongs) {
+homecloud.controller("ArtistViewController", [
+    "Resolved", "Header", "$scope", "MonitorSongs", "SyncService", "Library",
+    function (Resolved, Header, $scope, MonitorSongs, SyncService, Library) {
 
+        $scope.header = Header;
+        $scope.tracks = SyncService.tracks(Resolved.tracks);
+        $scope.tracks_selected = [];
+
+        $scope.albums = [];
+
+        $scope.group = function () {
+            $scope.albums = Library.groupAlbums($scope.tracks);
+        };
+
+        $scope.$watch("tracks", $scope.group, true);
+
+        MonitorSongs($scope.tracks, $scope);
+        MonitorSongs($scope.tracks_selected, $scope);
+
+    }
+]);
+
+homecloud.controller("GenreViewController", [
+    "Resolved", "Header", "SearchService", "SyncService", "Library", "$scope", "MonitorSongs", "$routeParams",
+    function (Resolved, Header, SearchService, SyncService, Library, $scope, MonitorSongs, $routeParams) {
+
+        var genre = decodeUriPlus($routeParams.genre);
+
+        $scope.header = Header;
         $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.tracks_selected = [];
 
@@ -16,7 +41,7 @@ homecloud.controller("GroupViewController", [
         $scope.busy = false;
         $scope.end = false;
 
-        $scope.fetch = SearchService.tracks.curry($location.search());
+        $scope.fetch = SearchService.tracks.curry({ genre: genre });
 
         $scope.load = function () {
             $scope.busy = true;

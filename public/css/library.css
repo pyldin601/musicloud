@@ -389,12 +389,12 @@ input[type="button"] {
   color: #505050;
 }
 @import-once "adaptive";
-.album-header {
+.view-header {
   background-color: #1a232f;
   position: relative;
   overflow: hidden;
 }
-.album-header .artwork-blurred {
+.view-header .artwork-blurred {
   margin-top: -50%;
   position: absolute;
   width: 102%;
@@ -411,11 +411,11 @@ input[type="button"] {
   filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=50px);
   filter: url("data:image/svg+xml;utf9,<svg%20version='1.1'%20xmlns='http://www.w3.org/20…%20id='blur'><feGaussianBlur%20stdDeviation='10'%20/></filter></svg>#blur");
 }
-.album-header .artwork-section {
+.view-header .artwork-section {
   position: relative;
   z-index: 1;
 }
-.album-header .description-section {
+.view-header .description-section {
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -426,65 +426,65 @@ input[type="button"] {
   margin-top: 12px;
 }
 @media (max-width: 1024px) {
-  .album-header .description-section {
+  .view-header .description-section {
     margin-top: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section {
+  .view-header .description-section {
     margin-top: 4px;
   }
 }
-.album-header .description-section .separator {
+.view-header .description-section .separator {
   padding: 0 2px;
 }
-.album-header .description-section .album-artist {
+.view-header .description-section .album-artist {
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 12px;
   font-size: 12pt;
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     padding-left: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     padding-left: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     padding-right: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     padding-right: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     padding-bottom: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     padding-bottom: 4px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     font-size: 10pt;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-artist {
+  .view-header .description-section .album-artist {
     font-size: 9pt;
   }
 }
-.album-header .description-section .album-title {
+.view-header .description-section .album-title {
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 24px;
@@ -492,117 +492,118 @@ input[type="button"] {
   font-weight: 600;
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     padding-left: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     padding-left: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     padding-right: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     padding-right: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     padding-bottom: 16px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     padding-bottom: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     font-size: 16pt;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-title {
+  .view-header .description-section .album-title {
     font-size: 12pt;
   }
 }
-.album-header .description-section .album-info {
+.view-header .description-section .album-info {
   padding-left: 16px;
   padding-right: 16px;
   font-size: 12pt;
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-info {
+  .view-header .description-section .album-info {
     padding-left: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-info {
+  .view-header .description-section .album-info {
     padding-left: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-info {
+  .view-header .description-section .album-info {
     padding-right: 8px;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-info {
+  .view-header .description-section .album-info {
     padding-right: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-info {
+  .view-header .description-section .album-info {
     font-size: 10pt;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-info {
+  .view-header .description-section .album-info {
     font-size: 9pt;
   }
 }
-.album-header .description-section .album-info table {
+.view-header .description-section .album-info table {
   text-transform: uppercase;
   max-width: 100%;
   table-layout: fixed;
   text-align: left;
 }
-.album-header .description-section .album-info table th,
-.album-header .description-section .album-info table td {
+.view-header .description-section .album-info table th,
+.view-header .description-section .album-info table td {
   padding-right: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
-.album-header .description-section .album-info table th {
+.view-header .description-section .album-info table th {
   font-size: 10pt;
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-info table th {
+  .view-header .description-section .album-info table th {
     font-size: 9pt;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-info table th {
+  .view-header .description-section .album-info table th {
     font-size: 8pt;
   }
 }
-.album-header .description-section .album-info table td {
+.view-header .description-section .album-info table td {
   font-size: 14pt;
 }
 @media (max-width: 1024px) {
-  .album-header .description-section .album-info table td {
+  .view-header .description-section .album-info table td {
     font-size: 12pt;
   }
 }
 @media (max-width: 640px) {
-  .album-header .description-section .album-info table td {
+  .view-header .description-section .album-info table td {
     font-size: 9pt;
   }
 }
@@ -652,7 +653,6 @@ a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
 .table {
   display: table;
@@ -782,7 +782,6 @@ a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
 .progress-bar .progress-back {
   background-color: rgba(0, 0, 0, 0.3);
@@ -832,6 +831,7 @@ a {
   overflow: hidden;
   position: relative;
   color: #eeeeee;
+  text-shadow: 1px 1px 4px #000000;
 }
 .library-metadata .dialog .header .backing {
   position: absolute;
@@ -864,10 +864,10 @@ a {
   margin-top: 24px;
   font-size: 18pt;
   font-weight: 300;
+  padding-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
 .library-metadata .dialog .header .info-holder .line2 {
   margin-left: 16px;
@@ -875,10 +875,10 @@ a {
   margin-top: 4px;
   font-size: 12pt;
   font-weight: 300;
+  padding-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
 .library-metadata .dialog .metadata {
   padding: 32px;
@@ -1032,7 +1032,6 @@ a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
 .table {
   display: table;
@@ -1807,6 +1806,10 @@ a {
   margin-left: -8px;
   padding: 6px 8px;
 }
+.library-body .library-container .album-wrapper .content .album-tracks .track > * {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
 .library-body .library-container .album-wrapper .content .album-tracks .track .duration {
   width: 50px;
   text-align: right;
@@ -1826,15 +1829,14 @@ a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .track-title .second {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-bottom: 1px;
   margin-left: 36px;
   margin-top: 4px;
+  padding-bottom: 2px;
   font-size: 9pt;
   color: #757577;
 }

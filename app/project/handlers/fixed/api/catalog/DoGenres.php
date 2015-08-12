@@ -50,8 +50,8 @@ class DoGenres implements RouteHandler {
         Context::contextify($query);
 
         $catalog = $query->fetchAll(null, function ($row) {
-            $genre_encoded = urlencode($row["track_genre"]);
-            $row["genre_url"] = "#/tracks/grouped?genre={$genre_encoded}";
+            $genre_encoded = escape_url($row["track_genre"]);
+            $row["genre_url"] = "genre/{$genre_encoded}";
             return $row;
         });
 

@@ -30,3 +30,12 @@ function otherwise($callable) {
 function bool($value) {
     return $value ? "true" : "false";
 }
+
+/**
+ * @param $url
+ * @return string
+ */
+function escape_url($url) {
+    $trimmed = str_replace("/", "%2F", trim($url));
+    return $trimmed == "" ? "_" : urlencode($trimmed);
+}

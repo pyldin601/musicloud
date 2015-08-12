@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="HomeCloud">
 <head>
-
     <base href="/library/">
 
     <title>Music Library</title>
@@ -61,7 +60,7 @@
                     <div class="search-title">
                         <i class="icon-artists"></i>
                         <span class="title">
-                            <a href="#/artists?q={{ query | uri }}">In Artists</a>
+                            <a href="artists?q={{ query | uri }}">In Artists</a>
                         </span>
                     </div>
                     <div class="query-loader" ng-show="results.artists_busy"></div>
@@ -76,7 +75,7 @@
                     <div class="search-title">
                         <i class="icon-artists"></i>
                         <span class="title">
-                            <a href="#/albums?q={{ query | uri }}">In Albums</a>
+                            <a href="albums?q={{ query | uri }}">In Albums</a>
                         </span>
                     </div>
                     <div class="query-loader" ng-show="results.albums_busy"></div>
@@ -95,7 +94,7 @@
                     <div class="search-title">
                         <i class="icon-artists"></i>
                         <span class="title">
-                            <a href="#/tracks?q={{ query | uri }}">In Tracks</a>
+                            <a href="tracks?q={{ query | uri }}">In Tracks</a>
                         </span>
                     </div>
                     <div class="query-loader" ng-show="results.tracks_busy"></div>
@@ -196,7 +195,7 @@
             </div>
             <ul class="section-list">
                 <li active-tab="artists">
-                    <a class="block" href="#/artists">
+                    <a class="block" href="artists">
                         <span class="group">
                             <i class="icon-artists"></i>
                             <span class="label padded">Artists</span>
@@ -206,7 +205,7 @@
                     </a>
                 </li>
                 <li active-tab="albums">
-                    <a class="block" href="#/albums">
+                    <a class="block" href="albums">
                         <span class="group">
                             <i class="icon-albums"></i>
                             <span class="label padded">Albums</span>
@@ -216,7 +215,7 @@
                     </a>
                 </li>
                 <li active-tab="compilations">
-                    <a class="block" href="#/compilations">
+                    <a class="block" href="compilations">
                         <span class="group">
                             <i class="icon-albums"></i>
                             <span class="label padded">Compilations</span>
@@ -226,7 +225,7 @@
                     </a>
                 </li>
                 <li active-tab="genres">
-                    <a class="block" href="#/genres">
+                    <a class="block" href="genres">
                         <span class="group">
                             <i class="icon-genres"></i>
                             <span class="label padded">Genres</span>
@@ -236,7 +235,7 @@
                     </a>
                 </li>
                 <li active-tab="tracks">
-                    <a class="block" href="#/tracks">
+                    <a class="block" href="tracks">
                         <span class="group">
                             <i class="icon-songs"></i>
                             <span class="label padded">Tracks</span>
