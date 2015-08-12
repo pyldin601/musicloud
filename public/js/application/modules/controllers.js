@@ -16,8 +16,8 @@ homecloud.controller("ArtistViewController", [
 
         $scope.genre = (genres.length == 0) ? "-" :
             (genres.length == 1) ? genres.first() :
-                (genres.length == 2) ? genres.first() + "," + genres.last() :
-                genres.first() + "," + genres.last() + " and " + (genres.length - 2) + " others";
+                (genres.length == 2) ? genres.first() + ", " + genres.last() :
+                genres.first() + ", " + genres.last() + " and " + (genres.length - 2) + " others";
 
         $scope.albums = [];
 
