@@ -144,8 +144,6 @@ class Song {
         $this->loadCoversFromSongIntoQuery($file_path, $query);
         $this->loadMetadataFromSongIntoQuery($file_path, $query, $file_name);
 
-        // Warning! Due to speed increase FileServer deletes
-        // source file after registration.
         $file_id = FileServer::register($file_path);
 
         $query->set(TSongs::FILE_ID, $file_id)

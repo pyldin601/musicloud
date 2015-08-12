@@ -186,7 +186,10 @@ class Songs {
             ->set(TSongs::C_SMALL_ID, null)
             ->set(TSongs::C_MID_ID, null)
             ->set(TSongs::C_BIG_ID, null)
-            ->returning(implode(",", [TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID]));
+            ->returning(implode(",", [
+                TSongs::ID, TSongs::C_SMALL_ID,
+                TSongs::C_MID_ID, TSongs::C_BIG_ID
+            ]));
 
         return $query->fetchAll();
 
@@ -216,7 +219,8 @@ class Songs {
 
         }
 
-        $covers = FFProbe::readTempCovers($cover_file)->get();
+        $covers = FFProbe::readTempCovers($cover_file)
+            ->getOrThrow(ControllerException::class, "Image file is corrupted");
 
         $query = (new UpdateQuery(TSongs::_NAME))
             ->where(TSongs::ID, $song_ids)

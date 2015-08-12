@@ -10,6 +10,7 @@ namespace app\libs;
 
 
 use app\core\exceptions\ControllerException;
+use app\lang\option\Option;
 
 class AudioScrobbler {
 
@@ -17,6 +18,31 @@ class AudioScrobbler {
     const SECRET         = "b5858ee5842425f5bf7e4049e63c58be";
 
     const API_URL        = "http://ws.audioscrobbler.com/2.0/";
+
+    /**
+     * @param string $artist
+     * @param string $album
+     * @return Option
+     */
+    public function getAlbumCover($artist, $album) {
+
+        $data = self::exec(self::API_URL, array(
+            "format"    => "json",
+            "method"    => "album.getinfo",
+            "api_key"   => self::API_KEY,
+            "artist"    => $artist,
+            "album"     => $album
+        ));
+
+        if (isset($data["album"]["image"])) {
+            $images = $data["album"]["image"];
+            $image_url = $images[count($images) - 1]["#text"];
+            return Option::Some($image_url);
+        } else {
+            return Option::None();
+        }
+
+    }
 
     /**
      * Marks track as 'Now Playing'.

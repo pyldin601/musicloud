@@ -92,12 +92,14 @@ homecloud.controller("AlbumViewController", [
                 album_url: $scope.tracks.map(field("album_url")).reduce(or, ""),
                 album_artist: $scope.tracks.map(field("album_artist")).reduce(or, ""),
                 cover_id: $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
-                album_year: (years.length == 1) ? years.first() :
-                    (years.length == 2) ? genres.join(", ") :
-                        (genres.min() + " - " + genres.max()),
-                album_genre: (genres.length == 1) ? genres.first() :
+                album_year: (years.length == 0) ? "-" :
+                    (years.length == 1) ? years.first() :
+                    (years.length == 2) ? years.join(", ") :
+                    (years.min() + " - " + years.max()),
+                album_genre: (genres.length == 0) ? "" :
+                    (genres.length == 1) ? genres.first() :
                     (genres.length == 2) ? genres.join(", ") :
-                        "Multiple Genres",
+                    "Multiple Genres",
                 length: $scope.tracks.map(function (t) {
                     return parseFloat(t.length)
                 }).reduce(sum, 0),
