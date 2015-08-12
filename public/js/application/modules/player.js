@@ -61,7 +61,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                             mp3: (track.format == "mp33") ? ("/file/" + track.file_id) : ("/preview/" + track.id)
                         }).jPlayer("play");
 
-                        player.playlist.position.duration = track.length;
+                        player.playlist.position.duration = track.length / 1000;
 
                         player.isLoaded = true;
                         player.isPlaying = true;
@@ -191,7 +191,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
             },
             timeupdate: function (e) {
                 $rootScope.$applyAsync(function () {
-                    player.playlist.position.position = e.jPlayer.status.currentTime * 1000;
+                    player.playlist.position.position = e.jPlayer.status.currentTime;
                 });
             },
             swfPath: "/public/js/application/libs/jplayer/",
