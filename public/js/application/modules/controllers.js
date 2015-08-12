@@ -8,9 +8,16 @@ homecloud.controller("ArtistViewController", [
     "Resolved", "Header", "$scope", "MonitorSongs", "SyncService", "Library",
     function (Resolved, Header, $scope, MonitorSongs, SyncService, Library) {
 
+        var genres = Resolved.tracks.map(field("track_genre")).distinct();
+
         $scope.header = Header;
         $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.tracks_selected = [];
+
+        $scope.genre = (genres.length == 0) ? "-" :
+            (genres.length == 1) ? genres.first() :
+                (genres.length == 2) ? genres.first() + "," + genres.last() :
+                genres.first() + "," + genres.last() + " and " + (genres.length - 2) + " others";
 
         $scope.albums = [];
 

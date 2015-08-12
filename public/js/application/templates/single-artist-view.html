@@ -24,6 +24,7 @@
                         <th>Albums Count</th>
                         <th>Tracks Count</th>
                         <th>Duration</th>
+                        <th>Genres</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -35,7 +36,10 @@
                             <span class="tracks-count" ng-bind="header.tracks_count"></span>
                         </td>
                         <td>
-                            <span class="album-length" ng-bind="header.tracks_duration | mmss"></span>
+                            <span class="artist-length" ng-bind="header.tracks_duration | mmss"></span>
+                        </td>
+                        <td>
+                            <span class="artist-genres" ng-bind="genre"></span>
                         </td>
                     </tr>
                     </tbody>
