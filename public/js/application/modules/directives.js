@@ -39,7 +39,7 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
                         if (n % 3 == 0) continue;
                         pos = parseInt(peaksData.length / canvas.width * (n - n % 3)) - 1;
                         peak = 1 / 128 * peaksData.slice(pos, pos + rate).max();
-                        ctx.moveTo(n + .5, parseInt(factor - (factor * peak)));
+                        ctx.moveTo(n + .5, parseInt(factor - (factor * peak)) - 1);
                         ctx.lineTo(n + .5, parseInt(factor + ((canvas.height - factor) * peak)) + 1);
                     }
                     ctx.strokeStyle = "#000000";
