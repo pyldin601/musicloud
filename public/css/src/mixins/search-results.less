@@ -1,5 +1,26 @@
 .search-background {
   .dyn-pad-h;
+  position: relative;
+  .main-search-box {
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 8px;
+    background: transparent;
+    transition: linear border-color .1s, linear background-color .1s;
+    color: #ffffff;
+    padding-right: 24px;
+    &:focus {
+      border-color: rgba(255,255,255,.4);
+      background-color: rgba(0,0,0,.2);
+    }
+  }
+  .main-search-reset {
+    position: absolute;
+    z-index: 2;
+    right: 10px;
+    .dyn-mar-right;
+    top: 8px;
+    cursor: pointer;
+  }
 }
 
 .search-results {
@@ -12,6 +33,18 @@
   .dyn-pad-h;
   box-sizing: border-box;
   color: #000000;
+
+  .search-group {
+    .search-title {
+      padding-bottom: 8px;
+    }
+    .search-content {
+      .content-item {
+        padding: 4px 0;
+      }
+      padding-bottom: 8px;
+    }
+  }
 
   .query-loader {
     &:after {

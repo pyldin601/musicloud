@@ -53,6 +53,9 @@
         <li class="nav-search" ng-controller="SearchController">
             <div class="search-background">
                 <input class="main-search-box" type="text" ng-model="query" placeholder="Search">
+                <div class="main-search-reset" ng-click="query=''" ng-show="query.length > 0">
+                    <i class="fa fa-times"></i>
+                </div>
             </div>
             <div class="search-results ng-cloak" ng-show="query.length > 0">
                 <div class="search-group">
@@ -71,6 +74,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="search-group">
                     <!-- ALBUMS -->
                     <div class="search-title">
                         <i class="icon-artists"></i>
@@ -90,6 +95,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="search-group">
                     <!-- TRACKS -->
                     <div class="search-title">
                         <i class="icon-artists"></i>

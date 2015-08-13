@@ -36,6 +36,6 @@ function bool($value) {
  * @return string
  */
 function escape_url($url) {
-    $trimmed = str_replace("/", "%2F", trim($url));
+    $trimmed = str_replace("/", "%2F", $url);
     return $trimmed == "" ? "_" : urlencode($trimmed);
 }

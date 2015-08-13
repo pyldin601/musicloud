@@ -37,15 +37,14 @@ class FFProbe {
         $temp_cover_middle = TempFileProvider::generate("cover", ".jpeg");
         $temp_cover_small  = TempFileProvider::generate("cover", ".jpeg");
 
-        $command = sprintf("%s -i %s  -an -vf \"scale='min(iw,900)':-1\" %s -vf \"scale='min(iw,450)':-1\" %s -vf \"scale='min(iw,250)':-1\" %s",
+        $command = sprintf("%s -i %s -an -vf \"scale='min(iw,900)':-1\" %s -vf \"scale='min(iw,450)':-1\" %s -vf \"scale='min(iw,250)':-1\" %s",
             self::$settings->get("tools", "ffmpeg_cmd"), $escaped_filename,
-            $temp_cover_full, $temp_cover_middle, $temp_cover_small);
+            escapeshellarg($temp_cover_full), escapeshellarg($temp_cover_middle),
+            escapeshellarg($temp_cover_small));
 
         exec($command, $result, $status);
 
-        error_log($status);
-
-        if (file_exists($temp_cover_full)) {
+        if (file_exists($temp_cover_full) && file_exists($temp_cover_middle) && file_exists($temp_cover_small)) {
             return Option::Some([$temp_cover_full, $temp_cover_middle, $temp_cover_small]);
         } else {
             return Option::None();

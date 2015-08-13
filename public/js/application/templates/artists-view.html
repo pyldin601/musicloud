@@ -1,15 +1,18 @@
 <div class="library-body">
     <div class="library-container">
-        <div class="artist-wrapper list-view container" infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-            <div class="list-item square2 square3md square6sm" ng-repeat="artist in artists">
-                <div class="artist-list-content">
-                    <div class="cover">
-                        <img ng-if="artist.middle_cover_id" ng-src="/file/{{ artist.middle_cover_id }}">
+        <div class="artist-wrapper list-view container" infinite-scroll="load()" infinite-scroll-disabled="busy"
+             infinite-scroll-distance="1">
+            <div class="list-item square-zoom" ng-repeat="artist in artists">
+                <a class="block" ng-href="{{ artist.artist_url }}">
+                    <div class="artist-list-content">
+                        <div class="cover">
+                            <img ng-if="artist.middle_cover_id" ng-src="/file/{{ artist.middle_cover_id }}">
+                        </div>
+                        <div class="artist-name">
+                            <div ng-bind="artist.album_artist | artistFilter"></div>
+                        </div>
                     </div>
-                    <div class="artist-name">
-                        <a class="block" ng-href="{{ artist.artist_url }}" ng-bind="artist.album_artist | artistFilter"></a>
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>

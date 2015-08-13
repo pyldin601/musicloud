@@ -2,7 +2,7 @@
     <div class="library-container">
         <div class="genre-wrapper list-view container" infinite-scroll="load()"
              infinite-scroll-disabled="busy" infinite-scroll-distance="1">
-            <div class="list-item square2 square3md square6sm" ng-repeat="album in albums">
+            <div class="list-item square-zoom" ng-repeat="album in albums">
                 <div class="artist-list-content">
                     <div class="cover">
                         <img ng-if="album.middle_cover_id" ng-src="/file/{{ album.middle_cover_id }}">

@@ -8,16 +8,11 @@ homecloud.controller("ArtistViewController", [
     "Resolved", "Header", "$scope", "MonitorSongs", "SyncService", "Library",
     function (Resolved, Header, $scope, MonitorSongs, SyncService, Library) {
 
-        var genres = Resolved.tracks.map(field("track_genre")).distinct();
-
         $scope.header = Header;
         $scope.tracks = SyncService.tracks(Resolved.tracks);
         $scope.tracks_selected = [];
 
-        $scope.genre = (genres.length == 0) ? "-" :
-            (genres.length == 1) ? genres.first() :
-                (genres.length == 2) ? genres.first() + ", " + genres.last() :
-                genres.first() + ", " + genres.last() + " and " + (genres.length - 2) + " others";
+        $scope.genre = groupGenres($scope.tracks);
 
         $scope.albums = [];
 
@@ -72,7 +67,6 @@ homecloud.controller("GenreViewController", [
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
 
-
     }
 ]);
 
@@ -86,30 +80,19 @@ homecloud.controller("AlbumViewController", [
 
         $scope.readAlbum = function () {
 
-            var genres = $scope.tracks.map(field("track_genre")).distinct(),
-                years = $scope.tracks.map(field("track_year")).distinct();
-
             if ($scope.tracks.length == 0) {
                 $location.url("/albums/");
                 return;
             }
 
             $scope.album = {
-                album_title: $scope.tracks.map(field("track_album")).reduce(or, ""),
+                album_title: aggregateAlbumTitle($scope.tracks),
                 album_url: $scope.tracks.map(field("album_url")).reduce(or, ""),
                 album_artist: $scope.tracks.map(field("album_artist")).reduce(or, ""),
                 cover_id: $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
-                album_year: (years.length == 0) ? "-" :
-                    (years.length == 1) ? years.first() :
-                    (years.length == 2) ? years.join(", ") :
-                    (years.min() + " - " + years.max()),
-                album_genre: (genres.length == 0) ? "" :
-                    (genres.length == 1) ? genres.first() :
-                    (genres.length == 2) ? genres.join(", ") :
-                    "Multiple Genres",
-                length: $scope.tracks.map(function (t) {
-                    return parseFloat(t.length)
-                }).reduce(sum, 0),
+                album_year: groupYears($scope.tracks),
+                album_genre: groupGenres($scope.tracks),
+                length: aggregateDuration($scope.tracks),
                 is_various: $scope.tracks.any(function (t) {
                     return t.track_artist !== t.album_artist
                 })

@@ -100,6 +100,11 @@ class FileServer {
         }
 
         $filename = FSTools::hashToFullPath($file[TFiles::SHA1]);
+
+        if (! file_exists($filename)) {
+            throw new ApplicationException("Internal server error: file not exists!");
+        }
+
         $filesize = filesize($filename);
 
 

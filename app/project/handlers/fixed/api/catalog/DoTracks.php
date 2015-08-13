@@ -52,10 +52,12 @@ class DoTracks implements RouteHandler {
         Context::contextify($query);
 
         if ($artist->nonEmpty()) {
+            error_log($artist->get());
             $query->where(TSongs::A_ARTIST, $artist->get());
         }
 
         if ($album->nonEmpty()) {
+            error_log($album->get());
             $query->where(TSongs::T_ALBUM, $album->get());
         }
 

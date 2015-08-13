@@ -24,3 +24,26 @@ homecloud.run(["AccountService", "$rootScope", function (AccountService, $rootSc
 
 }]);
 
+function groupGenres(coll) {
+    var genres = coll.map(field("track_genre")).distinct();
+    return (genres.length == 0) ? "-" :
+           (genres.length == 1) ? genres[0] :
+           (genres.length == 2) ? genres[0] + ", " + genres[1] :
+            genres[0] + ", " + genres[1] + " and " + (genres.length - 2) + " others";
+}
+
+function groupYears(coll) {
+    var years = coll.map(field("track_year")).distinct();
+    return (years.length == 0) ? "" :
+           (years.length == 1) ? years[0] :
+           (years.length == 2) ? years.join(", ") :
+           (years.min() + " - " + years.max())
+}
+
+function aggregateAlbumTitle(coll) {
+    return coll.map(field("track_album")).reduce(or, "");
+}
+
+function aggregateDuration(coll) {
+    return coll.map(field("length")).reduce(sum, 0);
+}
