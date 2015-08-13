@@ -245,14 +245,18 @@ homecloud.factory("SyncService", [function () {
 
 
 
-homecloud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope", "$compile",
-    function ($templateRequest, $controller, $rootScope, $compile) {
+homecloud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope", "$compile", "$document",
+    function ($templateRequest, $controller, $rootScope, $compile, $document) {
         var defaults = {
-            controller: null,
-            data: {},
-            scope: null
-        },
+                controller: null,
+                closeOnEscape: true,
+                closeOnClick: true,
+                data: {},
+                scope: null
+            },
+
             $an = angular;
+
         return function (opts) {
 
             var options = $an.copy(defaults);
@@ -262,15 +266,41 @@ homecloud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope
             $templateRequest(options.template).then(function (template) {
 
                 var newScope = $an.isObject(options.scope) ? options.scope.$new() : $rootScope.$new(),
-                    modal = $an.element(template).appendTo("body");
+                    body = $an.element("body"),
+                    modal = $an.element(template).appendTo(body),
+
+                    onEscapeEvent = function (event) {
+                        if (event.which == 27) {
+                            newScope.closeThisWindow()
+                        }
+                    },
+
+                    onMouseClickEvent = function (event) {
+                        if ($an.element(event.target).parents(modal).length == 0) {
+                            newScope.closeThisWindow()
+                        }
+                    };
 
                 newScope.closeThisWindow = function () {
                     modal.remove();
                     newScope.$destroy();
                 };
 
+                newScope.$on("$destroy", function () {
+                    body.off("keyup", onEscapeEvent);
+                    body.off("click", onMouseClickEvent);
+                });
+
                 for (var k in options.data) if (options.data.hasOwnProperty(k)) {
                     newScope[k] = options.data[k]
+                }
+
+                if (options.closeOnEscape) {
+                    body.bind("keyup", onEscapeEvent);
+                }
+
+                if (options.closeOnClick) {
+                    body.bind("click", onMouseClickEvent);
                 }
 
                 $compile(modal)(newScope);
@@ -282,6 +312,7 @@ homecloud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope
                     });
                     modal.data('$modalWindowController', controllerInstance);
                 }
+
 
 
             });

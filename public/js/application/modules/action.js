@@ -33,7 +33,9 @@
                     controller: "MetadataController",
                     data: {
                         songs: coll
-                    }
+                    },
+                    closeOnEscape: true,
+                    closeOnClick: true
                 });
 
             }

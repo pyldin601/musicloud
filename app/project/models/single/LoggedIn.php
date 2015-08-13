@@ -15,6 +15,7 @@ use app\core\injector\Injectable;
 use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 use app\project\exceptions\UnauthorizedException;
+use app\project\exceptions\UserNotFoundException;
 
 class LoggedIn extends User implements SingletonInterface, Injectable {
 
@@ -30,6 +31,24 @@ class LoggedIn extends User implements SingletonInterface, Injectable {
 //            $logged_in = 2;
         }
         parent::__construct($logged_in);
+    }
+
+    public static function isLoggedIn() {
+
+        try {
+
+            new self();
+
+            return true;
+
+        } catch (UnauthorizedException $ex) {
+
+        } catch (UserNotFoundException $ex) {
+
+        }
+
+        return false;
+
     }
 
 } 
