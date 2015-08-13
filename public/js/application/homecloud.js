@@ -35,7 +35,7 @@ function groupGenres(coll) {
 
 function groupYears(coll) {
     var years = coll.map(field("track_year")).distinct().filter(isNumeric);
-    return (years.length == 0) ? "" :
+    return (years.length == 0) ? "-" :
            (years.length == 1) ? years[0] :
            (years.length == 2) ? years.join(", ") :
            (years.min() + " - " + years.max())

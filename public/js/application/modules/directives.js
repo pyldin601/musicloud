@@ -10,6 +10,8 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
         link: function (scope, element, attrs) {
             var peaksData = [],
                 w = angular.element($window),
+                canvas = element[0],
+                ctx = canvas.getContext("2d"),
 
                 clearPeaks = function () {
                     peaksData = [];
@@ -20,9 +22,7 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
                     drawCanvas();
                 },
                 drawCanvas = function () {
-                    var canvas = element[0],
-                        ctx = canvas.getContext("2d"),
-                        factor, peak, pos, rate;
+                    var factor, peak, pos, rate;
 
                     canvas.width = element.width();
                     canvas.height = element.height();
