@@ -1163,6 +1163,16 @@ a {
   transition: width 250ms linear;
   z-index: 1;
 }
+.peaks-background .waveform-container .time-right {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  text-shadow: 0 0 1px #000;
+  z-index: 5;
+  margin-bottom: 2px;
+  margin-right: 2px;
+  font-size: 8pt;
+}
 .library-header {
   position: fixed;
   width: 100%;

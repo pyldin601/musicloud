@@ -21,8 +21,8 @@ homecloud.filter("count", function () {
 });
 
 homecloud.filter("mmss", function () {
-    return function (value) {
-        var sec_num = parseInt(value / 1000, 10),
+    return function (value, isSeconds) {
+        var sec_num = parseInt(isSeconds ? value : value / 1000, 10),
             hours   = Math.floor(sec_num / 3600),
             minutes = Math.floor(sec_num / 60) % 60,
             seconds = sec_num % 60,

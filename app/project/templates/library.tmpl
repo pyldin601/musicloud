@@ -153,10 +153,15 @@
             </ul>
         </li>
         <li class="player-display">
-            <div class="peaks-background">
+            <div class="peaks-background" ng-show="player.isLoaded">
                 <div class="waveform-container" seek-controller="">
                     <canvas class="waveform-canvas" peak-data=""></canvas>
                     <div class="track-progress" track-position=""></div>
+                    <div class="time-right">
+                        <span ng-bind="player.playlist.position.position | mmss : true"></span>
+                        /
+                        <span ng-bind="player.playlist.position.duration | mmss : true"></span>
+                    </div>
                 </div>
             </div>
         </li>
