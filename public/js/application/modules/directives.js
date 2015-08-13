@@ -4,6 +4,67 @@
 
 var homecloud = angular.module("HomeCloud");
 
+homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", function ($rootScope, TrackService, $window) {
+    return {
+        restrict: "A",
+        link: function (scope, element, attrs) {
+            var peaksData = [],
+                w = angular.element($window),
+
+                clearPeaks = function () {
+                    peaksData = [];
+                    drawCanvas();
+                },
+                loadPeaks = function (data) {
+                    peaksData = data;
+                    drawCanvas();
+                },
+                drawCanvas = function () {
+                    var canvas = element[0],
+                        ctx = canvas.getContext("2d"),
+                        factor, peak, pos, rate;
+
+                    canvas.width = element.width();
+                    canvas.height = element.height();
+
+                    factor = canvas.height * .75;
+                    rate = canvas.width / peaksData.length * 3;
+
+                    ctx.fillStyle = "#223344";
+                    ctx.globalCompositeOperation = "xor";
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fill();
+                    ctx.beginPath();
+                    for (var n = 0; n <= canvas.width; n += 1) {
+                        if (n % 3 == 0) continue;
+                        pos = parseInt(peaksData.length / canvas.width * (n - n % 3)) - 1;
+                        peak = 1 / 128 * peaksData.slice(pos, pos + rate).max();
+                        ctx.moveTo(n + .5, parseInt(factor - (factor * peak)));
+                        ctx.lineTo(n + .5, parseInt(factor + ((canvas.height - factor) * peak)) + 1);
+                    }
+                    ctx.strokeStyle = "#000000";
+                    ctx.stroke();
+                };
+
+            var watcher = $rootScope.$watch("player.playlist.track", function (changed) {
+                if (!changed) {
+                    clearPeaks();
+                } else {
+                    TrackService.getPeaks(changed.id).success(loadPeaks).error(clearPeaks);
+                }
+            });
+
+            scope.$on("$destroy", function () {
+                watcher();
+                w.unbind("resize", drawCanvas);
+            });
+
+            w.bind("resize", drawCanvas);
+
+        }
+    };
+}]);
+
 homecloud.directive("changeArtwork", ["TrackService", "SyncService", function (TrackService, SyncService) {
     return {
         scope: {
@@ -142,6 +203,31 @@ homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
             scope.$on("$destroy", function () {
                 unbind();
             })
+        }
+    }
+}]);
+
+homecloud.directive("trackPosition", ["$rootScope", function ($rootScope) {
+    return {
+        link: function (scope, element, attrs) {
+            var watcher = $rootScope.$watchCollection("player.playlist.position", function (pos) {
+                element.css("width", "" + (100 / pos.duration * pos.position) + "%")
+            });
+            scope.$on("$destroy", watcher);
+        }
+    }
+}]);
+
+homecloud.directive("seekController", ["$rootScope", function ($rootScope) {
+    return {
+        link: function (scope, element, attrs) {
+            element.on("mousedown", function (event) {
+                var offset = element.offset(),
+                    width = element.width();
+                $rootScope.$applyAsync(function () {
+                    $rootScope.player.doSeek(100 / width * (event.clientX - offset.left))
+                });
+            });
         }
     }
 }]);

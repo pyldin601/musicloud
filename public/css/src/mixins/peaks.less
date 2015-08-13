@@ -1,0 +1,38 @@
+.peaks-background {
+  position: relative;;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  .waveform-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #6A92AC;
+    background: -moz-linear-gradient(top, #6A92AC 0%, #2d5069 75%, #283d4e 75%, #334455 100%);
+    background: -webkit-linear-gradient(top, #6A92AC 0%, #2d5069 75%, #283d4e 75%, #334455 100%);
+    background: -o-linear-gradient(top, #6A92AC 0%, #2d5069 75%, #283d4e 75%, #334455 100%);
+    background: -ms-linear-gradient(top, #6A92AC 0%, #2d5069 75%, #283d4e 75%, #334455 100%);
+    .waveform-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+    }
+    .track-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: #ff7d7b;
+      background: -moz-linear-gradient(top, #ff7d7b 0%, #d33d3d 75%, #6d1b1b 75%, #a85656 100%);
+      background: -webkit-linear-gradient(top, #ff7d7b 0%, #d33d3d 75%, #6d1b1b 75%, #a85656 100%);
+      background: -o-linear-gradient(top, #ff7d7b 0%, #d33d3d 75%, #6d1b1b 75%, #a85656 100%);
+      background: -ms-linear-gradient(top, #ff7d7b 0%, #d33d3d 75%, #6d1b1b 75%, #a85656 100%);
+      transition: width 250ms linear;
+      z-index: 1;
+    }
+  }
+}

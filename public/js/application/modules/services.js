@@ -44,6 +44,9 @@ homecloud.factory("TrackService", ["$http", function ($http) {
         edit: function (data) {
             return $http.post("/api/track/edit", data);
         },
+        getPeaks: function (id) {
+            return $http.get("/peaks/" + id);
+        },
         changeArtwork: function (data) {
             return $http.post("/api/track/artwork", data, {
                 transformRequest: angular.identity,

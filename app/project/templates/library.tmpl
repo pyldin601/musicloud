@@ -153,25 +153,10 @@
             </ul>
         </li>
         <li class="player-display">
-            <div class="display" ng-show="player.isLoaded">
-                <div class="cover">
-                    <img ng-if="player.playlist.track.small_cover_id"
-                         ng-src="/file/{{ player.playlist.track.small_cover_id }}">
-                </div>
-                <div class="text">
-                    <div class="now-playing">
-                        <div class="track-title">
-                            <span class="current-track" ng-bind="player.playlist.track | getTitle"></span>
-                            <span class="current-artist" ng-bind="player.playlist.track | getArtist"></span>
-                            <span class="current-rating" track-rating="player.playlist.track"></span>
-                        </div>
-                        <div class="progress-background">
-                            <div class="time-right" ng-bind="player.playlist.position.duration * 1000 | mmss"></div>
-                            <div class="time-left" ng-bind="player.playlist.position.position * 1000 | mmss"></div>
-                            <div class="progress-area" playback-progress>
-                            </div>
-                        </div>
-                    </div>
+            <div class="peaks-background">
+                <div class="waveform-container" seek-controller="">
+                    <canvas class="waveform-canvas" peak-data=""></canvas>
+                    <div class="track-progress" track-position=""></div>
                 </div>
             </div>
         </li>
