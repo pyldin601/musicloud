@@ -45,6 +45,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                     $route.current.title = $filter("artistFilter")(artist);
                     return SearchService.tracks({ artist: artist, limit: -1, compilations: 0 }, 0).then(function (response) {
                         return response.data;
+                    }, function () {
+                        $location.url("/");
                     });
                 }
             ]
@@ -90,7 +92,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
                 var q = $location.search().q;
-                return SearchService.albums({ q: q }, 0).then(function (response) {
+                return SearchService.albums({ q: q, compilations: 0 }, 0).then(function (response) {
                     return response.data;
                 }, function () {
                     $location.url("/");
@@ -100,6 +102,25 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         title: "Albums",
         special: {
             section: "albums"
+        }
+    });
+
+    $routeProvider.when("/compilations/", {
+        templateUrl: templatePath + "/albums-view.html",
+        controller: "AllCompilationsViewController",
+        resolve: {
+            Resolved: ["SearchService", "$location", function (SearchService, $location) {
+                var q = $location.search().q;
+                return SearchService.albums({ q: q, compilations: 1 }, 0).then(function (response) {
+                    return response.data;
+                }, function () {
+                    $location.url("/");
+                });
+            }]
+        },
+        title: "Compilations",
+        special: {
+            section: "compilations"
         }
     });
 
@@ -141,6 +162,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
 
                     return SearchService.tracks({ genre: genre }, 0).then(function (response) {
                         return response.data;
+                    }, function () {
+                        $location.url("/");
                     });
                 }
             ]

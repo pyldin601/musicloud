@@ -69,21 +69,29 @@
                 <div class="album-tracks">
                     <div class="track" multiselect-item="track" ng-repeat="track in album.tracks" action-play="track"
                          action-context="tracks" action-resolver="fetch">
-                        <div class="duration right" ng-bind-template="{{ track.length | mmss }}"></div>
-                        <div class="rating right" track-rating="track"></div>
+                        <div class="duration right">
+                            <div class="ellipsis" ng-bind="track.length | mmss"></div>
+                        </div>
+                        <div class="rating right">
+                            <div class="ellipsis" track-rating="track"></div>
+                        </div>
                         <div class="plays right" ng-show="track.times_played" title="Times played">
-                            <span class="times-played" ng-bind="track.times_played"></span>
-                            <i class="fa fa-headphones"></i>
+                            <div class="ellipsis">
+                                <span class="times-played" ng-bind="track.times_played"></span>
+                                <i class="fa fa-headphones"></i>
+                            </div>
                         </div>
                         <div class="position left">
-                            <div ng-hide="player.playlist.track == track" ng-bind="$index + 1"></div>
-                            <div ng-show="player.playlist.track == track">
-                                <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                            <div class="ellipsis">
+                                <div ng-hide="player.playlist.track == track" ng-bind="$index + 1"></div>
+                                <div ng-show="player.playlist.track == track">
+                                    <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="track-title">
-                            <div class="first" ng-bind="track | getTitle"></div>
-                            <div class="second" ng-if="album.various_artists" ng-bind="track | getArtist"></div>
+                            <div class="first ellipsis" ng-bind="track | getTitle"></div>
+                            <div class="second ellipsis" ng-if="album.various_artists" ng-bind="track | getArtist"></div>
                         </div>
                     </div>
 

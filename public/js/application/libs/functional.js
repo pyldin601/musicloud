@@ -21,16 +21,14 @@ Array.prototype.all = function (predicate) {
 };
 
 Array.prototype.first = function () {
-    if (this.length == 0) {
-        return undefined;
-    }
     return this[0];
 };
 
+Array.prototype.tail = function () {
+    return this.slice(1);
+};
+
 Array.prototype.last = function () {
-    if (this.length == 0) {
-        return undefined;
-    }
     return this[this.length - 1];
 };
 
@@ -52,15 +50,18 @@ Array.prototype.isVarious = function () {
 };
 
 Array.prototype.distinct = function () {
-    var acc = [];
+    var acc = {};
     for (var i = 0; i < this.length; i += 1) {
-        if (acc.indexOf(this[i]) == -1) {
-            acc.push(this[i])
+        if (acc[this[i]] === undefined) {
+            acc[this[i]] = true;
         }
     }
-    return acc;
+    return Object.keys(acc);
 };
 
+/*
+    Currying functions
+ */
 Function.prototype.curry = function () {
     var args1 = Array.prototype.slice.call(arguments),
         that = this;
@@ -88,12 +89,20 @@ function sum (a, b) { return a + b }
 function sub (a, b) { return a - b }
 function or  (a, b) { return a || b }
 function and (a, b) { return a && b }
+function prod (a, b) { return a * b }
+function div (a, b) { return a / b }
 
 /*
     Help functions for Map
  */
 function field(name) {
-    return function (obj) {
-        return obj[name];
-    }
+    return function (obj) { return obj[name] }
+}
+
+
+/*
+    Tests
+*/
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
 }

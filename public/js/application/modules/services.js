@@ -84,7 +84,8 @@ homecloud.factory("SearchService", ["$http", function ($http) {
 
             uri.o = offset || 0;
 
-            if (opts.q) { uri.q = opts.q }
+            if (opts.q !== undefined) { uri.q = opts.q }
+            if (opts.compilations !== undefined) { uri.compilations = opts.compilations }
 
             uri.l = opts.limit || 50;
 

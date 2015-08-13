@@ -63,12 +63,15 @@
                     <div class="search-title">
                         <i class="icon-artists"></i>
                         <span class="title">
-                            <a href="artists?q={{ query | uri }}">In Artists</a>
+                            <a href="artists?q={{ query | uri }}">Found in artists</a>
                         </span>
                     </div>
                     <div class="query-loader" ng-show="results.artists_busy"></div>
                     <div class="search-content" ng-hide="results.artists_busy">
                         <div class="content-item" ng-repeat="artist in results.artists">
+                            <div class="cover-background left">
+                                <img ng-if="artist.small_cover_id" ng-src="/file/{{ artist.small_cover_id }}">
+                            </div>
                             <div class="title">
                                 <a ng-href="{{ artist.artist_url }}" ng-bind="artist.album_artist | artistFilter"></a>
                             </div>
@@ -80,12 +83,15 @@
                     <div class="search-title">
                         <i class="icon-artists"></i>
                         <span class="title">
-                            <a href="albums?q={{ query | uri }}">In Albums</a>
+                            <a href="albums?q={{ query | uri }}">Found in albums</a>
                         </span>
                     </div>
                     <div class="query-loader" ng-show="results.albums_busy"></div>
                     <div class="search-content" ng-hide="results.albums_busy">
                         <div class="content-item" ng-repeat="album in results.albums">
+                            <div class="cover-background left">
+                                <img ng-if="album.small_cover_id" ng-src="/file/{{ album.small_cover_id }}">
+                            </div>
                             <div class="title">
                                 <a ng-href="{{ album.album_url }}">
                                     <span class="artist" ng-bind="album.album_artist | artistFilter"></span>
@@ -101,14 +107,17 @@
                     <div class="search-title">
                         <i class="icon-artists"></i>
                         <span class="title">
-                            <a href="tracks?q={{ query | uri }}">In Tracks</a>
+                            <a href="tracks?q={{ query | uri }}">Found in tracks</a>
                         </span>
                     </div>
                     <div class="query-loader" ng-show="results.tracks_busy"></div>
                     <div class="search-content" ng-hide="results.tracks_busy">
                         <div class="content-item" ng-repeat="track in results.tracks">
+                            <div class="cover-background left">
+                                <img ng-if="track.small_cover_id" ng-src="/file/{{ track.small_cover_id }}">
+                            </div>
                             <div class="title">
-                                <a ng-href="{{ track.album_url }}">
+                                <a ng-href="tracks?q=id:{{ track.id }}">
                                     <span class="artist" ng-bind="track | getArtist"></span>
                                     -
                                     <span class="title" ng-bind="track | getTitle"></span>

@@ -81,7 +81,7 @@ homecloud.controller("AlbumViewController", [
         $scope.readAlbum = function () {
 
             if ($scope.tracks.length == 0) {
-                $location.url("/albums/");
+                $location.url("/");
                 return;
             }
 
@@ -171,7 +171,29 @@ homecloud.controller("AllAlbumsViewController", [
 
         $scope.load = function () {
             $scope.busy = true;
-            SearchService.albums({q: $location.search().q}, $scope.albums.length).success(function (data) {
+            SearchService.albums({q: $location.search().q, compilations: 1}, $scope.albums.length).success(function (data) {
+                if (data.albums.length > 0) {
+                    array_add(data.albums, $scope.albums);
+                    $scope.busy = false;
+                } else {
+                    $scope.end = true;
+                }
+            })
+        };
+
+    }
+]);
+//AllCompilationsViewController
+homecloud.controller("AllCompilationsViewController", [
+    "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
+
+        $scope.albums = Resolved.albums;
+        $scope.busy = false;
+        $scope.end = false;
+
+        $scope.load = function () {
+            $scope.busy = true;
+            SearchService.albums({q: $location.search().q, compilations: 1}, $scope.albums.length).success(function (data) {
                 if (data.albums.length > 0) {
                     array_add(data.albums, $scope.albums);
                     $scope.busy = false;
@@ -238,17 +260,17 @@ homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout",
             $scope.results.tracks_busy = true;
 
 
-            SearchService.tracks({ q: $scope.query, limit: 5 }, 0, { timeout: canceller.promise }).success(function (response) {
+            SearchService.tracks({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).success(function (response) {
                 $scope.results.tracks = SyncService.tracks(response.tracks);
                 $scope.results.tracks_busy = false;
             });
 
-            SearchService.artists({ q: $scope.query, limit: 5 }, 0, { timeout: canceller.promise }).success(function (response) {
+            SearchService.artists({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).success(function (response) {
                 $scope.results.artists = response.artists;
                 $scope.results.artists_busy = false;
             });
 
-            SearchService.albums({ q: $scope.query, limit: 5 }, 0, { timeout: canceller.promise }).success(function (response) {
+            SearchService.albums({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).success(function (response) {
                 $scope.results.albums = response.albums;
                 $scope.results.albums_busy = false;
             });

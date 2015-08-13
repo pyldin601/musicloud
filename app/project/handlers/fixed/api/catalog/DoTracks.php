@@ -67,7 +67,17 @@ class DoTracks implements RouteHandler {
 
         if ($filter->nonEmpty()) {
 
-            $query  ->where(TSongs::FTS_ANY . " @@ plainto_tsquery(?)", [$filter->get()]);
+            if (strpos($filter->get(), ":") !== false) {
+                list ($key, $value) = explode(":", $filter->get(), 2);
+                switch ($key) {
+                    case "id":
+                        $query->where(TSongs::ID, $value);
+                        break;
+                }
+            } else {
+                $query  ->where(TSongs::FTS_ANY . " @@ plainto_tsquery(?)", [$filter->get()]);
+            }
+
 
         } else {
 

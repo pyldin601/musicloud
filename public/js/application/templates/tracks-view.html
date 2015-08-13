@@ -17,6 +17,8 @@
 
                 <div class="genre right xl-visible" title="Track rating">Genre</div>
 
+                <div class="album right xl-visible" title="Track rating">Album</div>
+
                 <div class="position left" title="Item number">#</div>
                 <div class="inner-info">
                     <div class="left inner-title">
@@ -31,36 +33,52 @@
             <div class="plain-list-item" multiselect-item="track" ng-repeat="track in tracks"
                  action-play="track" action-context="tracks" action-resolver="null">
 
-                <div class="last-played right xl-visible" ng-bind="track.created_date | dateFilter"></div>
-                <div class="last-played right md-visible" ng-bind="track.last_played_date | dateFilter"></div>
+                <div class="last-played right xl-visible">
+                    <div class="ellipsis" ng-bind="track.created_date | dateFilter"></div>
+                </div>
+                <div class="last-played right md-visible">
+                    <div class="ellipsis" ng-bind="track.last_played_date | dateFilter"></div>
+                </div>
 
                 <div class="skips right lg-visible" title="Times skipped">
-                    <div class="times-played" ng-visible="track.times_skipped > 0" ng-bind="track.times_skipped"></div>
+                    <div class="times-played ellipsis" ng-visible="track.times_skipped > 0" ng-bind="track.times_skipped"></div>
                 </div>
 
                 <div class="plays right sm-visible" title="Times played">
-                    <div class="times-played" ng-visible="track.times_played > 0" ng-bind="track.times_played"></div>
+                    <div class="times-played ellipsis" ng-visible="track.times_played > 0" ng-bind="track.times_played"></div>
                 </div>
 
-                <div class="bitrate right lg-visible" ng-bind="track.bitrate | bitrateFilter"></div>
-                <div class="format right lg-visible" ng-bind="track.format"></div>
+                <div class="bitrate right lg-visible">
+                    <div class="ellipsis" ng-bind="track.bitrate | bitrateFilter"></div>
+                </div>
+                <div class="format right lg-visible">
+                    <div class="ellipsis" ng-bind="track.format"></div>
+                </div>
 
-                <div class="rating right  sm-visible" track-rating="track"></div>
+                <div class="rating right sm-visible">
+                    <div class="ellipsis" track-rating="track"></div>
+                </div>
 
                 <div class="genre right xl-visible">
                     <div class="ellipsis" ng-bind="track.track_genre"></div>
                 </div>
 
+                <div class="album right xl-visible">
+                    <div class="ellipsis" ng-bind="track.track_album"></div>
+                </div>
+
                 <div class="position left">
-                    <div ng-hide="player.playlist.track == track" ng-bind="track.track_number"></div>
-                    <div ng-show="player.playlist.track == track">
-                        <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                    <div class="ellipsis">
+                        <div ng-hide="player.playlist.track == track" ng-bind="track.track_number"></div>
+                        <div ng-show="player.playlist.track == track">
+                            <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                        </div>
                     </div>
                 </div>
 
                 <div class="inner-info">
                     <div class="left inner-title">
-                        <div class="track-duration right" ng-bind="track.length | mmss"></div>
+                        <div class="track-duration right ellipsis" ng-bind="track.length | mmss"></div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
                     <div class="left inner-artist">

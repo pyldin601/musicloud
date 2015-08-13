@@ -89,7 +89,7 @@ class FFProbe {
         $object->format_name        = $file_format;
 
         $object->filename           = $o_format["filename"]     ->get();
-        $object->duration           = $o_format["duration"]     ->map(function ($value) { return $value * 1000; })
+        $object->duration           = $o_format["duration"]     ->map(function ($value) { return intval($value * 1000); })
                                                                 ->get();
         $object->size               = $o_format["size"]         ->toInt()
                                                                 ->get();

@@ -29,11 +29,12 @@ function groupGenres(coll) {
     return (genres.length == 0) ? "-" :
            (genres.length == 1) ? genres[0] :
            (genres.length == 2) ? genres[0] + ", " + genres[1] :
+           (genres.length == 3) ? genres[0] + ", " + genres[1] + " and " + genres[2] :
             genres[0] + ", " + genres[1] + " and " + (genres.length - 2) + " others";
 }
 
 function groupYears(coll) {
-    var years = coll.map(field("track_year")).distinct();
+    var years = coll.map(field("track_year")).distinct().filter(isNumeric);
     return (years.length == 0) ? "" :
            (years.length == 1) ? years[0] :
            (years.length == 2) ? years.join(", ") :

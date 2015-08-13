@@ -9,12 +9,11 @@
 namespace app\project\handlers\fixed\api\track;
 
 
+use app\core\cache\TempFileProvider;
 use app\core\http\HttpFiles;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\lang\option\Option;
 use app\project\models\tracklist\Song;
-use app\project\models\tracklist\Songs;
 
 class DoUpload implements RouteHandler {
     public function doPost(JsonResponse $response, $track_id, HttpFiles $file) {
@@ -23,7 +22,11 @@ class DoUpload implements RouteHandler {
 
         $tm = new Song($track_id);
 
-        $response->write($tm->upload($track["tmp_name"], urldecode($track["name"])));
+        $temp_file = TempFileProvider::generate("", $track["name"]);
+
+        move_uploaded_file($track["tmp_name"], $temp_file);
+
+        $response->write($tm->upload($temp_file, urldecode($track["name"])));
 
     }
 } 

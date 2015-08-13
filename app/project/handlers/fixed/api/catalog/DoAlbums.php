@@ -27,13 +27,12 @@ use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\TSongs;
 
 class DoAlbums implements RouteHandler {
-    public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
+    public function doGet(JsonResponse $response, Option $q, LoggedIn $me, Option $compilations) {
 
-        $filter = $q->map("trim")->reject("");
+        $filter = $q->reject("");
 
         $query = (new SelectQuery(TSongs::_NAME))
             ->where(TSongs::USER_ID, $me->getId())
-            ->where(TSongs::IS_COMP, "0")
             ->where(TSongs::T_ALBUM . " != ''")
             ->select(TSongs::A_ARTIST)
             ->select(TSongs::T_ALBUM)
@@ -41,7 +40,9 @@ class DoAlbums implements RouteHandler {
             ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
             ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);
 
-        $query->where(TSongs::IS_COMP, "0");
+        if ($compilations->nonEmpty()) {
+            $query->where(TSongs::IS_COMP, $compilations->get());
+        }
 
         Context::contextify($query);
 

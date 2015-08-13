@@ -40,15 +40,11 @@
         };
     }]);
 
-    homecloud.factory("MonitorSongs", ["$rootScope", "SyncService", function ($rootScope, SyncService) {
+    homecloud.factory("MonitorSongs", ["SyncService", function (SyncService) {
         return function (coll, scope) {
             scope.$on("songs.deleted", function (e, data) {
                 scope.$applyAsync(function () {
-                    var player = $rootScope.player;
                     for (var j = 0; j < data.length; j += 1) {
-                        if (player.isPlaying && player.playlist.track.id == data[j].id) {
-                            $rootScope.player.doStop();
-                        }
                         for (var i = coll.length - 1; i >= 0; i -= 1) {
                             if (coll[i].id === data[j].id) {
                                 coll.splice(i, 1);

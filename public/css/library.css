@@ -644,7 +644,11 @@ a {
   padding: 6px 8px;
 }
 .plain-list > .plain-list-item > * {
-  padding: 1px 4px;
+  padding: 0 4px;
+}
+.plain-list > .plain-list-item > * .ellipsis {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 .plain-list > .plain-list-item.selected {
   border-radius: 4px;
@@ -693,6 +697,9 @@ a {
 }
 .plain-list.tracks-list .genre {
   width: 96px;
+}
+.plain-list.tracks-list .album {
+  width: 10%;
 }
 .plain-list.tracks-list .track-duration {
   width: 60px;
@@ -897,7 +904,7 @@ a {
   }
 }
 .search-background .main-search-box {
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: 8px;
   background: transparent;
   transition: linear border-color 0.1s, linear background-color 0.1s;
@@ -905,7 +912,7 @@ a {
   padding-right: 24px;
 }
 .search-background .main-search-box:focus {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(0, 0, 0, 0.4);
   background-color: rgba(0, 0, 0, 0.2);
 }
 .search-background .main-search-reset {
@@ -934,10 +941,9 @@ a {
   margin-top: 1px;
   padding-top: 24px;
   padding-bottom: 24px;
-  padding-left: 24px;
-  padding-right: 24px;
   box-sizing: border-box;
   color: #000000;
+  border: 1px solid #dddddd;
 }
 @media (max-width: 1024px) {
   .search-results {
@@ -959,34 +965,93 @@ a {
     padding-bottom: 8px;
   }
 }
+.search-results .search-group .search-title {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: 600;
+  padding-left: 24px;
+  padding-right: 24px;
+}
 @media (max-width: 1024px) {
-  .search-results {
+  .search-results .search-group .search-title {
     padding-left: 16px;
   }
 }
 @media (max-width: 640px) {
-  .search-results {
+  .search-results .search-group .search-title {
     padding-left: 8px;
   }
 }
 @media (max-width: 1024px) {
-  .search-results {
+  .search-results .search-group .search-title {
     padding-right: 16px;
   }
 }
 @media (max-width: 640px) {
-  .search-results {
+  .search-results .search-group .search-title {
     padding-right: 8px;
   }
 }
-.search-results .search-group .search-title {
+.search-results .search-group .query-loader {
   padding-bottom: 8px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
-.search-results .search-group .search-content {
-  padding-bottom: 8px;
+@media (max-width: 1024px) {
+  .search-results .search-group .query-loader {
+    padding-left: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results .search-group .query-loader {
+    padding-left: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .search-results .search-group .query-loader {
+    padding-right: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results .search-group .query-loader {
+    padding-right: 8px;
+  }
 }
 .search-results .search-group .search-content .content-item {
-  padding: 4px 0;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+@media (max-width: 1024px) {
+  .search-results .search-group .search-content .content-item {
+    padding-left: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results .search-group .search-content .content-item {
+    padding-left: 8px;
+  }
+}
+@media (max-width: 1024px) {
+  .search-results .search-group .search-content .content-item {
+    padding-right: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .search-results .search-group .search-content .content-item {
+    padding-right: 8px;
+  }
+}
+.search-results .search-group .search-content .content-item .cover-background {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  overflow: hidden;
+}
+.search-results .search-group .search-content .content-item:hover {
+  background-color: #334455;
+  color: #ffffff;
 }
 .search-results .query-loader:after {
   content: "Loading...";
@@ -1210,6 +1275,7 @@ a {
   box-sizing: border-box;
   border-radius: 4px 4px 0 0;
   transition: linear all 0.1s;
+  z-index: 1000;
 }
 .library-player .player-icons .icons li.ctrl-volume .volume-controller .volume-background {
   width: 100%;
@@ -1831,16 +1897,10 @@ a {
   width: 36px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .track-title .first {
-  line-height: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 .library-body .library-container .album-wrapper .content .album-tracks .track .track-title .second {
-  line-height: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   margin-left: 36px;
   margin-top: 4px;
   padding-bottom: 2px;

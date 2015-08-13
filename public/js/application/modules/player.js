@@ -216,6 +216,18 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
         MonitorSongs($rootScope.player.playlist.tracks, $rootScope);
 
+        $rootScope.$on("songs.deleted", function (e, data) {
+            if (player.isLoaded) {
+                $rootScope.$applyAsync(function () {
+                    for (var j = 0; j < data.length; j += 1) {
+                        if (player.isLoaded && player.playlist.track.id == data[j].id) {
+                            $rootScope.player.doStop();
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
 ]);
