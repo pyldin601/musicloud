@@ -21,15 +21,18 @@
     <script src="/public/js/application/libs/jplayer/jquery.jplayer.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
     <script src="/public/js/application/libs/angular-post-fix.js"></script>
+    <script src="/public/js/application/lobby.js"></script>
 
 
 </head>
 <body>
     <div class="lobby-wrapper">
-        <div class="lobby-login-form">
-            <form class="login-form">
-                <input class="block" type="text" ng-model="login" placeholder="Login" name="login">
-                <input class="block" type="password" ng-model="password" placeholder="Password" name="password">
+        <div class="lobby-login-form" ng-controller="LoginController">
+            <form class="login-form" ng-submit="submit()">
+                <input class="block" type="text" ng-model="login" placeholder="Login" name="login"
+                        ng-required="true">
+                <input class="block" type="password" ng-model="password" placeholder="Password" name="password"
+                        ng-required="true">
                 <input class="login" type="submit" value="Login">
             </form>
         </div>
