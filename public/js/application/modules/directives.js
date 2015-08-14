@@ -16,19 +16,21 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
                 clearPeaks = function () {
                     peaksData = [];
                     drawCanvas();
+                    scope.loading = false;
                 },
                 loadPeaks = function (data) {
                     peaksData = data;
                     drawCanvas();
+                    scope.loading = false;
                 },
                 drawCanvas = function () {
-                    var factor, peak, pos, rate;
+                    var gradientBase, peak, pos, rate, leftRange, rightRange;
 
                     canvas.width = element.width();
                     canvas.height = element.height();
 
-                    factor = canvas.height * .75;
-                    rate = canvas.width / peaksData.length * 3;
+                    gradientBase = canvas.height * .75;
+                    rate = (peaksData.length / canvas.width) * 3;
 
                     ctx.fillStyle = "#223344";
                     ctx.globalCompositeOperation = "xor";
@@ -36,17 +38,23 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
                     ctx.fill();
                     ctx.beginPath();
                     for (var n = 0; n <= canvas.width; n += 1) {
-                        if (n % 3 == 0) continue;
+                        if (n % 3 == 2)
+                            continue;
+
                         pos = parseInt(peaksData.length / canvas.width * (n - n % 3)) - 1;
-                        peak = 1 / 128 * peaksData.slice(pos, pos + rate).max();
-                        ctx.moveTo(n + .5, parseInt(factor - (factor * peak)) - 1);
-                        ctx.lineTo(n + .5, parseInt(factor + ((canvas.height - factor) * peak)) + 1);
+                        leftRange = Math.max(0, pos - (rate / 2));
+                        rightRange = Math.min(peaksData.length - 1, pos + (rate / 2));
+                        peak = 1 / 128 * peaksData.slice(leftRange, rightRange).max();
+
+                        ctx.moveTo(n + .5, parseInt(gradientBase - (gradientBase * peak)) - 1);
+                        ctx.lineTo(n + .5, parseInt(gradientBase + ((canvas.height - gradientBase) * peak)) + 1);
                     }
                     ctx.strokeStyle = "#000000";
                     ctx.stroke();
                 };
 
             var watcher = $rootScope.$watch("player.playlist.track", function (changed) {
+                scope.loading = true;
                 if (!changed) {
                     clearPeaks();
                 } else {
@@ -58,6 +66,8 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
                 watcher();
                 w.unbind("resize", drawCanvas);
             });
+
+            scope.loading = false;
 
             w.bind("resize", drawCanvas);
 

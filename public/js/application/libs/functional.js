@@ -68,6 +68,11 @@ Array.prototype.chunk = function(chunkSize) {
     );
 };
 
+Array.prototype.avg = function () {
+    var initial = 0;
+    return (this.length > 0) ? this.reduce(sum, initial) / this.length : initial;
+};
+
 /*
     Currying functions
  */
@@ -94,12 +99,12 @@ Function.prototype.rcurry = function () {
 /*
     Arithmetical functions
  */
-function sum (a, b) { return a + b }
-function sub (a, b) { return a - b }
-function or  (a, b) { return a || b }
-function and (a, b) { return a && b }
+function sum  (a, b) { return a + b }
+function sub  (a, b) { return a - b }
+function or   (a, b) { return a || b }
+function and  (a, b) { return a && b }
 function prod (a, b) { return a * b }
-function div (a, b) { return a / b }
+function div  (a, b) { return a / b }
 
 /*
     Help functions for Map
