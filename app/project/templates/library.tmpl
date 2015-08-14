@@ -153,7 +153,7 @@
             </ul>
         </li>
         <li class="track-display">
-            <div class="track-container">
+            <div class="track-container" ng-show="player.isLoaded">
                 <div class="cover-background">
                     <img ng-if="player.playlist.track.small_cover_id"
                          ng-src="/file/{{ player.playlist.track.small_cover_id }}">
