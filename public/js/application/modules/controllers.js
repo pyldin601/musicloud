@@ -93,6 +93,7 @@ homecloud.controller("AlbumViewController", [
                 album_year: groupYears($scope.tracks),
                 album_genre: groupGenres($scope.tracks),
                 length: aggregateDuration($scope.tracks),
+                discs_count: $scope.tracks.map(field("disk_number")).distinct().length,
                 is_various: $scope.tracks.any(function (t) {
                     return t.track_artist !== t.album_artist
                 })

@@ -41,7 +41,7 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
                         if (n % 3 == 2)
                             continue;
 
-                        pos = parseInt(peaksData.length / canvas.width * (n - n % 3)) - 1;
+                        pos = parseInt(peaksData.length / canvas.width * (n - n % 3));
                         leftRange = Math.max(0, pos - (rate / 2));
                         rightRange = Math.min(peaksData.length - 1, pos + (rate / 2));
                         peak = 1 / 128 * peaksData.slice(leftRange, rightRange).max();
@@ -156,13 +156,13 @@ homecloud.directive("ngVisible", [function () {
     }
 }]);
 
-homecloud.directive("volumeController", ["$rootScope", function ($rootScope) {
+homecloud.directive("volumeController", ["$rootScope", "$document", function ($rootScope, $document) {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
             var line = element.find(".value-line"),
                 bulb = element.find(".volume-bulb"),
-                doc = $(document),
+                doc = angular.element($document),
                 unbind = $rootScope.$watch("player.volume", function (value) {
                     line.css("height", "" + parseInt(100 * value) + "%");
                     bulb.css("bottom", "" + parseInt(100 * value) + "%");

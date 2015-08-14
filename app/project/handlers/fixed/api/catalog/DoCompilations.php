@@ -18,7 +18,7 @@ use app\project\models\single\LoggedIn;
 use app\project\persistence\db\tables\TSongs;
 
 class DoCompilations implements RouteHandler {
-    public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
+    public function doGet(Option $q, LoggedIn $me) {
 
         $filter = $q->map("trim")->reject("");
 
@@ -42,11 +42,18 @@ class DoCompilations implements RouteHandler {
 
         $query->orderBy(TSongs::T_ALBUM);
 
-        $catalog = $query->fetchAll();
+        header("Content-Type: application/json");
 
-        $response->write([
-            "albums" => $catalog,
-        ]);
+        echo '{"albums":[';
+
+        $query->eachRow(function ($row, $id) {
+            if ($id != 0) {
+                echo ",";
+            }
+            echo json_encode($row, JSON_UNESCAPED_UNICODE);
+        });
+
+        echo ']}';
 
     }
 }

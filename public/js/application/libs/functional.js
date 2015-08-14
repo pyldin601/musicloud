@@ -73,6 +73,16 @@ Array.prototype.avg = function () {
     return (this.length > 0) ? this.reduce(sum, initial) / this.length : initial;
 };
 
+Array.prototype.filterNot = function (pred) {
+    var acc = [];
+    for (var i = 0; i < this.length; i += 1) {
+        if (!pred(this[i])) {
+            acc.push(this[i]);
+        }
+    }
+    return acc;
+};
+
 /*
     Currying functions
  */
@@ -120,3 +130,9 @@ function field(name) {
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+function isNull(arg) {
+    return arg === null;
+}
+
+function pass(a) { return a }

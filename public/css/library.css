@@ -704,7 +704,8 @@ a {
 .plain-list.tracks-list .track-duration {
   width: 70px;
   text-align: center;
-  padding: 0 4px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .plain-list.tracks-list .inner-info {
   overflow: hidden;
@@ -904,7 +905,7 @@ a {
   }
 }
 .search-background .main-search-box {
-  border: 1px solid rgba(128, 128, 128, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background: transparent;
   transition: linear border-color 0.1s, linear background-color 0.1s;
@@ -912,8 +913,7 @@ a {
   padding-right: 24px;
 }
 .search-background .main-search-box:focus {
-  border-color: rgba(0, 0, 0, 0.4);
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .search-background .main-search-reset {
   position: absolute;

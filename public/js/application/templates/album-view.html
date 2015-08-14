@@ -24,10 +24,11 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Release Years</th>
+                            <th>Release Year</th>
                             <th>Tracks Count</th>
+                            <th>Discs Count</th>
                             <th>Duration</th>
-                            <th>Genres</th>
+                            <th>Genre</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +38,9 @@
                             </td>
                             <td>
                                 <span class="tracks-count" ng-bind="tracks.length"></span>
+                            </td>
+                            <td>
+                                <span class="discs-count" ng-bind="album.discs_count"></span>
                             </td>
                             <td>
                                 <span class="album-length" ng-bind="album.length | mmss"></span>

@@ -29,7 +29,7 @@ use app\project\persistence\db\tables\TSongs;
 
 class DoTracks implements RouteHandler {
 
-    public function doGet(JsonResponse $response, Option $q, HttpGet $get, LoggedIn $me, Option $compilations) {
+    public function doGet(Option $q, HttpGet $get, LoggedIn $me, Option $compilations) {
 
         $artist  = $get->get("artist");
         $album   = $get->get("album");
@@ -87,7 +87,7 @@ class DoTracks implements RouteHandler {
                     break;
                 default:
                     $query  ->orderBy(TSongs::A_ARTIST)
-                            ->orderBy(TSongs::T_YEAR . " DESC")
+//                            ->orderBy(TSongs::T_YEAR . " DESC")
                             ->orderBy(TSongs::T_ALBUM)
                             ->orderBy(TSongs::DISC)
                             ->orderBy(TSongs::T_NUMBER)
@@ -97,17 +97,22 @@ class DoTracks implements RouteHandler {
 
         }
 
-        $catalog = $query->fetchAll(null, function ($row) {
+        header("Content-Type: application/json");
+
+        echo '{"tracks":[';
+
+        $query->eachRow(function ($row, $id) {
             $artist_encoded = escape_url($row["album_artist"]);
             $album_encoded  = escape_url($row["track_album"]);
             $row["artist_url"] = "artist/{$artist_encoded}";
             $row["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
-            return $row;
+            if ($id != 0) {
+                echo ',';
+            }
+            echo json_encode($row, JSON_UNESCAPED_UNICODE);
         });
 
-        $response->write([
-            "tracks" => $catalog
-        ]);
+        echo ']}';
 
     }
 } 

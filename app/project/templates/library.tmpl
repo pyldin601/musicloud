@@ -159,8 +159,12 @@
                          ng-src="/file/{{ player.playlist.track.small_cover_id }}">
                 </div>
                 <div class="track-info">
-                    <div class="current-title" ng-bind="player.playlist.track | getTitle"></div>
-                    <div class="current-artist" ng-bind="player.playlist.track | getArtist"></div>
+                    <div class="current-title">
+                        <a ng-href="{{ player.playlist.track.album_url }}" ng-bind="player.playlist.track | getTitle"></a>
+                    </div>
+                    <div class="current-artist">
+                        <a ng-href="tracks?q={{ player.playlist.track.track_artist }}" ng-bind="player.playlist.track | getArtist"></a>
+                    </div>
                     <div class="current-rating" track-rating="player.playlist.track"></div>
                 </div>
             </div>

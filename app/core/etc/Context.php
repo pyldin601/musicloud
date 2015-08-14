@@ -42,8 +42,11 @@ class Context {
 
         $max_limit = self::$settings->get("catalog", "items_per_request_limit");
 
-        $query->limit($limit->filter(Filter::isLessThan($max_limit))->getOrElse($max_limit));
-        $query->offset($offset->orZero());
+        $limit->then([$query, "limit"]);
+        $offset->then([$query, "offset"]);
+
+//        $query->limit($limit->filter(Filter::isLessThan($max_limit))->getOrElse($max_limit));
+//        $query->offset($offset->orZero());
 
     }
 } 

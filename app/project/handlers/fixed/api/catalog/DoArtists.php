@@ -25,7 +25,7 @@ use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\TSongs;
 
 class DoArtists implements RouteHandler {
-    public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
+    public function doGet(Option $q, LoggedIn $me) {
 
         $filter = $q->map("trim")->reject("");
 
@@ -49,15 +49,20 @@ class DoArtists implements RouteHandler {
 
         $query->orderBy(TSongs::A_ARTIST);
 
-        $catalog = $query->fetchAll(null, function ($row) {
+        header("Content-Type: application/json");
+
+        echo '{"artists":[';
+
+        $query->eachRow(function ($row, $id) {
             $artist_encoded = escape_url($row["album_artist"]);
             $row["artist_url"] = "artist/{$artist_encoded}";
-            return $row;
+            if ($id != 0) {
+                echo ",";
+            }
+            echo json_encode($row, JSON_UNESCAPED_UNICODE);
         });
 
-        $response->write([
-            "artists" => $catalog
-        ]);
+        echo ']}';
 
     }
 } 

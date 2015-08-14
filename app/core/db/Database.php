@@ -205,9 +205,10 @@ class Database implements SingletonInterface, Injectable {
     public function eachRow($query, array $params = null, callable $callback) {
 
         $resource = $this->createResource($query, $params);
+        $i = 0;
 
         while ($row = $resource->fetch(PDO::FETCH_ASSOC)) {
-            call_user_func($callback, $row);
+            call_user_func_array($callback, [$row, $i++]);
             unset($row);
         }
 

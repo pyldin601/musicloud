@@ -25,7 +25,7 @@ use app\project\persistence\db\tables\MetaGenresTable;
 use app\project\persistence\db\tables\TSongs;
 
 class DoGenres implements RouteHandler {
-    public function doGet(JsonResponse $response, Option $q, LoggedIn $me) {
+    public function doGet(Option $q, LoggedIn $me) {
 
         $filter = $q->map("trim")->reject("");
 
@@ -50,14 +50,20 @@ class DoGenres implements RouteHandler {
 
         Context::contextify($query);
 
-        $catalog = $query->fetchAll(null, function ($row) {
+        header("Content-Type: application/json");
+
+        echo '{"genres":[';
+
+        $query->eachRow(function ($row, $id) {
             $genre_encoded = escape_url($row["track_genre"]);
             $row["genre_url"] = "genre/{$genre_encoded}";
-            return $row;
+            if ($id != 0) {
+                echo ",";
+            }
+            echo json_encode($row, JSON_UNESCAPED_UNICODE);
         });
 
-        $response->write([
-            "genres" => $catalog
-        ]);
+        echo ']}';
+
     }
 } 
