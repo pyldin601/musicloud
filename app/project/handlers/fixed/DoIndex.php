@@ -16,8 +16,8 @@ use app\project\models\single\LoggedIn;
 
 class DoIndex implements RouteHandler {
     public function doGet() {
-//        $logged_in = LoggedIn::isLoggedIn();
-        $logged_in = false;
+        $logged_in = LoggedIn::isLoggedIn();
+//        $logged_in = false;
         if ($logged_in) {
             http_response_code(HttpStatusCodes::HTTP_FOUND);
             header("Location: /library/");
