@@ -44,7 +44,7 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
                         pos = parseInt(peaksData.length / canvas.width * (n - n % 3));
                         leftRange = Math.max(0, pos - (rate / 2));
                         rightRange = Math.min(peaksData.length - 1, pos + (rate / 2));
-                        peak = 1 / 128 * peaksData.slice(leftRange, rightRange).max();
+                        peak = 1 / 128 * peaksData.slice(leftRange, rightRange).avg();
 
                         ctx.moveTo(n + .5, parseInt(gradientBase - (gradientBase * peak)) - 1);
                         ctx.lineTo(n + .5, parseInt(gradientBase + ((canvas.height - gradientBase) * peak)) + 1);
