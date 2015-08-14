@@ -184,7 +184,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                 function (SearchService, $location) {
                     var q = $location.search().q,
                         s = $location.search().s;
-                    return SearchService.tracks({ q: q, s: s, compilations: 0 }, 0).then(function (response) {
+                    return SearchService.tracks({ q: q, s: s }, 0).then(function (response) {
                         return response.data;
                     }, function () {
                         $location.url("/");
