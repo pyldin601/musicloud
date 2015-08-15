@@ -58,13 +58,15 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                         player.playlist.track = track;
 
                         jFrame.jPlayer("setMedia", {
-                            mp3: (track.format == "mp33") ? ("/file/" + track.file_id) : ("/preview/" + track.id)
+                            mp3: (track.format == "mp3") ? ("/file/" + track.file_id) : ("/preview/" + track.id)
                         }).jPlayer("play");
 
                         player.playlist.position.duration = track.length / 1000;
 
                         player.isLoaded = true;
                         player.isPlaying = true;
+
+                        StatsService.scrobbleStart(track);
 
                     });
 
@@ -183,6 +185,7 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
             ended: function () {
                 if (player.playlist.track) {
                     StatsService.incrementPlays(player.playlist.track);
+                    StatsService.scrobbleFinish(player.playlist.track);
                     player.doPlayNext();
                 }
             },
@@ -218,13 +221,11 @@ homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
         $rootScope.$on("songs.deleted", function (e, data) {
             if (player.isLoaded) {
-                $rootScope.$applyAsync(function () {
-                    for (var j = 0; j < data.length; j += 1) {
-                        if (player.isLoaded && player.playlist.track.id == data[j].id) {
-                            $rootScope.player.doStop();
-                        }
+                for (var j = 0; j < data.length; j += 1) {
+                    if (player.playlist.track.id === data[j].id) {
+                        $rootScope.player.doStop();
                     }
-                });
+                }
             }
         });
 

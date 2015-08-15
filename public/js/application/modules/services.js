@@ -194,36 +194,6 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
     }
 }]);
 
-homecloud.run(["$interval", "StatsService", "$rootScope",
-    function ($interval, StatsService, $rootScope) {
-        var handle = null,
-            timeout = 0,
-            track = null,
-            timer = function () {
-                if ($rootScope.player.isPlaying) {
-                    timeout--;
-                    if (timeout < 1) {
-                        StatsService.scrobbleFinish(track);
-                        resetTimeout();
-                    }
-                }
-            },
-            resetTimeout = function () {
-                timeout = 0;
-                $interval.cancel(handle);
-            };
-        $rootScope.$watch("player.playlist.track", function (updated) {
-            track = updated;
-            resetTimeout();
-            if (track && track.track_artist && track.track_title) {
-                StatsService.scrobbleStart(track);
-                timeout = parseInt(Math.min(120000, track.length / 2));
-                handle = $interval(timer, 1000);
-            }
-        });
-    }
-]);
-
 homecloud.factory("SyncService", [function () {
     var trackSync  = sync("id");
     var artistSync = sync("id");
