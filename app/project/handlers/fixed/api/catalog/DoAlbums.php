@@ -55,7 +55,9 @@ class DoAlbums implements RouteHandler {
 
         $query->orderBy(TSongs::T_ALBUM);
 
-        header("Content-Type: application/json");
+        ob_start("ob_gzhandler");
+
+        header("Content-Type: application/json; charset=utf8");
 
         echo '{"albums":[';
 

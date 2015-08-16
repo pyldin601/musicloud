@@ -50,7 +50,9 @@ class DoGenres implements RouteHandler {
 
         Context::contextify($query);
 
-        header("Content-Type: application/json");
+        ob_start("ob_gzhandler");
+
+        header("Content-Type: application/json; charset=utf8");
 
         echo '{"genres":[';
 

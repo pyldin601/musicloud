@@ -49,7 +49,7 @@ class DoArtists implements RouteHandler {
 
         $query->orderBy(TSongs::A_ARTIST);
 
-        header("Content-Type: application/json");
+        header("Content-Type: application/json; charset=utf8");
 
         echo '{"artists":[';
 
