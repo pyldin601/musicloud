@@ -99,7 +99,7 @@ class DoTracks implements RouteHandler {
 
         header("Content-Type: application/json");
 
-        echo '{"tracks":[';
+        echo '{';
 
         $query->eachRow(function ($row, $id) {
             $artist_encoded = escape_url($row["album_artist"]);
@@ -108,8 +108,13 @@ class DoTracks implements RouteHandler {
             $row["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
             if ($id != 0) {
                 echo ',';
+            } else {
+                echo '"keys":';
+                echo json_encode(array_keys($row));
+                echo ',';
+                echo '"tracks":[';
             }
-            echo json_encode($row, JSON_UNESCAPED_UNICODE);
+            echo json_encode(array_values($row), JSON_UNESCAPED_UNICODE);
         });
 
         echo ']}';

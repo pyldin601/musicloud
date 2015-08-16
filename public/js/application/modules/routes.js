@@ -44,7 +44,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                     var artist = decodeUriPlus($route.current.params.artist);
                     $route.current.title = $filter("artistFilter")(artist);
                     return SearchService.tracks({ artist: artist, limit: -1, compilations: 0 }, 0).then(function (response) {
-                        return response.data;
+                        return response;
                     }, function () {
                         $location.url("/");
                     });
@@ -72,7 +72,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                     );
 
                     return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).then(function (response) {
-                        return response.data;
+                        return response;
                     }, function () {
                         $location.url("/");
                     });
@@ -161,7 +161,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                     $route.current.title = $filter("genreFilter")(genre);
 
                     return SearchService.tracks({ genre: genre }, 0).then(function (response) {
-                        return response.data;
+                        return response;
                     }, function () {
                         $location.url("/");
                     });
@@ -185,7 +185,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                     var q = $location.search().q,
                         s = $location.search().s;
                     return SearchService.tracks({ q: q, s: s }, 0).then(function (response) {
-                        return response.data;
+                        return response;
                     }, function () {
                         $location.url("/");
                     });

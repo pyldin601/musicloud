@@ -9,7 +9,7 @@ homecloud.controller("ArtistViewController", [
     function (Resolved, Header, $scope, MonitorSongs, SyncService, Library) {
 
         $scope.header = Header;
-        $scope.tracks = SyncService.tracks(Resolved.tracks);
+        $scope.tracks = Resolved.tracks;
         $scope.tracks_selected = [];
 
         $scope.genre = groupGenres($scope.tracks);
@@ -35,7 +35,7 @@ homecloud.controller("GenreViewController", [
         var genre = decodeUriPlus($routeParams.genre);
 
         $scope.header = Header;
-        $scope.tracks = SyncService.tracks(Resolved.tracks);
+        $scope.tracks = Resolved.tracks;
         $scope.tracks_selected = [];
 
         $scope.albums = [];
@@ -49,7 +49,7 @@ homecloud.controller("GenreViewController", [
             $scope.busy = true;
             $scope.fetch($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
-                    array_add(SyncService.tracks(data.tracks), $scope.tracks);
+                    array_add(data.tracks, $scope.tracks);
                     Library.addToGroup($scope.albums, data.tracks);
                     $scope.busy = false;
                 } else {
@@ -74,7 +74,7 @@ homecloud.controller("AlbumViewController", [
     "Resolved", "$scope", "SyncService", "MonitorSongs", "$location",
     function (Resolved, $scope, SyncService, MonitorSongs, $location) {
 
-        $scope.tracks = SyncService.tracks(Resolved.tracks);
+        $scope.tracks = Resolved.tracks;
         $scope.tracks_selected = [];
         $scope.album = {};
 
@@ -116,7 +116,7 @@ homecloud.controller("TracksViewController", [
     "Resolved", "$scope", "SyncService", "MonitorSongs", "$location", "SearchService",
     function (Resolved, $scope, SyncService, MonitorSongs, $location, SearchService) {
 
-        $scope.tracks = SyncService.tracks(Resolved.tracks);
+        $scope.tracks = Resolved.tracks;
         $scope.busy = false;
         $scope.end = false;
 
@@ -127,7 +127,7 @@ homecloud.controller("TracksViewController", [
             $scope.busy = true;
             $scope.fetch($scope.tracks.length).success(function (data) {
                 if (data.tracks.length > 0) {
-                    array_add(SyncService.tracks(data.tracks), $scope.tracks);
+                    array_add(data.tracks, $scope.tracks);
                     $scope.busy = false;
                 } else {
                     $scope.end = true;
@@ -262,7 +262,7 @@ homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout",
 
 
             SearchService.tracks({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).success(function (response) {
-                $scope.results.tracks = SyncService.tracks(response.tracks);
+                $scope.results.tracks = response.tracks;
                 $scope.results.tracks_busy = false;
             });
 

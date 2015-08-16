@@ -69,7 +69,7 @@ homecloud.factory("HeadersService", ["$http", function ($http) {
     }
 }]);
 
-homecloud.factory("SearchService", ["$http", function ($http) {
+homecloud.factory("SearchService", ["$http", "SyncService", function ($http, SyncService) {
     return {
         artists: function (opts, offset, special) {
             var uri = {};
@@ -119,7 +119,9 @@ homecloud.factory("SearchService", ["$http", function ($http) {
             if (opts.genre !== undefined) { uri.genre = opts.genre }
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/tracks?" + serialize_uri(uri), special);
+            return $http.get("/api/catalog/tracks?" + serialize_uri(uri), special).then(function (response) {
+                return { tracks: SyncService.loadTracks(response.data) };
+            });
         }
     };
 }]);
@@ -203,6 +205,18 @@ homecloud.factory("SyncService", [function () {
         track: function (track) {
             return trackSync([track]).shift();
         },
+        loadTracks: function (response) {
+            var keys = response.keys,
+                values = response.tracks;
+
+            return trackSync(values.map(function (r) {
+                var tmp = {};
+                for (var i = 0; i < r.length; i += 1) {
+                    tmp[keys[i]] = r[i];
+                }
+                return tmp;
+            }));
+        },
 
         artists: artistSync,
         artist: function (artist) {
@@ -213,7 +227,7 @@ homecloud.factory("SyncService", [function () {
         album: function (album) {
             return albumSync([album]).shift();
         }
-    }
+    };
 }]);
 
 
