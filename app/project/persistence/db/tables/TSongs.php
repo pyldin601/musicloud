@@ -59,7 +59,7 @@ class TSongs {
         return implode(",", self::$columns);
     }
 
-    static function getColumnsNames() {
+    static function getColumnNames() {
         return self::$columns;
     }
 

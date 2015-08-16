@@ -87,7 +87,6 @@ class DoTracks implements RouteHandler {
                     break;
                 default:
                     $query  ->orderBy(TSongs::A_ARTIST)
-//                            ->orderBy(TSongs::T_YEAR . " DESC")
                             ->orderBy(TSongs::T_ALBUM)
                             ->orderBy(TSongs::DISC)
                             ->orderBy(TSongs::T_NUMBER)
@@ -101,9 +100,9 @@ class DoTracks implements RouteHandler {
 
         header("Content-Type: application/json");
 
-        echo '{"keys":'.json_encode(TSongs::getColumnsNames()).',"tracks":[';
+        echo '{"keys":'.json_encode(TSongs::getColumnNames()).',"tracks":[';
 
-        $query->eachRow(function ($row, $id, $columns) {
+        $query->eachRow(function ($row, $id) {
             $artist_encoded = escape_url($row["album_artist"]);
             $album_encoded  = escape_url($row["track_album"]);
             $row["artist_url"] = "artist/{$artist_encoded}";
