@@ -100,7 +100,7 @@ class DoTracks implements RouteHandler {
 
         header("Content-Type: application/json");
 
-        echo '{"keys":'.json_encode(TSongs::getColumnNames()).',"tracks":[';
+        echo '{"keys":'.json_encode(array_merge(TSongs::getColumnNames(), ["artist_url", "album_url"])).',"tracks":[';
 
         $query->eachRow(function ($row, $id) {
             $artist_encoded = escape_url($row["album_artist"]);

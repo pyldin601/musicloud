@@ -47,7 +47,7 @@ homecloud.controller("GenreViewController", [
 
         $scope.load = function () {
             $scope.busy = true;
-            $scope.fetch($scope.tracks.length).success(function (data) {
+            $scope.fetch($scope.tracks.length).then(function (data) {
                 if (data.tracks.length > 0) {
                     array_add(data.tracks, $scope.tracks);
                     Library.addToGroup($scope.albums, data.tracks);
@@ -125,7 +125,7 @@ homecloud.controller("TracksViewController", [
 
         $scope.load = function () {
             $scope.busy = true;
-            $scope.fetch($scope.tracks.length).success(function (data) {
+            $scope.fetch($scope.tracks.length).then(function (data) {
                 if (data.tracks.length > 0) {
                     array_add(data.tracks, $scope.tracks);
                     $scope.busy = false;
