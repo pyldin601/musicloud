@@ -97,22 +97,19 @@ class DoTracks implements RouteHandler {
 
         }
 
+        ob_start("ob_gzhandler");
+
         header("Content-Type: application/json");
 
-        echo '{';
+        echo '{"keys":'.json_encode(TSongs::getColumnsNames()).',"tracks":[';
 
-        $query->eachRow(function ($row, $id) {
+        $query->eachRow(function ($row, $id, $columns) {
             $artist_encoded = escape_url($row["album_artist"]);
             $album_encoded  = escape_url($row["track_album"]);
             $row["artist_url"] = "artist/{$artist_encoded}";
             $row["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
             if ($id != 0) {
                 echo ',';
-            } else {
-                echo '"keys":';
-                echo json_encode(array_keys($row));
-                echo ',';
-                echo '"tracks":[';
             }
             echo json_encode(array_values($row), JSON_UNESCAPED_UNICODE);
         });

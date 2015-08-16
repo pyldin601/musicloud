@@ -260,8 +260,7 @@ homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout",
             $scope.results.albums_busy = true;
             $scope.results.tracks_busy = true;
 
-
-            SearchService.tracks({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).success(function (response) {
+            SearchService.tracks({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).then(function (response) {
                 $scope.results.tracks = response.tracks;
                 $scope.results.tracks_busy = false;
             });
