@@ -9,12 +9,24 @@
 namespace app\project\handlers\fixed;
 
 
+use app\core\db\Database;
 use app\core\router\RouteHandler;
 
 class DoTest implements RouteHandler {
     public function doGet() {
-
-
+        header("Content-Type: text/plain");
+        Database::doInConnection(function (Database $db) {
+            $generator = $db->getGenerator("SELECT * FROM songs");
+            $temp1 = $generator->map(function ($row) {
+                return $row['file_name'];
+            });
+            $temp2 = $temp1->filter(function ($row) {
+                return substr($row, 0, 1) == "A";
+            });
+            foreach ($temp2 as $row) {
+                echo $row . PHP_EOL;
+            }
+        });
     }
 }
 

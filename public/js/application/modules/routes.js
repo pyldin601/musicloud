@@ -16,8 +16,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
                 var q = $location.search().q;
-                return SearchService.artists({ q: q }, 0).then(function (response) {
-                    return response.data;
+                return SearchService.artists({ q: q }, 0).then(function (artists) {
+                    return artists;
                 }, function () {
                     $location.url("/");
                 });
@@ -43,8 +43,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                 function (SearchService, $location, $route, $filter) {
                     var artist = decodeUriPlus($route.current.params.artist);
                     $route.current.title = $filter("artistFilter")(artist);
-                    return SearchService.tracks({ artist: artist, limit: -1, compilations: 0 }, 0).then(function (response) {
-                        return response;
+                    return SearchService.tracks({ artist: artist, limit: -1, compilations: 0 }, 0).then(function (tracks) {
+                        return tracks;
                     }, function () {
                         $location.url("/");
                     });
@@ -92,8 +92,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
                 var q = $location.search().q;
-                return SearchService.albums({ q: q, compilations: 0 }, 0).then(function (response) {
-                    return response.data;
+                return SearchService.albums({ q: q, compilations: 0 }, 0).then(function (albums) {
+                    return albums;
                 }, function () {
                     $location.url("/");
                 });
@@ -111,8 +111,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
                 var q = $location.search().q;
-                return SearchService.albums({ q: q, compilations: 1 }, 0).then(function (response) {
-                    return response.data;
+                return SearchService.albums({ q: q, compilations: 1 }, 0).then(function (albums) {
+                    return albums;
                 }, function () {
                     $location.url("/");
                 });
@@ -130,8 +130,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         resolve: {
             Resolved: ["SearchService", "$location", function (SearchService, $location) {
                 var q = $location.search().q;
-                return SearchService.genres({ q: q }, 0).then(function (response) {
-                    return response.data;
+                return SearchService.genres({ q: q }, 0).then(function (genres) {
+                    return genres;
                 }, function () {
                     $location.url("/");
                 });
@@ -160,8 +160,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
 
                     $route.current.title = $filter("genreFilter")(genre);
 
-                    return SearchService.tracks({ genre: genre }, 0).then(function (response) {
-                        return response;
+                    return SearchService.tracks({ genre: genre }, 0).then(function (tracks) {
+                        return tracks;
                     }, function () {
                         $location.url("/");
                     });
@@ -184,8 +184,8 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                 function (SearchService, $location) {
                     var q = $location.search().q,
                         s = $location.search().s;
-                    return SearchService.tracks({ q: q, s: s }, 0).then(function (response) {
-                        return response;
+                    return SearchService.tracks({ q: q, s: s }, 0).then(function (tracks) {
+                        return tracks;
                     }, function () {
                         $location.url("/");
                     });

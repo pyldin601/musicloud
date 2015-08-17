@@ -121,6 +121,12 @@ abstract class BaseQuery implements QueryBuilder {
         });
     }
 
+    public function renderAllAsJson($callable = null) {
+        Database::doInConnection(function (Database $db) use ($callable) {
+            $db->renderAllAsJson($this->getQuery($db->getPDO()), $this->getParameters(), $callable);
+        });
+    }
+
     /**
      * @param int $column
      * @return Option

@@ -80,7 +80,9 @@ homecloud.factory("SearchService", ["$http", "SyncService", function ($http, Syn
 
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/artists?" + serialize_uri(uri), special);
+            return $http.get("/api/catalog/artists?" + serialize_uri(uri), special).then(function (response) {
+                return deflateCollection(response.data);
+            });
         },
         albums: function (opts, offset, special) {
             var uri = {};
@@ -92,7 +94,9 @@ homecloud.factory("SearchService", ["$http", "SyncService", function ($http, Syn
 
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/albums?" + serialize_uri(uri), special);
+            return $http.get("/api/catalog/albums?" + serialize_uri(uri), special).then(function (response) {
+                return deflateCollection(response.data);
+            });
         },
         genres: function (opts, offset, special) {
             var uri = {};
@@ -103,7 +107,9 @@ homecloud.factory("SearchService", ["$http", "SyncService", function ($http, Syn
 
             uri.l = opts.limit || 50;
 
-            return $http.get("/api/catalog/genres?" + serialize_uri(uri), special);
+            return $http.get("/api/catalog/genres?" + serialize_uri(uri), special).then(function (response) {
+                return deflateCollection(response.data);
+            });
         },
         tracks: function (opts, offset, special) {
 
@@ -120,7 +126,7 @@ homecloud.factory("SearchService", ["$http", "SyncService", function ($http, Syn
             uri.l = opts.limit || 50;
 
             return $http.get("/api/catalog/tracks?" + serialize_uri(uri), special).then(function (response) {
-                return { tracks: SyncService.loadTracks(response.data) };
+                return SyncService.tracks(deflateCollection(response.data));
             });
         }
     };
@@ -204,18 +210,6 @@ homecloud.factory("SyncService", [function () {
         tracks: trackSync,
         track: function (track) {
             return trackSync([track]).shift();
-        },
-        loadTracks: function (response) {
-            var keys = response.keys,
-                values = response.tracks;
-
-            return trackSync(values.map(function (r) {
-                var tmp = {};
-                for (var i = 0; i < r.length; i += 1) {
-                    tmp[keys[i]] = r[i];
-                }
-                return tmp;
-            }));
         },
 
         artists: artistSync,

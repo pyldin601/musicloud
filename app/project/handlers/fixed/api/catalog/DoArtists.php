@@ -49,20 +49,13 @@ class DoArtists implements RouteHandler {
 
         $query->orderBy(TSongs::A_ARTIST);
 
-        header("Content-Type: application/json; charset=utf8");
+        ob_start("ob_gzhandler");
 
-        echo '{"artists":[';
-
-        $query->eachRow(function ($row, $id) {
+        $query->renderAllAsJson(function ($row) {
             $artist_encoded = escape_url($row["album_artist"]);
             $row["artist_url"] = "artist/{$artist_encoded}";
-            if ($id != 0) {
-                echo ",";
-            }
-            echo json_encode($row, JSON_UNESCAPED_UNICODE);
+            return $row;
         });
-
-        echo ']}';
 
     }
 } 

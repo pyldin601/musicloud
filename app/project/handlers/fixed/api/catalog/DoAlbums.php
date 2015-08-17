@@ -57,22 +57,13 @@ class DoAlbums implements RouteHandler {
 
         ob_start("ob_gzhandler");
 
-        header("Content-Type: application/json; charset=utf8");
-
-        echo '{"albums":[';
-
-        $query->eachRow(function ($row, $id) {
+        $query->renderAllAsJson(function ($row) {
             $artist_encoded = escape_url($row["album_artist"]);
             $album_encoded  = escape_url($row["track_album"]);
             $row["artist_url"] = "artist/{$artist_encoded}";
             $row["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
-            if ($id != 0) {
-                echo ",";
-            }
-            echo json_encode($row, JSON_UNESCAPED_UNICODE);
+            return $row;
         });
-
-        echo ']}';
 
     }
 } 

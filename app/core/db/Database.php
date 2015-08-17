@@ -13,6 +13,7 @@ use app\core\cache\RedisCache;
 use app\core\etc\Settings;
 use app\core\exceptions\ApplicationException;
 use app\core\injector\Injectable;
+use app\lang\functional\LazyGenerator;
 use app\lang\option\Option;
 use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
@@ -217,6 +218,59 @@ class Database implements SingletonInterface, Injectable {
     }
 
     /**
+     * @param $query
+     * @param array $params
+     * @return LazyGenerator
+     * @throws ApplicationException
+     */
+    public function getGenerator($query, array $params = null) {
+        $resource = $this->createResource($query, $params);
+        $gen = function () use ($resource) {
+            while ($row = $resource->fetch(PDO::FETCH_ASSOC)) {
+                yield $row;
+            }
+        };
+        return new LazyGenerator($gen());
+    }
+
+    public function renderAllAsJson($query, array $params = null, $callback = null) {
+
+        $resource = $this->createResource($query, $params);
+        $columns = [];
+        for ($i = 0; $i < $resource->columnCount(); $i ++) {
+            $columns[] = $resource->getColumnMeta($i);
+        }
+
+        header("Content-Type: application/json; charset=utf8");
+
+        if ($resource->rowCount() == 0) {
+            echo json_encode(["columns" => [], "data" => []]);
+            return;
+        }
+
+        echo '{';
+
+        $i = 0;
+        while ($row = $resource->fetch(PDO::FETCH_ASSOC)) {
+            if (is_callable($callback)) {
+                $row = $callback($row);
+            }
+            if ($i++ > 0) {
+                echo ',';
+            } else {
+                echo '"columns":';
+                echo json_encode(array_keys($row), JSON_UNESCAPED_UNICODE);
+                echo ',';
+                echo '"data":[';
+            }
+            echo json_encode(array_values($row), JSON_UNESCAPED_UNICODE);
+        }
+
+        echo ']}';
+
+    }
+
+    /**
      * @param string $query
      * @param array $params
      * @param Callable $callback
@@ -338,7 +392,7 @@ class Database implements SingletonInterface, Injectable {
      * @param $params
      * @return string
      */
-    public function generate($query, $params) {
+    public function generate($query, array $params = null) {
 
         return $this->queryQuote($query, $params);
 

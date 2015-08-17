@@ -26,16 +26,17 @@ homecloud.run(["AccountService", "$rootScope", function (AccountService, $rootSc
 
 function deflateCollection(coll) {
 
-    var keys = coll.k,
-        values = coll.v;
+    var keys = coll.columns,
+        data = coll.data;
 
-    return values.map(function (v) {
+    return data.map(function (v) {
         var i,
             len = v.length,
             obj = {};
         for (i = 0; i < len; i += 1) {
             obj[keys[i]] = v[i];
         }
+        return obj;
     });
 
 }

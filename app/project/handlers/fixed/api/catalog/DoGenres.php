@@ -52,20 +52,11 @@ class DoGenres implements RouteHandler {
 
         ob_start("ob_gzhandler");
 
-        header("Content-Type: application/json; charset=utf8");
-
-        echo '{"genres":[';
-
-        $query->eachRow(function ($row, $id) {
+        $query->renderAllAsJson(function ($row, $id) {
             $genre_encoded = escape_url($row["track_genre"]);
             $row["genre_url"] = "genre/{$genre_encoded}";
-            if ($id != 0) {
-                echo ",";
-            }
-            echo json_encode($row, JSON_UNESCAPED_UNICODE);
+            return $row;
         });
-
-        echo ']}';
 
     }
 } 
