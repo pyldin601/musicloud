@@ -171,7 +171,7 @@ homecloud.directive("volumeController", ["$rootScope", "$document", function ($r
                     mousePos: 0,
                     mouseOffset: 0,
                     dragStart: function (event) {
-                        dragEvents.mouseOffset = element.height() - (event.clientY - element.offset().top - $(window).scrollTop());
+                        dragEvents.mouseOffset = element.height() - (event.clientY + $(window).scrollTop() - element.offset().top);
                         dragEvents.mousePos    = event.clientY;
                         doc .bind("mousemove",     mouseEvents.mousemove)
                             .bind("mouseup",       mouseEvents.mouseup);

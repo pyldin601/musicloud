@@ -33,7 +33,6 @@ class DoAlbums implements RouteHandler {
 
         $query = (new SelectQuery(TSongs::_NAME))
             ->where(TSongs::USER_ID, $me->getId())
-            ->where(TSongs::T_ALBUM . " != ''")
             ->select(TSongs::A_ARTIST)
             ->select(TSongs::T_ALBUM)
             ->selectAlias("MIN(".TSongs::C_BIG_ID.")", TSongs::C_BIG_ID)

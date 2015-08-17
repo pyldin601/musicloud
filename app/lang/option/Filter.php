@@ -130,5 +130,27 @@ class Filter {
         };
     }
 
+    /**
+     * @param $regexp
+     * @return callable
+     */
+    public static function matchRegExp($regexp) {
+        return function ($value) use ($regexp) {
+            return preg_match($regexp, $value);
+        };
+    }
+
+    /**
+     * @param $min
+     * @param $max
+     * @return callable
+     */
+    public static function lengthInRange($min, $max) {
+        return function ($value) use ($min, $max) {
+            $len = strlen($value);
+            return $len >= $min && $len <= $max;
+        };
+    }
+
 }
 

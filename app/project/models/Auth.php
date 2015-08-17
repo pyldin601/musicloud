@@ -44,8 +44,11 @@ class Auth {
      * @throws WrongCredentialsException
      */
     public static function login(LoginForm $form) {
+
         $query = new SelectQuery(TUsers::_NAME, TUsers::EMAIL, $form->getEmail());
+
         $user = $query->fetchOneRow()->getOrElse(WrongCredentialsException::class);
+
         if (password_verify($form->getPassword(), $user[TUsers::PASSWORD])) {
             self::$session->set($user[TUsers::ID], "auth", "id");
         } else {

@@ -32,7 +32,6 @@ class DoArtists implements RouteHandler {
         $query = (new SelectQuery(TSongs::_NAME))
             ->select(TSongs::A_ARTIST)
             ->where(TSongs::USER_ID, $me->getId())
-            ->where(TSongs::A_ARTIST . " != ''")
             ->selectAlias("MIN(".TSongs::C_BIG_ID.")", TSongs::C_BIG_ID)
             ->selectAlias("MIN(".TSongs::C_MID_ID.")", TSongs::C_MID_ID)
             ->selectAlias("MIN(".TSongs::C_SMALL_ID.")", TSongs::C_SMALL_ID);

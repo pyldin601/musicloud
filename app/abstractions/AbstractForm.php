@@ -24,7 +24,7 @@ abstract class AbstractForm implements Injectable {
                 continue;
 
             $property->setAccessible(true);
-            $property->setValue($this, $post->getOrError($property->getName()));
+            $property->setValue($this, $post->get($property->getName()));
         }
 
         $this->validate();
