@@ -17,7 +17,7 @@ class TinyView {
         if ($context) {
             extract($context);
         }
-        eval("?>" . file_get_contents(self::TEMPLATES_PATH . $template));
+        include self::TEMPLATES_PATH . $template;
     }
 
 }

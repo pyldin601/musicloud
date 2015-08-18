@@ -1,6 +1,6 @@
-var homecloud = angular.module("HomeCloud");
+var MusicLoud = angular.module("MusicLoud");
 
-homecloud.controller("MetadataController", ["$scope", "TrackService", "SyncService", "$filter", "$route",
+MusicLoud.controller("MetadataController", ["$scope", "TrackService", "SyncService", "$filter", "$route",
     function ($scope, TrackService, SyncService, $filter, $route) {
 
         var songs        = $scope.songs,

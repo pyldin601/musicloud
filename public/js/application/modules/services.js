@@ -2,10 +2,10 @@
  * Created by Roman on 27.07.2015.
  */
 
-var homecloud = angular.module("HomeCloud");
+var MusicLoud = angular.module("MusicLoud");
 
 
-homecloud.factory("AccountService", ["$http", function ($http) {
+MusicLoud.factory("AccountService", ["$http", function ($http) {
     return {
         login: function (data) {
             return $http.post("/api/login", data);
@@ -19,7 +19,7 @@ homecloud.factory("AccountService", ["$http", function ($http) {
     };
 }]);
 
-homecloud.factory("TrackService", ["$http", function ($http) {
+MusicLoud.factory("TrackService", ["$http", function ($http) {
     return {
         create: function () {
             return $http.post("/api/track/create", Empty);
@@ -58,7 +58,7 @@ homecloud.factory("TrackService", ["$http", function ($http) {
     };
 }]);
 
-homecloud.factory("HeadersService", ["$http", function ($http) {
+MusicLoud.factory("HeadersService", ["$http", function ($http) {
     return {
         artist: function (album_artist) {
             return $http.get("/api/headers/artist?" + serialize_uri({ album_artist: album_artist }));
@@ -69,7 +69,7 @@ homecloud.factory("HeadersService", ["$http", function ($http) {
     }
 }]);
 
-homecloud.factory("SearchService", ["$http", "SyncService", function ($http, SyncService) {
+MusicLoud.factory("SearchService", ["$http", "SyncService", function ($http, SyncService) {
     return {
         artists: function (opts, offset, special) {
             var uri = {};
@@ -132,7 +132,7 @@ homecloud.factory("SearchService", ["$http", "SyncService", function ($http, Syn
     };
 }]);
 
-homecloud.factory("Library", [function () {
+MusicLoud.factory("Library", [function () {
     var obj = {
         groupAlbums: function (tracks) {
             var albumsList = [];
@@ -171,7 +171,7 @@ homecloud.factory("Library", [function () {
     return obj;
 }]);
 
-homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter) {
+MusicLoud.factory("StatsService", ["$http", "$filter", function ($http, $filter) {
     return {
         incrementPlays: function (track) {
             // todo: maybe it will be good if stats will return an updated track data
@@ -202,7 +202,7 @@ homecloud.factory("StatsService", ["$http", "$filter", function ($http, $filter)
     }
 }]);
 
-homecloud.factory("SyncService", [function () {
+MusicLoud.factory("SyncService", [function () {
     var trackSync  = sync("id");
     var artistSync = sync("id");
     var albumSync  = sync("id");
@@ -226,7 +226,7 @@ homecloud.factory("SyncService", [function () {
 
 
 
-homecloud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope", "$compile", "$document",
+MusicLoud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope", "$compile", "$document",
     function ($templateRequest, $controller, $rootScope, $compile, $document) {
         var defaults = {
                 controller: null,

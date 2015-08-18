@@ -3,7 +3,7 @@
 <head>
     <base href="/">
 
-    <title>Enter to MusicLoud</title>
+    <title>Registration on MusicLoud</title>
 
     <link href="/public/css/reset.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600&subset=latin,cyrillic' rel='stylesheet'
@@ -26,16 +26,17 @@
 
 </head>
 <body>
-    <div class="lobby-wrapper">
-        <div class="lobby-login-form" ng-controller="LoginController">
-            <form class="login-form" ng-submit="submit()">
-                <input class="block" type="text" ng-model="login" placeholder="Login" name="login"
-                        ng-required="true">
-                <input class="block" type="password" ng-model="password" placeholder="Password" name="password"
-                        ng-required="true">
-                <input class="login" type="submit" value="Login">
-            </form>
-        </div>
+<div class="lobby-wrapper">
+    <div class="lobby-login-form" ng-controller="RegistrationController">
+        <form class="login-form" ng-submit="submit()">
+            <input class="block" type="text" ng-model="name" placeholder="Name" name="name" autocomplete="off">
+            <input class="block" type="text" ng-model="login" placeholder="Login" name="login"
+                   ng-required="true" autocomplete="off">
+            <input class="block" type="password" ng-model="password" placeholder="Password" name="password"
+                   ng-required="true">
+            <input class="login" type="submit" value="Sign Up">
+        </form>
     </div>
+</div>
 </body>
 </html>

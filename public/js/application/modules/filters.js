@@ -2,9 +2,9 @@
  * Created by Roman on 27.07.2015.
  */
 
-var homecloud = angular.module("HomeCloud");
+var MusicLoud = angular.module("MusicLoud");
 
-homecloud.filter("count", function () {
+MusicLoud.filter("count", function () {
     return function (value) {
         if (value === undefined) {
             return undefined;
@@ -20,7 +20,7 @@ homecloud.filter("count", function () {
     };
 });
 
-homecloud.filter("mmss", function () {
+MusicLoud.filter("mmss", function () {
     return function (value, isSeconds) {
         var sec_num = parseInt(isSeconds ? value : value / 1000, 10),
             hours   = Math.floor(sec_num / 3600),
@@ -46,26 +46,26 @@ var filters = {
     title:  function (title)  { return title || "Unknown Title" }
 };
 
-homecloud.filter("albumFilter",  function () { return filters.album });
-homecloud.filter("artistFilter", function () { return filters.artist });
-homecloud.filter("genreFilter",  function () { return filters.genre });
-homecloud.filter("titleFilter",  function () { return filters.title });
+MusicLoud.filter("albumFilter",  function () { return filters.album });
+MusicLoud.filter("artistFilter", function () { return filters.artist });
+MusicLoud.filter("genreFilter",  function () { return filters.genre });
+MusicLoud.filter("titleFilter",  function () { return filters.title });
 
-homecloud.filter("getTitle", function () {
+MusicLoud.filter("getTitle", function () {
     return function (track) {
         if (!track) return;
         return track.track_title || track.file_name || "Unknown Title";
     };
 });
 
-homecloud.filter("getArtist", function () {
+MusicLoud.filter("getArtist", function () {
     return function (track) {
         if (!track) return;
         return filters.artist(track.track_artist);
     };
 });
 
-homecloud.filter("getAlbumArtist", function () {
+MusicLoud.filter("getAlbumArtist", function () {
     return function (track) {
         if (!track) return;
         return filters.artist(track.album_artist);
@@ -73,27 +73,27 @@ homecloud.filter("getAlbumArtist", function () {
 });
 
 
-homecloud.filter("first", function () {
+MusicLoud.filter("first", function () {
     return function (data) {
         if (!(data && data.length > 0)) return;
         return data[0];
     };
 });
 
-homecloud.filter("keys", function () {
+MusicLoud.filter("keys", function () {
     return function (data) {
         if (!data) return;
         return Object.keys(data);
     };
 });
 
-homecloud.filter("uri", function () {
+MusicLoud.filter("uri", function () {
     return function (path) {
         return encodeURIComponent(path)
     };
 });
 
-homecloud.filter("dateFilter", ["$filter", function ($filter) {
+MusicLoud.filter("dateFilter", ["$filter", function ($filter) {
     return function (value) {
         if (!value) {
             return "-"
@@ -103,7 +103,7 @@ homecloud.filter("dateFilter", ["$filter", function ($filter) {
 }]);
 
 
-homecloud.filter("bitrateFilter", [function () {
+MusicLoud.filter("bitrateFilter", [function () {
     var bitrates = [8, 16, 24, 32, 48, 52, 64, 96, 112, 128, 160, 224, 256, 320];
     return function (value) {
         return "" + parseInt(value / 1000) + " kbps";

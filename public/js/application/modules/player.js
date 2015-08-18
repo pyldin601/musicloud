@@ -1,6 +1,6 @@
-var homecloud = angular.module("HomeCloud");
+var MusicLoud = angular.module("MusicLoud");
 
-homecloud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeout", "MonitorSongs",
+MusicLoud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeout", "MonitorSongs",
 
     function ($rootScope, StatsService, SyncService, $cookies, $timeout, MonitorSongs) {
 

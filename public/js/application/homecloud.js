@@ -2,10 +2,10 @@
  * Created by Roman on 27.07.2015.
  */
 
-var homecloud = angular.module("HomeCloud", ["ngRoute", "ngCookies", "httpPostFix", "infinite-scroll"]);
+var MusicLoud = angular.module("MusicLoud", ["ngRoute", "ngCookies", "httpPostFix", "infinite-scroll"]);
 
 
-homecloud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {
+MusicLoud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {
     $rootScope.title = "My Library";
     $rootScope.account = { authorized: false };
     AccountService.init().success(function (data) {
@@ -16,9 +16,9 @@ homecloud.run(["AccountService", "$rootScope", function (AccountService, $rootSc
 
     $rootScope.$on("$routeChangeSuccess", function (e, $route) {
         if ($route.title) {
-            document.title = $route.title + " - Music Library";
+            document.title = $route.title + " - MusicLoud";
         } else {
-            document.title = "Music Library";
+            document.title = "MusicLoud";
         }
     });
 

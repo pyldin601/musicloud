@@ -2,9 +2,9 @@
  * Created by Roman on 28.07.2015.
  */
 
-var homecloud = angular.module("HomeCloud");
+var MusicLoud = angular.module("MusicLoud");
 
-homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", function ($rootScope, TrackService, $window) {
+MusicLoud.directive("peakData", ["$rootScope", "TrackService", "$window", function ($rootScope, TrackService, $window) {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
@@ -75,7 +75,7 @@ homecloud.directive("peakData", ["$rootScope", "TrackService", "$window", functi
     };
 }]);
 
-homecloud.directive("changeArtwork", ["TrackService", "SyncService", function (TrackService, SyncService) {
+MusicLoud.directive("changeArtwork", ["TrackService", "SyncService", function (TrackService, SyncService) {
     return {
         scope: {
             tracks: "=changeArtwork"
@@ -106,7 +106,7 @@ homecloud.directive("changeArtwork", ["TrackService", "SyncService", function (T
     }
 }]);
 
-homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
+MusicLoud.directive("actionPlay", ["$rootScope", function ($rootScope) {
     return {
         scope: {
             actionPlay: "=",
@@ -126,7 +126,7 @@ homecloud.directive("actionPlay", ["$rootScope", function ($rootScope) {
     }
 }]);
 
-homecloud.directive("play", ["$rootScope", function ($rootScope) {
+MusicLoud.directive("play", ["$rootScope", function ($rootScope) {
     return {
         scope: {
             play: "="
@@ -140,7 +140,7 @@ homecloud.directive("play", ["$rootScope", function ($rootScope) {
     }
 }]);
 
-homecloud.directive("ngVisible", [function () {
+MusicLoud.directive("ngVisible", [function () {
     return {
         scope: {
             ngVisible: "="
@@ -156,7 +156,7 @@ homecloud.directive("ngVisible", [function () {
     }
 }]);
 
-homecloud.directive("volumeController", ["$rootScope", "$document", function ($rootScope, $document) {
+MusicLoud.directive("volumeController", ["$rootScope", "$document", function ($rootScope, $document) {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
@@ -217,7 +217,7 @@ homecloud.directive("volumeController", ["$rootScope", "$document", function ($r
     }
 }]);
 
-homecloud.directive("trackPosition", ["$rootScope", function ($rootScope) {
+MusicLoud.directive("trackPosition", ["$rootScope", function ($rootScope) {
     return {
         link: function (scope, element, attrs) {
             var watcher = $rootScope.$watchCollection("player.playlist.position", function (pos) {
@@ -228,7 +228,7 @@ homecloud.directive("trackPosition", ["$rootScope", function ($rootScope) {
     }
 }]);
 
-homecloud.directive("seekController", ["$rootScope", function ($rootScope) {
+MusicLoud.directive("seekController", ["$rootScope", function ($rootScope) {
     return {
         link: function (scope, element, attrs) {
             element.on("mousedown", function (event) {
@@ -242,7 +242,7 @@ homecloud.directive("seekController", ["$rootScope", function ($rootScope) {
     }
 }]);
 
-homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
+MusicLoud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     return {
         template: '<div class="progress-line"></div>' +
         '<div ng-show="player.isLoaded" class="progress-position"></div>' +
@@ -274,7 +274,7 @@ homecloud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     };
 }]);
 
-homecloud.directive("multiselectList", [function () {
+MusicLoud.directive("multiselectList", [function () {
     return {
         scope: {
             multiselectList: "@",
@@ -330,7 +330,7 @@ homecloud.directive("multiselectList", [function () {
     }
 }]);
 
-homecloud.directive("activeTab", ["$location", "$route", function ($location, $route) {
+MusicLoud.directive("activeTab", ["$location", "$route", function ($location, $route) {
     return {
         scope: {
             activeTab: "@"
@@ -353,7 +353,7 @@ homecloud.directive("activeTab", ["$location", "$route", function ($location, $r
     };
 }]);
 
-homecloud.directive("trackRating", ["StatsService", function (StatsService) {
+MusicLoud.directive("trackRating", ["StatsService", function (StatsService) {
     return {
         scope: {
             track: "=trackRating"
@@ -375,7 +375,7 @@ homecloud.directive("trackRating", ["StatsService", function (StatsService) {
     }
 }]);
 
-homecloud.directive("progressBar", [function () {
+MusicLoud.directive("progressBar", [function () {
     return {
         scope: {
             progressBar: "="

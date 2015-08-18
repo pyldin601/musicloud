@@ -4,9 +4,9 @@
 
 (function () {
 
-    var homecloud = angular.module("HomeCloud");
+    var MusicLoud = angular.module("MusicLoud");
 
-    homecloud.run(["$rootScope", "TrackService", "ModalWindow", function ($rootScope, TrackService, ModalWindow) {
+    MusicLoud.run(["$rootScope", "TrackService", "ModalWindow", function ($rootScope, TrackService, ModalWindow) {
         $rootScope.action = {
             deleteSongs: function (coll) {
 
@@ -42,7 +42,7 @@
         };
     }]);
 
-    homecloud.factory("MonitorSongs", ["SyncService", function (SyncService) {
+    MusicLoud.factory("MonitorSongs", ["SyncService", function (SyncService) {
         return function (coll, scope) {
             scope.$on("songs.deleted", function (e, data) {
                 scope.$applyAsync(function () {

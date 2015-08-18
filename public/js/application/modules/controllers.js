@@ -2,9 +2,9 @@
  * Created by Roman on 27.07.2015.
  */
 
-var homecloud = angular.module("HomeCloud");
+var MusicLoud = angular.module("MusicLoud");
 
-homecloud.controller("ArtistViewController", [
+MusicLoud.controller("ArtistViewController", [
     "Resolved", "Header", "$scope", "MonitorSongs", "SyncService", "Library",
     function (Resolved, Header, $scope, MonitorSongs, SyncService, Library) {
 
@@ -28,7 +28,7 @@ homecloud.controller("ArtistViewController", [
     }
 ]);
 
-homecloud.controller("GenreViewController", [
+MusicLoud.controller("GenreViewController", [
     "Resolved", "Header", "SearchService", "SyncService", "Library", "$scope", "MonitorSongs", "$routeParams",
     function (Resolved, Header, SearchService, SyncService, Library, $scope, MonitorSongs, $routeParams) {
 
@@ -70,7 +70,7 @@ homecloud.controller("GenreViewController", [
     }
 ]);
 
-homecloud.controller("AlbumViewController", [
+MusicLoud.controller("AlbumViewController", [
     "Resolved", "$scope", "SyncService", "MonitorSongs", "$location",
     function (Resolved, $scope, SyncService, MonitorSongs, $location) {
 
@@ -112,7 +112,7 @@ homecloud.controller("AlbumViewController", [
     }
 ]);
 
-homecloud.controller("TracksViewController", [
+MusicLoud.controller("TracksViewController", [
     "Resolved", "$scope", "SyncService", "MonitorSongs", "$location", "SearchService",
     function (Resolved, $scope, SyncService, MonitorSongs, $location, SearchService) {
 
@@ -141,7 +141,7 @@ homecloud.controller("TracksViewController", [
     }
 ]);
 
-homecloud.controller("AllArtistsViewController", [
+MusicLoud.controller("AllArtistsViewController", [
     "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
 
         $scope.artists = Resolved;
@@ -163,7 +163,7 @@ homecloud.controller("AllArtistsViewController", [
     }
 ]);
 
-homecloud.controller("AllAlbumsViewController", [
+MusicLoud.controller("AllAlbumsViewController", [
     "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
 
         $scope.albums = Resolved;
@@ -185,7 +185,7 @@ homecloud.controller("AllAlbumsViewController", [
     }
 ]);
 //AllCompilationsViewController
-homecloud.controller("AllCompilationsViewController", [
+MusicLoud.controller("AllCompilationsViewController", [
     "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
 
         $scope.albums = Resolved;
@@ -207,7 +207,7 @@ homecloud.controller("AllCompilationsViewController", [
     }
 ]);
 
-homecloud.controller("AllGenresViewController", [
+MusicLoud.controller("AllGenresViewController", [
     "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
 
         $scope.genres = Resolved;
@@ -230,7 +230,7 @@ homecloud.controller("AllGenresViewController", [
 ]);
 
 
-homecloud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService", "$q",
+MusicLoud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService", "$q",
 
     function ($scope, SearchService, $timeout, SyncService, $q) {
 

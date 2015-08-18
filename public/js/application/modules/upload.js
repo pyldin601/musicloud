@@ -2,9 +2,9 @@
  * Created by roman on 08.08.15.
  */
 
-var homecloud = angular.module("HomeCloud");
+var MusicLoud = angular.module("MusicLoud");
 
-homecloud.controller("UploadController", ["$rootScope", "TrackService", "$route",
+MusicLoud.controller("UploadController", ["$rootScope", "TrackService", "$route",
 
     function ($rootScope, TrackService, $route) {
         var progress = function (event) {

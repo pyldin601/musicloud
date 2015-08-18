@@ -3,7 +3,7 @@
  */
 
 
-var mediacloud = angular.module("HomeCloud");
+var mediacloud = angular.module("MusicLoud");
 
 mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
 
