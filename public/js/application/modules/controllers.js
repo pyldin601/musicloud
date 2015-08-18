@@ -25,6 +25,15 @@ MusicLoud.controller("ArtistViewController", [
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
 
+        $scope.menuOptions = [
+            ["Edit info", function () {
+                $scope.action.editSongs($scope.tracks_selected)
+            }],
+            ["Delete tracks", function () {
+                $scope.action.deleteSongs($scope.tracks_selected)
+            }]
+        ];
+
     }
 ]);
 
@@ -67,6 +76,15 @@ MusicLoud.controller("GenreViewController", [
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
 
+        $scope.menuOptions = [
+            ["Edit info", function () {
+                $scope.action.editSongs($scope.tracks_selected)
+            }],
+            ["Delete tracks", function () {
+                $scope.action.deleteSongs($scope.tracks_selected)
+            }]
+        ];
+
     }
 ]);
 
@@ -108,6 +126,15 @@ MusicLoud.controller("AlbumViewController", [
         MonitorSongs($scope.tracks_selected, $scope);
 
         $scope.$watch("tracks", $scope.readAlbum, true);
+
+        $scope.menuOptions = [
+            ["Edit info", function () {
+                $scope.action.editSongs($scope.tracks_selected)
+            }],
+            ["Delete tracks", function () {
+                $scope.action.deleteSongs($scope.tracks_selected)
+            }]
+        ];
 
     }
 ]);

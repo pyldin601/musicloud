@@ -1,5 +1,4 @@
 <div class="library-body">
-    <div ng-include="'/public/js/application/templates/do-with-selection.html'"></div>
     <div class="view-header clear-fix">
         <img ng-if="header.middle_cover_id" ng-src="/file/{{ header.middle_cover_id }}" class="artwork-blurred">
         <div class="artwork-section left">
@@ -68,7 +67,7 @@
                 </div>
                 <div class="album-tracks">
                     <div class="track" multiselect-item="track" ng-repeat="track in album.tracks" action-play="track"
-                         action-context="tracks" action-resolver="fetch">
+                         action-context="tracks" action-resolver="fetch" context-menu="menuOptions">
                         <div class="duration right">
                             <div class="ellipsis" ng-bind="track.length | mmss"></div>
                         </div>
