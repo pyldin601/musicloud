@@ -75,6 +75,18 @@
     padding-left: 4px;
     padding-right: 4px;
   }
+  .track-menu {
+    display: none;
+    .track-sub-menu {
+      margin-left: 24px;
+      position: absolute;
+    }
+  }
+  .selected {
+    .track-menu {
+      display: block;
+    }
+  }
   .inner-info {
     overflow: hidden;
     .inner-title {
@@ -85,9 +97,6 @@
     }
     .inner-artist {
       width: 40%;
-    }
-    .track-menu {
-      display: none;
     }
   }
   .position {

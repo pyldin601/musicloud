@@ -79,6 +79,15 @@
                 <div class="inner-info">
                     <div class="left inner-title">
                         <div class="track-duration right ellipsis" ng-bind="track.length | mmss"></div>
+                        <div class="track-menu right">
+                            <div class="track-sub-menu">
+                                <ul class="context-menu">
+                                    <li ng-click="action.editSongs([track])">Edit metadata</li>
+                                    <li ng-click="action.deleteSongs([track])">Delete track</li>
+                                </ul>
+                            </div>
+                            <i class="fa fa-ellipsis-v"></i>
+                        </div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
                     <div class="left inner-artist">

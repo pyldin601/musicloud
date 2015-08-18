@@ -47,7 +47,7 @@
         <li class="nav-logo">
                 <span class="group">
                     <i class="fa fa-music"></i>
-                    <span class="padded logo">Media Library</span>
+                    <span class="padded logo">MusicLoud</span>
                 </span>
         </li>
         <li class="nav-search" ng-controller="SearchController">
@@ -299,7 +299,7 @@
     </div>
 </div>
 <div ng-view="" autoscroll="true"></div>
-<div class="library-upload" ng-show="upload.data.uploading" ng-controller="UploadController">
+<div class="library-upload ng-cloak" ng-show="upload.data.uploading" ng-controller="UploadController">
     <div class="inner">
         <div class="caption">
             <div class="cancel-block right" ng-click="upload.action.cancel()">
