@@ -4,6 +4,7 @@ var Empty = {},
     maxFileSize = 512 * 1024 * 1024,
     templatePath = "/public/js/application/templates";
 
+
 /**
  * Returns function for synchronizing one-typed objects
  * returned by REST API where {key} is unique key.

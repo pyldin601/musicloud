@@ -274,6 +274,16 @@ MusicLoud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     };
 }]);
 
+MusicLoud.directive("mlContextMenu", ["$parse", function ($parse) {
+    return {
+        restrict: "A",
+        link: function (scope, elem, attrs) {
+            var data = $parse(attrs.mlContextMenu)(scope);
+            context.attach(elem, data);
+        }
+    }
+}]);
+
 MusicLoud.directive("multiselectList", [function () {
     return {
         scope: {
@@ -295,9 +305,12 @@ MusicLoud.directive("multiselectList", [function () {
                 lastSelected = null;
 
             elem.on("mousedown", function (event) {
-                if (event.which != 1 && event.which != 3) {
-                    return;
-                }
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            });
+
+            elem.on("click", function (event) {
                 scope.$applyAsync(function () {
                     var all = elem.find("[multiselect-item]");
                     var selected = angular.element(event.target).parents("[multiselect-item]");
@@ -321,9 +334,6 @@ MusicLoud.directive("multiselectList", [function () {
                     }
                     countSelected();
                 });
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
             });
 
         }

@@ -25,13 +25,19 @@ MusicLoud.controller("ArtistViewController", [
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
 
-        $scope.menuOptions = [
-            ["Edit info", function () {
-                $scope.action.editSongs($scope.tracks_selected)
-            }],
-            ["Delete tracks", function () {
-                $scope.action.deleteSongs($scope.tracks_selected)
-            }]
+        $scope.contextMenu = [
+            {
+                text: "Edit metadata",
+                action: function () {
+                    $scope.action.editSongs($scope.tracks_selected);
+                }
+            },
+            {
+                text: "Delete from library",
+                action: function () {
+                    $scope.action.deleteSongs($scope.tracks_selected);
+                }
+            }
         ];
 
     }
@@ -76,13 +82,19 @@ MusicLoud.controller("GenreViewController", [
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
 
-        $scope.menuOptions = [
-            ["Edit info", function () {
-                $scope.action.editSongs($scope.tracks_selected)
-            }],
-            ["Delete tracks", function () {
-                $scope.action.deleteSongs($scope.tracks_selected)
-            }]
+        $scope.contextMenu = [
+            {
+                text: "Edit metadata",
+                action: function () {
+                    $scope.action.editSongs($scope.tracks_selected);
+                }
+            },
+            {
+                text: "Delete from library",
+                action: function () {
+                    $scope.action.deleteSongs($scope.tracks_selected);
+                }
+            }
         ];
 
     }
@@ -127,13 +139,19 @@ MusicLoud.controller("AlbumViewController", [
 
         $scope.$watch("tracks", $scope.readAlbum, true);
 
-        $scope.menuOptions = [
-            ["Edit info", function () {
-                $scope.action.editSongs($scope.tracks_selected)
-            }],
-            ["Delete tracks", function () {
-                $scope.action.deleteSongs($scope.tracks_selected)
-            }]
+        $scope.contextMenu = [
+            {
+                text: "Edit metadata",
+                action: function () {
+                    $scope.action.editSongs($scope.tracks_selected);
+                }
+            },
+            {
+                text: "Delete from library",
+                action: function () {
+                    $scope.action.deleteSongs($scope.tracks_selected);
+                }
+            }
         ];
 
     }
@@ -162,13 +180,19 @@ MusicLoud.controller("TracksViewController", [
             })
         };
 
-        $scope.menuOptions = [
-            ["Edit info", function () {
-                $scope.action.editSongs($scope.tracks_selected)
-            }],
-            ["Delete tracks", function () {
-                $scope.action.deleteSongs($scope.tracks_selected)
-            }]
+        $scope.contextMenu = [
+            {
+                text: "Edit metadata",
+                action: function () {
+                    $scope.action.editSongs($scope.tracks_selected);
+                }
+            },
+            {
+                text: "Delete from library",
+                action: function () {
+                    $scope.action.deleteSongs($scope.tracks_selected);
+                }
+            }
         ];
 
         MonitorSongs($scope.tracks, $scope);
@@ -220,7 +244,7 @@ MusicLoud.controller("AllAlbumsViewController", [
 
     }
 ]);
-//AllCompilationsViewController
+
 MusicLoud.controller("AllCompilationsViewController", [
     "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
 

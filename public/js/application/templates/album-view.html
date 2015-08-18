@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="album-view-container" multiselect-list="selected" multiselect-destination="tracks_selected">
+    <div class="album-view-container" multiselect-list="selected" multiselect-destination="tracks_selected" ml-context-menu="contextMenu">
         <div class="plain-list tracks-list">
             <div class="plain-list-item header">
                 <div class="last-played right xl-visible" title="Date of last playback">Added</div>
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div class="plain-list-item track-item" multiselect-item="track" ng-repeat="track in tracks"
-                 action-play="track" action-context="tracks" action-resolver="null" context-menu="menuOptions">
+                 action-play="track" action-context="tracks" action-resolver="null">
 
                 <div class="last-played right xl-visible">
                     <div class="ellipsis" ng-bind="track.created_date | dateFilter"></div>

@@ -7,8 +7,12 @@ var MusicLoud = angular.module("MusicLoud", ["ngRoute", "ngCookies", "httpPostFi
 
 
 MusicLoud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {
+
     $rootScope.title = "My Library";
     $rootScope.account = { authorized: false };
+
+    context.init({ preventDoubleContext: true });
+
     AccountService.init().success(function (data) {
         $rootScope.account = { authorized: true, user: data };
     }).error(function () {
@@ -22,6 +26,7 @@ MusicLoud.run(["AccountService", "$rootScope", function (AccountService, $rootSc
             document.title = "MusicLoud";
         }
     });
+
 
 }]);
 
