@@ -2,7 +2,8 @@
  * Created by Roman on 27.07.2015.
  */
 
-var MusicLoud = angular.module("MusicLoud", ["ngRoute", "ngCookies", "httpPostFix", "infinite-scroll"]);
+var MusicLoud = angular.module("MusicLoud", ["ngRoute", "ngCookies", "httpPostFix",
+    "infinite-scroll", "ui.bootstrap.contextMenu"]);
 
 
 MusicLoud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {

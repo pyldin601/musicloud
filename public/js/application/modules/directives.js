@@ -295,12 +295,9 @@ MusicLoud.directive("multiselectList", [function () {
                 lastSelected = null;
 
             elem.on("mousedown", function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                return false;
-            });
-
-            elem.on("click", function (event) {
+                if (event.which != 1 && event.which != 3) {
+                    return;
+                }
                 scope.$applyAsync(function () {
                     var all = elem.find("[multiselect-item]");
                     var selected = angular.element(event.target).parents("[multiselect-item]");
@@ -324,6 +321,9 @@ MusicLoud.directive("multiselectList", [function () {
                     }
                     countSelected();
                 });
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
             });
 
         }

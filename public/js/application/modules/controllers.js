@@ -135,6 +135,15 @@ MusicLoud.controller("TracksViewController", [
             })
         };
 
+        $scope.menuOptions = [
+            ["Edit info", function () {
+                $scope.action.editSongs($scope.tracks_selected)
+            }],
+            ["Delete tracks", function () {
+                $scope.action.deleteSongs($scope.tracks_selected)
+            }]
+        ];
+
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
 

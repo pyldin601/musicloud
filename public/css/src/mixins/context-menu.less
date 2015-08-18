@@ -1,4 +1,4 @@
-.context-menu {
+.dropdown-menu {
   overflow: visible;
   position: absolute;
   border-radius: 4px;
@@ -12,9 +12,12 @@
   color: #000000;
   & > li {
     padding: 8px;
-    min-width: 150px;
     &:hover {
       background: #f8f8f8;
+    }
+    a {
+      outline: none;
+      display: block;
     }
   }
 }

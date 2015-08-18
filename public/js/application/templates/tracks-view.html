@@ -31,7 +31,8 @@
                 </div>
             </div>
             <div class="plain-list-item" multiselect-item="track" ng-repeat="track in tracks"
-                 action-play="track" action-context="tracks" action-resolver="null">
+                 action-play="track" action-context="tracks" action-resolver="null"
+                 context-menu="menuOptions">
 
                 <div class="last-played right xl-visible">
                     <div class="ellipsis" ng-bind="track.created_date | dateFilter"></div>
@@ -79,15 +80,6 @@
                 <div class="inner-info">
                     <div class="left inner-title">
                         <div class="track-duration right ellipsis" ng-bind="track.length | mmss"></div>
-                        <div class="track-menu right">
-                            <div class="track-sub-menu">
-                                <ul class="context-menu">
-                                    <li ng-click="action.editSongs([track])">Edit metadata</li>
-                                    <li ng-click="action.deleteSongs([track])">Delete track</li>
-                                </ul>
-                            </div>
-                            <i class="fa fa-ellipsis-v"></i>
-                        </div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
                     <div class="left inner-artist">
