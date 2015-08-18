@@ -78,3 +78,11 @@ function iif(expression, onTrue, onFalse) {
 function decodeUriPlus(uri) {
     return decodeURIComponent(uri.replace(/^_$/g, '').replace(/\+/g, '%20'));
 }
+
+function padLeft(expression, fillChars) {
+    var expLength   = ("" + expression).length,
+        fillLength  = ("" + fillChars).length;
+    if (expLength > fillLength)
+        return expression;
+    return ("" + fillChars + expression).substring(expLength);
+}

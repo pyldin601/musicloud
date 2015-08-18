@@ -14,9 +14,6 @@
                 <div class="inner" ng-bind="album.album_artist | artistFilter"></div>
             </div>
             <div class="album-title">
-                <div class="right icons">
-                    <i ng-click="action.editSongs(tracks)" class="fa fa-ellipsis-v"></i>
-                </div>
                 <div class="inner" ng-bind="album.album_title | albumFilter"></div>
             </div>
             <div class="album-info">
@@ -115,7 +112,7 @@
 
                 <div class="position left">
                     <div class="ellipsis">
-                        <div ng-hide="player.playlist.track == track" ng-bind="track.track_number"></div>
+                        <div ng-hide="player.playlist.track == track" ng-bind="track | getTrackNumber"></div>
                         <div ng-show="player.playlist.track == track">
                             <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
                         </div>

@@ -68,7 +68,7 @@
 
                 <div class="position left">
                     <div class="ellipsis">
-                        <div ng-hide="player.playlist.track == track" ng-bind="track.track_number"></div>
+                        <div ng-hide="player.playlist.track == track" ng-bind="track | getTrackNumber"></div>
                         <div ng-show="player.playlist.track == track">
                             <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
                         </div>

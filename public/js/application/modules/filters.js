@@ -72,6 +72,12 @@ MusicLoud.filter("getAlbumArtist", function () {
     };
 });
 
+MusicLoud.filter("getTrackNumber", function () {
+    return function (track) {
+        return (track.disc_number) ? track.disc_number + "." + padLeft(track.track_number, "00") :
+            padLeft(track.track_number, "00");
+    };
+});
 
 MusicLoud.filter("first", function () {
     return function (data) {

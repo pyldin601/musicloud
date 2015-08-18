@@ -304,7 +304,7 @@ MusicLoud.directive("multiselectList", [function () {
             },
                 lastSelected = null;
 
-            elem.on("mousedown", function (event) {
+            elem.on("mousedown selectstart", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 return false;
