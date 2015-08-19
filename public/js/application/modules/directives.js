@@ -304,13 +304,26 @@ MusicLoud.directive("multiselectList", [function () {
             },
                 lastSelected = null;
 
-            elem.on("mousedown selectstart", function (event) {
+            elem.on("selectstart contextmenu", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 return false;
             });
 
             elem.on("click", function (event) {
+                select(event);
+            });
+
+            function selectOne(event) {
+                scope.$applyAsync(function () {
+                    var selected = angular.element(event.target).parents("[multiselect-item]");
+                    if (selected.length == 0) {
+                        // todo: make this tomorrow
+                    }
+                });
+            }
+
+            function select(event, lock) {
                 scope.$applyAsync(function () {
                     var all = elem.find("[multiselect-item]");
                     var selected = angular.element(event.target).parents("[multiselect-item]");
@@ -334,7 +347,7 @@ MusicLoud.directive("multiselectList", [function () {
                     }
                     countSelected();
                 });
-            });
+            }
 
         }
     }

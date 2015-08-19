@@ -28,7 +28,7 @@
     function initMenu() {
         var $ = angular.element;
         $(document).bind("click", function (event) {
-            if ($(".menu-context").length == 0) {
+            if ($("body > .menu-context").length > 0) {
                 removeContextMenu();
             }
         });
