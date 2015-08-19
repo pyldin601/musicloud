@@ -71,21 +71,20 @@ class Playlist implements \JsonSerializable {
     }
 
     public function addTracks($song_ids) {
-        $count = count(PlaylistSongDao::getList([
+        $next_order_id = count(PlaylistSongDao::getList([
             TPlaylistSongLinks::PLAYLIST_ID => $this->playlist[TPlaylists::ID]
         ]));
-
         foreach ($song_ids as $song_id) {
             (new SelectQuery(TSongs::_NAME))
                 ->where(TSongs::ID, $song_id)
                 ->where(TSongs::USER_ID, self::$me->getId())
                 ->select(TSongs::ID)
                 ->fetchColumn()
-                ->then(function ($id) use (&$count) {
+                ->then(function ($id) use (&$next_order_id) {
                     PlaylistSongDao::create([
                         TPlaylistSongLinks::PLAYLIST_ID => $this->playlist[TPlaylists::ID],
                         TPlaylistSongLinks::SONG_ID => $id,
-                        TPlaylistSongLinks::ORDER_ID => $count++
+                        TPlaylistSongLinks::ORDER_ID => $next_order_id ++
                     ]);
                 });
         }
