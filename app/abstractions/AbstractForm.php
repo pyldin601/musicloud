@@ -14,7 +14,7 @@ use app\core\injector\Injectable;
 
 abstract class AbstractForm implements Injectable {
 
-    protected function __construct() {
+    function __construct() {
 
         $post = HttpPost::getInstance();
 

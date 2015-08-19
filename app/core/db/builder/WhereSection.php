@@ -85,7 +85,10 @@ trait WhereSection {
 
     private function whereHashMap(array $map) {
         foreach ($map as $key => $value) {
-            $this->whereSimple($key, $value);
+            if (is_array($value))
+                $this->whereArray($key, $value);
+            else
+                $this->whereSimple($key, $value);
         }
     }
 

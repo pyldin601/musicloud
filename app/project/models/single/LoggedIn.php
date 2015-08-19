@@ -28,7 +28,6 @@ class LoggedIn extends User implements SingletonInterface, Injectable {
         } else {
             $logged_in = HttpSession::getInstance()->get("auth", "id")
                 ->getOrThrow(UnauthorizedException::class);
-//            $logged_in = 2;
         }
         parent::__construct($logged_in);
     }
