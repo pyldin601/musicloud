@@ -115,3 +115,13 @@ MusicLoud.filter("bitrateFilter", [function () {
         return "" + parseInt(value / 1000) + " kbps";
     };
 }]);
+
+MusicLoud.filter("groupGenres", [function () {
+    return groupGenres;
+}]);
+
+MusicLoud.filter("isVariousArtists", [function () {
+    return function (coll) {
+        return coll.any(function (el) { return el.album_artist != el.track_artist })
+    };
+}]);

@@ -75,9 +75,9 @@ MusicLoud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
                     if (!player.playlist.fetch)
                         return;
 
-                    player.playlist.fetch(player.playlist.tracks.length).success(function (data) {
-                        if (data.tracks.length > 0) {
-                            player.playlist.tracks = player.playlist.tracks.concat(SyncService.tracks(data.tracks));
+                    player.playlist.fetch(player.playlist.tracks.length).then(function (tracks) {
+                        if (tracks.length > 0) {
+                            player.playlist.tracks = player.playlist.tracks.concat(tracks);
                         } else {
                             player.playlist.fetch = null;
                         }
@@ -148,7 +148,7 @@ MusicLoud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeou
 
                         player.doPlay(player.playlist.tracks[index + 1]);
 
-                        if (index + 1 == player.playlist.tracks.length - 1 && player.playlist.fetch) {
+                        if (player.playlist.fetch && (index + 1 == player.playlist.tracks.length - 1)) {
                             player.doFetch();
                         }
 

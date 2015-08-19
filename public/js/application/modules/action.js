@@ -45,7 +45,7 @@
     MusicLoud.factory("MonitorSongs", ["SyncService", function (SyncService) {
         return function (coll, scope) {
             scope.$on("songs.deleted", function (e, data) {
-                scope.$applyAsync(function () {
+                //scope.$applyAsync(function () {
                     for (var j = 0; j < data.length; j += 1) {
                         for (var i = coll.length - 1; i >= 0; i -= 1) {
                             if (coll[i].id === data[j].id) {
@@ -55,7 +55,17 @@
                         }
                         SyncService.tracks.remove(data);
                     }
-                });
+                //});
+            });
+        }
+    }]);
+
+    MusicLoud.factory("MonitorGroups", [function () {
+        return function (gs, scope) {
+            scope.$on("songs.deleted", function (e, data) {
+                //scope.$applyAsync(function () {
+                    gs.removeItems("id", data);
+                //});
             });
         }
     }]);

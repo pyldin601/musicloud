@@ -5,30 +5,29 @@
 var MusicLoud = angular.module("MusicLoud");
 
 MusicLoud.controller("ArtistViewController", [
-    "Resolved", "Header", "$scope", "MonitorSongs", "SyncService", "Library", "$routeParams", "SearchService",
-    function (Resolved, Header, $scope, MonitorSongs, SyncService, Library, $routeParams, SearchService) {
+    "Resolved", "Header", "$scope", "MonitorSongs", "MonitorGroups", "SyncService", "$routeParams", "SearchService", "GroupingService",
+    function (Resolved, Header, $scope, MonitorSongs, MonitorGroups, SyncService,  $routeParams, SearchService, GroupingService) {
 
-        var artist = decodeUriPlus($routeParams.artist);
+        var artist = decodeUriPlus($routeParams.artist),
+            gs = GroupingService("track_album");
 
         $scope.header = Header;
         $scope.tracks = Resolved;
         $scope.tracks_selected = [];
-
-        $scope.genre = groupGenres($scope.tracks);
-
-        $scope.albums = [];
-
+        $scope.albums = gs.getGroups();
         $scope.busy = false;
         $scope.end = false;
 
         $scope.fetch = SearchService.tracks.curry({ artist: artist });
+
+        gs.addItems(Resolved);
 
         $scope.load = function () {
             $scope.busy = true;
             $scope.fetch($scope.tracks.length).then(function (data) {
                 if (data.length > 0) {
                     array_add(data, $scope.tracks);
-                    Library.addToGroup($scope.albums, data);
+                    gs.addItems(data);
                     $scope.busy = false;
                 } else {
                     $scope.end = true;
@@ -36,16 +35,9 @@ MusicLoud.controller("ArtistViewController", [
             })
         };
 
-        $scope.group = function () {
-            $scope.genre = groupGenres($scope.tracks);
-            $scope.albums = Library.groupAlbums($scope.tracks);
-        };
-
-        //$scope.$watch("tracks", $scope.group, true);
-        $scope.group();
-
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
+        MonitorGroups(gs, $scope);
 
         $scope.contextMenu = [
             {
@@ -66,28 +58,29 @@ MusicLoud.controller("ArtistViewController", [
 ]);
 
 MusicLoud.controller("GenreViewController", [
-    "Resolved", "Header", "SearchService", "SyncService", "Library", "$scope", "MonitorSongs", "$routeParams",
-    function (Resolved, Header, SearchService, SyncService, Library, $scope, MonitorSongs, $routeParams) {
+    "Resolved", "Header", "SearchService", "SyncService", "Library", "$scope", "MonitorSongs", "MonitorGroups", "$routeParams", "GroupingService",
+    function (Resolved, Header, SearchService, SyncService, Library, $scope, MonitorSongs, MonitorGroups, $routeParams, GroupingService) {
 
-        var genre = decodeUriPlus($routeParams.genre);
+        var genre = decodeUriPlus($routeParams.genre),
+            gs = GroupingService("track_album");
 
         $scope.header = Header;
         $scope.tracks = Resolved;
         $scope.tracks_selected = [];
-
-        $scope.albums = [];
-
+        $scope.albums = gs.getGroups();
         $scope.busy = false;
         $scope.end = false;
 
         $scope.fetch = SearchService.tracks.curry({ genre: genre });
+
+        gs.addItems(Resolved);
 
         $scope.load = function () {
             $scope.busy = true;
             $scope.fetch($scope.tracks.length).then(function (data) {
                 if (data.length > 0) {
                     array_add(data, $scope.tracks);
-                    Library.addToGroup($scope.albums, data);
+                    gs.addItems(data);
                     $scope.busy = false;
                 } else {
                     $scope.end = true;
@@ -95,15 +88,9 @@ MusicLoud.controller("GenreViewController", [
             })
         };
 
-        $scope.group = function () {
-            $scope.albums = Library.groupAlbums($scope.tracks);
-        };
-
-        //$scope.$watch("tracks", $scope.group, true);
-        $scope.group();
-
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
+        MonitorGroups(gs, $scope);
 
         $scope.contextMenu = [
             {
@@ -130,6 +117,8 @@ MusicLoud.controller("AlbumViewController", [
         $scope.tracks = Resolved;
         $scope.tracks_selected = [];
         $scope.album = {};
+        $scope.tracks_selected = [];
+        $scope.fetch = null;
 
         $scope.readAlbum = function () {
 
@@ -139,23 +128,20 @@ MusicLoud.controller("AlbumViewController", [
             }
 
             $scope.album = {
-                album_title: aggregateAlbumTitle($scope.tracks),
-                album_url: $scope.tracks.map(field("album_url")).reduce(or, ""),
-                album_artist: $scope.tracks.map(field("album_artist")).reduce(or, ""),
-                cover_id: $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
-                album_year: groupYears($scope.tracks),
-                album_genre: groupGenres($scope.tracks),
-                length: aggregateDuration($scope.tracks),
-                discs_count: $scope.tracks.map(field("disk_number")).distinct().length,
-                is_various: $scope.tracks.any(function (t) {
-                    return t.track_artist !== t.album_artist
-                })
+                album_title:    aggregateAlbumTitle($scope.tracks),
+                album_url:      $scope.tracks.map(field("album_url")).reduce(or, ""),
+                album_artist:   $scope.tracks.map(field("album_artist")).reduce(or, ""),
+                cover_id:       $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
+                album_year:     groupYears($scope.tracks),
+                album_genre:    groupGenres($scope.tracks),
+                length:         aggregateDuration($scope.tracks),
+                discs_count:    $scope.tracks.map(field("disk_number")).distinct().length,
+                is_various:     $scope.tracks.any(function (t) {
+                                    return t.track_artist !== t.album_artist
+                                })
             };
 
         };
-
-        $scope.tracks_selected = [];
-        $scope.fetch = null;
 
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
@@ -187,7 +173,6 @@ MusicLoud.controller("TracksViewController", [
         $scope.tracks = Resolved;
         $scope.busy = false;
         $scope.end = false;
-
         $scope.tracks_selected = [];
         $scope.fetch = SearchService.tracks.curry({q: $location.search().q});
 
