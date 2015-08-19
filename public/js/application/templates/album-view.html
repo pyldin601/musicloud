@@ -122,9 +122,6 @@
                 <div class="inner-info">
                     <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
                         <div class="track-duration right ellipsis" ng-bind="track.length | mmss"></div>
-                        <div class="track-menu right ellipsis">
-                            <i class="fa fa-ellipsis-v"></i>
-                        </div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
                     <div class="left inner-artist" ng-show="album.is_various">

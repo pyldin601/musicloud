@@ -31,9 +31,9 @@ class DoTracks implements RouteHandler {
 
     public function doGet(Option $q, HttpGet $get, LoggedIn $me, Option $compilations) {
 
-        $artist  = $get->get("artist");
-        $album   = $get->get("album");
-        $genre   = $get->get("genre");
+        $artist  = $get->get("artist")->map("urldecode");
+        $album   = $get->get("album")->map("urldecode");
+        $genre   = $get->get("genre")->map("urldecode");
 
         $order_field = $get->getOrElse("sort", "auto");
 
@@ -52,12 +52,10 @@ class DoTracks implements RouteHandler {
         Context::contextify($query);
 
         if ($artist->nonEmpty()) {
-            error_log($artist->get());
             $query->where(TSongs::A_ARTIST, $artist->get());
         }
 
         if ($album->nonEmpty()) {
-            error_log($album->get());
             $query->where(TSongs::T_ALBUM, $album->get());
         }
 

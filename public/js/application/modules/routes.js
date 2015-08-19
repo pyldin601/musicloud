@@ -43,7 +43,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
                 function (SearchService, $location, $route, $filter) {
                     var artist = decodeUriPlus($route.current.params.artist);
                     $route.current.title = $filter("artistFilter")(artist);
-                    return SearchService.tracks({ artist: artist, limit: -1, compilations: 0 }, 0).then(function (tracks) {
+                    return SearchService.tracks({ artist: artist }, 0).then(function (tracks) {
                         return tracks;
                     }, function () {
                         $location.url("/");

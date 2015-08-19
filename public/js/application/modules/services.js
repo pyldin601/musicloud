@@ -132,7 +132,7 @@ MusicLoud.factory("SearchService", ["$http", "SyncService", function ($http, Syn
     };
 }]);
 
-MusicLoud.factory("Library", [function () {
+MusicLoud.factory("Library", "MonitorSongs", [function (MonitorSongs) {
     var obj = {
         groupAlbums: function (tracks) {
             var albumsList = [];

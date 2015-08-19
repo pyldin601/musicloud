@@ -46,7 +46,8 @@
             </div>
         </div>
     </div>
-    <div class="library-container" multiselect-list="selected" multiselect-destination="tracks_selected" ml-context-menu="contextMenu">
+    <div class="library-container" multiselect-list="selected" multiselect-destination="tracks_selected" ml-context-menu="contextMenu"
+         infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
         <div class="album-wrapper clear-fix" ng-repeat="album in albums">
             <div class="left cover">
                 <div class="cover-background">

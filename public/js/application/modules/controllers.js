@@ -5,8 +5,10 @@
 var MusicLoud = angular.module("MusicLoud");
 
 MusicLoud.controller("ArtistViewController", [
-    "Resolved", "Header", "$scope", "MonitorSongs", "SyncService", "Library",
-    function (Resolved, Header, $scope, MonitorSongs, SyncService, Library) {
+    "Resolved", "Header", "$scope", "MonitorSongs", "SyncService", "Library", "$routeParams", "SearchService",
+    function (Resolved, Header, $scope, MonitorSongs, SyncService, Library, $routeParams, SearchService) {
+
+        var artist = decodeUriPlus($routeParams.artist);
 
         $scope.header = Header;
         $scope.tracks = Resolved;
@@ -16,11 +18,31 @@ MusicLoud.controller("ArtistViewController", [
 
         $scope.albums = [];
 
+        $scope.busy = false;
+        $scope.end = false;
+
+        $scope.fetch = SearchService.tracks.curry({ artist: artist });
+
+        $scope.load = function () {
+            $scope.busy = true;
+            $scope.fetch($scope.tracks.length).then(function (data) {
+                if (data.length > 0) {
+                    array_add(data, $scope.tracks);
+                    Library.addToGroup($scope.albums, data);
+                    $scope.busy = false;
+                } else {
+                    $scope.end = true;
+                }
+            })
+        };
+
         $scope.group = function () {
+            $scope.genre = groupGenres($scope.tracks);
             $scope.albums = Library.groupAlbums($scope.tracks);
         };
 
-        $scope.$watch("tracks", $scope.group, true);
+        //$scope.$watch("tracks", $scope.group, true);
+        $scope.group();
 
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
@@ -77,7 +99,8 @@ MusicLoud.controller("GenreViewController", [
             $scope.albums = Library.groupAlbums($scope.tracks);
         };
 
-        $scope.$watch("tracks", $scope.group, true);
+        //$scope.$watch("tracks", $scope.group, true);
+        $scope.group();
 
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
