@@ -54,6 +54,23 @@ MusicLoud.controller("ArtistViewController", [
             }
         ];
 
+        $scope.menu = [
+            {
+                type: "item",
+                text: "Edit selected tracks info",
+                action: function () {
+                    $scope.action.editSongs($scope.tracks_selected);
+                }
+            },
+            {
+                type: "item",
+                text: "Delete selected tracks from library",
+                action: function () {
+                    $scope.action.deleteSongs($scope.tracks_selected);
+                }
+            }
+        ];
+
     }
 ]);
 
@@ -132,6 +149,7 @@ MusicLoud.controller("AlbumViewController", [
                 album_url:      $scope.tracks.map(field("album_url")).reduce(or, ""),
                 album_artist:   $scope.tracks.map(field("album_artist")).reduce(or, ""),
                 cover_id:       $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
+                artist_url:     $scope.tracks.map(field("artist_url")).reduce(or),
                 album_year:     groupYears($scope.tracks),
                 album_genre:    groupGenres($scope.tracks),
                 length:         aggregateDuration($scope.tracks),

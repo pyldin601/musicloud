@@ -274,15 +274,15 @@ MusicLoud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
     };
 }]);
 
-MusicLoud.directive("mlContextMenu", ["$parse", function ($parse) {
-    return {
-        restrict: "A",
-        link: function (scope, elem, attrs) {
-            var data = $parse(attrs.mlContextMenu)(scope);
-            context.attach(elem, data);
-        }
-    }
-}]);
+//MusicLoud.directive("mlContextMenu", ["$parse", function ($parse) {
+//    return {
+//        restrict: "A",
+//        link: function (scope, elem, attrs) {
+//            var data = $parse(attrs.mlContextMenu)(scope);
+//            context.attach(elem, data);
+//        }
+//    }
+//}]);
 
 MusicLoud.directive("multiselectList", [function () {
     return {

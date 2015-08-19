@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="library-container" multiselect-list="selected" multiselect-destination="tracks_selected" ml-context-menu="contextMenu"
+    <div class="library-container" multiselect-list="selected" multiselect-destination="tracks_selected"
          infinite-scroll="load()" infinite-scroll-disabled="busy" infinite-scroll-distance="1">
         <div class="album-wrapper clear-fix" ng-repeat="album in albums">
             <div class="left cover">
@@ -65,7 +65,7 @@
                 </div>
                 <div class="album-tracks">
                     <div class="track" multiselect-item="track" ng-repeat="track in album.items" action-play="track"
-                         action-context="tracks" action-resolver="fetch">
+                         action-context="tracks" action-resolver="fetch" ml-context-menu="menu">
                         <div class="duration right">
                             <div class="ellipsis" ng-bind="track.length | mmss"></div>
                         </div>

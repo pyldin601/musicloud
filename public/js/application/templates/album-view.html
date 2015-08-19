@@ -11,7 +11,9 @@
         </div>
         <div class="description-section">
             <div class="album-artist">
-                <div class="inner" ng-bind="album.album_artist | artistFilter"></div>
+                <div class="inner">
+                    <a ng-href="{{ album.artist_url }}" ng-bind="album.album_artist | artistFilter"></a>
+                </div>
             </div>
             <div class="album-title">
                 <div class="inner" ng-bind="album.album_title | albumFilter"></div>
