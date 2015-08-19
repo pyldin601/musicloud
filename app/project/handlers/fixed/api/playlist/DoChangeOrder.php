@@ -9,6 +9,8 @@
 namespace app\project\handlers\fixed\api\playlist;
 
 
-class DoChangeOrder {
+use app\core\router\RouteHandler;
+
+class DoChangeOrder implements RouteHandler {
 
 } 
