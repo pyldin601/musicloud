@@ -47,6 +47,9 @@ class FSTools {
      * @param $hash
      */
     public static function delete($hash) {
-        unlink(self::hashToFullPath($hash));
+        $path = self::hashToFullPath($hash);
+        if (file_exists($path)) {
+            unlink(self::hashToFullPath($hash));
+        }
     }
 } 
