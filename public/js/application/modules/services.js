@@ -154,19 +154,22 @@ MusicLoud.factory("GroupingService", [function () {
                 }
             },
             removeItems: function (itemKey, coll) {
-                for (var j = 0, groupCount = groups.length; j < groupCount; j += 1) {
-                    for (var i = 0, itemsCount = groups[j].items.length; i < itemsCount; i += 1) {
-                        for (var k = 0, collItemCount = coll.length; k < collItemCount; k += 1) {
+                for (var j = groups.length - 1; j >= 0; j--) {
+                    for (var i = groups[j].items.length - 1; i >= 0; i--) {
+                        for (var k = coll.length - 1; k >= 0; k--) {
                             if (groups[j].items[i][itemKey] === coll[k][itemKey]) {
                                 console.log("Removing " + coll[k][itemKey] + " from group " + groups[j].key);
                                 groups[j].items.splice(i, 1);
                             }
                         }
                     }
+                    if (groups[j].items.length == 0) {
+                        groups.splice(j, 0);
+                    }
                 }
             },
             removeGroup: function (group) {
-                for (var i = 0, length = groups.length; i < length; i += 1) {
+                for (var i = groups.length - 1; i >= 0; i--) {
                     if (groups[i].key === group) {
                         groups.splice(i, 1);
                         break;
