@@ -9,12 +9,15 @@
 namespace app\project\models;
 
 
+use app\core\db\builder\SelectQuery;
 use app\project\exceptions\UnauthorizedException;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\dao\PlaylistDao;
 use app\project\persistence\db\dao\PlaylistSongDao;
+use app\project\persistence\db\dao\SongDao;
 use app\project\persistence\db\tables\TPlaylists;
 use app\project\persistence\db\tables\TPlaylistSongLinks;
+use app\project\persistence\db\tables\TSongs;
 
 class Playlist implements \JsonSerializable {
 
@@ -67,6 +70,28 @@ class Playlist implements \JsonSerializable {
         ]);
     }
 
+    public function addTracks($song_ids) {
+        $count = count(PlaylistSongDao::getList([
+            TPlaylistSongLinks::PLAYLIST_ID => $this->playlist[TPlaylists::ID]
+        ]));
+
+        foreach ($song_ids as $song_id) {
+            (new SelectQuery(TSongs::_NAME))
+                ->where(TSongs::ID, $song_id)
+                ->where(TSongs::USER_ID, self::$me->getId())
+                ->select(TSongs::ID)
+                ->fetchColumn()
+                ->then(function ($id) use (&$count) {
+                    PlaylistSongDao::create([
+                        TPlaylistSongLinks::PLAYLIST_ID => $this->playlist[TPlaylists::ID],
+                        TPlaylistSongLinks::SONG_ID => $id,
+                        TPlaylistSongLinks::ORDER_ID => $count++
+                    ]);
+                });
+        }
+
+    }
+
     /**
      * @return string
      */
@@ -94,5 +119,6 @@ class Playlist implements \JsonSerializable {
     public function jsonSerialize() {
         return $this->playlist;
     }
+
 
 } 
