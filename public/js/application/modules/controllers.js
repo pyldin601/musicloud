@@ -33,20 +33,24 @@ MusicLoud.run(["$rootScope", "$filter", function ($rootScope, $filter) {
                 defaultMenu.push({
                     type: "divider"
                 });
-                defaultMenu.push({
-                    type: "item",
-                    text: "Show all by <b>" + $filter("artistFilter")(selection[0].album_artist) + "</b>",
-                    href: selection[0].artist_url
-                });
-                defaultMenu.push({
-                    type: "item",
-                    text: "Show all from <b>" + $filter("albumFilter")(selection[0].track_album) + "</b>",
-                    href: selection[0].album_url
-                });
+                if (selection[0].album_artist) {
+                    defaultMenu.push({
+                        type: "item",
+                        text: "Show all by <b>" + selection[0].album_artist + "</b>",
+                        href: selection[0].artist_url
+                    });
+                }
+                if (selection[0].track_album) {
+                    defaultMenu.push({
+                        type: "item",
+                        text: "Show all from <b>" + selection[0].track_album + "</b>",
+                        href: selection[0].album_url
+                    });
+                }
                 if (selection[0].track_genre) {
                     defaultMenu.push({
                         type: "item",
-                        text: "Show all of <b>" + selection[0].track_genre + "</b>",
+                        text: "Show all by genre <b>" + selection[0].track_genre + "</b>",
                         href: selection[0].genre_url
                     });
                 }

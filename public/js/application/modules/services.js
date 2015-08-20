@@ -238,7 +238,7 @@ MusicLoud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope
 
                 var newScope = $an.isObject(options.scope) ? options.scope.$new() : $rootScope.$new(),
                     body = $an.element("body"),
-                    modal = $an.element(template).appendTo(body),
+                    $modal = $an.element(template),
 
                     onEscapeEvent = function (event) {
                         if (event.which == 27) {
@@ -247,13 +247,19 @@ MusicLoud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope
                     },
 
                     onMouseClickEvent = function (event) {
-                        if ($an.element(event.target).parents(modal).length == 0) {
+                        if ($an.element(event.target).parents($modal).length == 0) {
                             newScope.closeThisWindow()
                         }
+                    },
+
+                    compile = function () {
+                        $compile($modal.contents())(newScope);
                     };
 
+
+
                 newScope.closeThisWindow = function () {
-                    modal.remove();
+                    $modal.remove();
                     newScope.$destroy();
                 };
 
@@ -274,17 +280,21 @@ MusicLoud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope
                     body.bind("click", onMouseClickEvent);
                 }
 
-                $compile(modal)(newScope);
+                $modal.appendTo(body);
 
                 if (options.controller) {
                     var controllerInstance = $controller(options.controller, {
                         $scope: newScope,
-                        $element: modal
+                        $element: $modal
                     });
-                    modal.data('$modalWindowController', controllerInstance);
+                    $modal.data('$modalWindowController', controllerInstance);
                 }
 
-
+                if (newScope.$$phase) {
+                    newScope.$applyAsync(compile)
+                } else {
+                    newScope.$apply(compile);
+                }
 
             });
         };

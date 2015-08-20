@@ -1,4 +1,7 @@
 .menu-context {
+  text-transform: none;
+  font-weight: normal;
+  font-size: 10pt;
   position: absolute;
   padding: 4px 0;
   background-color: #ffffff;
@@ -41,5 +44,15 @@
     top: 0;
     margin-top: -5px;
     display: none;
+  }
+}
+
+.dd-icon {
+  cursor: pointer;
+  &:hover {
+    color: #556677;
+  }
+  &.selected {
+    color: #334455 !important;
   }
 }

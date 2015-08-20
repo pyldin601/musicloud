@@ -34,7 +34,6 @@
     <script src="/public/js/application/modules/context-menu.js"></script>
 
     <script src="/public/js/application/homecloud.js"></script>
-    <script src="/public/js/application/modules/services.js"></script>
     <script src="/public/js/application/modules/filters.js"></script>
     <script src="/public/js/application/modules/controllers.js"></script>
     <script src="/public/js/application/modules/routes.js"></script>
@@ -45,6 +44,7 @@
     <script src="/public/js/application/modules/metadata.js"></script>
     <script src="/public/js/application/modules/action.js"></script>
 
+    <script src="/public/js/application/modules/services.js"></script>
 
 </head>
 <body>
@@ -217,8 +217,12 @@
         <div class="section">
             <div class="section-title">
                 <div class="right actions">
-                    <div class="upload" ng-click="upload.action.add()">
-                        <i class="fa fa-cloud-upload"></i>
+                    <div class="upload dd-icon" ng-init="uploadMenu=false" click-outside="uploadMenu=false" ng-class="{ selected: uploadMenu === true }" >
+                        <i class="fa fa-cloud-upload" ng-click="uploadMenu=true"></i>
+                        <ul class="menu-context" ng-show="uploadMenu">
+                            <li class="menu-item" ng-click="upload.action.add()">Upload files...</li>
+                            <li class="menu-item" ng-click="upload.action.addDirectory()">Upload directory...</li>
+                        </ul>
                     </div>
                 </div>
                 <span class="label">Library</span>

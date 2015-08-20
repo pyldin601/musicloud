@@ -45,6 +45,30 @@ MusicLoud.controller("UploadController", ["$rootScope", "TrackService", "$route"
                         });
                         selector.click();
                     },
+                    addDirectory: function () {
+                        var selector = $("<input>");
+                        selector.attr("type", "file");
+                        selector.attr("accept", "audio/mpeg,audio/aac,audio/flac,audio/ogg");
+                        selector.attr("multiple", "multiple");
+                        selector.attr("webkitdirectory", "");
+                        selector.attr("directory", "");
+                        selector.attr("name", "file");
+                        selector.on("change", function () {
+                            if (this.files.length == 0) return;
+                            var that = this;
+                            $rootScope.$applyAsync(function () {
+                                for (var i = 0; i < that.files.length; i++) {
+                                    if (that.files[i].size > maxFileSize) {
+                                        // todo: warn if file size is too big
+                                        continue;
+                                    }
+                                    upload.data.queue.push(that.files[i]);
+                                }
+                            });
+                            upload.action.next();
+                        });
+                        selector.click();
+                    },
                     cancel: function () {
                         if (confirm("Are you sure want to cancel current uploading?")) {
                             if (upload.data.promise !== null) {
