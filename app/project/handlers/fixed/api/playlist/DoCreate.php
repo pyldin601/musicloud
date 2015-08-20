@@ -16,6 +16,7 @@ use app\project\models\Playlist;
 
 class DoCreate implements RouteHandler {
     public function doPost(JsonResponse $response, NewPlaylistForm $form) {
-        $response->write(Playlist::create($form->getName()));
+        $playlist = Playlist::create($form->getName());
+        $response->write($playlist);
     }
 } 

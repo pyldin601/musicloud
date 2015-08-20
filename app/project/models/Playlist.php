@@ -117,7 +117,9 @@ class Playlist implements \JsonSerializable {
      * @return array
      */
     public function jsonSerialize() {
-        return $this->playlist;
+        $export = $this->playlist;
+        $export["playlist_url"] = "playlist/" . $this->playlist["id"];
+        return $export;
     }
 
 
