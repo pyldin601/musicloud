@@ -4,6 +4,65 @@
 
 var MusicLoud = angular.module("MusicLoud");
 
+MusicLoud.run(["$rootScope", "$filter", function ($rootScope, $filter) {
+
+    $rootScope.selectedTracksMenu = function (selection) {
+        var defaultMenu = [
+            {
+                type: "item",
+                text: "Edit metadata",
+                action: function () {
+                    $rootScope.action.editSongs(selection);
+                }
+            },
+            {
+                type: "item",
+                text: "Delete tracks",
+                action: function () {
+                    $rootScope.action.deleteSongs(selection);
+                }
+            }
+        ];
+
+        switch (selection.length) {
+
+            case 0:
+                return null;
+
+            case 1:
+                defaultMenu.push({
+                    type: "divider"
+                });
+                defaultMenu.push({
+                    type: "item",
+                    text: "Show all by <b>" + $filter("artistFilter")(selection[0].album_artist) + "</b>",
+                    href: selection[0].artist_url
+                });
+                defaultMenu.push({
+                    type: "item",
+                    text: "Show all from <b>" + $filter("albumFilter")(selection[0].track_album) + "</b>",
+                    href: selection[0].album_url
+                });
+                if (selection[0].track_genre) {
+                    defaultMenu.push({
+                        type: "item",
+                        text: "Show all of <b>" + selection[0].track_genre + "</b>",
+                        href: selection[0].genre_url
+                    });
+                }
+                break;
+
+            default:
+                break;
+
+        }
+
+        return defaultMenu;
+
+    };
+
+}]);
+
 MusicLoud.controller("ArtistViewController", [
     "Resolved", "Header", "$scope", "MonitorSongs", "MonitorGroups", "SyncService", "$routeParams", "SearchService", "GroupingService",
     function (Resolved, Header, $scope, MonitorSongs, MonitorGroups, SyncService,  $routeParams, SearchService, GroupingService) {
@@ -39,44 +98,13 @@ MusicLoud.controller("ArtistViewController", [
         MonitorSongs($scope.tracks_selected, $scope);
         MonitorGroups(gs, $scope);
 
-        $scope.contextMenu = [
-            {
-                text: "Edit metadata",
-                action: function () {
-                    $scope.action.editSongs($scope.tracks_selected);
-                }
-            },
-            {
-                text: "Delete from library",
-                action: function () {
-                    $scope.action.deleteSongs($scope.tracks_selected);
-                }
-            }
-        ];
-
-        $scope.menu = [
-            {
-                type: "item",
-                text: "Edit selected tracks info",
-                action: function () {
-                    $scope.action.editSongs($scope.tracks_selected);
-                }
-            },
-            {
-                type: "item",
-                text: "Delete selected tracks from library",
-                action: function () {
-                    $scope.action.deleteSongs($scope.tracks_selected);
-                }
-            }
-        ];
 
     }
 ]);
 
 MusicLoud.controller("GenreViewController", [
-    "Resolved", "Header", "SearchService", "SyncService", "Library", "$scope", "MonitorSongs", "MonitorGroups", "$routeParams", "GroupingService",
-    function (Resolved, Header, SearchService, SyncService, Library, $scope, MonitorSongs, MonitorGroups, $routeParams, GroupingService) {
+    "Resolved", "Header", "SearchService", "SyncService", "$scope", "MonitorSongs", "MonitorGroups", "$routeParams", "GroupingService",
+    function (Resolved, Header, SearchService, SyncService, $scope, MonitorSongs, MonitorGroups, $routeParams, GroupingService) {
 
         var genre = decodeUriPlus($routeParams.genre),
             gs = GroupingService("track_album");
@@ -108,21 +136,6 @@ MusicLoud.controller("GenreViewController", [
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
         MonitorGroups(gs, $scope);
-
-        $scope.contextMenu = [
-            {
-                text: "Edit metadata",
-                action: function () {
-                    $scope.action.editSongs($scope.tracks_selected);
-                }
-            },
-            {
-                text: "Delete from library",
-                action: function () {
-                    $scope.action.deleteSongs($scope.tracks_selected);
-                }
-            }
-        ];
 
     }
 ]);
@@ -166,20 +179,6 @@ MusicLoud.controller("AlbumViewController", [
 
         $scope.$watch("tracks", $scope.readAlbum, true);
 
-        $scope.contextMenu = [
-            {
-                text: "Edit metadata",
-                action: function () {
-                    $scope.action.editSongs($scope.tracks_selected);
-                }
-            },
-            {
-                text: "Delete from library",
-                action: function () {
-                    $scope.action.deleteSongs($scope.tracks_selected);
-                }
-            }
-        ];
 
     }
 ]);

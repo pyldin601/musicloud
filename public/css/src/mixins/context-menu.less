@@ -1,15 +1,45 @@
 .menu-context {
   position: absolute;
-  padding: 5px 0;
+  padding: 4px 0;
   background-color: #ffffff;
   z-index: 1000;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,1);
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  box-shadow: rgba(32, 32, 32, 0.3) 0 6px 12px 0;
   & > li {
-    padding: 8px;
-    &:hover {
-      background-color: #556677;
-      color: #eeeeee;
+    padding: 8px 16px 8px 8px;
+    white-space: nowrap;
+    position: relative;
+    min-width: 150px;
+    &:not(.menu-divider) {
+      a {
+        display: block;
+      }
+      cursor: pointer;
     }
+    .fa-caret-right {
+      position: absolute;
+      display: block;
+      right: 4px;
+
+    }
+    &:hover:not(.menu-divider) {
+      background-color: #eeeeee;
+      & > .menu-context-sub {
+        display: block !important;
+      }
+    }
+    &.menu-divider {
+      padding: 0;
+      margin: 4px 0;
+      height: 1px;
+      background-color: #eeeeee;
+    }
+  }
+  &.menu-context-sub {
+    left: 100%;
+    top: 0;
+    margin-top: -5px;
+    display: none;
   }
 }

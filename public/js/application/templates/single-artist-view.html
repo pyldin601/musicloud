@@ -65,7 +65,7 @@
                 </div>
                 <div class="album-tracks">
                     <div class="track" multiselect-item="track" ng-repeat="track in album.items" action-play="track"
-                         action-context="tracks" action-resolver="fetch" ml-context-menu="menu">
+                         action-context="tracks" action-resolver="fetch" ml-context-menu="selectedTracksMenu(tracks_selected)">
                         <div class="duration right">
                             <div class="ellipsis" ng-bind="track.length | mmss"></div>
                         </div>

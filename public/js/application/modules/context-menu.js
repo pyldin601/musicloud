@@ -3,22 +3,33 @@
 
     var module = angular.module("MLContextMenu", []);
 
-    module.directive("mlContextMenu", ["$parse", function ($parse) {
+    module.directive("mlContextMenu", ["$compile", function ($compile) {
         return {
             restrict: "A",
             link: function (scope, elem, attrs) {
-                var source = $parse(attrs.mlContextMenu)(scope);
+
                 elem.bind("contextmenu", function (event) {
-                    var $menu;
+
+                    var $menu,
+                        data = scope.$eval(attrs.mlContextMenu);
+
                     event.preventDefault();
                     event.stopPropagation();
-                    $menu = showContextMenu(createMenu(source, false));
+
+                    if (data === null) {
+                        return;
+                    }
+
+                    $menu = showContextMenu(createMenu(data, false));
                     $menu.css({
                         top: event.pageY,
                         left: event.pageX - 13
                     });
-                    return false;
+
+                    $compile($menu)(scope);
+
                 });
+
             }
         }
     }]);
@@ -76,17 +87,25 @@
                     $menu.append($("<li>").addClass("menu-divider"));
                     break;
                 case "header":
-                    $menu.append($("<li>").addClass("menu-header").text(item.text));
+                    $menu.append($("<li>").addClass("menu-header").html(item.text));
                     break;
                 case "sub":
-                    $menu.append($("<li>").addClass("menu-sub-menu").html(createMenu(item.data, true)));
+                    $menu.append(
+                        $("<li>")
+                            .addClass("menu-sub-menu")
+                            .append('<i class="fa fa-caret-right"></i>')
+                            .append(item.text)
+                            .append(createMenu(item.data, true))
+                    );
                     break;
                 case "item":
-                    sub = $("<li>").addClass("menu-item").text(item.text);
+                    sub = $("<li>").addClass("menu-item");
                     if (typeof item.href == "string") {
-                        sub.attr("href", item.href);
+                        sub.append($("<a>").attr("ng-href", item.href).html(item.text));
                     } else if (typeof item.action == "function") {
-                        sub.bind("click", item.action);
+                        sub.bind("click", item.action).html(item.text);
+                    } else {
+                        sub.html(item.text);
                     }
                     $menu.append(sub);
                     break;

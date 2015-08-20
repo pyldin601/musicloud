@@ -10,8 +10,6 @@ MusicLoud.run(["AccountService", "$rootScope", function (AccountService, $rootSc
 
     $rootScope.account = { authorized: false };
 
-    context.init({ preventDoubleContext: true });
-
     AccountService.init().success(function (data) {
         $rootScope.account = { authorized: true, user: data };
     }).error(function () {

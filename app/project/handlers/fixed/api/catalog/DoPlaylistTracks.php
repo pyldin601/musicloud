@@ -38,9 +38,11 @@ class DoPlaylistTracks implements RouteHandler {
         $query->renderAllAsJson(function ($row) use ($playlist_id) {
             $artist_encoded = escape_url($row["album_artist"]);
             $album_encoded  = escape_url($row["track_album"]);
+            $genre_encoded  = escape_url($row["track_genre"]);
             $row["playlist_url"] = "playlist/{$playlist_id}";
             $row["artist_url"] = "artist/{$artist_encoded}";
             $row["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
+            $row["genre_url"]  = "genre/{$genre_encoded}";
             return $row;
         });
 

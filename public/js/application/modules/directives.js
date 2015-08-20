@@ -106,40 +106,6 @@ MusicLoud.directive("changeArtwork", ["TrackService", "SyncService", function (T
     }
 }]);
 
-MusicLoud.directive("actionPlay", ["$rootScope", function ($rootScope) {
-    return {
-        scope: {
-            actionPlay: "=",
-            actionContext: "=",
-            actionResolver: "="
-        },
-        restrict: "A",
-        link: function (scope, elem, attrs) {
-            elem.on("dblclick", function () {
-                $rootScope.player.doPlay(
-                    scope.actionPlay,
-                    scope.actionContext,
-                    scope.actionResolver
-                );
-            });
-        }
-    }
-}]);
-
-MusicLoud.directive("play", ["$rootScope", function ($rootScope) {
-    return {
-        scope: {
-            play: "="
-        },
-        restrict: "A",
-        link: function (scope, elem, attrs) {
-            elem.on("click", function () {
-                $rootScope.player.doPlay(scope.play[0], scope.play[1] || null, scope.play[2] || null);
-            });
-        }
-    }
-}]);
-
 MusicLoud.directive("ngVisible", [function () {
     return {
         scope: {
@@ -155,134 +121,6 @@ MusicLoud.directive("ngVisible", [function () {
         }
     }
 }]);
-
-MusicLoud.directive("volumeController", ["$rootScope", "$document", function ($rootScope, $document) {
-    return {
-        restrict: "A",
-        link: function (scope, element, attrs) {
-            var line = element.find(".value-line"),
-                bulb = element.find(".volume-bulb"),
-                doc = angular.element($document),
-                unbind = $rootScope.$watch("player.volume", function (value) {
-                    line.css("height", "" + parseInt(100 * value) + "%");
-                    bulb.css("bottom", "" + parseInt(100 * value) + "%");
-                }),
-                dragEvents = {
-                    mousePos: 0,
-                    mouseOffset: 0,
-                    dragStart: function (event) {
-                        dragEvents.mouseOffset = element.height() - (event.clientY + $(window).scrollTop() - element.offset().top);
-                        dragEvents.mousePos    = event.clientY;
-                        doc .bind("mousemove",     mouseEvents.mousemove)
-                            .bind("mouseup",       mouseEvents.mouseup);
-                        $(".ctrl-volume").addClass("drag");
-                    },
-                    drag: function (event) {
-                        var delta = dragEvents.mousePos - event.clientY,
-                            value = Math.min(element.height(), Math.max(0, dragEvents.mouseOffset + delta)),
-                            vol = 1 / element.height() * value;
-                            $rootScope.$applyAsync($rootScope.player.doVolume(vol));
-                    },
-                    dragStop: function () {
-                        doc .unbind("mousemove",   mouseEvents.mousemove)
-                            .unbind("mouseup",     mouseEvents.mouseup);
-                        $(".ctrl-volume").removeClass("drag");
-                    }
-                },
-                mouseEvents = {
-                    mousedown: function (event) {
-                        dragEvents.dragStart(event);
-                        dragEvents.drag(event);
-                        event.stopPropagation();
-                        event.preventDefault();
-                    },
-                    mousemove: function (event) {
-                        dragEvents.drag(event);
-                        event.stopPropagation();
-                        event.preventDefault();
-                    },
-                    mouseup: function (event) {
-                        dragEvents.dragStop(event);
-                        event.stopPropagation();
-                        event.preventDefault();
-                    }
-                };
-
-            element.bind("mousedown", mouseEvents.mousedown);
-
-            scope.$on("$destroy", function () {
-                unbind();
-            })
-        }
-    }
-}]);
-
-MusicLoud.directive("trackPosition", ["$rootScope", function ($rootScope) {
-    return {
-        link: function (scope, element, attrs) {
-            var watcher = $rootScope.$watchCollection("player.playlist.position", function (pos) {
-                element.css("width", "" + (100 / pos.duration * pos.position) + "%")
-            });
-            scope.$on("$destroy", watcher);
-        }
-    }
-}]);
-
-MusicLoud.directive("seekController", ["$rootScope", function ($rootScope) {
-    return {
-        link: function (scope, element, attrs) {
-            element.on("mousedown", function (event) {
-                var offset = element.offset(),
-                    width = element.width();
-                $rootScope.$applyAsync(function () {
-                    $rootScope.player.doSeek(100 / width * (event.clientX - offset.left))
-                });
-            });
-        }
-    }
-}]);
-
-MusicLoud.directive("playbackProgress", ["$rootScope", function ($rootScope) {
-    return {
-        template: '<div class="progress-line"></div>' +
-        '<div ng-show="player.isLoaded" class="progress-position"></div>' +
-        '<div ng-show="player.isLoaded" class="progress-bulb"></div>',
-        link: function (scope, elem, attrs) {
-            var bulb = elem.find(".progress-bulb"),
-                line = elem.find(".progress-position"),
-                watcher = $rootScope.$watchCollection("player.playlist.position", function (pos) {
-
-                    var percent;
-
-                    if (!(pos && pos.duration > 0)) return;
-
-                    percent = 100 / pos.duration * pos.position;
-
-                    bulb.css("left", "" + percent + "%");
-                    line.css("width", "" + percent + "%");
-
-                });
-            elem.on("mousedown", function (event) {
-                var offset = elem.offset(),
-                    width = elem.width();
-                $rootScope.$applyAsync(function () {
-                    $rootScope.player.doSeek(100 / width * (event.clientX - offset.left))
-                });
-            });
-            scope.$on("$destroy", watcher);
-        }
-    };
-}]);
-
-//MusicLoud.directive("mlContextMenu", ["$parse", function ($parse) {
-//    return {
-//        restrict: "A",
-//        link: function (scope, elem, attrs) {
-//            var data = $parse(attrs.mlContextMenu)(scope);
-//            context.attach(elem, data);
-//        }
-//    }
-//}]);
 
 MusicLoud.directive("multiselectList", [function () {
     return {
@@ -307,30 +145,21 @@ MusicLoud.directive("multiselectList", [function () {
             elem.on("selectstart contextmenu", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                return false;
             });
 
             elem.on("click", function (event) {
                 select(event);
             });
 
-            function selectOne(event) {
-                scope.$applyAsync(function () {
-                    var selected = angular.element(event.target).parents("[multiselect-item]");
-                    if (selected.length == 0) {
-                        // todo: make this tomorrow
-                    }
-                });
-            }
-
-            function select(event, lock) {
+            function select(event) {
                 scope.$applyAsync(function () {
                     var all = elem.find("[multiselect-item]");
                     var selected = angular.element(event.target).parents("[multiselect-item]");
+
                     if (!(event.ctrlKey || event.metaKey)) {
                         all.toggleClass(scope.multiselectList, false);
                     }
-                    if (selected.length > 0) {
+                    if (selected.length == 1) {
                         if (event.shiftKey && lastSelected) {
                             ((lastSelected.index() < selected.index())
                                 ? lastSelected.nextUntil(selected)

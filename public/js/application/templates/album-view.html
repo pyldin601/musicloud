@@ -23,8 +23,7 @@
                     <thead>
                         <tr>
                             <th>Release Year</th>
-                            <th>Tracks Count</th>
-                            <th>Discs Count</th>
+                            <th>Tracks/Discs Count</th>
                             <th>Duration</th>
                             <th>Genre</th>
                         </tr>
@@ -35,10 +34,7 @@
                                 <span class="album-year" ng-bind="album.album_year"></span>
                             </td>
                             <td>
-                                <span class="tracks-count" ng-bind="tracks.length"></span>
-                            </td>
-                            <td>
-                                <span class="discs-count" ng-bind="album.discs_count"></span>
+                                <span class="tracks-count" ng-bind-template="{{ tracks.length }}/{{ album.discs_count }}"></span>
                             </td>
                             <td>
                                 <span class="album-length" ng-bind="album.length | mmss"></span>
@@ -52,7 +48,7 @@
             </div>
         </div>
     </div>
-    <div class="album-view-container" multiselect-list="selected" multiselect-destination="tracks_selected" ml-context-menu="contextMenu">
+    <div class="album-view-container" multiselect-list="selected" multiselect-destination="tracks_selected">
         <div class="plain-list tracks-list">
             <div class="plain-list-item header">
                 <div class="last-played right xl-visible" title="Date of last playback">Added</div>
@@ -80,7 +76,8 @@
                 </div>
             </div>
             <div class="plain-list-item track-item" multiselect-item="track" ng-repeat="track in tracks"
-                 action-play="track" action-context="tracks" action-resolver="null">
+                 action-play="track" action-context="tracks" action-resolver="null"
+                 ml-context-menu="selectedTracksMenu(tracks_selected)">
 
                 <div class="last-played right xl-visible">
                     <div class="ellipsis" ng-bind="track.created_date | dateFilter"></div>
