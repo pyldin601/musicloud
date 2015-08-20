@@ -50,13 +50,19 @@ Array.prototype.isVarious = function () {
 };
 
 Array.prototype.distinct = function () {
-    var acc = {};
+    var acc = {}, arr = [];
     for (var i = 0; i < this.length; i += 1) {
         if (acc[this[i]] === undefined) {
-            acc[this[i]] = true;
+            acc[this[i]] = 1;
+        } else {
+            acc[this[i]] += 1;
         }
     }
-    return Object.keys(acc);
+    for (var key in acc) if (acc.hasOwnProperty(key)) {
+        arr.push([key, acc[key]])
+    }
+    return arr.sort(function (a, b) { return b[1] - a[1] })
+        .map(function (a) { return a[0] });
 };
 
 Array.prototype.chunk = function(chunkSize) {

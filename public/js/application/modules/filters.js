@@ -110,9 +110,8 @@ MusicLoud.filter("dateFilter", ["$filter", function ($filter) {
 
 
 MusicLoud.filter("bitrateFilter", [function () {
-    var bitrates = [8, 16, 24, 32, 48, 52, 64, 96, 112, 128, 160, 224, 256, 320];
     return function (value) {
-        return "" + parseInt(value / 1000) + " kbps";
+        return "" + (parseInt(value / 1000 / 8) * 8) + " kbps";
     };
 }]);
 
@@ -123,5 +122,26 @@ MusicLoud.filter("groupGenres", [function () {
 MusicLoud.filter("isVariousArtists", [function () {
     return function (coll) {
         return coll.any(function (el) { return el.album_artist != el.track_artist })
+    };
+}]);
+
+MusicLoud.filter("groupArtists", [function () {
+    return function (tracks) {
+
+        var featuringArtists = tracks.map(field("track_artist")).distinct();
+
+        switch (featuringArtists.length) {
+            case (0):
+                return "";
+            case (1):
+                return featuringArtists[0];
+            case (2):
+                return featuringArtists.join(", ");
+            case (3):
+                return featuringArtists.slice(0, 2).join(", ") + " and " + featuringArtists[2];
+            default:
+                return featuringArtists.slice(0, 3).join(", ") + " and " + (featuringArtists.length - 3) + " other artists"
+        }
+
     };
 }]);

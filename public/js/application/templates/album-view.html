@@ -10,13 +10,16 @@
             </div>
         </div>
         <div class="description-section">
-            <div class="album-artist">
+            <div class="album-artist" ng-show="album.album_artist">
                 <div class="inner">
-                    <a ng-href="{{ album.artist_url }}" ng-bind="album.album_artist | artistFilter"></a>
+                    <a ng-href="{{ album.artist_url }}" ng-bind="album.album_artist"></a>
                 </div>
             </div>
             <div class="album-title">
                 <div class="inner" ng-bind="album.album_title | albumFilter"></div>
+            </div>
+            <div class="album-including" ng-show="tracks | isVariousArtists">
+                <div class="inner" ng-bind="tracks | groupArtists"></div>
             </div>
             <div class="album-info">
                 <table>

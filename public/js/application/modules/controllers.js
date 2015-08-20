@@ -44,28 +44,26 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
                 return null;
 
             case 1:
-                defaultMenu.push({
-                    type: 'divider'
-                });
+                defaultMenu.push({ type: 'divider' });
                 if (selection[0].album_artist) {
                     defaultMenu.push({
                         type: 'item',
                         text: '<i class="fa fa-search item-icon"></i> Show all by <b>' + htmlToText(selection[0].album_artist) + '</b>',
-                        href: selection[0].artist_url
+                        href: selection[0]["artist_url"]
                     });
                 }
                 if (selection[0].track_album) {
                     defaultMenu.push({
                         type: 'item',
                         text: '<i class="fa fa-search item-icon"></i> Show all from <b>' + htmlToText(selection[0].track_album) + '</b>',
-                        href: selection[0].album_url
+                        href: selection[0]["album_url"]
                     });
                 }
                 if (selection[0].track_genre) {
                     defaultMenu.push({
                         type: 'item',
                         text: '<i class="fa fa-search item-icon"></i> Show all by genre <b>' + htmlToText(selection[0].track_genre) + '</b>',
-                        href: selection[0].genre_url
+                        href: selection[0]["genre_url"]
                     });
                 }
                 break;
@@ -75,11 +73,7 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
 
         }
 
-
-
-        defaultMenu.push({
-            type: 'divider'
-        });
+        defaultMenu.push({ type: 'divider' });
 
         defaultMenu.push({
             type: 'sub',
@@ -102,11 +96,12 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
 }]);
 
 MusicLoud.controller("ArtistViewController", [
-    "Resolved", "Header", "$scope", "MonitorSongs", "MonitorGroups", "SyncService", "$routeParams", "SearchService", "GroupingService",
-    function (Resolved, Header, $scope, MonitorSongs, MonitorGroups, SyncService,  $routeParams, SearchService, GroupingService) {
+    "Resolved", "Header", "$scope", "$routeParams", "SearchService", "GroupingService", "SyncKeeper",
+    function (Resolved, Header, $scope, $routeParams, SearchService, GroupingService, SyncKeeper) {
 
         var artist = decodeUriPlus($routeParams.artist),
-            gs = GroupingService("track_album");
+            gs = GroupingService("track_album"),
+            syncKeeper = SyncKeeper($scope);
 
         $scope.header = Header;
         $scope.tracks = Resolved;
@@ -132,20 +127,20 @@ MusicLoud.controller("ArtistViewController", [
             })
         };
 
-        MonitorSongs($scope.tracks, $scope);
-        MonitorSongs($scope.tracks_selected, $scope);
-        MonitorGroups(gs, $scope);
-
+        syncKeeper  .songs($scope.tracks)
+                    .songs($scope.tracks_selected)
+                    .groups(gs);
 
     }
 ]);
 
 MusicLoud.controller("GenreViewController", [
-    "Resolved", "Header", "SearchService", "SyncService", "$scope", "MonitorSongs", "MonitorGroups", "$routeParams", "GroupingService",
-    function (Resolved, Header, SearchService, SyncService, $scope, MonitorSongs, MonitorGroups, $routeParams, GroupingService) {
+    "Resolved", "Header", "SearchService", "$scope", "$routeParams", "GroupingService", "SyncKeeper",
+    function (Resolved, Header, SearchService, $scope, $routeParams, GroupingService, SyncKeeper) {
 
         var genre = decodeUriPlus($routeParams.genre),
-            gs = GroupingService("track_album");
+            gs = GroupingService("track_album"),
+            syncKeeper = SyncKeeper($scope);
 
         $scope.header = Header;
         $scope.tracks = Resolved;
@@ -171,16 +166,18 @@ MusicLoud.controller("GenreViewController", [
             })
         };
 
-        MonitorSongs($scope.tracks, $scope);
-        MonitorSongs($scope.tracks_selected, $scope);
-        MonitorGroups(gs, $scope);
+        syncKeeper  .songs($scope.tracks)
+                    .songs($scope.tracks_selected)
+                    .groups(gs);
 
     }
 ]);
 
 MusicLoud.controller("AlbumViewController", [
-    "Resolved", "$scope", "SyncService", "MonitorSongs", "$location",
-    function (Resolved, $scope, SyncService, MonitorSongs, $location) {
+    "Resolved", "$scope", "$location", "SyncKeeper",
+    function (Resolved, $scope, $location, SyncKeeper) {
+
+        var syncKeeper = SyncKeeper($scope);
 
         $scope.tracks = Resolved;
         $scope.tracks_selected = [];
@@ -212,8 +209,8 @@ MusicLoud.controller("AlbumViewController", [
 
         };
 
-        MonitorSongs($scope.tracks, $scope);
-        MonitorSongs($scope.tracks_selected, $scope);
+        syncKeeper  .songs($scope.tracks)
+                    .songs($scope.tracks_selected);
 
         $scope.$watch("tracks", $scope.readAlbum, true);
 
@@ -222,8 +219,10 @@ MusicLoud.controller("AlbumViewController", [
 ]);
 
 MusicLoud.controller("TracksViewController", [
-    "Resolved", "$scope", "SyncService", "MonitorSongs", "$location", "SearchService",
-    function (Resolved, $scope, SyncService, MonitorSongs, $location, SearchService) {
+    "Resolved", "$scope", "$location", "SearchService", "SyncKeeper",
+    function (Resolved, $scope, $location, SearchService, SyncKeeper) {
+
+        var syncKeeper = SyncKeeper($scope);
 
         $scope.tracks = Resolved;
         $scope.busy = false;
@@ -243,8 +242,8 @@ MusicLoud.controller("TracksViewController", [
             })
         };
 
-        MonitorSongs($scope.tracks, $scope);
-        MonitorSongs($scope.tracks_selected, $scope);
+        syncKeeper  .songs($scope.tracks)
+                    .songs($scope.tracks_selected);
 
     }
 ]);
@@ -337,9 +336,7 @@ MusicLoud.controller("AllGenresViewController", [
     }
 ]);
 
-MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService",
-
-    function ($scope, PlaylistService) {
+MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService", function ($scope, PlaylistService) {
 
         $scope.playlists = [];
         $scope.playlistMethods = {
@@ -383,14 +380,18 @@ MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService",
 
 ]);
 
-MusicLoud.controller("PlaylistController", ["$scope", "Resolved", "MonitorSongs", function ($scope, Resolved, MonitorSongs) {
+MusicLoud.controller("PlaylistController", ["$scope", "Resolved", "SyncKeeper", "$location", function ($scope, Resolved, SyncKeeper, $location) {
+
+    var syncKeeper = SyncKeeper($scope);
 
     $scope.tracks = Resolved;
     $scope.tracks_selected = [];
     $scope.fetch = null;
 
-    MonitorSongs($scope.tracks, $scope);
-    MonitorSongs($scope.tracks_selected, $scope);
+    syncKeeper  .songs($scope.tracks)
+                .songs($scope.tracks_selected)
+                .playlistSongs($scope.tracks)
+                .playlistSongs($scope.tracks_selected);
 
 }]);
 
