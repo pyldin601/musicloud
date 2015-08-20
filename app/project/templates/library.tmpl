@@ -280,7 +280,7 @@
                 <span class="label">Playlists</span>
             </div>
             <ul class="section-list">
-                <li ng-repeat="playlist in playlists">
+                <li ng-repeat="playlist in playlists" active-tab="playlist/{{ playlist.id }}">
                     <a class="block" ng-href="{{ playlist.playlist_url }}">
                         <i class="block fa fa-trash-o right" ng-click="playlistMethods.deletePlaylist(playlist)"></i>
                         <span class="group">

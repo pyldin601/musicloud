@@ -92,12 +92,12 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         resolve: {
             Resolved: ["PlaylistService", "$route", function (PlaylistService, $route) {
                 var playlist = decodeUriPlus($route.current.params.playlist);
+                $route.current.special.section = "playlist/" + playlist;
                 return PlaylistService.tracks(playlist);
             }]
         },
         title: "Playlist",
         special: {
-            section: "tracks"
         }
     });
 
