@@ -494,7 +494,16 @@ input[type="button"] {
   padding-left: 16px;
   padding-right: 16px;
   padding-bottom: 12px;
-  font-weight: 300;
+}
+@media (max-width: 1024px) {
+  .view-header .description-section .album-including {
+    font-size: 10pt;
+  }
+}
+@media (max-width: 640px) {
+  .view-header .description-section .album-including {
+    font-size: 9pt;
+  }
 }
 @media (max-width: 1024px) {
   .view-header .description-section .album-including {
@@ -531,7 +540,6 @@ input[type="button"] {
   padding-left: 16px;
   padding-right: 16px;
   font-size: 12pt;
-  font-weight: 300;
 }
 @media (max-width: 1024px) {
   .view-header .description-section .album-info {
