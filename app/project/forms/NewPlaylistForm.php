@@ -29,7 +29,8 @@ class NewPlaylistForm extends AbstractForm {
         $this->_name = $this->name
             ->orThrow(ValidatorException::class, "Enter playlist name")
             ->filter(Filter::lengthInRange(1, VALIDATOR_PLAYLIST_NAME_MAX_LENGTH))
-            ->getOrThrow(ValidatorException::class, "Playlist name is too long");
+            ->getOrThrow(ValidatorException::class, sprintf("Playlist name must be in range from 1 to %d chars",
+                VALIDATOR_PLAYLIST_NAME_MAX_LENGTH));
     }
 
     /**

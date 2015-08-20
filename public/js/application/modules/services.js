@@ -69,6 +69,41 @@ MusicLoud.factory("HeadersService", ["$http", function ($http) {
     }
 }]);
 
+MusicLoud.factory("PlaylistService", ["$http", function ($http) {
+    return {
+        list: function () {
+            return $http.get("/api/catalog/playlists");
+        },
+        tracks: function (playlist) {
+            return $http.get("/api/catalog/playlistTracks?" + serialize_uri({ playlist_id: playlist })).then(function (response) {
+                return deflateCollection(response.data);
+            });
+        },
+        addTracks: function (playlist, coll) {
+            return $http.post("/api/playlist/addTracks", {
+                playlist_id: playlist.id,
+                track_id: coll.map(field("id")).join(",")
+            });
+        },
+        removeTracks: function (playlist, coll) {
+            return $http.post("/api/playlist/removeTracks", {
+                playlist_id: playlist.id,
+                track_id: coll.map(field("link_id")).join(",")
+            });
+        },
+        create: function (name) {
+            return $http.post("/api/playlist/create", {
+                name: name
+            });
+        },
+        remove: function (playlist) {
+            return $http.post("/api/playlist/delete", {
+                playlist_id: playlist.id
+            });
+        },
+    }
+}]);
+
 MusicLoud.factory("SearchService", ["$http", "SyncService", function ($http, SyncService) {
     return {
         artists: function (opts, offset, special) {

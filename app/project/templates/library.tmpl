@@ -47,7 +47,7 @@
     <script src="/public/js/application/modules/services.js"></script>
 
 </head>
-<body>
+<body  ng-controller="PlaylistsController">
 <div class="library-header">
     <ul class="items">
         <li class="nav-logo">
@@ -220,8 +220,8 @@
                     <div class="upload dd-icon" ng-init="uploadMenu=false" click-outside="uploadMenu=false" ng-class="{ selected: uploadMenu === true }" >
                         <i class="fa fa-cloud-upload" ng-click="uploadMenu=true"></i>
                         <ul class="menu-context" ng-show="uploadMenu">
-                            <li class="menu-item" ng-click="upload.action.add()">Upload files...</li>
-                            <li class="menu-item" ng-click="upload.action.addDirectory()">Upload directory...</li>
+                            <li class="menu-item" ng-click="upload.action.add()"><i class="fa fa-music item-icon"></i> Upload files...</li>
+                            <li class="menu-item" ng-click="upload.action.addDirectory()"><i class="fa fa-folder item-icon"></i> Upload directory...</li>
                         </ul>
                     </div>
                 </div>
@@ -273,37 +273,22 @@
         <div class="section">
             <div class="section-title">
                 <div class="right actions">
-                    <div class="new-playlist">
+                    <div class="new-playlist" ng-click="playlistMethods.createNewPlaylist()">
                         <i class="fa fa-plus"></i>
                     </div>
                 </div>
                 <span class="label">Playlists</span>
             </div>
             <ul class="section-list">
-                <!--                <li>
-                                    <div class="group">
-                                        <i class="fa fa-music"></i>
-                                        <span class="label padded">Best of All</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="group">
-                                        <i class="fa fa-music"></i>
-                                        <span class="label padded">Slow Motion</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="group">
-                                        <i class="fa fa-music"></i>
-                                        <span class="label padded">The Beatles</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="group">
-                                        <i class="fa fa-music"></i>
-                                        <span class="label padded">Michael Jackson</span>
-                                    </div>
-                                </li>-->
+                <li ng-repeat="playlist in playlists">
+                    <a class="block" ng-href="{{ playlist.playlist_url }}">
+                        <i class="block fa fa-trash-o right" ng-click="playlistMethods.deletePlaylist(playlist)"></i>
+                        <span class="group">
+                            <i class="fa fa-music"></i>
+                            <span class="label padded" ng-bind="playlist.name"></span>
+                        </span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

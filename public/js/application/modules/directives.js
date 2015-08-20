@@ -149,7 +149,7 @@
                     event.preventDefault();
                 });
 
-                elem.on("mousedown touchstart", function (event) {
+                elem.on("click touch", function (event) {
                     select(event, false);
                 });
 

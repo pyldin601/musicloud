@@ -14,8 +14,8 @@ use app\core\view\JsonResponse;
 use app\project\models\Playlist;
 
 class DoDelete implements RouteHandler {
-    public function doPost(JsonResponse $response, $id) {
-        $playlist = new Playlist($id);
+    public function doPost(JsonResponse $response, $playlist_id) {
+        $playlist = new Playlist($playlist_id);
         $playlist->delete();
     }
 } 

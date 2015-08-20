@@ -66,7 +66,8 @@ class Playlist implements \JsonSerializable {
 
     public function removeTracks(array $link_ids) {
         PlaylistSongDao::delete([
-            TPlaylistSongLinks::LINK_ID => $link_ids
+            TPlaylistSongLinks::LINK_ID => $link_ids,
+            TPlaylistSongLinks::PLAYLIST_ID => $this->playlist[TPlaylists::ID]
         ]);
     }
 
@@ -74,7 +75,7 @@ class Playlist implements \JsonSerializable {
         $next_order_id = count(PlaylistSongDao::getList([
             TPlaylistSongLinks::PLAYLIST_ID => $this->playlist[TPlaylists::ID]
         ]));
-        foreach ($song_ids as $song_id) {
+        foreach (explode(",", $song_ids) as $song_id) {
             (new SelectQuery(TSongs::_NAME))
                 ->where(TSongs::ID, $song_id)
                 ->where(TSongs::USER_ID, self::$me->getId())

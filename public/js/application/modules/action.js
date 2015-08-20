@@ -50,7 +50,6 @@
                         for (var i = coll.length - 1; i >= 0; i -= 1) {
                             if (coll[i].id === data[j].id) {
                                 coll.splice(i, 1);
-                                break;
                             }
                         }
                         SyncService.tracks.remove(data);
@@ -63,9 +62,7 @@
     MusicLoud.factory("MonitorGroups", [function () {
         return function (gs, scope) {
             scope.$on("songs.deleted", function (e, data) {
-                //scope.$applyAsync(function () {
-                    gs.removeItems("id", data);
-                //});
+                gs.removeItems("id", data);
             });
         }
     }]);

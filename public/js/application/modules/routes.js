@@ -86,6 +86,21 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         }
     });
 
+    $routeProvider.when("/playlist/:playlist", {
+        controller: "PlaylistController",
+        templateUrl: templatePath + "/tracks-view.html",
+        resolve: {
+            Resolved: ["PlaylistService", "$route", function (PlaylistService, $route) {
+                var playlist = decodeUriPlus($route.current.params.playlist);
+                return PlaylistService.tracks(playlist);
+            }]
+        },
+        title: "Playlist",
+        special: {
+            section: "tracks"
+        }
+    });
+
     $routeProvider.when("/albums/", {
         templateUrl: templatePath + "/albums-view.html",
         controller: "AllAlbumsViewController",

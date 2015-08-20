@@ -18,6 +18,9 @@ use app\project\persistence\db\tables\TPlaylists;
 class DoPlaylists implements RouteHandler {
     public function doGet(JsonResponse $response, LoggedIn $me) {
         $playlists = PlaylistDao::getList([ TPlaylists::USER_ID => $me->getId() ]);
+        foreach ($playlists as &$playlist) {
+            $playlist["playlist_url"] = "playlist/" . $playlist["id"];
+        }
         $response->write($playlists);
     }
 } 

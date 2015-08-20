@@ -86,3 +86,9 @@ function padLeft(expression, fillChars) {
         return expression;
     return ("" + fillChars + expression).substring(expLength);
 }
+
+function htmlToText(html) {
+    var tag = document.createElement('div');
+    tag.innerHTML = html;
+    return tag.innerText;
+}

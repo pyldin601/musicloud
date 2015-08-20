@@ -4,20 +4,20 @@
 
 var MusicLoud = angular.module("MusicLoud");
 
-MusicLoud.run(["$rootScope", "$filter", function ($rootScope, $filter) {
+MusicLoud.run(["$rootScope", function ($rootScope) {
 
     $rootScope.selectedTracksMenu = function (selection) {
         var defaultMenu = [
             {
-                type: "item",
-                text: "Edit metadata",
+                type: 'item',
+                text: '<i class="fa fa-pencil-square item-icon"></i> Edit metadata',
                 action: function () {
                     $rootScope.action.editSongs(selection);
                 }
             },
             {
-                type: "item",
-                text: "Delete tracks",
+                type: 'item',
+                text: '<i class="fa fa-minus-square item-icon"></i> Delete tracks',
                 action: function () {
                     $rootScope.action.deleteSongs(selection);
                 }
@@ -31,26 +31,26 @@ MusicLoud.run(["$rootScope", "$filter", function ($rootScope, $filter) {
 
             case 1:
                 defaultMenu.push({
-                    type: "divider"
+                    type: 'divider'
                 });
                 if (selection[0].album_artist) {
                     defaultMenu.push({
-                        type: "item",
-                        text: "Show all by <b>" + selection[0].album_artist + "</b>",
+                        type: 'item',
+                        text: '<i class="fa fa-search item-icon"></i> Show all by <b>' + htmlToText(selection[0].album_artist) + '</b>',
                         href: selection[0].artist_url
                     });
                 }
                 if (selection[0].track_album) {
                     defaultMenu.push({
-                        type: "item",
-                        text: "Show all from <b>" + selection[0].track_album + "</b>",
+                        type: 'item',
+                        text: '<i class="fa fa-search item-icon"></i> Show all from <b>' + htmlToText(selection[0].track_album) + '</b>',
                         href: selection[0].album_url
                     });
                 }
                 if (selection[0].track_genre) {
                     defaultMenu.push({
-                        type: "item",
-                        text: "Show all by genre <b>" + selection[0].track_genre + "</b>",
+                        type: 'item',
+                        text: '<i class="fa fa-search item-icon"></i> Show all by genre <b>' + htmlToText(selection[0].track_genre) + '</b>',
                         href: selection[0].genre_url
                     });
                 }
@@ -60,6 +60,24 @@ MusicLoud.run(["$rootScope", "$filter", function ($rootScope, $filter) {
                 break;
 
         }
+
+        defaultMenu.push({
+            type: 'divider'
+        });
+
+        defaultMenu.push({
+            type: 'sub',
+            text: '<i class="fa fa-plus item-icon"></i> Add to playlist',
+            data: $rootScope.playlists.map(function (playlist) {
+                return {
+                    type: 'item',
+                    text: '<i class="fa fa-list item-icon"></i> ' + htmlToText(playlist.name),
+                    action: function () {
+                        $rootScope.playlistMethods.addTracksToPlaylist(playlist, selection);
+                    }
+                }
+            })
+        });
 
         return defaultMenu;
 
@@ -318,6 +336,58 @@ MusicLoud.controller("AllGenresViewController", [
     }
 ]);
 
+MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService",
+
+    function ($scope, PlaylistService) {
+
+        $scope.playlists = [];
+        $scope.playlistMethods = {
+            reloadPlaylists: function () {
+                PlaylistService.list().then(function (response) {
+                    array_copy(response.data, $scope.playlists);
+                });
+            },
+            createNewPlaylist: function () {
+                var name = prompt("Please enter name for new playlist", "New playlist");
+                if (name !== null && name !== "") {
+                    PlaylistService.create(name).then(function (response) {
+                        $scope.playlists.push(response.data);
+                    }, function (response) {
+                        alert (response.data.message);
+                    })
+                }
+            },
+            deletePlaylist: function (playlist) {
+                if (confirm("Are you sure want to delete playlist \"" + playlist.name + "\"")) {
+                    PlaylistService.remove(playlist);
+                    $scope.playlists.splice($scope.playlists.indexOf(playlist), 1);
+                }
+                return false;
+            },
+            addTracksToPlaylist: function (playlist, tracks) {
+                PlaylistService.addTracks(playlist, tracks);
+            },
+            removeTracksFromPlaylist: function (playlist, tracks) {
+                PlaylistService.removeTracks(playlist, tracks);
+            }
+        };
+
+        $scope.playlistMethods.reloadPlaylists();
+
+    }
+
+]);
+
+MusicLoud.controller("PlaylistController", ["$scope", "Resolved", "MonitorSongs", function ($scope, Resolved, MonitorSongs) {
+
+    $scope.tracks = Resolved;
+    $scope.tracks_selected = [];
+    $scope.fetch = null;
+
+    MonitorSongs($scope.tracks, $scope);
+    MonitorSongs($scope.tracks_selected, $scope);
+
+}]);
 
 MusicLoud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService", "$q",
 
