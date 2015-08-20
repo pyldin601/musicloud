@@ -17,12 +17,26 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
             },
             {
                 type: 'item',
-                text: '<i class="fa fa-minus-square item-icon"></i> Delete tracks',
+                text: '<i class="fa fa-minus-square item-icon"></i> Delete track(s) completely',
                 action: function () {
                     $rootScope.action.deleteSongs(selection);
                 }
             }
         ];
+
+        if (selection.length > 0) {
+
+            if (selection[0].link_id) {
+                defaultMenu.push({
+                    type: 'item',
+                    text: '<i class="fa fa-minus-square item-icon"></i> Delete track(s) from playlist',
+                    action: function () {
+                        $rootScope.playlistMethods.removeTracksFromPlaylist(selection[0].playlist_id, selection)
+                    }
+                });
+            }
+
+        }
 
         switch (selection.length) {
 
@@ -60,6 +74,8 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
                 break;
 
         }
+
+
 
         defaultMenu.push({
             type: 'divider'
@@ -227,21 +243,6 @@ MusicLoud.controller("TracksViewController", [
             })
         };
 
-        $scope.contextMenu = [
-            {
-                text: "Edit metadata",
-                action: function () {
-                    $scope.action.editSongs($scope.tracks_selected);
-                }
-            },
-            {
-                text: "Delete from library",
-                action: function () {
-                    $scope.action.deleteSongs($scope.tracks_selected);
-                }
-            }
-        ];
-
         MonitorSongs($scope.tracks, $scope);
         MonitorSongs($scope.tracks_selected, $scope);
 
@@ -369,6 +370,10 @@ MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService",
             },
             removeTracksFromPlaylist: function (playlist, tracks) {
                 PlaylistService.removeTracks(playlist, tracks);
+                $rootScope.$broadcast("playlist.tracks.delete", {
+                    playlist: playlist.id,
+                    tracks: tracks
+                })
             }
         };
 

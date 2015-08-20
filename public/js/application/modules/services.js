@@ -100,7 +100,7 @@ MusicLoud.factory("PlaylistService", ["$http", function ($http) {
             return $http.post("/api/playlist/delete", {
                 playlist_id: playlist.id
             });
-        },
+        }
     }
 }]);
 
