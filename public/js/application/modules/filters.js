@@ -125,23 +125,35 @@ MusicLoud.filter("isVariousArtists", [function () {
     };
 }]);
 
-MusicLoud.filter("groupArtists", [function () {
+MusicLoud.filter("groupArtists", ["$sce", function ($sce) {
     return function (tracks) {
 
-        var featuringArtists = tracks.map(field("track_artist")).distinct();
+        var featuringArtists = tracks
+            .map(field("track_artist"))
+            .distinct()
+            .map(function (a) { return '<b>' + a + '</b>' }),
+
+            result = "",
+            prefix = "Including ";
 
         switch (featuringArtists.length) {
             case (0):
-                return "";
+                result = "";
+                break;
             case (1):
-                return featuringArtists[0];
+                result = prefix + featuringArtists[0];
+                break;
             case (2):
-                return featuringArtists.join(", ");
+                result = prefix + featuringArtists.join(" and ");
+                break;
             case (3):
-                return featuringArtists.slice(0, 2).join(", ") + " and " + featuringArtists[2];
+                result = prefix + featuringArtists.slice(0, 2).join(", ") + " and " + featuringArtists[2];
+                break;
             default:
-                return featuringArtists.slice(0, 3).join(", ") + " and " + (featuringArtists.length - 3) + " other artists"
+                result = prefix + featuringArtists.slice(0, 3).join(", ") + " and " + (featuringArtists.length - 3) + " other artists"
         }
+
+        return $sce.trustAsHtml(result);
 
     };
 }]);

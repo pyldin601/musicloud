@@ -19,7 +19,7 @@
                 <div class="inner" ng-bind="album.album_title | albumFilter"></div>
             </div>
             <div class="album-including" ng-show="tracks | isVariousArtists">
-                <div class="inner" ng-bind="tracks | groupArtists"></div>
+                <div class="inner" ng-bind-html="tracks | groupArtists"></div>
             </div>
             <div class="album-info">
                 <table>
