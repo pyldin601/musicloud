@@ -66,7 +66,11 @@ class Playlist implements \JsonSerializable {
     }
 
     public static function removeLinks($link_id) {
-        $links = explode(",", $link_id, substr_count($link_id, ","));
+        if (substr_count($link_id, ",") == 0) {
+            $links = [];
+        } else {
+            $links = explode(",", $link_id);
+        }
         (new SelectQuery(TPlaylistSongLinks::_NAME))
             ->where(TPlaylistSongLinks::LINK_ID, $links)
             ->innerJoin(TPlaylists::_NAME, TPlaylists::ID, TPlaylistSongLinks::PLAYLIST_ID)
