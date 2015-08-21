@@ -68,7 +68,6 @@
                                         songs.splice(i, 1);
                                     }
                                 }
-                                SyncService.tracks.remove(data);
                             }
                         });
                     });
@@ -85,46 +84,6 @@
         }
     }]);
 
-    MusicLoud.factory("MonitorSongs", ["SyncService", function (SyncService) {
-        return function (coll, scope) {
-            scope.$on("songs.deleted", function (e, data) {
-                scope.$applyAsync(function () {
-                    for (var j = 0; j < data.length; j += 1) {
-                        for (var i = coll.length - 1; i >= 0; i -= 1) {
-                            if (coll[i].id === data[j].id) {
-                                coll.splice(i, 1);
-                            }
-                        }
-                        SyncService.tracks.remove(data);
-                    }
-                });
-            });
-        }
-    }]);
 
-    MusicLoud.factory("MonitorPlaylistSongs", ["SyncService", function (SyncService) {
-        return function (coll, scope) {
-            scope.$on("playlist.songs.deleted", function (e, data) {
-                scope.$applyAsync(function () {
-                    for (var j = 0; j < data.length; j += 1) {
-                        for (var i = coll.length - 1; i >= 0; i -= 1) {
-                            if (coll[i].link_id === data[j].link_id) {
-                                coll.splice(i, 1);
-                            }
-                        }
-                        SyncService.tracks.remove(data);
-                    }
-                });
-            });
-        }
-    }]);
-
-    MusicLoud.factory("MonitorGroups", [function () {
-        return function (gs, scope) {
-            scope.$on("songs.deleted", function (e, data) {
-                gs.removeItems("id", data);
-            });
-        }
-    }]);
 
 })();

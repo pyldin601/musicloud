@@ -31,7 +31,7 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
                     type: 'item',
                     text: '<i class="fa fa-minus-square item-icon"></i> Delete track(s) from playlist',
                     action: function () {
-                        $rootScope.playlistMethods.removeTracksFromPlaylist(selection[0].playlist_id, selection)
+                        $rootScope.playlistMethods.removeTracksFromPlaylist(selection)
                     }
                 });
             }
@@ -356,8 +356,9 @@ MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService", fu
                 }
             },
             deletePlaylist: function (playlist) {
-                if (confirm("Are you sure want to delete playlist \"" + playlist.name + "\"")) {
+                if (confirm('Are you sure want to delete playlist "' + playlist.name + '"')) {
                     PlaylistService.remove(playlist);
+                    $scope.$broadcast("playlist.deleted", playlist);
                     $scope.playlists.splice($scope.playlists.indexOf(playlist), 1);
                 }
                 return false;
@@ -365,12 +366,9 @@ MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService", fu
             addTracksToPlaylist: function (playlist, tracks) {
                 PlaylistService.addTracks(playlist, tracks);
             },
-            removeTracksFromPlaylist: function (playlist, tracks) {
-                PlaylistService.removeTracks(playlist, tracks);
-                $rootScope.$broadcast("playlist.tracks.delete", {
-                    playlist: playlist.id,
-                    tracks: tracks
-                })
+            removeTracksFromPlaylist: function (tracks) {
+                PlaylistService.removeTracks(tracks);
+                $scope.$broadcast("playlist.songs.deleted", tracks);
             }
         };
 
@@ -380,20 +378,29 @@ MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService", fu
 
 ]);
 
-MusicLoud.controller("PlaylistController", ["$scope", "Resolved", "SyncKeeper", "$location", function ($scope, Resolved, SyncKeeper, $location) {
+MusicLoud.controller("PlaylistController", [
+    "$scope", "Resolved", "Playlist", "SyncKeeper", "$location",
+    function ($scope, Resolved, Playlist, SyncKeeper, $location) {
 
-    var syncKeeper = SyncKeeper($scope);
+        var syncKeeper = SyncKeeper($scope);
 
-    $scope.tracks = Resolved;
-    $scope.tracks_selected = [];
-    $scope.fetch = null;
+        $scope.tracks = Resolved;
+        $scope.tracks_selected = [];
+        $scope.fetch = null;
 
-    syncKeeper  .songs($scope.tracks)
-                .songs($scope.tracks_selected)
-                .playlistSongs($scope.tracks)
-                .playlistSongs($scope.tracks_selected);
+        syncKeeper  .songs($scope.tracks)
+                    .songs($scope.tracks_selected)
+                    .playlistSongs($scope.tracks)
+                    .playlistSongs($scope.tracks_selected);
 
-}]);
+        $scope.$on("playlist.deleted", function (event, data) {
+            if (data["id"] == Playlist["id"]) {
+                $location.url("/");
+            }
+        });
+
+    }
+]);
 
 MusicLoud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService", "$q",
 

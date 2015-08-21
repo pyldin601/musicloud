@@ -71,11 +71,14 @@ MusicLoud.factory("HeadersService", ["$http", function ($http) {
 
 MusicLoud.factory("PlaylistService", ["$http", function ($http) {
     return {
+        get: function (playlistId) {
+            return $http.get("/api/playlist/get?" + serialize_uri({ playlist_id: playlistId }));
+        },
         list: function () {
             return $http.get("/api/catalog/playlists");
         },
-        tracks: function (playlist) {
-            return $http.get("/api/catalog/playlistTracks?" + serialize_uri({ playlist_id: playlist })).then(function (response) {
+        tracks: function (playlistId) {
+            return $http.get("/api/catalog/playlistTracks?" + serialize_uri({ playlist_id: playlistId })).then(function (response) {
                 return deflateCollection(response.data);
             });
         },
@@ -85,10 +88,9 @@ MusicLoud.factory("PlaylistService", ["$http", function ($http) {
                 track_id: coll.map(field("id")).join(",")
             });
         },
-        removeTracks: function (playlist, coll) {
+        removeTracks: function (coll) {
             return $http.post("/api/playlist/removeTracks", {
-                playlist_id: playlist.id,
-                track_id: coll.map(field("link_id")).join(",")
+                link_id: coll.map(field("link_id")).filter(pass).join(",")
             });
         },
         create: function (name) {

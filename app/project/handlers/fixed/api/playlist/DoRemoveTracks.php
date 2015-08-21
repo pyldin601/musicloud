@@ -14,9 +14,7 @@ use app\core\view\JsonResponse;
 use app\project\models\Playlist;
 
 class DoRemoveTracks implements RouteHandler {
-    public static function doPost(JsonResponse $response, $playlist_id, $link_id) {
-        $ids_array = explode(",", $link_id);
-        $playlist = new Playlist($playlist_id);
-        $playlist->removeTracks($ids_array);
+    public static function doPost(JsonResponse $response, $link_id) {
+        Playlist::removeLinks($link_id);
     }
 } 

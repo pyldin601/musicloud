@@ -2,9 +2,9 @@
 
     var MusicLoud = angular.module("MusicLoud");
 
-    MusicLoud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeout", "MonitorSongs",
+    MusicLoud.run(["$rootScope", "StatsService", "SyncService", "$cookies", "$timeout", "SyncKeeper",
 
-        function ($rootScope, StatsService, SyncService, $cookies, $timeout, MonitorSongs) {
+        function ($rootScope, StatsService, SyncService, $cookies, $timeout, SyncKeeper) {
 
             var audio = document.createElement("audio"),
 
@@ -219,7 +219,7 @@
 
             $rootScope.player = player;
 
-            MonitorSongs($rootScope.player.playlist.tracks, $rootScope);
+            SyncKeeper($rootScope).songs($rootScope.player.playlist.tracks);
 
             $rootScope.$on("songs.deleted", function (e, data) {
                 if (player.isLoaded) {

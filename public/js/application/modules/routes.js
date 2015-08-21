@@ -3,12 +3,16 @@
  */
 
 
-var mediacloud = angular.module("MusicLoud");
+var MusicLoud = angular.module("MusicLoud");
 
-mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
+MusicLoud.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
 
     $locationProvider.html5Mode(true);
     $locationProvider.baseHref = "/library/";
+
+    $routeProvider.when("/", {
+        template: ""
+    });
 
     $routeProvider.when("/artists/", {
         templateUrl: templatePath + "/artists-view.html",
@@ -90,6 +94,16 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         controller: "PlaylistController",
         templateUrl: templatePath + "/tracks-view.html",
         resolve: {
+            Playlist: ["PlaylistService", "$route", "$location", function (PlaylistService, $route, $location) {
+                var playlist = decodeUriPlus($route.current.params.playlist),
+                    promise = PlaylistService.get(playlist);
+
+                promise.then(function (response) {
+                    $route.current.title = 'Playlist "' + response.data.name + '"'
+                }, function () {
+                    $location.url("/");
+                });
+            }],
             Resolved: ["PlaylistService", "$route", function (PlaylistService, $route) {
                 var playlist = decodeUriPlus($route.current.params.playlist);
                 $route.current.special.section = "playlist/" + playlist;
@@ -214,7 +228,7 @@ mediacloud.config(["$routeProvider", "$locationProvider", function ($routeProvid
         }
     });
 
-    //$routeProvider.otherwise({
-    //    redirectTo: "/artists/"
-    //});
+    $routeProvider.otherwise({
+        redirectTo: "/"
+    });
 }]);

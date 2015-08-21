@@ -9,7 +9,9 @@
 namespace app\project\models;
 
 
+use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
+use app\core\exceptions\ApplicationException;
 use app\project\exceptions\UnauthorizedException;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\dao\PlaylistDao;
@@ -32,13 +34,16 @@ class Playlist implements \JsonSerializable {
 
     /**
      * @param array|string $obj
+     * @throws ApplicationException
      * @throws UnauthorizedException
      */
     public function __construct($obj) {
         if (is_array($obj)) {
             $this->playlist = $obj;
-        } else {
+        } else if (is_scalar($obj)) {
             $this->playlist = PlaylistDao::get($obj);
+        } else {
+            throw new ApplicationException("Wrong type of argument");
         }
         $this->checkPermission();
     }
@@ -58,6 +63,22 @@ class Playlist implements \JsonSerializable {
             "user_id" => self::$me->getId(),
             "name" => $name
         ]));
+    }
+
+    public static function removeLinks($link_id) {
+        $links = explode(",", $link_id, substr_count($link_id, ","));
+        (new SelectQuery(TPlaylistSongLinks::_NAME))
+            ->where(TPlaylistSongLinks::LINK_ID, $links)
+            ->innerJoin(TPlaylists::_NAME, TPlaylists::ID, TPlaylistSongLinks::PLAYLIST_ID)
+            ->select(TPlaylists::USER_ID)
+            ->eachRow(function ($row) {
+                if ($row[TPlaylists::USER_ID] != self::$me->getId()) {
+                    throw new UnauthorizedException("Sorry, but you trying to delete tracks from other user's playlist");
+                }
+            });
+        (new DeleteQuery(TPlaylistSongLinks::_NAME))
+            ->where(TPlaylistSongLinks::LINK_ID, $links)
+            ->update();
     }
 
     public function delete() {
