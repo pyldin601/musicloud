@@ -194,14 +194,15 @@ MusicLoud.factory("GroupingService", [function () {
                 for (var j = groups.length - 1; j >= 0; j--) {
                     for (var i = groups[j].items.length - 1; i >= 0; i--) {
                         for (var k = coll.length - 1; k >= 0; k--) {
-                            if (groups[j].items[i][itemKey] === coll[k][itemKey]) {
-                                console.log("Removing " + coll[k][itemKey] + " from group " + groups[j].key);
+                            if (groups[j].items[i][itemKey] == coll[k]) {
+                                console.log("Removing " + coll[k] + " from group " + groups[j].key);
                                 groups[j].items.splice(i, 1);
+                                break;
                             }
                         }
                     }
                     if (groups[j].items.length == 0) {
-                        groups.splice(j, 0);
+                        groups.splice(j, 1);
                     }
                 }
             },

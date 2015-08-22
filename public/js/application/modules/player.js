@@ -224,7 +224,7 @@
             $rootScope.$on("songs.deleted", function (e, data) {
                 if (player.isLoaded) {
                     for (var j = 0; j < data.length; j += 1) {
-                        if (player.playlist.track.id === data[j].id) {
+                        if (player.playlist.track.id === data[j]) {
                             $rootScope.player.doStop();
                         }
                     }

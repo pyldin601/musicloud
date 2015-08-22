@@ -368,7 +368,7 @@ MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService", fu
             },
             removeTracksFromPlaylist: function (tracks) {
                 PlaylistService.removeTracks(tracks);
-                $scope.$broadcast("playlist.songs.deleted", tracks);
+                $scope.$broadcast("playlist.songs.deleted", tracks.map(field("link_id")));
             }
         };
 
