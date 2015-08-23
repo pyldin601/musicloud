@@ -87,6 +87,7 @@ class FileServer {
 
     /**
      * @param $file
+     * @throws ApplicationException
      */
     private static function write($file) {
 

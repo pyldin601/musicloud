@@ -12,6 +12,7 @@ namespace app\project\models;
 use app\core\db\builder\DeleteQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\exceptions\ApplicationException;
+use app\lang\MLArray;
 use app\project\exceptions\UnauthorizedException;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\dao\PlaylistDao;
@@ -65,14 +66,10 @@ class Playlist implements \JsonSerializable {
         ]));
     }
 
-    public static function removeLinks($link_id) {
-        if (substr_count($link_id, ",") == 0) {
-            $links = [];
-        } else {
-            $links = explode(",", $link_id);
-        }
+    public static function removeLinks(MLArray $link_ids) {
+        $links_array = $link_ids->mkArray();
         (new SelectQuery(TPlaylistSongLinks::_NAME))
-            ->where(TPlaylistSongLinks::LINK_ID, $links)
+            ->where(TPlaylistSongLinks::LINK_ID, $links_array)
             ->innerJoin(TPlaylists::_NAME, TPlaylists::ID, TPlaylistSongLinks::PLAYLIST_ID)
             ->select(TPlaylists::USER_ID)
             ->eachRow(function ($row) {
@@ -81,7 +78,7 @@ class Playlist implements \JsonSerializable {
                 }
             });
         (new DeleteQuery(TPlaylistSongLinks::_NAME))
-            ->where(TPlaylistSongLinks::LINK_ID, $links)
+            ->where(TPlaylistSongLinks::LINK_ID, $links_array)
             ->update();
     }
 

@@ -172,7 +172,7 @@
                                     .add(lastSelected)
                                     .toggleClass(scope.multiselectList, true)
                             } else {
-                                selected.toggleClass(scope.multiselectList, true);
+                                selected.toggleClass(scope.multiselectList);
                                 lastSelected = selected;
                             }
                         } else {

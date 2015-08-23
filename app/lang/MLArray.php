@@ -121,4 +121,31 @@ class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate {
         }
     }
 
+    /**
+     * @param $delimiter
+     * @param $text
+     * @return MLArray
+     */
+    public static function split($delimiter, $text) {
+        if ($delimiter == "") {
+            return new self(str_split($text));
+        } else {
+            $count = substr_count($text, $delimiter);
+            if ($count == 0 && $text == "") {
+                return new self();
+            } elseif ($count == 0) {
+                return new self([$text]);
+            } else {
+                return new self(explode($delimiter, $text, $count + 1));
+            }
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function mkArray() {
+        return $this->contents;
+    }
+
 }
