@@ -11,7 +11,7 @@ namespace app\project\persistence\db\tables;
 
 class TFiles {
 
-    const _NAME            = "files";
+    const _NAME                 = "files";
 
 //    const ID                    = "id";
     const ID                    = "id";

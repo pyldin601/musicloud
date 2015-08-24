@@ -20,13 +20,16 @@ class DoUpload implements RouteHandler {
 
         $track = $file->getOrError("file");
 
+        $decoded_name = urldecode($track["name"]);
+        $extension = pathinfo($decoded_name, PATHINFO_EXTENSION);
+
         $tm = new Song($track_id);
 
-        $temp_file = TempFileProvider::generate("", $track["name"]);
+        $temp_file = TempFileProvider::generate("upload", "." . $extension);
 
         move_uploaded_file($track["tmp_name"], $temp_file);
 
-        $response->write($tm->upload($temp_file, urldecode($track["name"])));
+        $response->write($tm->upload($temp_file, $decoded_name));
 
     }
 } 

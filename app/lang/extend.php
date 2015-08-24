@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Returns TRUE if substring $needle found in $haystack
  * otherwise returns FALSE.
@@ -20,4 +21,35 @@ function in_string($needle, $haystack) {
  */
 function is_empty($string) {
     return empty($string);
+}
+
+/**
+ * @param $fh
+ * @param int $length
+ * @param int $buffer_length
+ * @return string
+ */
+function read($fh, $length, $buffer_length = 2048) {
+    $blocks = intval($length / $buffer_length);
+    $rest = $length % $buffer_length;
+    $acc = "";
+    for ($i = 0; $i < $blocks && !feof($fh); $i ++) {
+        $acc .= fread($fh, $buffer_length);
+    }
+    if (!feof($fh)) {
+        $acc .= fread($fh, $rest);
+    }
+    return $acc;
+}
+
+/**
+ * @param array $array
+ * @return string
+ */
+function array_to_string(array $array) {
+    $all = [];
+    foreach ($array as $key => $val) {
+        $all[] = $key . "=" . $val;
+    }
+    return "(" . implode(", ", $all) . ")";
 }

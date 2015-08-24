@@ -21,8 +21,10 @@
                         scope.loading = false;
                     },
                     loadPeaks = function (data) {
-                        peaksData = data;
-                        drawCanvas();
+                        if (angular.isArray(data)) {
+                            peaksData = data;
+                            drawCanvas();
+                        }
                         scope.loading = false;
                     },
                     drawCanvas = function () {

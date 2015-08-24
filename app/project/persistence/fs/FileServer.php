@@ -16,12 +16,15 @@ use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\core\etc\MIME;
 use app\core\exceptions\ApplicationException;
+use app\core\exceptions\ControllerException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\core\http\HttpStatusCodes;
 use app\core\logging\Logger;
 use app\lang\Arrays;
+use app\lang\MLArray;
 use app\lang\option\Option;
 use app\project\persistence\db\tables\TFiles;
+use app\project\persistence\db\tables\TSongs;
 
 class FileServer {
 
@@ -39,9 +42,13 @@ class FileServer {
 
     public static function register($file_path, $content_type = null) {
 
-        assert(file_exists($file_path), sprintf("Audio file %s uploaded incorrectly", $file_path));
+        if (!file_exists($file_path)) {
+            throw new ControllerException(sprintf("File \"%s\" not exists!", $file_path));
+        }
 
-        Logger::printf("Registering file %s on file server", $file_path);
+        $size = filesize($file_path);
+
+        Logger::printf("Registering file %s (%d) on file server", $file_path, $size);
 
         $hash = FSTools::calculateHash($file_path);
         $query = (new SelectQuery(TFiles::_NAME, TFiles::SHA1, $hash))
@@ -50,13 +57,11 @@ class FileServer {
 
         if ($file->isEmpty()) {
 
-            Logger::printf("File hash %s is unique. Creating new.", $hash);
-
             FSTools::createPathUsingHash($hash);
 
             $id = (new InsertQuery(TFiles::_NAME))
                 ->values(TFiles::SHA1, $hash)
-                ->values(TFiles::SIZE, filesize($file_path))
+                ->values(TFiles::SIZE, $size)
                 ->values(TFiles::USED, 1)
                 ->values(TFiles::MTIME, filemtime($file_path))
                 ->values(TFiles::CONTENT_TYPE, $content_type ?: MIME::mime_type($file_path))
@@ -69,8 +74,6 @@ class FileServer {
         } else {
 
             $id = $file->get();
-
-            Logger::printf("File hash %s exists. Using existing.", $hash);
 
             (new UpdateQuery(TFiles::_NAME))
                 ->increment(TFiles::USED)
@@ -144,17 +147,19 @@ class FileServer {
 
     public static function unregister($file_id) {
 
-        Logger::printf("Un-registering file %s on file server", $file_id);
 
         $file = (new SelectQuery(TFiles::_NAME))
             ->where(TFiles::ID, $file_id)
             ->fetchOneRow();
 
+
         $file_data = $file->getOrThrow(ApplicationException::class, "File already unregistered");
+
+        Logger::printf("Un-registering file %s (%s) on file server", $file_data[TFiles::ID], $file_data[TFiles::CONTENT_TYPE]);
 
         if ($file_data[TFiles::USED] > 1) {
 
-            Logger::printf("Decreasing usage count");
+            Logger::printf("Decreasing usage count to %d", $file_data[TFiles::USED] - 1);
 
             (new UpdateQuery(TFiles::_NAME))
                 ->decrement(TFiles::USED)
@@ -166,7 +171,7 @@ class FileServer {
             Logger::printf("Removing file completely");
 
             (new DeleteQuery(TFiles::_NAME))
-                ->where(TFiles::ID, $file[TFiles::ID])
+                ->where(TFiles::ID, $file_id)
                 ->update();
 
             FSTools::delete($file_data[TFiles::SHA1]);
@@ -203,6 +208,32 @@ class FileServer {
             ->getOrThrow(PageNotFoundException::class);
 
         self::write($file);
+
+    }
+
+    public static function removeDead() {
+
+        $accumulator = [];
+
+        Logger::printf("Checking file server records...");
+        (new SelectQuery(TFiles::_NAME))
+            ->select(TSongs::ID)
+            ->eachRow(function ($row) use (&$accumulator) {
+                $path = self::getFileUsingId($row[TSongs::ID]);
+                if (! file_exists($path)) {
+                    Logger::printf("File id %s not exists", $row[TSongs::ID]);
+                    $accumulator[] = $row[TSongs::ID];
+                }
+            });
+
+
+        if (count($accumulator)) {
+            Logger::printf("%d file record(s) is waiting to be removed", count($accumulator));
+            (new DeleteQuery(TFiles::_NAME))
+                ->where(TFiles::ID, $accumulator)
+                ->update();
+        }
+
 
     }
 

@@ -66,6 +66,7 @@ class Songs {
         }
 
         foreach ($track_objects as $track) {
+            Logger::printf("Removing track %s", $track[TSongs::ID]);
             self::removeFilesUsedByTrack($track);
         }
 
@@ -83,20 +84,29 @@ class Songs {
 
     private static function removeFilesUsedByTrack($track) {
 
-        if ($track[TSongs::C_BIG_ID])
+        if ($track[TSongs::C_BIG_ID]) {
             FileServer::unregister($track[TSongs::C_BIG_ID]);
+        }
 
-        if ($track[TSongs::C_MID_ID])
+        if ($track[TSongs::C_MID_ID]) {
             FileServer::unregister($track[TSongs::C_MID_ID]);
+        }
 
-        if ($track[TSongs::C_SMALL_ID])
+        if ($track[TSongs::C_SMALL_ID]) {
             FileServer::unregister($track[TSongs::C_SMALL_ID]);
+        }
 
-        if ($track[TSongs::PREVIEW_ID])
+        if ($track[TSongs::PREVIEW_ID]) {
             FileServer::unregister($track[TSongs::PREVIEW_ID]);
+        }
 
-        if ($track[TSongs::FILE_ID])
+        if ($track[TSongs::PEAKS_ID]) {
+            FileServer::unregister($track[TSongs::PEAKS_ID]);
+        }
+
+        if ($track[TSongs::FILE_ID]) {
             FileServer::unregister($track[TSongs::FILE_ID]);
+        }
 
     }
 

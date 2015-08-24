@@ -10,9 +10,11 @@ namespace app\libs;
 
 
 use app\core\cache\TempFileProvider;
+use app\core\exceptions\ApplicationException;
 
 class WaveformGenerator {
     const PEAKS_RESOLUTION = 4096;
+    const READ_BUFFER_SIZE = 2048;
 
     private static $ffmpeg_cmd;
     public static function setCommand($ffmpeg) {
@@ -22,28 +24,32 @@ class WaveformGenerator {
     /**
      * @param $file_name
      * @return array
+     * @throws ApplicationException
      */
     public static function generate($file_name) {
 
         $temp_file = TempFileProvider::generate("peaks", ".raw");
-        $command = sprintf("%s -v quiet -i %s -ac 1 -ar 1024 -f u8 -acodec pcm_u8 %s",
+        $command = sprintf("%s -v quiet -i %s -ac 1 -f u8 -ar 44100 -acodec pcm_u8 %s",
             self::$ffmpeg_cmd, escapeshellarg($file_name), escapeshellarg($temp_file));
 
         shell_exec($command);
 
         if (!file_exists($temp_file)) {
-            return null;
+            throw new ApplicationException("Waveform could not be generated!");
         }
 
         $chunk_size = ceil(filesize($temp_file) / self::PEAKS_RESOLUTION);
 
         $peaks = withOpenedFile($temp_file, "r", function ($fh) use (&$chunk_size) {
-            while ($data = fread($fh, $chunk_size)) {
-                $bytes_array    = str_split($data);
-                $codes_array    = array_map("ord", $bytes_array);
-                $lowered_array  = array_map(self::decrement(127), $codes_array);
-                $absolute_array = array_map("abs", $lowered_array);
-                yield max($absolute_array);
+            while ($data = read($fh, $chunk_size)) {
+                $peak = 0;
+                for ($i = 0; $i < strlen($data); $i ++) {
+                    $code = ord(substr($data, $i, 1)) - 127;
+                    if ($code > $peak) {
+                        $peak = $code;
+                    }
+                }
+                yield $peak;
             }
         });
 

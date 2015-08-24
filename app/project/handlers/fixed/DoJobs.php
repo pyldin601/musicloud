@@ -21,7 +21,9 @@ use app\project\persistence\fs\FileServer;
 class DoJobs implements RouteHandler {
     public function doGet(LoggedIn $me) {
         if ($me->getId() === 0) {
+
             $limit = 50;
+
             while ($limit-- > 0) {
                 set_time_limit(30);
                 (new SelectQuery(TSongs::_NAME))
@@ -37,6 +39,9 @@ class DoJobs implements RouteHandler {
                     });
                 sleep(1);
             }
+
+//            FileServer::removeDead();
+
         }
     }
 } 
