@@ -22,6 +22,15 @@
                 }
 
             },
+            deleteByArtist: function (track_artist) {
+
+                if (confirm("Are you sure want to delete all tracks by " + track_artist + "?")) {
+                    TrackService.deleteByArtist({track_artist: track_artist}).then(function (response) {
+                        $rootScope.$broadcast("songs.deleted", response.data.map(field("id")));
+                    });
+                }
+
+            },
             editSongs: function (coll) {
 
                 if (!coll || coll.length == 0)

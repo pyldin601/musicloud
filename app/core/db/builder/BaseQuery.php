@@ -10,6 +10,7 @@ namespace app\core\db\builder;
 
 
 use app\core\db\Database;
+use app\lang\MLArray;
 use app\lang\option\Option;
 
 abstract class BaseQuery implements QueryBuilder {
@@ -144,7 +145,7 @@ abstract class BaseQuery implements QueryBuilder {
     /**
      * @param string|null $key
      * @param callable $callback
-     * @return array
+     * @return MLArray
      */
     public function fetchAll($key = null, callable $callback = null) {
         return Database::doInConnection(function (Database $db) use (&$key, &$callback) {

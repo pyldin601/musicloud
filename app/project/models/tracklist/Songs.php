@@ -17,6 +17,8 @@ use app\core\exceptions\ApplicationException;
 use app\core\exceptions\ControllerException;
 use app\core\logging\Logger;
 use app\lang\Arrays;
+use app\lang\MLArray;
+use app\lang\option\Mapper;
 use app\project\libs\FFProbe;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\dao\SongDao;
@@ -75,11 +77,17 @@ class Songs {
     }
 
     private static function getTracksListById($id) {
-        return (new SelectQuery(TSongs::_NAME))->where(TSongs::ID, $id)->fetchAll();
+        return (new SelectQuery(TSongs::_NAME))
+            ->where(TSongs::USER_ID, self::$me->getId())
+            ->where(TSongs::ID, $id)
+            ->fetchAll();
     }
 
     private static function deleteTracksById($id) {
-        (new DeleteQuery(TSongs::_NAME))->where(TSongs::ID, $id)->update();
+        (new DeleteQuery(TSongs::_NAME))
+            ->where(TSongs::USER_ID, self::$me->getId())
+            ->where(TSongs::ID, $id)
+            ->update();
     }
 
     private static function removeFilesUsedByTrack($track) {
@@ -254,6 +262,30 @@ class Songs {
     }
 
     public static function checkRights($track_id) {
+
+    }
+
+    /**
+     * @param $track_artist
+     * @return MLArray
+     */
+    public static function deleteByArtist($track_artist) {
+
+        $songs = SongDao::getList([
+            TSongs::T_ARTIST => $track_artist,
+            TSongs::USER_ID => self::$me->getId()
+        ]);
+
+        $to_remove = $songs->map(Mapper::key(TSongs::ID));
+
+        if (count($to_remove) == 0) {
+            return array();
+        }
+
+        return (new DeleteQuery(TSongs::_NAME))
+            ->where(TSongs::ID, $to_remove->mkArray())
+            ->returning("*")
+            ->fetchAll();
 
     }
 

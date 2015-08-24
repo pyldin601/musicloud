@@ -1205,6 +1205,7 @@ a {
   padding-top: 16px;
 }
 .peaks-background .waveform-container {
+  overflow: hidden;
   position: relative;
   width: 100%;
   height: 100%;
@@ -1240,6 +1241,7 @@ a {
   background: -ms-linear-gradient(top, #ff7d7b 0%, #d33d3d 75%, #9e3335 75%, #223344 100%);
   transition: width 250ms linear;
   z-index: 1;
+  box-shadow: 0 0 4px #d33d3d;
 }
 .peaks-background .waveform-container .time-right {
   position: absolute;

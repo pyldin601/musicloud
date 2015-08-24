@@ -11,7 +11,7 @@ namespace app\lang;
 
 use app\lang\option\Option;
 
-class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate {
+class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSerializable {
 
     /** @var array */
     private $contents = array();
@@ -145,6 +145,13 @@ class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate {
      * @return array
      */
     public function mkArray() {
+        return $this->contents;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize() {
         return $this->contents;
     }
 

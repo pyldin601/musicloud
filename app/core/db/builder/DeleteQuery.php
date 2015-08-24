@@ -15,6 +15,8 @@ class DeleteQuery extends BaseQuery {
 
     use WhereSection;
 
+    protected $returning = null;
+
     function __construct($tableName, $key = null, $value = null) {
         $this->tableName = $tableName;
         if (!Tools::isNull($key, $value)) {
@@ -22,6 +24,10 @@ class DeleteQuery extends BaseQuery {
         }
     }
 
+    public function returning($id) {
+        $this->returning = $id;
+        return $this;
+    }
 
     public function getQuery(\PDO $pdo) {
 
@@ -32,6 +38,10 @@ class DeleteQuery extends BaseQuery {
         $build[] = $this->buildWheres($pdo);
         $query[] = $this->buildOrderBy();
         $query[] = $this->buildLimits();
+
+        if ($this->returning !== null) {
+            $query[] = "RETURNING " . $this->returning;
+        }
 
         return implode(" ", $build);
 

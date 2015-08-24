@@ -14,6 +14,7 @@ use app\core\etc\Settings;
 use app\core\exceptions\ApplicationException;
 use app\core\injector\Injectable;
 use app\lang\functional\LazyGenerator;
+use app\lang\MLArray;
 use app\lang\option\Option;
 use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
@@ -168,7 +169,7 @@ class Database implements SingletonInterface, Injectable {
      * @param array $params
      * @param string $key
      * @param Callable $callback
-     * @return array
+     * @return MLArray
      */
     public function fetchAll($query, array $params = null, $key = null, callable $callback = null) {
 
@@ -194,7 +195,7 @@ class Database implements SingletonInterface, Injectable {
         }
 
 
-        return $result;
+        return new MLArray($result);
 
     }
 
@@ -341,7 +342,7 @@ class Database implements SingletonInterface, Injectable {
 
         $objects = $resource->fetchAll(PDO::FETCH_CLASS, $class, $ctr_args);
 
-        return $objects;
+        return new MLArray($objects);
 
     }
 

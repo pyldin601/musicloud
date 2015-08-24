@@ -54,4 +54,10 @@ class SongDao {
             ->fetchAll();
     }
 
+    public static function getList(array $criteria = null) {
+        return (new SelectQuery(TSongs::_NAME))
+            ->where($criteria)
+            ->fetchAll();
+    }
+
 } 

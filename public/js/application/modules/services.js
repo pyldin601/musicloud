@@ -41,6 +41,9 @@ MusicLoud.factory("TrackService", ["$http", function ($http) {
         unlink: function (data) {
             return $http.post("/api/track/delete", data);
         },
+        deleteByArtist: function (data) {
+            return $http.post("/api/track/deleteByArtist", data);
+        },
         edit: function (data) {
             return $http.post("/api/track/edit", data);
         },
