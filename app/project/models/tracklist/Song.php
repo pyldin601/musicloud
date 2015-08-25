@@ -29,7 +29,7 @@ use app\project\persistence\db\dao\SongDao;
 use app\project\persistence\db\tables\TSongs;
 use app\project\persistence\fs\FileServer;
 
-class Song {
+class Song implements \JsonSerializable {
 
     /** @var LoggedIn */
     private $me;
@@ -268,15 +268,15 @@ class Song {
     }
 
     /**
-     * @param $playcount
+     * @param $play_count
      * @return mixed
      */
-    public function updateAndGetPlayCount($playcount) {
-        if ($playcount > $this->track_data[TSongs::T_PLAYED]) {
+    public function updateAndGetPlayCount($play_count) {
+        if ($play_count > $this->track_data[TSongs::T_PLAYED]) {
             SongDao::updateSongUsingId($this->track_id, [
-                "times_played" => $playcount
+                "times_played" => $play_count
             ]);
-            return $playcount;
+            return $play_count;
         }
         return $this->track_data[TSongs::T_PLAYED];
     }
@@ -286,6 +286,25 @@ class Song {
      */
     public function getObject() {
         return $this->track_data;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize() {
+
+        $song = $this->track_data;
+
+        $artist_encoded = escape_url($song["album_artist"]);
+        $album_encoded  = escape_url($song["track_album"]);
+        $genre_encoded  = escape_url($song["track_genre"]);
+
+        $song["artist_url"] = "artist/{$artist_encoded}";
+        $song["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
+        $song["genre_url"]  = "genre/{$genre_encoded}";
+
+        return $song;
+
     }
 
 }

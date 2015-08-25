@@ -16,15 +16,7 @@ use app\project\models\tracklist\Song;
 class DoTrack implements RouteHandler {
     public function doGet(JsonResponse $response, $id) {
 
-        $song = (new Song($id))->getObject();
-
-        $artist_encoded = escape_url($song["album_artist"]);
-        $album_encoded  = escape_url($song["track_album"]);
-        $genre_encoded  = escape_url($song["track_genre"]);
-
-        $song["artist_url"] = "artist/{$artist_encoded}";
-        $song["album_url"]  = "artist/{$artist_encoded}/{$album_encoded}";
-        $song["genre_url"]  = "genre/{$genre_encoded}";
+        $song = new Song($id);
 
         $response->write($song);
 
