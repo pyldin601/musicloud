@@ -399,4 +399,11 @@ class Database implements SingletonInterface, Injectable {
 
     }
 
+    /**
+     * @return LightORM
+     */
+    public function getLightORM() {
+        return new LightORM($this);
+    }
+
 } 

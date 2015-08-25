@@ -14,6 +14,7 @@ $orm_config = [
         '$table' => 'songs',
         '$key' => 'id',
         '$fields' => [
+            'id'                => null,
             'user_id'           => null,
             'file_id'           => null,
             'bitrate'           => null,

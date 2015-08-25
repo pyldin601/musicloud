@@ -9,16 +9,17 @@
 namespace app\project\handlers\dynamic\resources;
 
 
+use app\core\db\Database;
 use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
-use app\project\models\tracklist\Song;
+use app\project\persistence\orm\Track;
 
 class DoTrack implements RouteHandler {
-    public function doGet(JsonResponse $response, $id) {
+    public function doGet(JsonResponse $response, $id, Database $database) {
 
-        $song = new Song($id);
-
-        $response->write($song);
+        $orm = $database->getLightORM();
+        $track = $orm->load(Track::class, $id);
+        $response->write($track);
 
     }
 } 
