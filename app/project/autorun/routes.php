@@ -6,6 +6,8 @@
  * Time: 16:59
  */
 
+/* REST resources */
+when("api/resource/track/:id", app\project\handlers\dynamic\resources\DoTrack::class);
 
 when("preview/:id", app\project\handlers\dynamic\content\DoGetPreview::class);
 when("file/:id",    app\project\handlers\dynamic\content\DoGetFile::class);
