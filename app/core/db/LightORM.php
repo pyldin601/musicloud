@@ -29,14 +29,25 @@ class LightORM {
         if (!is_array($class_config)) {
             throw new \Exception($class . " is not configured");
         }
-        $table_name = $class_config['$table'];
-        $table_key = $class_config['$key'];
-        $table_fields = $class_config['$fields'];
+        $table_name     = $class_config['$table'];
+        $table_key      = $class_config['$key'];
+        $table_fields   = $class_config['$fields'];
         if (is_null($table_name) || is_null($table_key) || is_null($table_fields)) {
             throw new \Exception($class . " is not configured correctly");
         }
-        $object = $this->db->fetchOneRow(sprintf("SELECT %s FROM %s WHERE %s = ?",
-            implode(",", $table_fields), $table_name, $table_key), array($id));
+        $graph_data = $this->db->fetchOneRow(sprintf("SELECT %s FROM %s WHERE %s = ?",
+            implode(",", $table_fields), $table_name, $table_key), array($id))->get();
+        $object_instance = new $class;
+        $reflection = new \ReflectionClass($object_instance);
+        foreach ($graph_data as $key => $value) {
+            $property = $reflection->getProperty($key);
+            if (is_null($property)) {
+                throw new \Exception("Property " . $key . " not found in class " . $class);
+            }
+            $property->setAccessible(true);
+            $property->setValue($object_instance, $value);
+        }
+        return $object_instance;
     }
 
     public function save($class) {
