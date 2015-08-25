@@ -14,6 +14,7 @@ use app\core\db\builder\InsertQuery;
 use app\core\db\builder\SelectQuery;
 use app\core\db\builder\UpdateQuery;
 use app\core\exceptions\ControllerException;
+use app\lang\MLArray;
 use app\project\persistence\db\tables\TPlaylists;
 
 class PlaylistDao {
@@ -62,7 +63,7 @@ class PlaylistDao {
 
     /**
      * @param array $data
-     * @return array
+     * @return MLArray
      */
     public static function getList(array $data) {
         return (new SelectQuery(TPlaylists::_NAME))

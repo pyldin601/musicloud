@@ -20,7 +20,7 @@ use app\project\persistence\db\tables\TPlaylists;
 class DoPlaylists implements RouteHandler {
     public function doGet(JsonResponse $response, LoggedIn $me) {
         $playlists = PlaylistDao::getList([ TPlaylists::USER_ID => $me->getId() ]);
-        $playlist_objects = array_map(Mapper::call(Playlist::class, "new"), $playlists);
+        $playlist_objects = $playlists->map(Mapper::call(Playlist::class, "new"));
         $response->write($playlist_objects);
     }
 } 

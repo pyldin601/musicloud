@@ -21,13 +21,6 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
                 action: function () {
                     $rootScope.action.deleteSongs(selection);
                 }
-            },
-            {
-                type: 'item',
-                text: '<i class="fa fa-minus-square item-icon"></i> Delete all tracks by this artist',
-                action: function () {
-                    $rootScope.action.deleteByArtist(selection[0].track_artist);
-                }
             }
         ];
 
