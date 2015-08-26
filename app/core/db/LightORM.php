@@ -318,8 +318,49 @@ class LightORM {
      */
     private function template($template, array $context) {
         return preg_replace_callback('/({{\s*(.+?)\s*}})/', function ($match) use ($context) {
-            return $context[$match[2]];
+            return $this->invoke($context, $match[2]);
         }, $template);
+    }
+
+    /**
+     * @param $object
+     * @param $field
+     * @return null
+     * @throws \Exception
+     */
+    private function invoke($object, $field) {
+        $path = ml_explode(".", $field);
+        $first = array_shift($path);
+        if (is_null($first)) {
+            return null;
+        }
+        if (count($path) == 0) {
+            if (is_object($object)) {
+                $getter = $this->fieldNameToGetter($first);
+                if (method_exists($object, $getter)) {
+                    return $object->$getter();
+                } else if (property_exists($object, $first)) {
+                    return $object->$first;
+                } else {
+                    return null;
+                }
+            } else if (is_array($object)) {
+                return $object[$first];
+            } else {
+                return null;
+            }
+        } else {
+            return $this->invoke($object[$first], implode(".", $path));
+        }
+    }
+
+    /**
+     * @param $field_name
+     * @return string
+     * @throws \Exception
+     */
+    private function fieldNameToGetter($field_name) {
+        return 'get' . implode("", array_map("ucfirst", ml_explode('_', $field_name)));
     }
 
 }

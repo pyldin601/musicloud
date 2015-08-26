@@ -29,7 +29,7 @@ class WaveformGenerator {
     public static function generate($file_name) {
 
         $temp_file = TempFileProvider::generate("peaks", ".raw");
-        $command = sprintf("%s -v quiet -i %s -ac 1 -f u8 -ar 44100 -acodec pcm_u8 %s",
+        $command = sprintf("%s -v quiet -i %s -ac 1 -f u8 -ar 11025 -acodec pcm_u8 %s",
             self::$ffmpeg_cmd, escapeshellarg($file_name), escapeshellarg($temp_file));
 
         shell_exec($command);
@@ -41,15 +41,18 @@ class WaveformGenerator {
         $chunk_size = ceil(filesize($temp_file) / self::PEAKS_RESOLUTION);
 
         $peaks = withOpenedFile($temp_file, "r", function ($fh) use (&$chunk_size) {
-            while ($data = read($fh, $chunk_size)) {
-                $peak = 0;
-                for ($i = 0; $i < strlen($data); $i ++) {
-                    $code = ord(substr($data, $i, 1)) - 127;
+            while ($data = fread($fh, $chunk_size)) {
+                $peak = 0; $array = str_split($data);
+                foreach ($array as $item) {
+                    $code = ord($item);
                     if ($code > $peak) {
                         $peak = $code;
                     }
+                    if ($code == 255) {
+                        break;
+                    }
                 }
-                yield $peak;
+                yield $peak - 127;
             }
         });
 
