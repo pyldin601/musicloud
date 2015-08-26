@@ -9,7 +9,7 @@
 namespace app\core\db\builder;
 
 
-use app\core\db\Database;
+use app\core\db\DatabaseConnection;
 use app\lang\MLArray;
 use app\lang\option\Option;
 
@@ -101,7 +101,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return string
      */
     public function generate() {
-        return Database::doInConnection(function (Database $db) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) {
             /** @var SelectQuery $query */
             return $db->generate(
                 $this->getQuery($db->getPDO()),
@@ -114,7 +114,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Option
      */
     public function fetchOneRow() {
-        return Database::doInConnection(function (Database $db) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) {
             return $db->fetchOneRow(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters()
@@ -123,7 +123,7 @@ abstract class BaseQuery implements QueryBuilder {
     }
 
     public function renderAllAsJson($callable = null) {
-        Database::doInConnection(function (Database $db) use ($callable) {
+        DatabaseConnection::doInConnection(function (DatabaseConnection $db) use ($callable) {
             $db->renderAllAsJson($this->getQuery($db->getPDO()), $this->getParameters(), $callable);
         });
     }
@@ -133,7 +133,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Option
      */
     public function fetchColumn($column = 0) {
-        return Database::doInConnection(function (Database $db) use (&$column) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) use (&$column) {
             return $db->fetchOneColumn(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters(),
@@ -148,7 +148,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return MLArray
      */
     public function fetchAll($key = null, callable $callback = null) {
-        return Database::doInConnection(function (Database $db) use (&$key, &$callback) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) use (&$key, &$callback) {
             return $db->fetchAll(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters(),
@@ -164,7 +164,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Option
      */
     public function fetchObject($className, array $ctor_args = []) {
-        return Database::doInConnection(function (Database $db) use (&$className, &$ctor_args) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) use (&$className, &$ctor_args) {
             /** @var SelectQuery $query */
             $query = clone $this;
             $query->limit(1);
@@ -184,7 +184,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return Object[]
      */
     public function fetchAllObjects($className, array $ctor_args = []) {
-        return Database::doInConnection(function (Database $db) use (&$className, &$ctor_args) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) use (&$className, &$ctor_args) {
             return $db->fetchAllObjects(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters(),
@@ -198,7 +198,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @param callable $callable
      */
     public function eachRow(callable $callable) {
-        Database::doInConnection(function (Database $db) use (&$callable) {
+        DatabaseConnection::doInConnection(function (DatabaseConnection $db) use (&$callable) {
             $db->eachRow(
                 $this->getQuery($db->getPDO()),
                 $this->getParameters(),
@@ -211,7 +211,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return mixed
      */
     public function update() {
-        return Database::doInConnection(function (Database $db) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) {
             return $db->executeUpdate($this->getQuery($db->getPDO()), $this->getParameters());
         });
     }
@@ -220,7 +220,7 @@ abstract class BaseQuery implements QueryBuilder {
      * @return int
      */
     public function executeInsert() {
-        return Database::doInConnection(function (Database $db) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) {
             return $db->executeInsert($this->getQuery($db->getPDO()), $this->getParameters());
         });
     }

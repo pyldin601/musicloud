@@ -14,7 +14,6 @@ $orm_config = [
         '$table' => 'songs',
         '$key' => 'id',
         '$fields' => [
-            'id'                => null,
             'user_id'           => null,
             'file_id'           => null,
             'bitrate'           => null,
@@ -46,6 +45,12 @@ $orm_config = [
             'fts_genre'         => '',
             'preview_id'        => null,
             'peaks_id'          => null
+        ],
+        '$crud' => [
+            '$create'   => 'INSERT INTO {{ table }} ("{{ fields }}") VALUES ({{ values }}) RETURNING {{ key }}',
+            '$read'     => 'SELECT "{{ fields }}" FROM {{ table }} WHERE {{ key }} = ?',
+            '$update'   => 'UPDATE {{ table }} SET {{ setters }} WHERE {{ key }} = ?',
+            '$delete'   => 'DELETE FROM {{ table }} WHERE {{ key }} = ?'
         ]
     ]
 ];

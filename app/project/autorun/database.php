@@ -8,7 +8,7 @@
  * Time: 20:17
  */
 
-use app\core\db\Database;
+use app\core\db\DatabaseConnection;
 use app\core\db\DatabaseConfiguration;
 use app\core\etc\Settings;
 
@@ -19,4 +19,4 @@ $config->setDsnUri(     $settings->get("pdo",     "dsn"));
 $config->setDsnLogin(   $settings->get("pdo",   "login"));
 $config->setDsnPassword($settings->get("pdo", "password"));
 
-Database::configure($config);
+DatabaseConnection::configure($config);

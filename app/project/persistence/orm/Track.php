@@ -436,4 +436,36 @@ class Track extends AbstractPersistentObject {
         $this->peaks_id = $peaks_id;
     }
 
+    /* Dynamically calculated fields */
+
+    /**
+     * @return string
+     */
+    public function getArtistUrl() {
+        if (is_null($this->album_artist)) {
+            return null;
+        }
+        return "artist/" . escape_url($this->album_artist);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlbumUrl() {
+        if (is_null($this->album_artist) || is_null($this->track_album)) {
+            return null;
+        }
+        return "artist/" . escape_url($this->album_artist) . "/" . escape_url($this->track_album);
+    }
+
+    /**
+     * @return string
+     */
+    public function getGenreUrl() {
+        if (is_null($this->track_genre)) {
+            return null;
+        }
+        return "genre/" . escape_url($this->track_genre);
+    }
+
 }

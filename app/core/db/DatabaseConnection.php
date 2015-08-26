@@ -20,7 +20,7 @@ use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 use PDO;
 
-class Database implements SingletonInterface, Injectable {
+class DatabaseConnection implements SingletonInterface, Injectable {
 
     use Singleton;
 

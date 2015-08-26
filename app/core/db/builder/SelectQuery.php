@@ -9,7 +9,7 @@
 namespace app\core\db\builder;
 
 
-use app\core\db\Database;
+use app\core\db\DatabaseConnection;
 use app\core\exceptions\ApplicationException;
 use app\lang\Tools;
 
@@ -34,7 +34,7 @@ class SelectQuery extends BaseQuery implements \Countable {
      * @return int
      */
     public function count() {
-        return Database::doInConnection(function (Database $db) {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) {
             $query = clone $this;
             $query->selectNone()->select("COUNT(*)");
             $query->limit(null);

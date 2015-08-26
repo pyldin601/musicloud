@@ -10,6 +10,12 @@ namespace app\core\db;
 
 
 abstract class AbstractPersistentObject implements PersistentObject, \JsonSerializable {
+
+    /** @var LightORM */
+    protected $orm;
+
+    protected $original;
+
     public function jsonSerialize() {
         $fields = [];
         $reflection = new \ReflectionClass($this);
@@ -21,4 +27,17 @@ abstract class AbstractPersistentObject implements PersistentObject, \JsonSerial
         }
         return $fields;
     }
+
+    public function save() {
+        $this->orm->save($this);
+    }
+
+    public function delete() {
+        $this->orm->delete($this);
+    }
+
+    public function getLightORM() {
+        return $this->orm;
+    }
+
 }
