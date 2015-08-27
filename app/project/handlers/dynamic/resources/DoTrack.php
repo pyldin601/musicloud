@@ -18,9 +18,9 @@ class DoTrack implements RouteHandler {
 
     public function doGet(JsonResponse $response, $id, DatabaseConnection $connection) {
 
-        $orm = $connection->getLightORM();
         /** @var Track $track */
-        $track = $orm->load(Track::class, $id);
+        $track = $connection->getLightORM()->load(Track::class, $id);
+
         $response->write($track);
 
     }

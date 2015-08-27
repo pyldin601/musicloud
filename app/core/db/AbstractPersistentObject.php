@@ -36,6 +36,10 @@ abstract class AbstractPersistentObject implements PersistentObject, \JsonSerial
         $this->orm->delete($this);
     }
 
+    /**
+     * @return LightORM
+     * @JsonIgnore
+     */
     public function getLightORM() {
         return $this->orm;
     }
