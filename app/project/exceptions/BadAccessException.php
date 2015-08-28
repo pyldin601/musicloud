@@ -13,6 +13,6 @@ use app\core\http\HttpStatusCodes;
 
 class BadAccessException extends BackendException {
     function __construct() {
-        parent::__construct("You have no access to this resource", HttpStatusCodes::HTTP_FORBIDDEN);
+        parent::__construct("You have no access to this resources", HttpStatusCodes::HTTP_FORBIDDEN);
     }
 }

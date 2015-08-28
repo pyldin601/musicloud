@@ -53,7 +53,7 @@ class Songs {
             throw new ControllerException("At lease one track id must be specified");
         }
 
-        $track_ids = in_string(",", $track_id) ? explode(",", $track_id) : $track_id;
+        $track_ids = in_string(",", $track_id) ? explode(",", $track_id) : array($track_id);
 
         self::validateListOfTrackIds($track_ids);
 
@@ -63,7 +63,7 @@ class Songs {
             return $track[TSongs::USER_ID] == self::$me->getId();
         };
 
-        if (!Arrays::allMatches($isTrackBelongsToUser, $track_objects)) {
+        if (!$track_objects->all($isTrackBelongsToUser)) {
             throw new ControllerException("One or more selected tracks is not belongs to you");
         }
 

@@ -3,7 +3,7 @@
  */
 
 var MusicLoud = angular.module("MusicLoud", ["ngRoute", "ngCookies", "httpPostFix",
-    "infinite-scroll", "MLContextMenu"]);
+    "infinite-scroll", "MLContextMenu", "indexedDB"]);
 
 
 MusicLoud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {

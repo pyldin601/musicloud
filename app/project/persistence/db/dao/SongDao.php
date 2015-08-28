@@ -60,4 +60,10 @@ class SongDao {
             ->fetchAll();
     }
 
+    public static function each(array $criteria = null, $callback) {
+        (new SelectQuery(TSongs::_NAME))
+            ->where($criteria)
+            ->eachRow($callback);
+    }
+
 } 
