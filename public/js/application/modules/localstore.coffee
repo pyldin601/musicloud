@@ -24,7 +24,6 @@ MusicLoud.config ["$indexedDBProvider", ($indexedDBProvider) ->
 MusicLoud.run ["$indexedDB", "DBSyncService", ($indexedDB, DBSyncService) ->
   $indexedDB.openStore 'misc', (store) ->
     store.find('sync_token').then((data) -> data.value).catch(-> 0).then (token) ->
-      DBSyncService.loadAll(store)
       store.upsert(key: 'sync_token', value: token)
 ]
 

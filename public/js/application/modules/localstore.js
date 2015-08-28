@@ -52,7 +52,6 @@
         })["catch"](function() {
           return 0;
         }).then(function(token) {
-          DBSyncService.loadAll(store);
           return store.upsert({
             key: 'sync_token',
             value: token
