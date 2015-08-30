@@ -29,7 +29,7 @@ class Event {
      */
     public static function addEventListener($event, $callable) {
         if (is_callable($callable)) {
-            self::getEventListeners($event)->add($callable);
+            self::getEventListeners($event, true)->add($callable);
         }
     }
 
@@ -39,7 +39,7 @@ class Event {
      */
     public static function addFilter($event, $callable) {
         if (is_callable($callable)) {
-            self::getFilters($event)->add($callable);
+            self::getFilters($event, true)->add($callable);
         }
     }
 
@@ -48,8 +48,10 @@ class Event {
      * @param ...$arguments
      */
     public static function callEventListeners($event, ...$arguments) {
-        foreach (self::getEventListeners($event) as $listener) {
-            $listener(...$arguments);
+        if (($listeners = self::getEventListeners($event, false)) !== null) {
+            foreach ($listeners as $listener) {
+                $listener(...$arguments);
+            }
         }
     }
 
@@ -59,8 +61,10 @@ class Event {
      */
     public static function applyFilters($event, $argument) {
         $result = $argument;
-        foreach (self::getFilters($event) as $filter) {
-            $result = $filter($result);
+        if (($filters = self::getFilters($event, false)) !== null) {
+            foreach ($filters as $filter) {
+                $result = $filter($result);
+            }
         }
         return $result;
     }
@@ -69,24 +73,34 @@ class Event {
      * @param $event
      * @return MLArray
      */
-    private static function &getEventListeners($event) {
+    private static function getEventListeners($event, $create) {
 
-        if (!isset(self::$events[$event])) {
-            self::$events[$event] = new MLArray();
+        if (isset(self::$events[$event])) {
+            return self::$events[$event];
+        } else if ($create === true) {
+            self::$filters[$event] = new MLArray();
+            return self::$filters[$event];
+        } else {
+            return null;
         }
-
-        return self::$events[$event];
 
     }
 
     /**
      * @param $event
+     * @param $create
      * @return MLArray
      */
-    private static function &getFilters($event) {
-        if (!isset(self::$filters[$event])) {
+    private static function getFilters($event, $create) {
+
+        if (isset(self::$filters[$event])) {
+            return self::$filters[$event];
+        } else if ($create === true) {
             self::$filters[$event] = new MLArray();
+            return self::$filters[$event];
+        } else {
+            return null;
         }
-        return self::$filters[$event];
+
     }
 }

@@ -9,21 +9,18 @@
  */
 
 use app\core\db\DatabaseConfiguration;
-use app\core\db\DatabaseConnection;
 use app\core\etc\Settings;
 use app\core\modular\Event;
 
-Event::addFilter(DatabaseConnection::FILTER_DB_CONFIGURE,
-    function (DatabaseConfiguration $config) {
+Event::addFilter("database.configure", function (DatabaseConfiguration $config) {
 
-        $settings = Settings::getInstance();
+    $settings = Settings::getInstance();
 
-        $config->setDsnLogin($settings->get("pdo", "login"));
-        $config->setDsnPassword($settings->get("pdo", "password"));
-        $config->setDsnUri($settings->get("pdo", "dsn"));
+    $config->setDsnLogin($settings->get("pdo", "login"));
+    $config->setDsnPassword($settings->get("pdo", "password"));
+    $config->setDsnUri($settings->get("pdo", "dsn"));
 
-        return $config;
+    return $config;
 
-    }
-);
+});
 

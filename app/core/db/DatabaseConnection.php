@@ -23,13 +23,6 @@ class DatabaseConnection implements SingletonInterface, Injectable {
 
     use Singleton;
 
-    const EVENT_DB_INIT                 = "database.init";
-    const EVENT_DB_EXECUTED             = "database.pdo.statement.executed";
-
-    const FILTER_DB_CONFIGURE           = "database.configure";
-    const FILTER_DB_PDO_OPTIONS         = "database.pdo.options";
-    const FILTER_DB_PREPARE_STATEMENT   = "database.pdo.statement.prepare";
-
     /** @var PDO $pdo */
     private $pdo;
 
@@ -38,14 +31,14 @@ class DatabaseConnection implements SingletonInterface, Injectable {
 
     public static function class_init() {
 
-        Event::callEventListeners(self::EVENT_DB_INIT);
+        Event::callEventListeners("database.init");
 
     }
 
     protected function __construct() {
 
         $this->configuration = Event::applyFilters(
-            self::FILTER_DB_CONFIGURE,
+            "database.configure",
             new DatabaseConfiguration()
         );
 
@@ -63,7 +56,7 @@ class DatabaseConnection implements SingletonInterface, Injectable {
         $pdo_dsn        = $this->configuration->getDsnUri();
         $pdo_login      = $this->configuration->getDsnLogin();
         $pdo_password   = $this->configuration->getDsnPassword();
-        $pdo_options    = Event::applyFilters(self::FILTER_DB_PDO_OPTIONS, array(
+        $pdo_options    = Event::applyFilters("database.pdo.options", array(
             PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES  => false,
             PDO::ATTR_PERSISTENT        => true,
@@ -156,7 +149,7 @@ class DatabaseConnection implements SingletonInterface, Injectable {
          * @var PDOStatement $resource
          */
         $resource = Event::applyFilters(
-            self::FILTER_DB_PREPARE_STATEMENT,
+            "database.pdo.statement.prepare",
             $this->pdo->prepare($queryString)
         );
 
@@ -166,7 +159,7 @@ class DatabaseConnection implements SingletonInterface, Injectable {
 
         $resource->execute();
 
-        Event::callEventListeners(self::EVENT_DB_EXECUTED, $resource);
+        Event::callEventListeners("database.pdo.statement.executed", $resource);
 
         if ($resource->errorCode() !== "00000") {
             throw new ApplicationException($resource->errorInfo()[2]);
