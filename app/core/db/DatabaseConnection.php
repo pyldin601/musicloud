@@ -9,35 +9,50 @@
 namespace app\core\db;
 
 
-use app\core\cache\RedisCache;
-use app\core\etc\Settings;
 use app\core\exceptions\ApplicationException;
 use app\core\injector\Injectable;
-use app\lang\functional\LazyGenerator;
+use app\core\modular\Event;
 use app\lang\MLArray;
 use app\lang\option\Option;
 use app\lang\singleton\Singleton;
 use app\lang\singleton\SingletonInterface;
 use PDO;
+use PDOStatement;
 
 class DatabaseConnection implements SingletonInterface, Injectable {
 
     use Singleton;
 
+    const EVENT_DB_INIT                 = "database.init";
+    const EVENT_DB_EXECUTED             = "database.pdo.statement.executed";
+
+    const FILTER_DB_CONFIGURE           = "database.configure";
+    const FILTER_DB_PDO_OPTIONS         = "database.pdo.options";
+    const FILTER_DB_PREPARE_STATEMENT   = "database.pdo.statement.prepare";
+
     /** @var PDO $pdo */
     private $pdo;
+
     /** @var DatabaseConfiguration $configuration */
-    private static $configuration;
+    private $configuration;
+
+    public static function class_init() {
+
+        Event::callEventListeners(self::EVENT_DB_INIT);
+
+    }
 
     protected function __construct() {
+
+        $this->configuration = Event::applyFilters(
+            self::FILTER_DB_CONFIGURE,
+            new DatabaseConfiguration()
+        );
 
         $this->connect();
 
     }
 
-    public static function configure(DatabaseConfiguration $configuration) {
-        self::$configuration = $configuration;
-    }
 
     /**
      * @return $this
@@ -45,20 +60,14 @@ class DatabaseConnection implements SingletonInterface, Injectable {
      */
     private function connect() {
 
-        if (self::$configuration === null) {
-            throw new ApplicationException("Database not configured");
-        }
-
-        $pdo_dsn = self::$configuration->getDsnUri();
-        $pdo_login = self::$configuration->getDsnLogin();
-        $pdo_password = self::$configuration->getDsnPassword();
-        $pdo_options = array(
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::ATTR_PERSISTENT => true,
-//            PDO::ATTR_AUTOCOMMIT => true,
-//            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-        );
+        $pdo_dsn        = $this->configuration->getDsnUri();
+        $pdo_login      = $this->configuration->getDsnLogin();
+        $pdo_password   = $this->configuration->getDsnPassword();
+        $pdo_options    = Event::applyFilters(self::FILTER_DB_PDO_OPTIONS, array(
+            PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES  => false,
+            PDO::ATTR_PERSISTENT        => true,
+        ));
 
         $this->pdo = new PDO($pdo_dsn, $pdo_login, $pdo_password, $pdo_options);
 
@@ -73,12 +82,13 @@ class DatabaseConnection implements SingletonInterface, Injectable {
     public static function doInConnection(callable $callable) {
 
         $conn = self::getInstance();
+
         return $conn->doInTransaction($callable);
 
     }
 
     /**
-     * @param callable(Database) $callable
+     * @param callable $callable
      * @return mixed
      */
     public function doInTransaction(callable $callable) {
@@ -142,19 +152,21 @@ class DatabaseConnection implements SingletonInterface, Injectable {
 
         $queryString = $this->queryQuote($query, $params);
 
-//        error_log($queryString);
-
-        $resource = $this->pdo->prepare($queryString);
+        /**
+         * @var PDOStatement $resource
+         */
+        $resource = Event::applyFilters(
+            self::FILTER_DB_PREPARE_STATEMENT,
+            $this->pdo->prepare($queryString)
+        );
 
         if ($resource === false) {
             throw new ApplicationException($this->pdo->errorInfo()[2]);
         }
 
-//        $begin = microtime(true);
         $resource->execute();
-//        $end = microtime(true);
 
-//        error_log(sprintf("%0.4f : %s", $end - $begin, $queryString));
+        Event::callEventListeners(self::EVENT_DB_EXECUTED, $resource);
 
         if ($resource->errorCode() !== "00000") {
             throw new ApplicationException($resource->errorInfo()[2]);
@@ -194,7 +206,6 @@ class DatabaseConnection implements SingletonInterface, Injectable {
 
         }
 
-
         return new MLArray($result);
 
     }
@@ -221,17 +232,14 @@ class DatabaseConnection implements SingletonInterface, Injectable {
     /**
      * @param $query
      * @param array $params
-     * @return LazyGenerator
+     * @return \Generator
      * @throws ApplicationException
      */
     public function getGenerator($query, array $params = null) {
         $resource = $this->createResource($query, $params);
-        $gen = function () use ($resource) {
-            while ($row = $resource->fetch(PDO::FETCH_ASSOC)) {
-                yield $row;
-            }
-        };
-        return new LazyGenerator($gen());
+        while ($row = $resource->fetch(PDO::FETCH_ASSOC)) {
+            yield $row;
+        }
     }
 
     public function renderAllAsJson($query, array $params = null, $callback = null) {

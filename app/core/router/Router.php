@@ -16,6 +16,7 @@ use app\core\exceptions\status\NotImplementedException;
 use app\core\exceptions\status\PageNotFoundException;
 use app\core\http\HttpRoute;
 use app\core\injector\Injector;
+use app\core\modular\Event;
 use app\core\router\sources\RouteSource;
 use app\core\view\JsonResponse;
 use app\lang\option\Option;
@@ -25,6 +26,8 @@ use app\lang\singleton\SingletonInterface;
 class Router implements SingletonInterface {
 
     use Singleton;
+
+    const EVENT_DYNAMIC_ROUTER_INIT = "event.router.dynamic.init";
 
     private $routes = array();
     private $default_handler;
@@ -37,6 +40,8 @@ class Router implements SingletonInterface {
         $this->default_handler = Option::None();
 
         $this->route = HttpRoute::getInstance();
+
+        Event::addEventListener(self::EVENT_DYNAMIC_ROUTER_INIT, $this);
 
     }
 

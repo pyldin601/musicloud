@@ -33,9 +33,20 @@ spl_autoload_register(function ($class_name) {
     }
 });
 
+set_error_handler(function ($error_number , $error_string) {
+
+    $response_data = array("message" => $error_string, "code" => 500);
+
+    JsonResponse::ifInstance()
+        ->call("write", $response_data)
+        ->otherwise(Consumer::call([TinyView::class, "show"], "error.tmpl", $response_data));
+
+    return true;
+
+}, E_ERROR);
+
 // Set global exception handler
 set_exception_handler(function (Exception $exception) {
-
 
     if ($exception instanceof ApplicationException) {
 
