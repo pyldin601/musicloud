@@ -20,10 +20,17 @@ class LightORM {
     /** @var DatabaseConnection */
     private $db;
 
+    /**
+     * @param DatabaseConnection $database
+     */
     public function __construct(DatabaseConnection $database) {
         $this->db = $database;
     }
 
+    /**
+     * @param $class
+     * @throws LightORMException
+     */
     private function validateClassName($class) {
         if (!isset(self::$config[$class])) {
             throw new LightORMException("Class " . $class . " is not mapped to any database tables");

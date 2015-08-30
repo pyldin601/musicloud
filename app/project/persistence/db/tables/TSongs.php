@@ -47,20 +47,17 @@ class TSongs {
     const FTS_ANY = "fts_any";
     const FTS_GENRE = "fts_genre";
 
-    private static $columns = [
+    /* Columns for REST */
+    public static $columns = [
         TSongs::ID, TSongs::FILE_ID, TSongs::FILE_NAME, TSongs::BITRATE,
         TSongs::LENGTH, TSongs::T_TITLE, TSongs::T_ARTIST, TSongs::T_ALBUM, TSongs::T_GENRE,
-        TSongs::T_NUMBER, TSongs::T_COMMENT, TSongs::T_YEAR, TSongs::T_RATING, TSongs::IS_FAV,
+        TSongs::T_NUMBER, TSongs::T_COMMENT, TSongs::T_YEAR, TSongs::T_RATING, TSongs::IS_FAV, TSongs::IS_COMP,
         TSongs::DISC, TSongs::A_ARTIST, TSongs::T_PLAYED, TSongs::T_SKIPPED, TSongs::LP_DATE, TSongs::C_DATE,
-        TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID, TSongs::FORMAT, TSongs::IS_COMP
+        TSongs::C_SMALL_ID, TSongs::C_MID_ID, TSongs::C_BIG_ID, TSongs::FORMAT
     ];
 
     static function defaultSelection() {
         return implode(",", self::$columns);
-    }
-
-    static function getColumnNames() {
-        return self::$columns;
     }
 
 }
