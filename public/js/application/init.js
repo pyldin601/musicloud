@@ -92,3 +92,7 @@ function htmlToText(html) {
     tag.innerHTML = html;
     return tag.innerText;
 }
+
+function csvToObject(csvContent) {
+    return Papa.parse(csvContent);
+}

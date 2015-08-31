@@ -128,6 +128,15 @@ abstract class BaseQuery implements QueryBuilder {
         });
     }
 
+    public function writeCSV() {
+        return DatabaseConnection::doInConnection(function (DatabaseConnection $db) {
+            $db->writeCSV(
+                $this->getQuery($db->getPDO()),
+                $this->getParameters()
+            );
+        });
+    }
+
     /**
      * @param int $column
      * @return Option

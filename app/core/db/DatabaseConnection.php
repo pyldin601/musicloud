@@ -235,6 +235,29 @@ class DatabaseConnection implements SingletonInterface, Injectable {
         }
     }
 
+    public function writeCSV($query, array $params = null) {
+
+        header("Content-Type: text/plain; charset=utf-8");
+
+        $output = fopen("php://output", "w");
+        $columns = array();
+
+        $resource = $this->createResource($query, $params);
+
+        for ($i = 0; $i < $resource->columnCount(); $i ++) {
+            $columns[] = $resource->getColumnMeta($i)["name"];
+        }
+
+        fputcsv($output, $columns, ',', '"');
+
+        while ($row = $resource->fetch(PDO::FETCH_NUM)) {
+            fputcsv($output, $row, ',', '"');
+        }
+
+        fclose($output);
+
+    }
+
     public function renderAllAsJson($query, array $params = null, $callback = null) {
 
         $resource = $this->createResource($query, $params);
@@ -406,5 +429,6 @@ class DatabaseConnection implements SingletonInterface, Injectable {
     public function getLightORM() {
         return new LightORM($this);
     }
+
 
 } 

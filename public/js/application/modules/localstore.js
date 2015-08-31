@@ -52,6 +52,13 @@
         })["catch"](function() {
           return 0;
         }).then(function(token) {
+          DBSyncService.loadAll().success(function(content) {
+            return console.log(Papa.parse(content, {
+              header: true,
+              dynamicTyping: true,
+              delimiter: ','
+            }));
+          });
           return store.upsert({
             key: 'sync_token',
             value: token
@@ -72,5 +79,3 @@
   ]);
 
 }).call(this);
-
-//# sourceMappingURL=localstore.js.map
