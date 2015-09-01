@@ -60,4 +60,8 @@ class TSongs {
         return implode(",", self::$columns);
     }
 
+    public static function getFullColumnNames() {
+        return array_map(function ($column) { return TSongs::_NAME . "." . $column; }, self::$columns);
+    }
+
 }

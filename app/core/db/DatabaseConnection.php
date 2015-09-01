@@ -237,10 +237,11 @@ class DatabaseConnection implements SingletonInterface, Injectable {
 
     public function writeCSV($query, array $params = null) {
 
-        header("Content-Type: text/plain; charset=utf-8");
+        header("Content-Type: application/json; charset=utf-8");
 
         $output = fopen("php://output", "w");
         $columns = array();
+        $index = 0;
 
         $resource = $this->createResource($query, $params);
 
@@ -248,11 +249,15 @@ class DatabaseConnection implements SingletonInterface, Injectable {
             $columns[] = $resource->getColumnMeta($i)["name"];
         }
 
-        fputcsv($output, $columns, ',', '"');
+        fwrite($output, '{"header": '.json_encode($columns, JSON_UNESCAPED_UNICODE).', "data": [');
 
         while ($row = $resource->fetch(PDO::FETCH_NUM)) {
-            fputcsv($output, $row, ',', '"');
+            if ($index ++ > 0) {
+                fwrite($output, ',');
+            }
+            fwrite($output, json_encode($row, JSON_UNESCAPED_UNICODE));
         }
+        fwrite($output, ']}');
 
         fclose($output);
 

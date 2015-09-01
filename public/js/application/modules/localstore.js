@@ -53,11 +53,7 @@
           return 0;
         }).then(function(token) {
           DBSyncService.loadAll().success(function(content) {
-            return console.log(Papa.parse(content, {
-              header: true,
-              dynamicTyping: true,
-              delimiter: ','
-            }));
+            return console.log(content);
           });
           return store.upsert({
             key: 'sync_token',

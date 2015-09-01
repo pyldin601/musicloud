@@ -155,4 +155,18 @@ class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSeri
         return $this->contents;
     }
 
+    /**
+     * @return array
+     */
+    public function keys() {
+        return array_keys($this->contents);
+    }
+
+    /**
+     * @return array
+     */
+    public function values() {
+        return array_values($this->contents);
+    }
+
 }
