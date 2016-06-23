@@ -32,8 +32,6 @@ class JsonResponse implements SingletonInterface, Injectable {
 
             if ($last_error === null || $last_error["type"] | (E_ERROR | E_PARSE)) {
 
-                ob_start("ob_gzhandler");
-
                 header("Content-Type: ".self::MIME."; charset=".DEFAULT_CHARSET);
 
                 echo json_encode(is_null($this->data) ? self::DEFAULT_RESULT : $this->data, JSON_UNESCAPED_UNICODE);

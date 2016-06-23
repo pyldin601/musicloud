@@ -37,14 +37,21 @@ class FFProbe {
         $temp_cover_middle = TempFileProvider::generate("cover", ".jpeg");
         $temp_cover_small  = TempFileProvider::generate("cover", ".jpeg");
 
-        $command = sprintf("%s -i %s -an -vf \"scale='min(iw,900)':-1\" %s -vf \"scale='min(iw,450)':-1\" %s -vf \"scale='min(iw,250)':-1\" %s",
-            self::$settings->get("tools", "ffmpeg_cmd"), $escaped_filename,
-            escapeshellarg($temp_cover_full), escapeshellarg($temp_cover_middle),
-            escapeshellarg($temp_cover_small));
+        $command = sprintf(
+            self::$settings->get("command_templates", "make_covers"),
+            self::$settings->get("tools", "ffmpeg_cmd"),
+            $escaped_filename,
+            escapeshellarg($temp_cover_full),
+            escapeshellarg($temp_cover_middle),
+            escapeshellarg($temp_cover_small)
+        );
 
         exec($command, $result, $status);
 
-        if (file_exists($temp_cover_full) && file_exists($temp_cover_middle) && file_exists($temp_cover_small)) {
+        if (file_exists($temp_cover_full)
+            && file_exists($temp_cover_middle)
+            && file_exists($temp_cover_small)
+        ) {
             return Option::Some([$temp_cover_full, $temp_cover_middle, $temp_cover_small]);
         } else {
             return Option::None();
@@ -64,8 +71,11 @@ class FFProbe {
         $escaped_filename = escapeshellarg($filename);
         $file_format = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
 
-        $command = sprintf("%s -i %s -v quiet -print_format json -show_format",
-            self::$settings->get("tools", "ffprobe_cmd"), $escaped_filename);
+        $command = sprintf(
+            self::$settings->get("command_templates", "read_metadata"),
+            self::$settings->get("tools", "ffprobe_cmd"),
+            $escaped_filename
+        );
 
         exec($command, $result, $status);
 

@@ -213,28 +213,26 @@ class FileServer {
 
     public static function removeDead() {
 
-        $accumulator = [];
-
         Logger::printf("Checking file server records...");
         (new SelectQuery(TFiles::_NAME))
             ->select(TSongs::ID)
             ->eachRow(function ($row) use (&$accumulator) {
                 $path = self::getFileUsingId($row[TSongs::ID]);
-                if (! file_exists($path)) {
+                if (!file_exists($path)) {
                     Logger::printf("File id %s not exists", $row[TSongs::ID]);
-                    $accumulator[] = $row[TSongs::ID];
+                    (new DeleteQuery(TFiles::_NAME))->where(TFiles::ID, $row[TSongs::ID])->update();
                 }
             });
 
-
-        if (count($accumulator)) {
-            Logger::printf("%d file record(s) is waiting to be removed", count($accumulator));
-            (new DeleteQuery(TFiles::_NAME))
-                ->where(TFiles::ID, $accumulator)
-                ->update();
-        }
-
-
     }
 
-} 
+    public static function removeUnused() {
+        $unused_files = (new SelectQuery(TFiles::_NAME))->where(TFiles::USED, 0)->fetchAll();
+        foreach ($unused_files as $file) {
+            Logger::printf("Deleting unused file with id = %s, size = %d", $file[TFiles::ID], $file[TFiles::SIZE]);
+            FileServer::findFileUsingId($file[TFiles::ID])->filter("file_exists")->then("unlink");
+            (new DeleteQuery(TFiles::_NAME))->where(TFiles::ID, $file[TFiles::ID])->update();
+        }
+    }
+
+}

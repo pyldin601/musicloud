@@ -81,7 +81,8 @@ class DoTracks implements RouteHandler {
 
             switch ($order_field) {
                 case 'upload':
-                    $query  ->orderBy(TSongs::C_DATE . " DESC");
+                    $query  ->orderBy(TSongs::C_DATE . " DESC")
+                            ->orderBy(TSongs::ID);
                     break;
                 default:
                     $query  ->orderBy(TSongs::A_ARTIST)

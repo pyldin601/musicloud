@@ -228,7 +228,7 @@ MusicLoud.controller("TracksViewController", [
         $scope.busy = false;
         $scope.end = false;
         $scope.tracks_selected = [];
-        $scope.fetch = SearchService.tracks.curry({q: $location.search().q});
+        $scope.fetch = SearchService.tracks.curry({q: $location.search().q, s:$location.search().s});
 
         $scope.load = function () {
             $scope.busy = true;

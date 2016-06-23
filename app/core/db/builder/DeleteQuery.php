@@ -9,6 +9,7 @@
 namespace app\core\db\builder;
 
 
+use app\core\logging\Logger;
 use app\lang\Tools;
 
 class DeleteQuery extends BaseQuery {
@@ -43,7 +44,9 @@ class DeleteQuery extends BaseQuery {
             $query[] = "RETURNING " . $this->returning;
         }
 
-        return implode(" ", $build);
+        $result = implode(" ", $build);
+
+        return $result;
 
     }
 

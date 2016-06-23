@@ -75,3 +75,5 @@
   ]);
 
 }).call(this);
+
+//# sourceMappingURL=localstore.js.map

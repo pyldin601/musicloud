@@ -95,7 +95,6 @@
                         if (this.files.length == 0) return;
                         var that = this.files[0];
                         var track_id = scope.tracks.map(field("id")).join(",");
-                        console.log(that);
                         var form = new FormData();
                         form.append("artwork_file", that);
                         form.append("track_id", track_id);

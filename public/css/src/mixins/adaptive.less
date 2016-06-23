@@ -132,18 +132,27 @@
   .square12 { width: 100%; padding-bottom: 100%; }
 
 
-  .square-zoom { float: left; width: 100%; padding-bottom: 100% }
+  .square-zoom {
+
+    float: left;
+    width: 100%;
+    padding-bottom: 100%;
+
+    @media (min-width: 500px) { width: 100%; padding-bottom: 100% }
+    @media (min-width: 700px) { width: 50%; padding-bottom: 50% }
+    @media (min-width: 900px) { width: 33.33%; padding-bottom: 33.33% }
+    @media (min-width: 1100px) { width: 25%; padding-bottom: 25% }
+    @media (min-width: 1300px) { width: 20%; padding-bottom: 20% }
+    @media (min-width: 1500px) { width: 16.66%; padding-bottom: 16.66% }
+    @media (min-width: 1700px) { width: 14.28%; padding-bottom: 14.28% }
+    @media (min-width: 1900px) { width: 12.5%; padding-bottom: 12.5% }
+    @media (min-width: 2100px) { width: 11.11%; padding-bottom: 11.11% }
+    @media (min-width: 2300px) { width: 10%; padding-bottom: 10% }
+
+  }
+
   [class*="show-after-"] { display: none }
-  @media (min-width: 500px) { .square-zoom { width: 100%; padding-bottom: 100% } } // 1
-  @media (min-width: 700px) { .square-zoom { width: 50%; padding-bottom: 50% } } // 2
-  @media (min-width: 900px) { .square-zoom { width: 33.33%; padding-bottom: 33.33% } } // 3
-  @media (min-width: 1100px) { .square-zoom { width: 25%; padding-bottom: 25% } } // 4
-  @media (min-width: 1300px) { .square-zoom { width: 20%; padding-bottom: 20% } } // 5
-  @media (min-width: 1500px) { .square-zoom { width: 16.66%; padding-bottom: 16.66% } } // 6
-  @media (min-width: 1700px) { .square-zoom { width: 14.28%; padding-bottom: 14.28% } } // 7
-  @media (min-width: 1900px) { .square-zoom { width: 12.5%; padding-bottom: 12.5% } } // 8
-  @media (min-width: 2100px) { .square-zoom { width: 11.11%; padding-bottom: 11.11% } } // 9
-  @media (min-width: 2300px) { .square-zoom { width: 10%; padding-bottom: 10% } } // 10
+
 
 
   &:after {

@@ -11,6 +11,7 @@ namespace app\core\db;
 
 use app\core\exceptions\ApplicationException;
 use app\core\injector\Injectable;
+use app\core\logging\Logger;
 use app\core\modular\Event;
 use app\lang\MLArray;
 use app\lang\option\Option;
@@ -144,6 +145,8 @@ class DatabaseConnection implements SingletonInterface, Injectable {
     private function createResource($query, $params = null) {
 
         $queryString = $this->queryQuote($query, $params);
+
+        Logger::printf($queryString);
 
         /**
          * @var PDOStatement $resource

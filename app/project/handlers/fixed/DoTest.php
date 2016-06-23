@@ -9,12 +9,12 @@
 namespace app\project\handlers\fixed;
 
 
+use app\core\etc\Settings;
 use app\core\router\RouteHandler;
-use app\core\view\TinyView;
 
 class DoTest implements RouteHandler {
     public function doGet() {
-        TinyView::show("test.tmpl");
+        echo resource(Settings::class)->get("command_templates", "make_covers");
     }
 }
 
