@@ -17,7 +17,7 @@ const STATIC_CLASS_INIT_METHOD = "class_init";
 
 // Registering base class loader
 spl_autoload_register(function ($class_name) {
-    $filename = str_replace("\\", "/", $class_name) . '.php';
+    $filename = "../" . str_replace("\\", "/", $class_name) . '.php';
     if (file_exists($filename)) {
         require_once $filename;
         static_class_init($class_name);
@@ -46,7 +46,7 @@ set_error_handler(function ($error_number , $error_string) {
 }, E_ERROR);
 
 // Set global exception handler
-set_exception_handler(function (Exception $exception) {
+set_exception_handler(function ($exception) {
 
     if ($exception instanceof ApplicationException) {
 

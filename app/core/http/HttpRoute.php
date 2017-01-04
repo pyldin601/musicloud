@@ -28,7 +28,10 @@ class HttpRoute implements SingletonInterface {
         $route_array[$key] = "Do" . ucfirst($route_array[$key]);
         reset($route_array);
 
-        $this->route = Tools::turnSlashes(FIXED_ROUTES_PATH . implode('/', $route_array));
+        $this->route = CONTROLLER_PREFIX . Tools::turnSlashes(implode('/', $route_array));
+
+        error_log(sprintf("::: %s :::", $this->route));
+
         $this->default_handler = Option::None();
 
     }

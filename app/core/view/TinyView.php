@@ -11,7 +11,7 @@ namespace app\core\view;
 
 class TinyView {
 
-    const TEMPLATES_PATH = "app/project/templates/";
+    const TEMPLATES_PATH = "../app/project/templates/";
 
     public static function show($template, $context = null) {
         if ($context) {
