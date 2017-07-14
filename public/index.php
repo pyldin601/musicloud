@@ -7,6 +7,7 @@ use app\core\logging\Logger;
 define('APP_ROOT_DIR', realpath('..'));
 define('APP_LIB_DIR', APP_ROOT_DIR . '/app/lib');
 
+
 if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW']) || $_SERVER['PHP_AUTH_USER'] != "guest" || $_SERVER['PHP_AUTH_PW'] != "please") {
     header('WWW-Authenticate: Basic realm="Site is under construction"');
     header('HTTP/1.0 401 Unauthorized');
@@ -22,7 +23,7 @@ require_once "../vendor/autoload.php";
 if (file_exists(APP_ROOT_DIR . '/.env')) {
     $loader = new Loader(APP_ROOT_DIR . '/.env');
     $loader->parse();
-    $loader->toEnv();
+    $loader->toEnv(true);
 }
 
 $router = Router::getInstance();

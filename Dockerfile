@@ -41,10 +41,10 @@ RUN (curl -sL https://packages.sury.org/php/apt.gpg | apt-key add -) && \
 RUN sed -i "s/^upload_max_filesize\s=.*/upload_max_filesize = ${MAX_UPLOAD_FILESIZE}M/" /etc/php/$PHP_VERSION/fpm/php.ini && \
     sed -i "s/^post_max_size\s=.*/post_max_size = ${MAX_UPLOAD_FILESIZE}M/" /etc/php/$PHP_VERSION/fpm/php.ini && \
     sed -i 's/^variables_order\s=.*/variables_order = "EGPCS"/' /etc/php/$PHP_VERSION/fpm/php.ini && \
-    sed -i "/^;clear_env/s/^;//" /etc/php/$PHP_VERSION/fpm/pool.d/www.conf && \
     echo "client_max_body_size ${MAX_UPLOAD_FILESIZE}m;" > /etc/nginx/conf.d/nginx-upload.conf
 
 # Copy configuration files
+COPY ./docker/fpm-docker.conf /etc/php/$PHP_VERSION/fpm/pool.d/
 COPY ./docker/supervisord.conf /etc/supervisor/supervisord.conf
 COPY ./docker/nginx-fpm.conf /etc/nginx/sites-available/nginx-fpm.conf
 
@@ -66,6 +66,8 @@ EXPOSE 8080
 ARG GIT_CURRENT_COMMIT="<unknown>"
 ENV GIT_CURRENT_COMMIT=${GIT_CURRENT_COMMIT}
 
-RUN mkdir -p /var/tmp/musicloud/files && /var/tmp/musicloud/temp
+RUN mkdir -m 0777 -p /var/tmp/musicloud/files && mkdir -m 0777 -p /var/tmp/musicloud/temp
 
 VOLUME /var/tmp/musicloud
+
+WORKDIR /

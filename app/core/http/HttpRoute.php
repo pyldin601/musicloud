@@ -18,8 +18,8 @@ class HttpRoute implements SingletonInterface {
 
     function __construct() {
 
-        $http_get = new HttpGet();
-        $this->raw = preg_replace('/(\.(html|php)$)|(\/$)/', '', $http_get->getOrElse("route", self::DEFAULT_ROUTE));
+        $uri = urldecode(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH));
+        $this->raw = substr($uri, 1) ?: self::DEFAULT_ROUTE;
         $route_array = explode("/", $this->raw);
 
         error_log(sprintf("::: %s :::", $this->raw));
@@ -29,8 +29,6 @@ class HttpRoute implements SingletonInterface {
         reset($route_array);
 
         $this->route = CONTROLLER_PREFIX . Tools::turnSlashes(implode('/', $route_array));
-
-        error_log(sprintf("::: %s :::", $this->route));
 
         $this->default_handler = Option::None();
 
