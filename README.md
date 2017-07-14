@@ -13,7 +13,7 @@ Today I'm going to restore developing it as pet project.
 ## Run
 To start the service type:
 ```shell
-docker-compose start
+docker-compose up
 ```
 and open in your browser url: http://localhost:8080/.
 
