@@ -5,6 +5,9 @@ I started writing this service in 2015. Just to have fun and improve programming
 It's buggy and unstable but can play music. In those days I didn't know anything about composer,
 containers and any build utilities. It is tested on my home server with 600 GB of music.
 
+## Screenshot
+![Screenshot 1](/docs/musicloud.png?raw=true)
+
 Today I'm going to restore developing it as pet project.
 
 ## Checklist
