@@ -17,7 +17,7 @@ const STATIC_CLASS_INIT_METHOD = "class_init";
 
 // Registering base class loader
 spl_autoload_register(function ($class_name) {
-    $filename = "../" . str_replace("\\", "/", $class_name) . '.php';
+    $filename = APP_ROOT_DIR . "/" . str_replace("\\", "/", $class_name) . '.php';
     if (file_exists($filename)) {
         require_once $filename;
         static_class_init($class_name);
@@ -26,7 +26,7 @@ spl_autoload_register(function ($class_name) {
 
 // Registering additional class loader for libraries
 spl_autoload_register(function ($class_name) {
-    $filename = LIBRARIES_PATH . str_replace("\\", "/", $class_name) . '.php';
+    $filename = APP_LIB_DIR . str_replace("\\", "/", $class_name) . '.php';
     if (file_exists($filename)) {
         require_once $filename;
         static_class_init($class_name);

@@ -22,8 +22,6 @@ use app\lang\option\Mapper;
 use app\project\libs\FFProbe;
 use app\project\models\single\LoggedIn;
 use app\project\persistence\db\dao\SongDao;
-use app\project\persistence\db\tables\AudiosTable;
-use app\project\persistence\db\tables\MetadataTable;
 use app\project\persistence\db\tables\TSongs;
 use app\project\persistence\fs\FileServer;
 
@@ -34,6 +32,7 @@ class Songs {
 
     public static function class_init() {
         self::$me = resource(LoggedIn::class);
+        error_log(json_encode(self::$me));
     }
 
     public static function create() {

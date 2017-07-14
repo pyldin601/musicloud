@@ -2,7 +2,7 @@ var Empty = {},
     Nil = [],
     dateFormat = "dd.MM.yy HH:mm:ss",
     maxFileSize = 512 * 1024 * 1024,
-    templatePath = "/public/js/application/templates";
+    templatePath = "/js/application/templates";
 
 
 /**

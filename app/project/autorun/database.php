@@ -26,6 +26,6 @@ Event::addFilter("database.configure", function (DatabaseConfiguration $configur
     $configuration->setDsnPassword($config->get('db.password'));
     $configuration->setDsnUri($dsn);
 
-    return $config;
+    return $configuration;
 
 });
