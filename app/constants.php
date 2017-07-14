@@ -7,7 +7,7 @@ const LIBRARIES_PATH            = "../app/lib/";
 const AUTORUN_SCRIPTS_PATH      = "../app/project/autorun/";
 const FIXED_ROUTES_PATH         = "../app/project/handlers/fixed/";
 const DYNAMIC_ROUTES_PATH       = "../app/project/handlers/dynamic/";
-const CONFIG_PATH               = '../config/';
+const CONFIG_PATH               = __DIR__ . '/../config/';
 
 const CONTROLLER_PREFIX         = "app\\project\\handlers\\fixed\\";
 

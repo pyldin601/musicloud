@@ -26,7 +26,8 @@ class Config implements SingletonInterface, Injectable
             if (is_dir($filepath) || $extension !== 'php') {
                 return $acc;
             }
-            return array_merge($acc, [$filename => require $filepath]);
+            $acc[$filename] = require $filepath;
+            return $acc;
         }, []);
     }
 
@@ -35,7 +36,7 @@ class Config implements SingletonInterface, Injectable
         $pathParts = explode('.', $path);
         return function (array $config) use ($pathParts) {
             return array_reduce($pathParts, function ($acc, $part) {
-                if (!is_null($acc) && is_array($acc)) {
+                if (is_array($acc) && array_key_exists($part, $acc)) {
                     return $acc[$part];
                 }
                 return null;
@@ -43,7 +44,7 @@ class Config implements SingletonInterface, Injectable
         };
     }
 
-    public function config(string $path, $default = null) {
+    public function get(string $path, $default = null) {
         $find = $this->makePathFinder($path);
         $result = $find($this->config);
         if (!is_null($result)) {

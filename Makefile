@@ -2,6 +2,9 @@ IMAGE_ID := "pldin601/musicloud"
 CONTAINER_ID := "musicloud-service"
 GIT_CURRENT_COMMIT := $(shell git rev-parse --verify HEAD)
 
+test:
+	composer run phpunit
+
 build:
 	time docker build -t $(IMAGE_ID) --build-arg GIT_CURRENT_COMMIT=$(GIT_CURRENT_COMMIT) .
 
