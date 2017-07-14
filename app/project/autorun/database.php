@@ -9,18 +9,23 @@
  */
 
 use app\core\db\DatabaseConfiguration;
-use app\core\etc\Settings;
+use app\core\etc\Config;
 use app\core\modular\Event;
 
-Event::addFilter("database.configure", function (DatabaseConfiguration $config) {
+Event::addFilter("database.configure", function (DatabaseConfiguration $configuration) {
 
-    $settings = Settings::getInstance();
+    $config = Config::getInstance();
 
-    $config->setDsnLogin($settings->get("pdo", "login"));
-    $config->setDsnPassword($settings->get("pdo", "password"));
-    $config->setDsnUri($settings->get("pdo", "dsn"));
+    $dsn = sprintf(
+        'pgsql:host=%s;port=5432;dbname=%s',
+        $config->get('db.hostname'),
+        $config->get('db.database')
+    );
+
+    $configuration->setDsnLogin($config->get('db.username'));
+    $configuration->setDsnPassword($config->get('db.password'));
+    $configuration->setDsnUri($dsn);
 
     return $config;
 
 });
-
