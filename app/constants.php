@@ -7,10 +7,11 @@ const LIBRARIES_PATH            = "../app/lib/";
 const AUTORUN_SCRIPTS_PATH      = "../app/project/autorun/";
 const FIXED_ROUTES_PATH         = "../app/project/handlers/fixed/";
 const DYNAMIC_ROUTES_PATH       = "../app/project/handlers/dynamic/";
+const CONFIG_PATH               = '../config/';
 
 const CONTROLLER_PREFIX         = "app\\project\\handlers\\fixed\\";
 
-const INI_FILE_NAME             = "../app/config.ini";
+const INI_FILE_NAME             = "../app/config.ini"; // deprecated
 
 const PREVIEW_MIME              = "audio/mpeg";
 
