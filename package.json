@@ -1,0 +1,28 @@
+{
+  "name": "@pldin601/musicloud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pldin601/musicloud.git"
+  },
+  "author": "Roman Lakhtadyr <roman.lakhtadyr@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pldin601/musicloud/issues"
+  },
+  "homepage": "https://github.com/pldin601/musicloud#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.3.2",
+    "less": "^2.7.2"
+  }
+}

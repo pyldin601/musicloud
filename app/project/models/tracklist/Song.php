@@ -183,6 +183,8 @@ class Song implements \JsonSerializable {
      */
     public function preview() {
 
+        set_time_limit(0);
+
         Logger::printf("Requested preview for track %s", $this->track_id);
 
         if ($this->hasPreview()) {
@@ -196,22 +198,22 @@ class Song implements \JsonSerializable {
 
         header("Content-Type: " . PREVIEW_MIME);
 
-        $temp_file = TempFileProvider::generate("preview", ".mp3");
+//        $temp_file = TempFileProvider::generate("preview", ".mp3");
         $filename  = FileServer::getFileUsingId($this->track_data[TSongs::FILE_ID]);
 
-        $command_template = "%s -i %s -bufsize 256k -vn -ab 128k -ac 2 -acodec libmp3lame -f mp3 - | tee %s";
+        $command_template = "%s -i %s -bufsize 256k -vn -ab 320k -ac 2 -acodec libmp3lame -f mp3 -";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"),
-            escapeshellarg($filename), escapeshellarg($temp_file));
+            escapeshellarg($filename));
 
         passthru($command);
 
-        $temp_file_id = FileServer::register($temp_file, PREVIEW_MIME);
+//        $temp_file_id = FileServer::register($temp_file, PREVIEW_MIME);
 
-        Logger::printf("New preview registered => %s", $temp_file_id);
+//        Logger::printf("New preview registered => %s", $temp_file_id);
 
-        SongDao::updateSongUsingId($this->track_id, [
-            TSongs::PREVIEW_ID => $temp_file_id
-        ]);
+//        SongDao::updateSongUsingId($this->track_id, [
+//            TSongs::PREVIEW_ID => $temp_file_id
+//        ]);
 
     }
 

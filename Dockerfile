@@ -60,9 +60,12 @@ COPY composer.json composer.lock ./
 RUN composer install --no-plugins --no-scripts --no-dev
 
 COPY . ./
-VOLUME /tmp
 
 EXPOSE 8080
 
 ARG GIT_CURRENT_COMMIT="<unknown>"
 ENV GIT_CURRENT_COMMIT=${GIT_CURRENT_COMMIT}
+
+RUN mkdir -p /var/tmp/musicloud/files && /var/tmp/musicloud/temp
+
+VOLUME /var/tmp/musicloud
