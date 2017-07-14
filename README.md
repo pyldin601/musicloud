@@ -10,6 +10,13 @@ containers and any build utilities. It is tested on my home server with 600 GB o
 
 Today I'm going to restore developing it as pet project.
 
+## Run
+To start the service type:
+```shell
+docker-compose start
+```
+and open in your browser url: http://localhost:8080/.
+
 ## Checklist
 - [x] Dockerize
 - [ ] Improve error handling
