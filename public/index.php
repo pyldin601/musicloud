@@ -7,6 +7,11 @@ use app\core\logging\Logger;
 define('APP_ROOT_DIR', realpath('..'));
 define('APP_LIB_DIR', APP_ROOT_DIR . '/app/lib');
 
+if (!file_exists(APP_ROOT_DIR . '/vendor/autoload.php')) {
+    http_response_code(500);
+    echo '<h1>"vendor" directory not found!</h1>';
+    exit();
+}
 
 if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW']) || $_SERVER['PHP_AUTH_USER'] != "guest" || $_SERVER['PHP_AUTH_PW'] != "please") {
     header('WWW-Authenticate: Basic realm="Site is under construction"');
