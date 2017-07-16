@@ -11,11 +11,12 @@ containers and any build utilities. It is tested on my home server with 600 GB o
 Today I'm going to restore developing it as pet project.
 
 ## Run
-To start the service type:
 ```shell
-docker-compose up
+make docker-build docker-up
 ```
 and open in your browser url: http://localhost:8080/.
+
+Now it requires login and password what is **guest** : **please** accordingly. It is hardcoded and will be remove in future when authentication will be done.
 
 ## Checklist
 - [x] Dockerize
