@@ -105,10 +105,10 @@ MusicLoud.controller("UploadController", ["$rootScope", "TrackService", "$route"
                                 upload.data.promise.success(function (data) {
                                     upload.action.next();
                                 }).error(function () {
-                                    upload.action.next();
+                                    TrackService.unlink({ song_id: id }).then(function () {
+                                        return upload.action.next();
+                                    });
                                 });
-                            }).error(function () {
-                                console.error("Track(s) could not be uploaded");
                             });
 
                         });
