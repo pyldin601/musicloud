@@ -14,8 +14,3 @@ COPY . ./
 
 ARG GIT_CURRENT_COMMIT="<unknown>"
 ENV GIT_CURRENT_COMMIT=${GIT_CURRENT_COMMIT}
-
-RUN mkdir -m 0777 -p /var/tmp/musicloud/files && \
-    mkdir -m 0777 -p /var/tmp/musicloud/temp
-
-VOLUME /var/tmp/musicloud
