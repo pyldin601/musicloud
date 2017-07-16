@@ -8,7 +8,7 @@ containers and any build utilities. It is tested on my home server with 600 GB o
 ## Screenshot
 ![Screenshot 1](/docs/musicloud.png?raw=true)
 
-Today I'm going to restore developing it as pet project.
+Today I'm going to continue making it as pet project.
 
 ## Run
 ```shell
