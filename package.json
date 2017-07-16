@@ -8,7 +8,8 @@
   },
   "scripts": {
     "gulp": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "rimraf": "rimraf",
+    "test": "exit 0"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-less": "^3.3.2",
-    "less": "^2.7.2"
+    "less": "^2.7.2",
+    "rimraf": "^2.6.1"
   }
 }

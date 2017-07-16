@@ -2,24 +2,37 @@ IMAGE_ID := "pldin601/musicloud"
 CONTAINER_ID := "musicloud-service"
 GIT_CURRENT_COMMIT := $(shell git rev-parse --verify HEAD)
 
-install:
+local-install:
 	composer install
 	npm install
 
-test:
-	composer run phpunit
+local-clean:
+	npm run rimraf -- vendor/ node_modules/
 
-build:
-	time docker build -t $(IMAGE_ID) --build-arg GIT_CURRENT_COMMIT=$(GIT_CURRENT_COMMIT) .
+local-build:
+	npm run gulp
 
-run:
-	docker run --rm --env-file "$(CURDIR)/.env" --name $(CONTAINER_ID) -p 8080:8080 $(IMAGE_ID)
+local-test:
+	composer test
+	npm test
 
-debug:
-	docker run --rm -it --env-file "$(CURDIR)/.env" --name $(CONTAINER_ID) $(IMAGE_ID) bash
+docker-build:
+	docker-compose build
 
-serve:
-	docker run --rm -it --env-file "$(CURDIR)/.env" --name $(CONTAINER_ID) -p 80:6060 -v "$(CURDIR)":/usr/app/ $(IMAGE_ID)
+docker-up:
+	docker-compose up -d
+
+docker-start:
+	docker-compose start
+
+docker-stop:
+	docker-compose stop
+
+docker-clean:
+	docker-compose down
+
+docker-bash:
+	docker-compose run web bash
 
 deploy:
 	git diff-index --quiet HEAD -- && docker push $(IMAGE_ID) || (echo 'You have uncommited changes.' && exit 1)
