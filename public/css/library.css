@@ -219,7 +219,7 @@
   }
 }
 .cover-background {
-  background: #fcfcfc url("/public/images/default.directory.jpg") center center no-repeat;
+  background: #fcfcfc url("/images/default.directory.jpg") center center no-repeat;
   background-size: cover;
   width: 200px;
   height: 200px;
@@ -307,7 +307,7 @@ input[type="button"] {
   margin-bottom: 42px;
 }
 .list-view .list-item .artist-list-content {
-  background: #f0f0f0 url("/public/images/default.directory.jpg") no-repeat center center;
+  background: #f0f0f0 url("/images/default.directory.jpg") no-repeat center center;
   background-size: cover;
   left: 4px;
   right: 4px;
@@ -1094,7 +1094,7 @@ a {
   display: table-cell;
 }
 .artwork-holder {
-  background: #fcfcfc url("/public/images/default.directory.jpg") center center no-repeat;
+  background: #fcfcfc url("/images/default.directory.jpg") center center no-repeat;
   background-size: cover;
 }
 .artwork-holder img {

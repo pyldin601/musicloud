@@ -199,7 +199,7 @@
                         player.playlist.position.position = e.jPlayer.status.currentTime;
                     });
                 },
-                swfPath: "/public/js/application/libs/jplayer/",
+                swfPath: "/js/application/libs/jplayer/",
                 supplied: "mp3",
                 solution: "html"
             });

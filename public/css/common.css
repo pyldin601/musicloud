@@ -56,7 +56,7 @@ a {
   display: table-cell;
 }
 .artwork-holder {
-  background: #fcfcfc url("/public/images/default.directory.jpg") center center no-repeat;
+  background: #fcfcfc url("/images/default.directory.jpg") center center no-repeat;
   background-size: cover;
 }
 .artwork-holder img {
