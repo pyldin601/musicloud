@@ -1,4 +1,4 @@
-FROM pldin601/musicloud-base
+FROM pldin601/musicloud-image
 
 MAINTAINER Roman Lakhtadyr <roman.lakhtadyr@gmail.com>
 
