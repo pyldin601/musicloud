@@ -10,7 +10,7 @@ services:
       - ./docker/001-init.sql:/docker-entrypoint-initdb.d/001-init.sql
       - ./docker/002-guest.sql:/docker-entrypoint-initdb.d/002-guest.sql
   web:
-    image: 'pldin601/musicloud-image'
+    build: .
     ports:
       - '8080:8080'
     environment:
@@ -20,5 +20,7 @@ services:
       DB_PASSWORD: musicloud
     volumes:
       - .:/usr/app/
+      - /usr/app/vendor
+      - /usr/app/node_modules
     links:
       - db
