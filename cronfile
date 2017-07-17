@@ -1,0 +1,4 @@
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+0 5   * * * curl -X POST http://guest:please@localhost:8080/cron/cleanFileSystem
+* *   * * * curl -X POST http://guest:please@localhost:8080/cron/generatePeaks
