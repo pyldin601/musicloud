@@ -37,7 +37,7 @@ docker-clean:
 docker-bash:
 	docker-compose exec web bash
 
-deploy:
+docker-deploy:
 	git diff-index --quiet HEAD -- && docker push $(IMAGE_ID) || (echo 'You have uncommited changes.' && exit 1)
 
 .PHONY: build test
