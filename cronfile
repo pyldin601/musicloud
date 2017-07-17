@@ -1,2 +1,2 @@
-0 5   * * * root curl -X POST http://guest:please@localhost:8080/cron/cleanFileSystem
-* *   * * * root curl -X POST http://guest:please@localhost:8080/cron/generatePeaks
+0 5   * * * root /usr/bin/curl -X POST http://guest:please@localhost:8080/cron/cleanFileSystem
+* *   * * * root /usr/bin/curl -X POST http://guest:please@localhost:8080/cron/generatePeaks

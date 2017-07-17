@@ -30,5 +30,5 @@ COPY . ./
 ARG GIT_CURRENT_COMMIT="<unknown>"
 ENV GIT_CURRENT_COMMIT=${GIT_CURRENT_COMMIT}
 
-COPY cronfile /etc/cron.d/musicloud.cronfile
-RUN chmod 0644 /etc/cron.d/musicloud.cronfile
+COPY cronfile /etc/cron.d/musicloud
+RUN chmod 0644 /etc/cron.d/musicloud
