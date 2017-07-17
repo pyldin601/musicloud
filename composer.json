@@ -11,12 +11,14 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "migrate": "migrate"
     },
     "require": {
         "php": ">=7.1.5",
         "ext-pdo_pgsql": "*",
-        "josegonzalez/dotenv": "^3.0"
+        "josegonzalez/dotenv": "^3.0",
+        "php-database-migration/php-database-migration": "3.6.*"
     },
     "autoload": {
         "psr-4": {}
