@@ -18,6 +18,17 @@ class SongDao {
     const UNUSED_PER_REQUEST_MAX = 10;
 
     /**
+     * @return SelectQuery
+     */
+    public static function scopeWithoutPeaks()
+    {
+        return (new SelectQuery(TSongs::_NAME))
+            ->select(TSongs::FILE_NAME, TSongs::FILE_ID, TSongs::ID)
+            ->where(TSongs::PEAKS_ID . " IS NULL")
+            ->where(TSongs::FILE_ID . " IS NOT NULL");
+    }
+
+    /**
      * @param $song_id
      * @return mixed
      */
