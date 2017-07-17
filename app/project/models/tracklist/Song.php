@@ -198,22 +198,13 @@ class Song implements \JsonSerializable {
 
         header("Content-Type: " . PREVIEW_MIME);
 
-//        $temp_file = TempFileProvider::generate("preview", ".mp3");
         $filename  = FileServer::getFileUsingId($this->track_data[TSongs::FILE_ID]);
 
-        $command_template = "%s -i %s -bufsize 256k -vn -ab 320k -ac 2 -acodec libmp3lame -f mp3 -";
+        $command_template = "%s -i %s -bufsize 256k -vn -ab 192k -ac 2 -acodec libmp3lame -f mp3 -";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"),
             escapeshellarg($filename));
 
         passthru($command);
-
-//        $temp_file_id = FileServer::register($temp_file, PREVIEW_MIME);
-
-//        Logger::printf("New preview registered => %s", $temp_file_id);
-
-//        SongDao::updateSongUsingId($this->track_id, [
-//            TSongs::PREVIEW_ID => $temp_file_id
-//        ]);
 
     }
 
