@@ -37,7 +37,6 @@ class DoCron implements RouteHandler
                     $file_id = FileServer::registerByContent(json_encode($peaks), "application/json");
                     SongDao::updateSongUsingId($row[TSongs::ID], [TSongs::PEAKS_ID => $file_id]);
                 });
-            sleep(1);
         });
     }
 }
