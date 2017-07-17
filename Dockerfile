@@ -11,6 +11,10 @@ RUN apt-get update && \
         echo; \
         echo "[program:cron]"; \
         echo "command=cron -f"; \
+        echo "stdout_logfile=/dev/stdout"; \
+        echo "stdout_logfile_maxbytes=0"; \
+        echo "stderr_logfile=/dev/stderr"; \
+        echo "stderr_logfile_maxbytes=0"; \
     } | tee -a /etc/supervisor/supervisord.conf
 
 WORKDIR /usr/app/
