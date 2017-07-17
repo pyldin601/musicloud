@@ -21,16 +21,13 @@ docker-build:
 	docker-compose build
 
 docker-up:
-	docker-compose up
-
-docker-start:
-	docker-compose start
+	docker-compose up -d
 
 docker-stop:
-	docker-compose stop
-
-docker-clean:
 	docker-compose down
+
+docker-logs:
+	docker-compose logs -f web
 
 docker-bash:
 	docker-compose exec web bash
