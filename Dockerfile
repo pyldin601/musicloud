@@ -8,9 +8,14 @@ RUN apt-get update && \
     apt-get clean && \
 
     { \
+        echo; \
         echo "[program:cron]"; \
         echo "command=cron -f"; \
-    } | tee -a /etc/supervisor/conf.d/cron.conf
+        echo "stdout_logfile=/dev/stdout"; \
+        echo "stdout_logfile_maxbytes=0"; \
+        echo "stderr_logfile=/dev/stderr"; \
+        echo "stderr_logfile_maxbytes=0"; \
+    } | tee -a /etc/supervisor/supervisord.conf
 
 WORKDIR /usr/app/
 
@@ -25,8 +30,5 @@ COPY . ./
 ARG GIT_CURRENT_COMMIT="<unknown>"
 ENV GIT_CURRENT_COMMIT=${GIT_CURRENT_COMMIT}
 
-ARG CRON_ENDPOINT="http://guest:please@localhost:8080/cron"
-RUN ({ \
-        echo "0 5   * * * curl -X POST ${CRON_ENDPOINT}/cleanFileSystem"; \
-        echo "* *   * * * curl -X POST ${CRON_ENDPOINT}/generatePeaks"; \
-    } | tee /etc/cron.d/musicloud-cron) && chmod 0644 /etc/cron.d/musicloud-cron
+COPY cronfile /etc/cron.d/musicloud.cronfile
+RUN chmod 0644 /etc/cron.d/musicloud.cronfile
