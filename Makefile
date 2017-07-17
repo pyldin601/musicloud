@@ -1,4 +1,4 @@
-IMAGE_ID := "pldin601/musicloud"
+IMAGE_ID := "pldin601/musicloud-service"
 CONTAINER_ID := "musicloud-service"
 GIT_CURRENT_COMMIT := $(shell git rev-parse --verify HEAD)
 
@@ -38,6 +38,6 @@ docker-bash:
 	docker-compose exec web bash
 
 docker-deploy:
-	git diff-index --quiet HEAD -- && docker push $(IMAGE_ID) || (echo 'You have uncommited changes.' && exit 1)
+	docker push $(IMAGE_ID)
 
 .PHONY: build test
