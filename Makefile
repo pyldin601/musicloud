@@ -38,6 +38,6 @@ docker-bash:
 	docker-compose exec web bash
 
 docker-deploy:
-	docker push $(IMAGE_ID)
+	docker build $(IMAGE_ID) . && docker push $(IMAGE_ID)
 
 .PHONY: build test
