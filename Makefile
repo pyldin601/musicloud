@@ -1,6 +1,4 @@
 IMAGE_ID := "pldin601/musicloud-service"
-CONTAINER_ID := "musicloud-service"
-GIT_CURRENT_COMMIT := $(shell git rev-parse --verify HEAD)
 
 local-install:
 	composer install
@@ -38,6 +36,4 @@ docker-bash:
 	docker-compose exec web bash
 
 docker-deploy:
-	docker build $(IMAGE_ID) . && docker push $(IMAGE_ID)
-
-.PHONY: build test
+	docker build -t $(IMAGE_ID) . && docker push $(IMAGE_ID)
