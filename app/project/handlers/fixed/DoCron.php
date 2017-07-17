@@ -10,20 +10,22 @@ use app\project\models\tracklist\Songs;
 use app\project\persistence\db\dao\SongDao;
 use app\project\persistence\db\tables\TSongs;
 use app\project\persistence\fs\FileServer;
+use malkusch\lock\mutex\FlockMutex;
 
-class DoJobs implements RouteHandler
+class DoCron implements RouteHandler
 {
-    public function doGet()
+    public function doPost()
     {
-        Songs::wipeOldPreviews();
+        set_time_limit(0);
 
-        FileServer::removeUnused();
-        FileServer::removeDead();
+        $mutex = new FlockMutex(fopen(__FILE__, 'r'));
 
-        $limit = 30;
+        $mutex->synchronized(function () {
+            Songs::wipeOldPreviews();
 
-        while ($limit-- > 0) {
-            set_time_limit(30);
+            FileServer::removeUnused();
+            FileServer::removeDead();
+
             (new SelectQuery(TSongs::_NAME))
                 ->select(TSongs::FILE_NAME, TSongs::FILE_ID, TSongs::ID)
                 ->where(TSongs::PEAKS_ID . " IS NULL")
@@ -36,6 +38,6 @@ class DoJobs implements RouteHandler
                     SongDao::updateSongUsingId($row[TSongs::ID], [TSongs::PEAKS_ID => $file_id]);
                 });
             sleep(1);
-        }
+        });
     }
 }
