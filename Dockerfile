@@ -22,4 +22,9 @@ ENV GIT_CURRENT_COMMIT=${GIT_CURRENT_COMMIT}
 
 ARG CRON_ENDPOINT="http://guest:please@localhost:8080/cron"
 RUN echo "0 5   * * * root curl -X POST ${CRON_ENDPOINT}/cleanFileSystem" > /etc/cron.d/cleanFileSystem && \
-    echo '* *   * * * root curl -X POST ${CRON_ENDPOINT}/generatePeaks' > /etc/cron.d/generatePeaks
+    chmod 0644 /etc/cron.d/cleanFileSystem && \
+
+    echo "* *   * * * root curl -X POST ${CRON_ENDPOINT}/generatePeaks" > /etc/cron.d/generatePeaks && \
+    chmod 0644 /etc/cron.d/generatePeaks && \
+
+    cron
