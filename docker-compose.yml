@@ -6,9 +6,6 @@ services:
     environment:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
-    volumes:
-      - ./db/001-init.sql:/docker-entrypoint-initdb.d/001-init.sql
-      - ./db/002-guest.sql:/docker-entrypoint-initdb.d/002-guest.sql
   web:
     build: .
     ports:
@@ -22,5 +19,7 @@ services:
       - .:/usr/app/
       - /usr/app/vendor
       - /usr/app/node_modules
+    depends_on:
+      - db
     links:
       - db

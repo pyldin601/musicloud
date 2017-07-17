@@ -16,11 +16,14 @@ local-test:
 	composer test
 	npm test
 
+local-migrate:
+	composer run migrate:up env
+
 docker-build:
 	docker-compose build
 
 docker-up:
-	docker-compose up -d
+	docker-compose up
 
 docker-start:
 	docker-compose start
