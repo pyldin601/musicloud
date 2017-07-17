@@ -5,8 +5,7 @@ MAINTAINER Roman Lakhtadyr <roman.lakhtadyr@gmail.com>
 RUN apt-get update && \
     apt-get install -y cron && \
     apt-get clean && \
-    touch /var/log/cron.log && \
-    cron
+    touch /var/log/cron.log
 
 WORKDIR /usr/app/
 
