@@ -8,9 +8,10 @@ RUN apt-get update && \
     apt-get clean && \
 
     { \
+        echo; \
         echo "[program:cron]"; \
         echo "command=cron -f"; \
-    } | tee -a /etc/supervisor/conf.d/cron.conf
+    } | tee -a /etc/supervisor/supervisord.conf
 
 WORKDIR /usr/app/
 
