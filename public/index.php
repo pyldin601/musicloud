@@ -22,8 +22,8 @@ if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW']) || $_SERV
 
 $used_before = memory_get_usage();
 
-require_once "../app/loader.php";
-require_once "../vendor/autoload.php";
+require_once APP_ROOT_DIR . "/app/loader.php";
+require_once APP_ROOT_DIR . "/vendor/autoload.php";
 
 if (file_exists(APP_ROOT_DIR . '/.env')) {
     $loader = new Loader(APP_ROOT_DIR . '/.env');

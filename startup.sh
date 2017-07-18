@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# Initialize migration
-composer run migrate migrate:init env
-
-# Run pending migrations
-composer run migrate migrate:up env
+# Wait for database ready to handle connections
+wait-for-it db:5432 -- \
+    composer run migrate migrate:init env && \
+    composer run migrate migrate:up env
