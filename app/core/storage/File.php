@@ -26,23 +26,23 @@ namespace app\core\storage;
 class File
 {
     /**
-     * @var StreamProvider
+     * @var callable
      */
     private $streamProvider;
 
     /**
-     * @var string
+     * @var array
      */
-    private $contentType;
+    private $metadata;
 
     /**
-     * @param StreamProvider $streamProvider
-     * @param string $contentType
+     * @param callable $streamProvider
+     * @param array $metadata
      */
-    public function __construct(StreamProvider $streamProvider, string $contentType)
+    public function __construct(callable $streamProvider, array $metadata)
     {
         $this->streamProvider = $streamProvider;
-        $this->contentType = $contentType;
+        $this->metadata = $metadata;
     }
 
     /**
@@ -52,7 +52,7 @@ class File
     public function withStream(callable $callback)
     {
         try {
-            $stream = $this->streamProvider->openStream();
+            $stream = ($this->streamProvider)();
             return $callback($stream);
         } finally {
             fclose($stream);
@@ -60,10 +60,10 @@ class File
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getContentType(): string
+    public function getMetadata(): array
     {
-        return $this->contentType;
+        return $this->metadata;
     }
 }

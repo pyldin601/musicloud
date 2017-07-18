@@ -28,9 +28,9 @@ interface FileSystem
     /**
      * @param string $path
      * @param $content
-     * @param string $contentType
+     * @param array $metadata
      */
-    public function save(string $path, $content, string $contentType): void;
+    public function save(string $path, $content, array $metadata): void;
 
     /**
      * @param string $path
