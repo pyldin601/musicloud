@@ -29,19 +29,13 @@ class LocalFileSystem implements FileSystem
      * @var string
      */
     private $rootDir;
-    /**
-     * @var string
-     */
-    private $pathSeparator;
 
     /**
      * @param string $rootDir
-     * @param string $pathSeparator
      */
-    public function __construct(string $rootDir, string $pathSeparator = '/')
+    public function __construct(string $rootDir)
     {
         $this->rootDir = $rootDir;
-        $this->pathSeparator = $pathSeparator;
     }
 
     /**
@@ -49,6 +43,7 @@ class LocalFileSystem implements FileSystem
      */
     public function save(string $path, $content, array $metadata): void
     {
+        $this->createDirsFor($path);
         $this->withFiles($path, function (string $contentFile, string $metadataFile) use ($content, $metadata) {
             file_put_contents($contentFile, $content);
             file_put_contents($metadataFile, json_encode($metadata));
@@ -90,14 +85,33 @@ class LocalFileSystem implements FileSystem
     }
 
     /**
+     * Create directory for uploaded file
+     * @param string $path
+     */
+    private function createDirsFor(string $path): void
+    {
+        $this->withFiles($path, function ($contentFile) {
+            $parentDir = pathinfo($contentFile, PATHINFO_DIRNAME);
+            if (file_exists($parentDir)) {
+                return;
+            }
+            if (!mkdir($parentDir, 0777, true)) {
+                throw new FileSystemException(
+                    "Could not create directory for content file: ${contentFile}"
+                );
+            }
+        });
+    }
+
+    /**
      * @param string $path
      * @return string
      */
     private function normalize(string $path): string
     {
-        return rtrim($this->rootDir, $this->pathSeparator)
-            . $this->pathSeparator
-            . ltrim($path, $this->pathSeparator);
+        return rtrim($this->rootDir, DIRECTORY_SEPARATOR)
+            . DIRECTORY_SEPARATOR
+            . ltrim($path, DIRECTORY_SEPARATOR);
     }
 
     private function withFiles(string $path, callable $callable)
