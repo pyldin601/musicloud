@@ -193,6 +193,13 @@ class Router implements SingletonInterface {
                 throw new WrongRouteHandlerException;
             }
 
+            if ($instance instanceof BaseRouteHandler) {
+                $middleware = $instance->middleware;
+                foreach ($middleware as $item) {
+                    Injector::run($item);
+                }
+            }
+
             $method = "do" . ucfirst(strtolower($_SERVER["REQUEST_METHOD"]));
 
             if (!method_exists($instance, $method)) {

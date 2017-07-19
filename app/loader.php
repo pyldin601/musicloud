@@ -89,7 +89,7 @@ function static_class_init($class_name) {
     if (class_exists($class_name) && method_exists($class_name, STATIC_CLASS_INIT_METHOD)) {
         $ref = new ReflectionMethod($class_name, STATIC_CLASS_INIT_METHOD);
         if ($ref->isStatic()) {
-            Injector::run($ref);
+            Injector::run([$class_name, STATIC_CLASS_INIT_METHOD]);
         }
     }
 }

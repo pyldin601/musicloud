@@ -21,28 +21,14 @@
  * SOFTWARE.
  */
 
-namespace app\project\handlers\fixed\cron;
+namespace app\project\handlers\base;
 
-use app\core\logging\Logger;
-use app\libs\WaveformGenerator;
-use app\project\handlers\base\BaseCronRouteHandler;
-use app\project\persistence\db\dao\SongDao;
-use app\project\persistence\db\tables\TSongs;
-use app\project\persistence\fs\FileServer;
-use malkusch\lock\mutex\FlockMutex;
+use app\core\router\BaseRouteHandler;
+use app\project\handlers\middleware\AllowLocalClient;
 
-class DoGeneratePeaks extends BaseCronRouteHandler
+class BaseCronRouteHandler extends BaseRouteHandler
 {
-    public function doPost()
-    {
-        (new FlockMutex(fopen(__FILE__, 'r')))->synchronized(function () {
-            SongDao::scopeWithoutPeaks()
-                ->eachRow(function ($row) {
-                    Logger::printf("Creating peaks for file: %s", $row[TSongs::FILE_NAME]);
-                    $peaks = WaveformGenerator::generate(FileServer::getFileUsingId($row[TSongs::FILE_ID]));
-                    $file_id = FileServer::registerByContent(json_encode($peaks), "application/json");
-                    SongDao::updateSongUsingId($row[TSongs::ID], [TSongs::PEAKS_ID => $file_id]);
-                });
-        });
-    }
+    public $middleware = [
+        AllowLocalClient::class
+    ];
 }
