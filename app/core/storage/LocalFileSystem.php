@@ -113,9 +113,26 @@ class LocalFileSystem implements FileSystem
      */
     private function normalize(string $path): string
     {
-        return rtrim($this->rootDir, DIRECTORY_SEPARATOR)
-            . DIRECTORY_SEPARATOR
-            . ltrim($path, DIRECTORY_SEPARATOR);
+        return $this->rootDir . DIRECTORY_SEPARATOR . $this->normalizeBounds($path);
+    }
+
+    private function normalizeBounds(string $path): string
+    {
+        $oldParts = explode(DIRECTORY_SEPARATOR, $path);
+        $newParts = [];
+
+        foreach ($oldParts as $part) {
+            if ($part === '.' || $part === '') {
+                continue;
+            }
+            if ($part === '..') {
+                array_pop($newParts);
+                continue;
+            }
+            $newParts[] = $part;
+        }
+
+        return implode(DIRECTORY_SEPARATOR, $newParts);
     }
 
     private function withFiles(string $path, callable $callable)
