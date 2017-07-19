@@ -46,7 +46,7 @@ class LocalFileSystem implements FileSystem
         $this->createDirsFor($path);
         $this->withFiles($path, function (string $contentFile, string $metadataFile) use ($content, $metadata) {
             file_put_contents($contentFile, $content);
-            file_put_contents($metadataFile, json_encode($metadata));
+            file_put_contents($metadataFile, json_encode($metadata, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         });
     }
 
@@ -66,6 +66,10 @@ class LocalFileSystem implements FileSystem
      */
     public function get(string $path): File
     {
+        if (!$this->exists($path)) {
+            throw new FileSystemException("File not found: $path");
+        }
+
         return $this->withFiles($path, function (string $contentFile, string $metadataFile) {
             $metadata = json_decode(file_get_contents($metadataFile), true);
             return new File(function () use ($contentFile) {
