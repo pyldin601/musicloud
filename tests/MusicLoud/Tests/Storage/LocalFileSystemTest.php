@@ -44,7 +44,7 @@ class LocalFileSystemTest extends TestCase
     public function setUp()
     {
         $this->root = vfsStream::setup();
-        $this->fs = new LocalFileSystem($this->root->path());
+        $this->fs = new LocalFileSystem($this->root->url());
     }
 
     public function testSaveReadAndFileExists()
