@@ -31,8 +31,12 @@ class WaveformGenerator {
         set_time_limit(0);
 
         $temp_file = TempFileProvider::generate("peaks", ".raw");
-        $command = sprintf("%s -v quiet -i %s -ac 1 -f u8 -ar 11025 -acodec pcm_u8 %s",
-            self::$ffmpeg_cmd, escapeshellarg($file_name), escapeshellarg($temp_file));
+        $command = sprintf(
+            "nice %s -v quiet -i %s -ac 1 -f u8 -ar 11025 -acodec pcm_u8 %s",
+            self::$ffmpeg_cmd,
+            escapeshellarg($file_name),
+            escapeshellarg($temp_file)
+        );
 
         shell_exec($command);
 

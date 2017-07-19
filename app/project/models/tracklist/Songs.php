@@ -32,7 +32,6 @@ class Songs {
 
     public static function class_init() {
         self::$me = resource(LoggedIn::class);
-        error_log(json_encode(self::$me));
     }
 
     public static function create() {
