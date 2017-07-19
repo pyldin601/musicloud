@@ -48,4 +48,10 @@ interface FileSystem
      * @return bool
      */
     public function exists(string $path): bool;
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    public function url(string $path): string;
 }

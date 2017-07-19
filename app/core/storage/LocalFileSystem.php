@@ -89,6 +89,16 @@ class LocalFileSystem implements FileSystem
     }
 
     /**
+     * @inheritDoc
+     */
+    public function url(string $path): string
+    {
+        return $this->withFiles($path, function (string $contentFile) {
+            return $contentFile;
+        });
+    }
+
+    /**
      * Create directory for uploaded file
      * @param string $path
      */

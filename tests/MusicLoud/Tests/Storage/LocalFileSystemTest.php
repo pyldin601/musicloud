@@ -76,4 +76,12 @@ class LocalFileSystemTest extends TestCase
         $this->fs->delete('foo/file.txt');
         $this->assertFalse($this->fs->exists('foo/file.txt'));
     }
+
+    public function testUrl()
+    {
+        $this->assertEquals(
+            'vfs://root/foo/bar/baz.txt.blob',
+            $this->fs->url('foo/bar/baz.txt')
+        );
+    }
 }
