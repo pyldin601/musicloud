@@ -9,7 +9,8 @@
   "scripts": {
     "gulp": "gulp",
     "rimraf": "rimraf",
-    "test": "exit 0"
+    "test": "exit 0",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
@@ -22,9 +23,18 @@
   },
   "homepage": "https://github.com/pldin601/musicloud#readme",
   "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-2": "^6.24.1",
     "gulp": "^3.9.1",
     "gulp-less": "^3.3.2",
     "less": "^2.7.2",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "webpack": "^3.3.0"
+  },
+  "dependencies": {
+    "angular": "^1.6.5"
   }
 }

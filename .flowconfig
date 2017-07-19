@@ -1,0 +1,10 @@
+[ignore]
+
+[include]
+src/scripts/.*
+
+[libs]
+
+[options]
+
+[lints]
