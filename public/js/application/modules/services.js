@@ -7,66 +7,6 @@ var MusicLoud = angular.module("MusicLoud");
 
 
 
-MusicLoud.factory("GroupingService", [function () {
-
-    return function (key) {
-
-        var groups = [],
-
-            getGroup = function (k) {
-                if (groups.length == 0 || groups[groups.length - 1].key !== k) {
-                    groups.push({ key: k, items: [] })
-                }
-                return groups[groups.length - 1].items;
-            };
-
-        console.log("Initialized groups with key " + key);
-        return {
-            addItems: function (coll) {
-                console.log("Adding " + coll.length + " items into groups");
-                for (var i = 0, length = coll.length; i < length; i += 1) {
-                    getGroup(coll[i][key]).push(coll[i]);
-                }
-            },
-            removeItems: function (itemKey, coll) {
-                for (var j = groups.length - 1; j >= 0; j--) {
-                    for (var i = groups[j].items.length - 1; i >= 0; i--) {
-                        for (var k = coll.length - 1; k >= 0; k--) {
-                            if (groups[j].items[i][itemKey] == coll[k]) {
-                                console.log("Removing " + coll[k] + " from group " + groups[j].key);
-                                groups[j].items.splice(i, 1);
-                                break;
-                            }
-                        }
-                    }
-                    if (groups[j].items.length == 0) {
-                        groups.splice(j, 1);
-                    }
-                }
-            },
-            removeGroup: function (group) {
-                for (var i = groups.length - 1; i >= 0; i--) {
-                    if (groups[i].key === group) {
-                        groups.splice(i, 1);
-                        break;
-                    }
-                }
-            },
-            getGroups: function () {
-                console.log("Requested groups collection");
-                return groups;
-            },
-            clear: function () {
-                console.log("Cleaning groups");
-                while (groups.length) {
-                    groups.shift();
-                }
-            }
-        }
-    };
-
-}]);
-
 
 MusicLoud.factory("SyncService", [function () {
     var trackSync  = sync("id");
