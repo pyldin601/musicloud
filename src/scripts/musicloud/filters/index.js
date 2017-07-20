@@ -19,25 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
 
-const services = {
-  AccountService,
-  TrackService,
-  HeadersService,
-  PlaylistService,
-  SearchService,
-  GroupingService,
-  SyncService,
-  ModalWindow,
-};
+const filters = {};
 
 export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+  Object.keys(filters).forEach(name => app.filter(name, filters[name]));

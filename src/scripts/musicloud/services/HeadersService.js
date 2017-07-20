@@ -19,25 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
 
-const services = {
-  AccountService,
-  TrackService,
-  HeadersService,
-  PlaylistService,
-  SearchService,
-  GroupingService,
-  SyncService,
-  ModalWindow,
-};
-
-export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+export default ["$http", ($http) => ({
+  artist: (album_artist) =>
+    $http.get("/api/headers/artist?" + serialize_uri({ album_artist: album_artist })),
+  genre: (genre) =>
+    $http.get("/api/headers/genre?" + serialize_uri({ genre: genre })),
+})];

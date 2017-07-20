@@ -19,25 +19,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
 
-const services = {
-  AccountService,
-  TrackService,
-  HeadersService,
-  PlaylistService,
-  SearchService,
-  GroupingService,
-  SyncService,
-  ModalWindow,
-};
-
-export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+export default ["$http", ($http) => ({
+  get: (playlistId) =>
+    $http.get("/api/playlist/get?" + serialize_uri({ playlist_id: playlistId })),
+  list: () =>
+    $http.get("/api/catalog/playlists"),
+  tracks: (playlistId) =>
+    $http.get("/api/catalog/playlistTracks?" + serialize_uri({ playlist_id: playlistId })).then(function (response) {
+      return deflateCollection(response.data);
+    }),
+  addTracks: (playlist, coll) =>
+    $http.post("/api/playlist/addTracks", {
+      playlist_id: playlist.id,
+      track_id: coll.map(field("id")).join(",")
+    }),
+  removeTracks: (coll) =>
+    $http.post("/api/playlist/removeTracks", {
+      link_id: coll.map(field("link_id")).filter(pass).join(",")
+    }),
+  create: (name) =>
+    $http.post("/api/playlist/create", {
+      name: name
+    }),
+  remove: (playlist) =>
+    $http.post("/api/playlist/delete", {
+      playlist_id: playlist.id
+    })
+})];

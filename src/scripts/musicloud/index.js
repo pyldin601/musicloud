@@ -21,5 +21,15 @@
  */
 import app from './app';
 import services from './services';
+import directives from './directives';
+import controllers from './controllers';
+import filters from './filters';
 
-services(app);
+const components = [
+  services,
+  directives,
+  controllers,
+  filters
+];
+
+components.forEach(apply => apply(app));

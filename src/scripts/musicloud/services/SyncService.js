@@ -19,25 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
 
-const services = {
-  AccountService,
-  TrackService,
-  HeadersService,
-  PlaylistService,
-  SearchService,
-  GroupingService,
-  SyncService,
-  ModalWindow,
-};
+export default [() => {
+  const trackSync = sync("id");
+  const artistSync = sync("id");
+  const albumSync = sync("id");
+  return {
+    tracks: trackSync,
+    track: track => trackSync([track]).shift(),
 
-export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+    artists: artistSync,
+    artist: artist => artistSync([artist]).shift(),
+
+    albums: albumSync,
+    album: album => albumSync([album]).shift()
+  };
+}];
