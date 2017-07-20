@@ -8,29 +8,6 @@ var MusicLoud = angular.module("MusicLoud");
 
 
 
-MusicLoud.factory("SyncService", [function () {
-    var trackSync  = sync("id");
-    var artistSync = sync("id");
-    var albumSync  = sync("id");
-    return {
-        tracks: trackSync,
-        track: function (track) {
-            return trackSync([track]).shift();
-        },
-
-        artists: artistSync,
-        artist: function (artist) {
-            return artistSync([artist]).shift();
-        },
-
-        albums: albumSync,
-        album: function (album) {
-            return albumSync([album]).shift();
-        }
-    };
-}]);
-
-
 
 MusicLoud.service("ModalWindow", ["$templateRequest", "$controller", "$rootScope", "$compile", "$document",
     function ($templateRequest, $controller, $rootScope, $compile, $document) {
