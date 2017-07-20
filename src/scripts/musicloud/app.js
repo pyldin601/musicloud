@@ -21,8 +21,7 @@
  */
 import angular from 'angular';
 
-// const app = angular.module('MusicLoud', []);
+const app = angular.module('MusicLoud', ["ngRoute", "ngCookies", "httpPostFix",
+  "infinite-scroll", "MLContextMenu", "indexedDB"]);
 
-
-
-export default 1;
+export default app;
