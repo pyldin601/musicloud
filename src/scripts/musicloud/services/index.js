@@ -26,6 +26,7 @@ import PlaylistService from './PlaylistService';
 import SearchService from './SearchService';
 import GroupingService from './GroupingService';
 import SyncService from './SyncService';
+import ModalWindow from './ModalWindow';
 
 const services = {
   AccountService,
@@ -35,6 +36,7 @@ const services = {
   SearchService,
   GroupingService,
   SyncService,
+  ModalWindow,
 };
 
 export default (app) =>
