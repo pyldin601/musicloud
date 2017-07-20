@@ -19,10 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
 
-const services = { AccountService, TrackService };
+const directives = {};
 
 export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+  Object.keys(directives).forEach(name => app.directive(name, directives[name]));

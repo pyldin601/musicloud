@@ -18,48 +18,48 @@ var MusicLoud = angular.module("MusicLoud");
 //         }
 //     };
 // }]);
-
-MusicLoud.factory("TrackService", ["$http", function ($http) {
-    return {
-        create: function () {
-            return $http.post("/api/track/create", Empty);
-        },
-        upload: function (data, callback) {
-            return $.ajax({
-                xhr: function() {
-                    var xhr = new window.XMLHttpRequest();
-                    xhr.upload.addEventListener("progress", callback, false);
-                    return xhr;
-                },
-                url: "/api/track/upload",
-                type: "POST",
-                data: data,
-                processData: false,
-                contentType: false
-            });
-        },
-        unlink: function (data) {
-            return $http.post("/api/track/delete", data);
-        },
-        deleteByArtist: function (data) {
-            return $http.post("/api/track/deleteByArtist", data);
-        },
-        edit: function (data) {
-            return $http.post("/api/track/edit", data);
-        },
-        getPeaks: function (id) {
-            return $http.get("/peaks/" + id);
-        },
-        changeArtwork: function (data) {
-            return $http.post("/api/track/artwork", data, {
-                transformRequest: angular.identity,
-                headers: {
-                    'Content-Type': undefined
-                }
-            });
-        }
-    };
-}]);
+//
+// MusicLoud.factory("TrackService", ["$http", function ($http) {
+//     return {
+//         create: function () {
+//             return $http.post("/api/track/create", Empty);
+//         },
+//         upload: function (data, callback) {
+//             return $.ajax({
+//                 xhr: function() {
+//                     var xhr = new window.XMLHttpRequest();
+//                     xhr.upload.addEventListener("progress", callback, false);
+//                     return xhr;
+//                 },
+//                 url: "/api/track/upload",
+//                 type: "POST",
+//                 data: data,
+//                 processData: false,
+//                 contentType: false
+//             });
+//         },
+//         unlink: function (data) {
+//             return $http.post("/api/track/delete", data);
+//         },
+//         deleteByArtist: function (data) {
+//             return $http.post("/api/track/deleteByArtist", data);
+//         },
+//         edit: function (data) {
+//             return $http.post("/api/track/edit", data);
+//         },
+//         getPeaks: function (id) {
+//             return $http.get("/peaks/" + id);
+//         },
+//         changeArtwork: function (data) {
+//             return $http.post("/api/track/artwork", data, {
+//                 transformRequest: angular.identity,
+//                 headers: {
+//                     'Content-Type': undefined
+//                 }
+//             });
+//         }
+//     };
+// }]);
 
 MusicLoud.factory("HeadersService", ["$http", function ($http) {
     return {
