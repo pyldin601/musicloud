@@ -23,8 +23,9 @@ import AccountService from './AccountService';
 import TrackService from './TrackService';
 import HeadersService from './HeadersService';
 import PlaylistService from './PlaylistService';
+import SearchService from './SearchService';
 
-const services = { AccountService, TrackService, HeadersService, PlaylistService };
+const services = { AccountService, TrackService, HeadersService, PlaylistService, SearchService };
 
 export default (app) =>
   Object.keys(services).forEach(service => app.factory(service, services[service]));

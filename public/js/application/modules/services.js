@@ -7,69 +7,6 @@ var MusicLoud = angular.module("MusicLoud");
 
 
 
-MusicLoud.factory("SearchService", ["$http", "SyncService", function ($http, SyncService) {
-    return {
-        artists: function (opts, offset, special) {
-            var uri = {};
-
-            uri.o = offset || 0;
-
-            if (opts.q) { uri.q = opts.q }
-
-            uri.l = opts.limit || 50;
-
-            return $http.get("/api/catalog/artists?" + serialize_uri(uri), special).then(function (response) {
-                return deflateCollection(response.data);
-            });
-        },
-        albums: function (opts, offset, special) {
-            var uri = {};
-
-            uri.o = offset || 0;
-
-            if (opts.q !== undefined) { uri.q = opts.q }
-            if (opts.compilations !== undefined) { uri.compilations = opts.compilations }
-
-            uri.l = opts.limit || 50;
-
-            return $http.get("/api/catalog/albums?" + serialize_uri(uri), special).then(function (response) {
-                return deflateCollection(response.data);
-            });
-        },
-        genres: function (opts, offset, special) {
-            var uri = {};
-
-            uri.o = offset || 0;
-
-            if (opts.q) { uri.q = opts.q }
-
-            uri.l = opts.limit || 50;
-
-            return $http.get("/api/catalog/genres?" + serialize_uri(uri), special).then(function (response) {
-                return deflateCollection(response.data);
-            });
-        },
-        tracks: function (opts, offset, special) {
-
-            var uri = {};
-
-            uri.o = offset || 0;
-
-            if (opts.q !== undefined) { uri.q = opts.q }
-            if (opts.s !== undefined) { uri.sort = opts.s }
-            if (opts.compilations !== undefined) { uri.compilations = opts.compilations }
-            if (opts.artist !== undefined) { uri.artist = opts.artist }
-            if (opts.album !== undefined) { uri.album = opts.album }
-            if (opts.genre !== undefined) { uri.genre = opts.genre }
-            uri.l = opts.limit || 50;
-
-            return $http.get("/api/catalog/tracks?" + serialize_uri(uri), special).then(function (response) {
-                return SyncService.tracks(deflateCollection(response.data));
-            });
-        }
-    };
-}]);
-
 MusicLoud.factory("GroupingService", [function () {
 
     return function (key) {
