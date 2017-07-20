@@ -17,7 +17,5 @@ services:
       DB_PASSWORD: musicloud
     volumes:
       - .:/usr/app/
-      - /usr/app/vendor
-      - /usr/app/node_modules
     depends_on:
       - db

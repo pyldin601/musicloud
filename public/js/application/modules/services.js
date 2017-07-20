@@ -5,19 +5,19 @@
 var MusicLoud = angular.module("MusicLoud");
 
 
-MusicLoud.factory("AccountService", ["$http", function ($http) {
-    return {
-        login: function (data) {
-            return $http.post("/api/login", data);
-        },
-        logout: function () {
-            return $http.post("/api/logout");
-        },
-        init: function () {
-            return $http.get("/api/self");
-        }
-    };
-}]);
+// MusicLoud.factory("AccountService", ["$http", function ($http) {
+//     return {
+//         login: function (data) {
+//             return $http.post("/api/login", data);
+//         },
+//         logout: function () {
+//             return $http.post("/api/logout");
+//         },
+//         init: function () {
+//             return $http.get("/api/self");
+//         }
+//     };
+// }]);
 
 MusicLoud.factory("TrackService", ["$http", function ($http) {
     return {

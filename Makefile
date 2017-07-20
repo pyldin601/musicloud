@@ -9,6 +9,7 @@ local-clean:
 
 local-build:
 	npm run gulp
+	npm run webpack
 
 local-test:
 	composer test
@@ -16,6 +17,9 @@ local-test:
 
 local-migrate:
 	composer run migrate:up env
+
+local-watch:
+	npm run webpack -- --watch
 
 docker-build:
 	docker-compose build
@@ -25,6 +29,10 @@ docker-up:
 
 docker-stop:
 	docker-compose stop
+
+docker-restart:
+	docker-compose kill web
+	docker-compose up web -d
 
 docker-down:
 	docker-compose down

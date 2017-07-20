@@ -2,3 +2,5 @@
 vendor/
 .env
 node_modules/
+public/scripts/
+public/css/
