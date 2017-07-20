@@ -20,7 +20,4 @@
  * SOFTWARE.
  */
 
-/* @flow */
-import angular from 'angular';
-
-// const musicloud = angular.module('foo', []);
+export default 0;

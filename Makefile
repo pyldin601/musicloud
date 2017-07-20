@@ -9,6 +9,7 @@ local-clean:
 
 local-build:
 	npm run gulp
+	npm run webpack
 
 local-test:
 	composer test
