@@ -19,7 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import app from './app';
-import services from './services';
 
-services(app);
+export default ["$http", ($http) =>
+  ({
+    init: () => $http.get("/api/self"),
+    login: (data) => $http.post("/api/login", data),
+    logout: () => $http.post("/api/logout"),
+  })
+];

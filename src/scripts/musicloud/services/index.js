@@ -19,7 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import app from './app';
-import services from './services';
 
-services(app);
+import AccountService from './AccountService';
+
+const services = { AccountService };
+
+export default (app) =>
+  Object.keys(services).forEach(service => app.factory(service, services[service]));
