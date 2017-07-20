@@ -5,42 +5,7 @@
 var MusicLoud = angular.module("MusicLoud");
 
 
-MusicLoud.factory("PlaylistService", ["$http", function ($http) {
-    return {
-        get: function (playlistId) {
-            return $http.get("/api/playlist/get?" + serialize_uri({ playlist_id: playlistId }));
-        },
-        list: function () {
-            return $http.get("/api/catalog/playlists");
-        },
-        tracks: function (playlistId) {
-            return $http.get("/api/catalog/playlistTracks?" + serialize_uri({ playlist_id: playlistId })).then(function (response) {
-                return deflateCollection(response.data);
-            });
-        },
-        addTracks: function (playlist, coll) {
-            return $http.post("/api/playlist/addTracks", {
-                playlist_id: playlist.id,
-                track_id: coll.map(field("id")).join(",")
-            });
-        },
-        removeTracks: function (coll) {
-            return $http.post("/api/playlist/removeTracks", {
-                link_id: coll.map(field("link_id")).filter(pass).join(",")
-            });
-        },
-        create: function (name) {
-            return $http.post("/api/playlist/create", {
-                name: name
-            });
-        },
-        remove: function (playlist) {
-            return $http.post("/api/playlist/delete", {
-                playlist_id: playlist.id
-            });
-        }
-    }
-}]);
+
 
 MusicLoud.factory("SearchService", ["$http", "SyncService", function ($http, SyncService) {
     return {
