@@ -18,6 +18,9 @@ local-test:
 local-migrate:
 	composer run migrate:up env
 
+local-watch:
+	npm run webpack -- --watch
+
 docker-build:
 	docker-compose build
 

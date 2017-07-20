@@ -19,5 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import angular from 'angular';
 
-export default 0;
+// const app = angular.module('MusicLoud', []);
+
+
+
+export default 1;

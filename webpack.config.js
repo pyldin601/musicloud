@@ -24,46 +24,50 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: {
-      musicloud: path.join(__dirname, 'src/scripts/musicloud/index.js')
-    },
-    output: {
-        path: path.join(__dirname, 'public/scripts'),
-        filename: '[name].js'
-    },
-    resolve: {
-        extensions: ['.js', '.jsx']
-    },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'shared',
-            minChunks: ({ resource }) => (
-                resource &&
-                resource.indexOf('node_modules') >= 0 &&
-                resource.match(/\.js$/)
-            ),
-        })
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.js?$/,
-                exclude: /(node_modules)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            'stage-2',
-                            'flow',
-                            ['env', {
-                                targets: {
-                                    browsers: ['last 4 versions']
-                                }
-                            }]
-                        ]
-                    }
+  entry: {
+    musicloud: path.join(__dirname, 'src/scripts/musicloud/index.js')
+  },
+  output: {
+    path: path.join(__dirname, 'public/scripts'),
+    filename: '[name].js'
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'shared',
+      minChunks: ({ resource }) => (
+        resource &&
+        resource.indexOf('node_modules') >= 0 &&
+        resource.match(/\.js$/)
+      ),
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.js?$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              'stage-2',
+              'flow',
+              ['env', {
+                targets: {
+                  browsers: ['last 4 versions']
                 }
-            }
-        ]
-    }
+              }]
+            ]
+          }
+        }
+      }
+    ],
+  },
+  externals: {
+    'jquery': '$',
+    'angular': 'angular',
+  }
 };
