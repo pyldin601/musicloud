@@ -95,45 +95,6 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
 
 }]);
 
-MusicLoud.controller("ArtistViewController", [
-    "Resolved", "Header", "$scope", "$routeParams", "SearchService", "GroupingService", "SyncKeeper",
-    function (Resolved, Header, $scope, $routeParams, SearchService, GroupingService, SyncKeeper) {
-
-        var artist = decodeUriPlus($routeParams.artist),
-            gs = GroupingService("track_album"),
-            syncKeeper = SyncKeeper($scope);
-
-        $scope.header = Header;
-        $scope.tracks = Resolved;
-        $scope.tracks_selected = [];
-        $scope.albums = gs.getGroups();
-        $scope.busy = false;
-        $scope.end = false;
-
-        $scope.fetch = SearchService.tracks.curry({ artist: artist });
-
-        gs.addItems(Resolved);
-
-        $scope.load = function () {
-            $scope.busy = true;
-            $scope.fetch($scope.tracks.length).then(function (data) {
-                if (data.length > 0) {
-                    array_add(data, $scope.tracks);
-                    gs.addItems(data);
-                    $scope.busy = false;
-                } else {
-                    $scope.end = true;
-                }
-            })
-        };
-
-        syncKeeper  .songs($scope.tracks)
-                    .songs($scope.tracks_selected)
-                    .groups(gs);
-
-    }
-]);
-
 MusicLoud.controller("GenreViewController", [
     "Resolved", "Header", "SearchService", "$scope", "$routeParams", "GroupingService", "SyncKeeper",
     function (Resolved, Header, SearchService, $scope, $routeParams, GroupingService, SyncKeeper) {
