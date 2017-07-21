@@ -29,6 +29,7 @@ import AllCompilationsViewController from './AllCompilationsViewController';
 import AllGenresViewController from './AllGenresViewController';
 import PlaylistsController from './PlaylistsController';
 import PlaylistController from './PlaylistController';
+import SearchController from './SearchController';
 
 const controllers = {
   ArtistViewController,
@@ -41,6 +42,7 @@ const controllers = {
   AllGenresViewController,
   PlaylistsController,
   PlaylistController,
+  SearchController,
 };
 
 export default (app) =>
