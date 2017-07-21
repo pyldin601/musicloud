@@ -8,7 +8,6 @@
 
 namespace app\project\handlers\fixed\api\catalog;
 
-
 use app\core\db\builder\SelectQuery;
 use app\core\etc\Context;
 use app\core\router\RouteHandler;
@@ -52,7 +51,7 @@ class DoGenres implements RouteHandler {
 
         ob_start("ob_gzhandler");
 
-        $query->renderAllAsJson(function ($row, $id) {
+        $query->renderAllAsJson(function ($row) {
             $genre_encoded = escape_url($row["track_genre"]);
             $row["genre_url"] = "genre/{$genre_encoded}";
             return $row;

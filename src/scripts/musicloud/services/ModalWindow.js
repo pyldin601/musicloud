@@ -38,13 +38,13 @@ export default [
 
       angular.extend(options, opts);
 
-      $templateRequest(options.template).then(function (template) {
+      $templateRequest(options.template).then(template => {
 
         const newScope = angular.isObject(options.scope) ? options.scope.$new() : $rootScope.$new();
-        const body = angular.element("body");
+        const body = angular.element('body');
         const $modal = angular.element(template);
 
-        const onEscapeEvent = function (event) {
+        const onEscapeEvent = event => {
           if (event.which === 27) {
             newScope.closeThisWindow()
           }
@@ -65,7 +65,7 @@ export default [
           newScope.$destroy();
         };
 
-        newScope.$on("$destroy", function () {
+        newScope.$on("$destroy", () => {
           body.off("keyup", onEscapeEvent);
           body.off("click", onMouseClickEvent);
         });

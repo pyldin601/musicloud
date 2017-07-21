@@ -19,31 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import ArtistViewController from './ArtistViewController';
-import GenreViewController from './GenreViewController';
-import AlbumViewController from './AlbumViewController';
-import TracksViewController from './TracksViewController';
-import AllArtistsViewController from './AllArtistsViewController';
-import AllAlbumsViewController from './AllAlbumsViewController';
-import AllCompilationsViewController from './AllCompilationsViewController';
-import AllGenresViewController from './AllGenresViewController';
-import PlaylistsController from './PlaylistsController';
-import PlaylistController from './PlaylistController';
-import SearchController from './SearchController';
 
-const controllers = {
-  ArtistViewController,
-  GenreViewController,
-  AlbumViewController,
-  TracksViewController,
-  AllArtistsViewController,
-  AllAlbumsViewController,
-  AllCompilationsViewController,
-  AllGenresViewController,
-  PlaylistsController,
-  PlaylistController,
-  SearchController,
-};
+export default [
+  "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
 
-export default (app) =>
-  Object.keys(controllers).forEach(name => app.controller(name, controllers[name]));
+    $scope.albums = Resolved;
+    $scope.busy = false;
+    $scope.end = false;
+
+    $scope.load = function () {
+      $scope.busy = true;
+      SearchService.albums({q: $location.search().q, compilations: 1}, $scope.albums.length).then(function (albums) {
+        if (albums.length > 0) {
+          array_add(albums, $scope.albums);
+          $scope.busy = false;
+        } else {
+          $scope.end = true;
+        }
+      })
+    };
+
+  }
+];

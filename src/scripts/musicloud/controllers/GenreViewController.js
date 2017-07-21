@@ -19,31 +19,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import ArtistViewController from './ArtistViewController';
-import GenreViewController from './GenreViewController';
-import AlbumViewController from './AlbumViewController';
-import TracksViewController from './TracksViewController';
-import AllArtistsViewController from './AllArtistsViewController';
-import AllAlbumsViewController from './AllAlbumsViewController';
-import AllCompilationsViewController from './AllCompilationsViewController';
-import AllGenresViewController from './AllGenresViewController';
-import PlaylistsController from './PlaylistsController';
-import PlaylistController from './PlaylistController';
-import SearchController from './SearchController';
 
-const controllers = {
-  ArtistViewController,
-  GenreViewController,
-  AlbumViewController,
-  TracksViewController,
-  AllArtistsViewController,
-  AllAlbumsViewController,
-  AllCompilationsViewController,
-  AllGenresViewController,
-  PlaylistsController,
-  PlaylistController,
-  SearchController,
-};
+export default [
+  "Resolved", "Header", "SearchService", "$scope", "$routeParams", "GroupingService", "SyncKeeper",
+  function (Resolved, Header, SearchService, $scope, $routeParams, GroupingService, SyncKeeper) {
 
-export default (app) =>
-  Object.keys(controllers).forEach(name => app.controller(name, controllers[name]));
+    var genre = decodeUriPlus($routeParams.genre),
+      gs = GroupingService("track_album"),
+      syncKeeper = SyncKeeper($scope);
+
+    $scope.header = Header;
+    $scope.tracks = Resolved;
+    $scope.tracks_selected = [];
+    $scope.albums = gs.getGroups();
+    $scope.busy = false;
+    $scope.end = false;
+
+    $scope.fetch = SearchService.tracks.curry({ genre: genre });
+
+    gs.addItems(Resolved);
+
+    $scope.load = function () {
+      $scope.busy = true;
+      $scope.fetch($scope.tracks.length).then(function (data) {
+        if (data.length > 0) {
+          array_add(data, $scope.tracks);
+          gs.addItems(data);
+          $scope.busy = false;
+        } else {
+          $scope.end = true;
+        }
+      })
+    };
+
+    syncKeeper  .songs($scope.tracks)
+      .songs($scope.tracks_selected)
+      .groups(gs);
+
+  }
+];
