@@ -48,7 +48,19 @@ export const normalizeTime = [() => (time: number): string => {
 }];
 
 export const normalizeTrackTitle = [() =>
-  (track: Track) => track.track_title || track.file_name || DEFAULT_TRACK_TITLE
+  (track: ?Track) => track ? track.track_title || track.file_name || DEFAULT_TRACK_TITLE : null
+];
+
+export const normalizeTrackNumber = [() =>
+  (track: ?Track) => {
+    if (!track || !track.track_number) {
+      return null;
+    }
+    if (track.disc_number) {
+      return `${track.disc_number}.${zeroFill(2, track.track_number)}`;
+    }
+    return `${zeroFill(2, track.track_number)}`;
+  }
 ];
 
 export const normalizeAlbum = [() => (album: string) => album || DEFAULT_ALBUM];

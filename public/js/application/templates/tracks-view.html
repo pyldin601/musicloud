@@ -79,10 +79,10 @@
                 <div class="inner-info">
                     <div class="left inner-title">
                         <div class="track-duration right ellipsis" ng-bind="(track.length / 1000) | normalizeTime"></div>
-                        <div class="ellipsis" ng-bind="track | getTitle"></div>
+                        <div class="ellipsis" ng-bind="track | normalizeTrackTitle"></div>
                     </div>
                     <div class="left inner-artist">
-                        <div class="ellipsis" ng-bind="track | getArtist"></div>
+                        <div class="ellipsis" ng-bind="track.track_artist | normalizeArtist"></div>
                     </div>
                 </div>
 

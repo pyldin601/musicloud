@@ -58,7 +58,7 @@ export default [
         Resolved: ["SearchService", "$location", "$route", "$filter",
           (SearchService, $location, $route, $filter) => {
             const artist = decodeUriPlus($route.current.params.artist);
-            $route.current.title = $filter("artistFilter")(artist);
+            $route.current.title = $filter("normalizeArtist")(artist);
             return SearchService.tracks({ artist: artist }, 0).catch(() => {
               $location.url("/");
             });
@@ -81,8 +81,8 @@ export default [
             const album = decodeUriPlus($route.current.params.album);
 
             $route.current.title = String.prototype.concat(
-              $filter("albumFilter")(album) + " by " +
-              $filter("artistFilter")(artist)
+              $filter("normalizeAlbum")(album) + " by " +
+              $filter("normalizeArtist")(artist)
             );
 
             return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).catch(() => {

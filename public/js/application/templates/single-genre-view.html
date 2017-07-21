@@ -55,9 +55,9 @@
                     <div class="right" ng-bind="album.items[0].track_year"></div>
                     <div class="album-sub">
                         <div class="inline name">
-                            <a ng-bind="album.title | albumFilter" ng-href="{{ album.items[0].album_url }}"></a>
+                            <a ng-bind="album.title | normalizeAlbum" ng-href="{{ album.items[0].album_url }}"></a>
                         </div>
-                        <div class="inline band">on <a ng-href="{{ album.items[0].artist_url }}" ng-bind="album.items[0].album_artist | artistFilter"></a></div>
+                        <div class="inline band">on <a ng-href="{{ album.items[0].artist_url }}" ng-bind="album.items[0].album_artist | normalizeArtist"></a></div>
                     </div>
                 </div>
                 <div class="album-tracks">
@@ -77,15 +77,15 @@
                         </div>
                         <div class="position left">
                             <div class="ellipsis">
-                                <div ng-hide="player.playlist.track == track" ng-bind="track | getTrackNumber"></div>
+                                <div ng-hide="player.playlist.track == track" ng-bind="track | normalizeTrackNumber"></div>
                                 <div ng-show="player.playlist.track == track">
                                     <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="track-title">
-                            <div class="first ellipsis" ng-bind="track | getTitle"></div>
-                            <div class="second ellipsis" ng-if="album.various_artists" ng-bind="track | getArtist"></div>
+                            <div class="first ellipsis" ng-bind="track | normalizeTrackTitle"></div>
+                            <div class="second ellipsis" ng-if="album.various_artists" ng-bind="track.track_artist | normalizeArtist"></div>
                         </div>
                     </div>
 

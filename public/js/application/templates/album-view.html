@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="album-title">
-                <div class="inner" ng-bind="album.album_title | albumFilter"></div>
+                <div class="inner" ng-bind="album.album_title | normalizeAlbum"></div>
             </div>
             <div class="album-including" ng-show="tracks | isVariousArtists">
                 <div class="inner" ng-bind="tracks | aggregateArtists"></div>
@@ -114,7 +114,7 @@
 
                 <div class="position left">
                     <div class="ellipsis">
-                        <div ng-hide="player.playlist.track == track" ng-bind="track | getTrackNumber"></div>
+                        <div ng-hide="player.playlist.track == track" ng-bind="track | normalizeTrackNumber"></div>
                         <div ng-show="player.playlist.track == track">
                             <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
                         </div>
@@ -124,10 +124,10 @@
                 <div class="inner-info">
                     <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
                         <div class="track-duration right ellipsis" ng-bind="(track.length / 1000) | normalizeTime"></div>
-                        <div class="ellipsis" ng-bind="track | getTitle"></div>
+                        <div class="ellipsis" ng-bind="track | normalizeTrackTitle"></div>
                     </div>
                     <div class="left inner-artist" ng-show="album.is_various">
-                        <div class="ellipsis" ng-bind="track | getArtist"></div>
+                        <div class="ellipsis" ng-bind="track.track_artist | normalizeArtist"></div>
                     </div>
                 </div>
 

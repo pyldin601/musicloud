@@ -20,45 +20,6 @@ MusicLoud.filter("count", function () {
     };
 });
 
-var filters = {
-    artist: function (artist) { return artist || "Unknown Artist" },
-    album:  function (album)  { return album || "Unknown Album" },
-    genre:  function (genre)  { return genre || "Unknown Genre" },
-    title:  function (title)  { return title || "Unknown Title" }
-};
-
-MusicLoud.filter("albumFilter",  function () { return filters.album });
-MusicLoud.filter("artistFilter", function () { return filters.artist });
-MusicLoud.filter("titleFilter",  function () { return filters.title });
-
-MusicLoud.filter("getTitle", function () {
-    return function (track) {
-        if (!track) return;
-        return track.track_title || track.file_name || "Unknown Title";
-    };
-});
-
-MusicLoud.filter("getArtist", function () {
-    return function (track) {
-        if (!track) return;
-        return filters.artist(track.track_artist);
-    };
-});
-
-MusicLoud.filter("getAlbumArtist", function () {
-    return function (track) {
-        if (!track) return;
-        return filters.artist(track.album_artist);
-    };
-});
-
-MusicLoud.filter("getTrackNumber", function () {
-    return function (track) {
-        return (track.disc_number) ? track.disc_number + "." + padLeft(track.track_number, "00") :
-            padLeft(track.track_number, "00");
-    };
-});
-
 MusicLoud.filter("first", function () {
     return function (data) {
         if (!(data && data.length > 0)) return;
