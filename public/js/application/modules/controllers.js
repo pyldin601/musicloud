@@ -95,51 +95,6 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
 
 }]);
 
-MusicLoud.controller("AlbumViewController", [
-    "Resolved", "$scope", "$location", "SyncKeeper",
-    function (Resolved, $scope, $location, SyncKeeper) {
-
-        var syncKeeper = SyncKeeper($scope);
-
-        $scope.tracks = Resolved;
-        $scope.tracks_selected = [];
-        $scope.album = {};
-        $scope.tracks_selected = [];
-        $scope.fetch = null;
-
-        $scope.readAlbum = function () {
-
-            if ($scope.tracks.length == 0) {
-                $location.url("/");
-                return;
-            }
-
-            $scope.album = {
-                album_title:    aggregateAlbumTitle($scope.tracks),
-                album_url:      $scope.tracks.map(field("album_url")).reduce(or, ""),
-                album_artist:   $scope.tracks.map(field("album_artist")).reduce(or, ""),
-                cover_id:       $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
-                artist_url:     $scope.tracks.map(field("artist_url")).reduce(or),
-                album_year:     groupYears($scope.tracks),
-                album_genre:    groupGenres($scope.tracks),
-                length:         aggregateDuration($scope.tracks),
-                discs_count:    $scope.tracks.map(field("disk_number")).distinct().length,
-                is_various:     $scope.tracks.any(function (t) {
-                                    return t.track_artist !== t.album_artist
-                                })
-            };
-
-        };
-
-        syncKeeper  .songs($scope.tracks)
-                    .songs($scope.tracks_selected);
-
-        $scope.$watch("tracks", $scope.readAlbum, true);
-
-
-    }
-]);
-
 MusicLoud.controller("TracksViewController", [
     "Resolved", "$scope", "$location", "SearchService", "SyncKeeper",
     function (Resolved, $scope, $location, SearchService, SyncKeeper) {

@@ -21,10 +21,12 @@
  */
 import ArtistViewController from './ArtistViewController';
 import GenreViewController from './GenreViewController';
+import AlbumViewController from './AlbumViewController';
 
 const controllers = {
   ArtistViewController,
   GenreViewController,
+  AlbumViewController,
 };
 
 export default (app) =>
