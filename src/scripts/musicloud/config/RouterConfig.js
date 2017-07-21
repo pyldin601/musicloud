@@ -27,18 +27,16 @@ export default [
     $locationProvider.baseHref = "/library/";
 
     $routeProvider.when("/", {
-      template: ""
+      redirectTo: '/artists/'
     });
 
     $routeProvider.when("/artists/", {
       templateUrl: templatePath + "/artists-view.html",
       controller: "AllArtistsViewController",
       resolve: {
-        Resolved: ["SearchService", "$location", function (SearchService, $location) {
-          var q = $location.search().q;
-          return SearchService.artists({ q: q }, 0).then(function (artists) {
-            return artists;
-          }, function () {
+        Resolved: ["SearchService", "$location", (SearchService, $location) => {
+          const q = $location.search().q;
+          return SearchService.artists({ q: q }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -53,19 +51,15 @@ export default [
       templateUrl: templatePath + "/single-artist-view.html",
       controller: "ArtistViewController",
       resolve: {
-        Header: ["$route", "HeadersService", function ($route, HeadersService) {
-          var artist = decodeUriPlus($route.current.params.artist);
-          return HeadersService.artist(artist).then(function (response) {
-            return response.data;
-          });
+        Header: ["$route", "HeadersService", ($route, HeadersService) => {
+          const artist = decodeUriPlus($route.current.params.artist);
+          return HeadersService.artist(artist).then(response => response.data);
         }],
         Resolved: ["SearchService", "$location", "$route", "$filter",
-          function (SearchService, $location, $route, $filter) {
-            var artist = decodeUriPlus($route.current.params.artist);
+          (SearchService, $location, $route, $filter) => {
+            const artist = decodeUriPlus($route.current.params.artist);
             $route.current.title = $filter("artistFilter")(artist);
-            return SearchService.tracks({ artist: artist }, 0).then(function (tracks) {
-              return tracks;
-            }, function () {
+            return SearchService.tracks({ artist: artist }, 0).catch(() => {
               $location.url("/");
             });
           }
@@ -82,21 +76,18 @@ export default [
       templateUrl: templatePath + "/album-view.html",
       resolve: {
         Resolved: ["SearchService", "$location", "$route", "$filter",
-          function (SearchService, $location, $route, $filter) {
-            var artist = decodeUriPlus($route.current.params.artist),
-              album = decodeUriPlus($route.current.params.album);
+          (SearchService, $location, $route, $filter) => {
+            const artist = decodeUriPlus($route.current.params.artist);
+            const album = decodeUriPlus($route.current.params.album);
 
             $route.current.title = String.prototype.concat(
               $filter("albumFilter")(album) + " by " +
               $filter("artistFilter")(artist)
             );
 
-            return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).then(function (response) {
-              return response;
-            }, function () {
+            return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).catch(() => {
               $location.url("/");
             });
-
           }
         ]
       },
@@ -110,18 +101,18 @@ export default [
       controller: "PlaylistController",
       templateUrl: templatePath + "/tracks-view.html",
       resolve: {
-        Playlist: ["PlaylistService", "$route", "$location", function (PlaylistService, $route, $location) {
-          var playlist = decodeUriPlus($route.current.params.playlist),
-            promise = PlaylistService.get(playlist);
+        Playlist: ["PlaylistService", "$route", "$location", (PlaylistService, $route, $location) => {
+          const playlist = decodeUriPlus($route.current.params.playlist);
+          const promise = PlaylistService.get(playlist);
 
-          promise.then(function (response) {
+          promise.then(response => {
             $route.current.title = 'Playlist "' + response.data.name + '"'
-          }, function () {
+          }, () => {
             $location.url("/");
           });
         }],
         Resolved: ["PlaylistService", "$route", function (PlaylistService, $route) {
-          var playlist = decodeUriPlus($route.current.params.playlist);
+          const playlist = decodeUriPlus($route.current.params.playlist);
           $route.current.special.section = "playlist/" + playlist;
           return PlaylistService.tracks(playlist);
         }]
@@ -136,10 +127,8 @@ export default [
       controller: "AllAlbumsViewController",
       resolve: {
         Resolved: ["SearchService", "$location", function (SearchService, $location) {
-          var q = $location.search().q;
-          return SearchService.albums({ q: q, compilations: 0 }, 0).then(function (albums) {
-            return albums;
-          }, function () {
+          const q = $location.search().q;
+          return SearchService.albums({ q: q, compilations: 0 }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -154,11 +143,9 @@ export default [
       templateUrl: templatePath + "/albums-view.html",
       controller: "AllCompilationsViewController",
       resolve: {
-        Resolved: ["SearchService", "$location", function (SearchService, $location) {
-          var q = $location.search().q;
-          return SearchService.albums({ q: q, compilations: 1 }, 0).then(function (albums) {
-            return albums;
-          }, function () {
+        Resolved: ["SearchService", "$location", (SearchService, $location) => {
+          const q = $location.search().q;
+          return SearchService.albums({ q: q, compilations: 1 }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -173,11 +160,9 @@ export default [
       templateUrl: templatePath + "/genres-view.html",
       controller: "AllGenresViewController",
       resolve: {
-        Resolved: ["SearchService", "$location", function (SearchService, $location) {
-          var q = $location.search().q;
-          return SearchService.genres({ q: q }, 0).then(function (genres) {
-            return genres;
-          }, function () {
+        Resolved: ["SearchService", "$location", (SearchService, $location) => {
+          const q = $location.search().q;
+          return SearchService.genres({ q: q }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -193,21 +178,16 @@ export default [
       controller: "GenreViewController",
       resolve: {
         Header: ["$route", "HeadersService", function ($route, HeadersService) {
-          var genre = decodeUriPlus($route.current.params.genre);
-          return HeadersService.genre(genre).then(function (response) {
-            return response.data;
-          });
+          const genre = decodeUriPlus($route.current.params.genre);
+          return HeadersService.genre(genre).then(response => response.data);
         }],
         Resolved: ["SearchService", "$location", "$route", "$filter",
           function (SearchService, $location, $route, $filter) {
-
-            var genre = decodeUriPlus($route.current.params.genre);
+            const genre = decodeUriPlus($route.current.params.genre);
 
             $route.current.title = $filter("genreFilter")(genre);
 
-            return SearchService.tracks({ genre: genre }, 0).then(function (tracks) {
-              return tracks;
-            }, function () {
+            return SearchService.tracks({ genre: genre }, 0).catch(() => {
               $location.url("/");
             });
           }
@@ -226,15 +206,13 @@ export default [
       templateUrl: templatePath + "/tracks-view.html",
       resolve: {
         Resolved: ["SearchService", "$location",
-          function (SearchService, $location) {
-            var q = $location.search().q,
-              s = $location.search().s;
-            return SearchService.tracks({ q: q, s: s }, 0).then(function (tracks) {
-              return tracks;
-            }, function () {
+          (SearchService, $location) => {
+            const q = $location.search().q;
+            const s = $location.search().s;
+
+            return SearchService.tracks({ q: q, s: s }, 0).catch(() => {
               $location.url("/");
             });
-
           }
         ]
       },
