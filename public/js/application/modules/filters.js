@@ -124,36 +124,3 @@ MusicLoud.filter("isVariousArtists", [function () {
         return coll.any(function (el) { return el.album_artist != el.track_artist })
     };
 }]);
-
-MusicLoud.filter("groupArtists", ["$sce", function ($sce) {
-    return function (tracks) {
-
-        var featuringArtists = tracks
-            .map(field("track_artist"))
-            .distinct()
-            .map(function (a) { return '<b>' + a + '</b>' }),
-
-            result = "",
-            prefix = "Including ";
-
-        switch (featuringArtists.length) {
-            case (0):
-                result = "";
-                break;
-            case (1):
-                result = prefix + featuringArtists[0];
-                break;
-            case (2):
-                result = prefix + featuringArtists.join(" and ");
-                break;
-            case (3):
-                result = prefix + featuringArtists.slice(0, 2).join(", ") + " and " + featuringArtists[2];
-                break;
-            default:
-                result = prefix + featuringArtists.slice(0, 3).join(", ") + " and " + (featuringArtists.length - 3) + " other artists"
-        }
-
-        return $sce.trustAsHtml(result);
-
-    };
-}]);
