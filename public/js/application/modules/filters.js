@@ -20,25 +20,6 @@ MusicLoud.filter("count", function () {
     };
 });
 
-MusicLoud.filter("mmss", function () {
-    return function (value, isSeconds) {
-        var sec_num = parseInt(isSeconds ? value : value / 1000, 10),
-            hours   = Math.floor(sec_num / 3600),
-            minutes = Math.floor(sec_num / 60) % 60,
-            seconds = sec_num % 60,
-            result = [];
-
-        if (hours > 0) {
-            result.push(((hours < 10) ? "0" : "") + hours);
-        }
-
-        result.push(((minutes < 10) ? "0" : "") + minutes);
-        result.push(((seconds < 10) ? "0" : "") + seconds);
-
-        return result.join(":");
-    }
-});
-
 var filters = {
     artist: function (artist) { return artist || "Unknown Artist" },
     album:  function (album)  { return album || "Unknown Album" },

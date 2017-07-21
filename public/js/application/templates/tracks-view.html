@@ -78,7 +78,7 @@
 
                 <div class="inner-info">
                     <div class="left inner-title">
-                        <div class="track-duration right ellipsis" ng-bind="track.length | mmss"></div>
+                        <div class="track-duration right ellipsis" ng-bind="(track.length / 1000) | normalizeDuration"></div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
                     <div class="left inner-artist">

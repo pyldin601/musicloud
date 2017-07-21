@@ -31,7 +31,7 @@
                             <span class="tracks-count" ng-bind="header.tracks_count"></span>
                         </td>
                         <td>
-                            <span class="album-length" ng-bind="header.tracks_duration | mmss"></span>
+                            <span class="album-length" ng-bind="(header.tracks_duration / 1000) | normalizeDuration"></span>
                         </td>
                     </tr>
                     </tbody>
@@ -64,7 +64,7 @@
                     <div class="track" multiselect-item="track" ng-repeat="track in album.items" action-play="track"
                          action-context="tracks" action-resolver="fetch" ml-context-menu="selectedTracksMenu(tracks_selected)">
                         <div class="duration right">
-                            <div class="ellipsis" ng-bind="track.length | mmss"></div>
+                            <div class="ellipsis" ng-bind="(track.length / 1000) | normalizeDuration"></div>
                         </div>
                         <div class="rating right">
                             <div class="ellipsis" track-rating="track"></div>

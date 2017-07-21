@@ -189,9 +189,9 @@
                     <canvas class="waveform-canvas" peak-data=""></canvas>
                     <div class="track-progress" track-position=""></div>
                     <div class="time-right">
-                        <span ng-bind="player.playlist.position.position | mmss : true"></span>
+                        <span ng-bind="player.playlist.position.position | normalizeDuration"></span>
                         /
-                        <span ng-bind="player.playlist.position.duration | mmss : true"></span>
+                        <span ng-bind="player.playlist.position.duration | normalizeDuration"></span>
                     </div>
                 </div>
             </div>
