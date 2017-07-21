@@ -22,24 +22,25 @@
 // @flow
 import angular from 'angular';
 
-import tracksMenu from './ui/tracksMenu';
-import type { Track } from "./types";
-
 const app = angular.module('MusicLoud', ["ngRoute", "ngCookies", "httpPostFix",
   "infinite-scroll", "MLContextMenu", "indexedDB"]);
 
-app.run(['$rootScope', ($rootScope) => {
-  $rootScope.selectedTracksMenu = (selectedTracks: Array<Track>) =>
-    tracksMenu(selectedTracks, $rootScope.playlists, {
-      editSongs: tracks =>
-        $rootScope.action.editSongs(tracks),
-      deleteSongs: tracks =>
-        $rootScope.action.deleteSongs(tracks),
-      removeTracksFromPlaylist: tracks =>
-        $rootScope.playlistMethods.removeTracksFromPlaylist(tracks),
-      addTracksToPlaylist: (playlist, tracks) =>
-        $rootScope.playlistMethods.addTracksToPlaylist(playlist, tracks),
-    })
+app.run(["AccountService", "$rootScope", (AccountService, $rootScope) => {
+  $rootScope.account = { authorized: false };
+
+  AccountService.init().then(
+    response => $rootScope.account = { authorized: true, user: response.data },
+    () => window.location.href = "/",
+  );
+
+  $rootScope.$on("$routeChangeSuccess", function (e, $route) {
+    if ($route.title) {
+      document.title = $route.title + " - MusicLoud";
+    } else {
+      document.title = "MusicLoud";
+    }
+  });
+
 }]);
 
 export default app;

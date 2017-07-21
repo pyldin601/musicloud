@@ -4,27 +4,6 @@
 
 var MusicLoud = angular.module("MusicLoud");
 
-MusicLoud.run(["AccountService", "$rootScope", function (AccountService, $rootScope) {
-
-    $rootScope.account = { authorized: false };
-
-    AccountService.init().success(function (data) {
-        $rootScope.account = { authorized: true, user: data };
-    }).error(function () {
-        window.location.href = "/";
-    });
-
-    $rootScope.$on("$routeChangeSuccess", function (e, $route) {
-        if ($route.title) {
-            document.title = $route.title + " - MusicLoud";
-        } else {
-            document.title = "MusicLoud";
-        }
-    });
-
-
-}]);
-
 function deflateCollection(coll) {
 
     var keys = coll.columns,
