@@ -20,38 +20,22 @@
  * SOFTWARE.
  */
 
-// @flow
 import zeroFill from 'zero-fill';
-import secondsToTime from '../util/time';
-import type { Track } from '../types';
 
-const DEFAULT_TRACK_TITLE = 'Unknown Title';
-const DEFAULT_ALBUM = 'Unknown Album';
-const DEFAULT_ARTIST = 'Unknown Artist';
-const DEFAULT_GENRE = 'Unknown Genre';
+export default (time: number): string => {
+  const integerTime = Math.floor(time);
+  const hours = Math.floor(integerTime / 3600);
+  const minutes = Math.floor(integerTime / 60) % 60;
+  const seconds = integerTime % 60;
 
-export const normalizeTime = [() => (seconds: number) => secondsToTime(seconds)];
+  let result = [];
 
-export const normalizeTrackTitle = [() =>
-  (track: ?Track) => track ? track.track_title || track.file_name || DEFAULT_TRACK_TITLE : null
-];
-
-export const normalizeTrackNumber = [() =>
-  (track: ?Track) => {
-    if (!track || !track.track_number) {
-      return null;
-    }
-    if (track.disc_number) {
-      return `${track.disc_number}.${zeroFill(2, track.track_number)}`;
-    }
-    return `${zeroFill(2, track.track_number)}`;
+  if (hours > 0) {
+    result.push(zeroFill(2, hours));
   }
-];
 
-export const normalizeAlbum = [() => (album: string) => album || DEFAULT_ALBUM];
+  result.push(zeroFill(2, minutes));
+  result.push(zeroFill(2, seconds));
 
-export const normalizeArtist = [() => (artist: string) => artist || DEFAULT_ARTIST];
-
-export const normalizeGenre = [() => (genre: string) => genre || DEFAULT_GENRE];
-
-export const normalizeBitrate = [() => (bitrate: number) => `${(parseInt(bitrate / 1000 / 8) * 8)} kbps`];
+  return result.join(':');
+};
