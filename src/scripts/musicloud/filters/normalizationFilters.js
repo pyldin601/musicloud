@@ -22,11 +22,11 @@
 
 import zeroFill from 'zero-fill';
 
-export const normalizeDuration = [() => (duration: number): string => {
-  const durationSeconds = Math.floor(duration);
-  const hours = Math.floor(durationSeconds / 3600);
-  const minutes = Math.floor(durationSeconds / 60) % 60;
-  const seconds = durationSeconds % 60;
+export const normalizeTime = [() => (time: number): string => {
+  const integerTime = Math.floor(time);
+  const hours = Math.floor(integerTime / 3600);
+  const minutes = Math.floor(integerTime / 60) % 60;
+  const seconds = integerTime % 60;
 
   let result = [];
 

@@ -40,7 +40,7 @@
                                 <span class="tracks-count" ng-bind-template="{{ tracks.length }}/{{ album.discs_count }}"></span>
                             </td>
                             <td>
-                                <span class="album-length" ng-bind="(album.length / 1000) | normalizeDuration"></span>
+                                <span class="album-length" ng-bind="(album.length / 1000) | normalizeTime"></span>
                             </td>
                             <td>
                                 <span class="album-genre" ng-bind="album.album_genre | genreFilter"></span>
@@ -123,7 +123,7 @@
 
                 <div class="inner-info">
                     <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
-                        <div class="track-duration right ellipsis" ng-bind="(track.length / 1000) | normalizeDuration"></div>
+                        <div class="track-duration right ellipsis" ng-bind="(track.length / 1000) | normalizeTime"></div>
                         <div class="ellipsis" ng-bind="track | getTitle"></div>
                     </div>
                     <div class="left inner-artist" ng-show="album.is_various">
