@@ -68,3 +68,5 @@ export const normalizeAlbum = [() => (album: string) => album || DEFAULT_ALBUM];
 export const normalizeArtist = [() => (artist: string) => artist || DEFAULT_ARTIST];
 
 export const normalizeGenre = [() => (genre: string) => genre || DEFAULT_GENRE];
+
+export const normalizeBitrate = [() => (bitrate: number) => `${(parseInt(bitrate / 1000 / 8) * 8)} kbps`];

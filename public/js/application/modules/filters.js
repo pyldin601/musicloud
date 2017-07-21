@@ -4,36 +4,6 @@
 
 var MusicLoud = angular.module("MusicLoud");
 
-MusicLoud.filter("count", function () {
-    return function (value) {
-        if (value === undefined) {
-            return undefined;
-        }
-        var suffix = ["", "k", "m", "g"],
-            index = 0;
-
-        while (value > 1000) {
-            value /= 1000;
-            index += 1;
-        }
-        return index == 0 ? value : value.toFixed(1) + suffix[index];
-    };
-});
-
-MusicLoud.filter("first", function () {
-    return function (data) {
-        if (!(data && data.length > 0)) return;
-        return data[0];
-    };
-});
-
-MusicLoud.filter("keys", function () {
-    return function (data) {
-        if (!data) return;
-        return Object.keys(data);
-    };
-});
-
 MusicLoud.filter("uri", function () {
     return function (path) {
         return encodeURIComponent(path)
@@ -47,13 +17,6 @@ MusicLoud.filter("dateFilter", ["$filter", function ($filter) {
         }
         return $filter("date")(value * 1000, dateFormat);
     }
-}]);
-
-
-MusicLoud.filter("bitrateFilter", [function () {
-    return function (value) {
-        return "" + (parseInt(value / 1000 / 8) * 8) + " kbps";
-    };
 }]);
 
 MusicLoud.filter("groupGenres", [function () {

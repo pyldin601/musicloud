@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="bitrate right lg-visible">
-                    <div class="ellipsis" ng-bind="track.bitrate | bitrateFilter"></div>
+                    <div class="ellipsis" ng-bind="track.bitrate | normalizeBitrate"></div>
                 </div>
                 <div class="format right lg-visible">
                     <div class="ellipsis" ng-bind="track.format"></div>
