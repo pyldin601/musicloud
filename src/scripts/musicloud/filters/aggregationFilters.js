@@ -19,10 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import * as aggregationFilters from './aggregationFilters';
-import * as normalizationFilters from './normalizationFilters';
+import * as aggregators from '../util/aggregators';
 
-const filters = { ...aggregationFilters, ...normalizationFilters };
-
-export default (app) =>
-  Object.keys(filters).forEach(name => app.filter(name, filters[name]));
+export const aggregateArtists = [() => {
+  return (tracks) => aggregators.aggregateTrackArtists(tracks);
+}];

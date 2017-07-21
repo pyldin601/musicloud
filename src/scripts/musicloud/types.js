@@ -19,10 +19,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import * as aggregationFilters from './aggregationFilters';
-import * as normalizationFilters from './normalizationFilters';
+// @flow
+export type Track = {|
+  id: string,
+  file_id: string,
+  file_name: string,
+  bitrate: number,
+  length: number,
+  track_title: string,
+  track_artist: string,
+  track_album: string,
+  track_genre: string,
+  track_number: ?number,
+  track_comment: string,
+  track_year: string,
+  track_rating: ?number,
+  is_favourite: boolean,
+  is_compilation: boolean,
+  disc_number: ?number,
+  album_artist: string,
+  times_played: number,
+  times_skipped: number,
+  last_played_date: number,
+  created_date: number,
+  small_cover_id: string,
+  middle_cover_id: string,
+  big_cover_id: string,
+  format: string,
+  artist_url: string,
+  album_url: string,
+  genre_url: string,
+|};
 
-const filters = { ...aggregationFilters, ...normalizationFilters };
+export type Playlist = {|
+  id: string,
+  name: string,
+  playlist_url: string,
+|};
 
-export default (app) =>
-  Object.keys(filters).forEach(name => app.filter(name, filters[name]));
+export type PlaylistTrack = Track & {| link_id: string |};
+
+export type TrackColumns = $Keys<Track>;
+
+export type PlaylistTrackColumns = $Keys<PlaylistTrack>;
+

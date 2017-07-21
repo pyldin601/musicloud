@@ -19,10 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import * as aggregationFilters from './aggregationFilters';
-import * as normalizationFilters from './normalizationFilters';
 
-const filters = { ...aggregationFilters, ...normalizationFilters };
+import RouterConfig from './RouterConfig';
 
-export default (app) =>
-  Object.keys(filters).forEach(name => app.filter(name, filters[name]));
+const configs = [
+  RouterConfig,
+];
+
+export default (app) => configs.forEach(config => app.config(config));

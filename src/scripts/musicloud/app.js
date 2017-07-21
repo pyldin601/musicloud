@@ -19,9 +19,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+// @flow
 import angular from 'angular';
 
 const app = angular.module('MusicLoud', ["ngRoute", "ngCookies", "httpPostFix",
   "infinite-scroll", "MLContextMenu", "indexedDB"]);
+
+app.run(["AccountService", "$rootScope", (AccountService, $rootScope) => {
+  $rootScope.account = { authorized: false };
+
+  AccountService.init().then(
+    response => $rootScope.account = { authorized: true, user: response.data },
+    () => window.location.href = "/",
+  );
+
+  $rootScope.$on("$routeChangeSuccess", function (e, $route) {
+    if ($route.title) {
+      document.title = $route.title + " - MusicLoud";
+    } else {
+      document.title = "MusicLoud";
+    }
+  });
+
+}]);
 
 export default app;

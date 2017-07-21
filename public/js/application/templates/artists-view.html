@@ -9,7 +9,7 @@
                             <img ng-if="artist.middle_cover_id" ng-src="/file/{{ artist.middle_cover_id }}">
                         </div>
                         <div class="artist-name">
-                            <div ng-bind="artist.album_artist | artistFilter"></div>
+                            <div ng-bind="artist.album_artist | normalizeArtist"></div>
                         </div>
                     </div>
                 </a>

@@ -19,10 +19,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import * as aggregationFilters from './aggregationFilters';
-import * as normalizationFilters from './normalizationFilters';
 
-const filters = { ...aggregationFilters, ...normalizationFilters };
+import zeroFill from 'zero-fill';
 
-export default (app) =>
-  Object.keys(filters).forEach(name => app.filter(name, filters[name]));
+export default (time: number): string => {
+  const integerTime = Math.floor(time);
+  const hours = Math.floor(integerTime / 3600);
+  const minutes = Math.floor(integerTime / 60) % 60;
+  const seconds = integerTime % 60;
+
+  let result = [];
+
+  if (hours > 0) {
+    result.push(zeroFill(2, hours));
+  }
+
+  result.push(zeroFill(2, minutes));
+  result.push(zeroFill(2, seconds));
+
+  return result.join(':');
+};

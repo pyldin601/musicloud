@@ -42,8 +42,6 @@
 
     <script src="/js/application/homecloud.js"></script>
     <script src="/js/application/modules/filters.js"></script>
-    <script src="/js/application/modules/controllers.js"></script>
-    <script src="/js/application/modules/routes.js"></script>
     <script src="/js/application/modules/directives.js"></script>
     <script src="/js/application/modules/player.js"></script>
 
@@ -88,7 +86,7 @@
                                 <img ng-if="artist.small_cover_id" ng-src="/file/{{ artist.small_cover_id }}">
                             </div>
                             <div class="title">
-                                <a ng-href="{{ artist.artist_url }}" ng-bind="artist.album_artist | artistFilter"></a>
+                                <a ng-href="{{ artist.artist_url }}" ng-bind="artist.album_artist | normalizeArtist"></a>
                             </div>
                         </div>
                     </div>
@@ -109,9 +107,9 @@
                             </div>
                             <div class="title">
                                 <a ng-href="{{ album.album_url }}">
-                                    <span class="artist" ng-bind="album.album_artist | artistFilter"></span>
+                                    <span class="artist" ng-bind="album.album_artist | normalizeArtist"></span>
                                     -
-                                    <span class="album" ng-bind="album.track_album | albumFilter"></span>
+                                    <span class="album" ng-bind="album.track_album | normalizeAlbum"></span>
                                 </a>
                             </div>
                         </div>
@@ -133,9 +131,9 @@
                             </div>
                             <div class="title">
                                 <a ng-href="tracks?q=id:{{ track.id }}">
-                                    <span class="artist" ng-bind="track | getArtist"></span>
+                                    <span class="artist" ng-bind="track.track_artist | normalizeArtist"></span>
                                     -
-                                    <span class="title" ng-bind="track | getTitle"></span>
+                                    <span class="title" ng-bind="track | normalizeTrackTitle"></span>
                                 </a>
                             </div>
                         </div>
@@ -175,10 +173,10 @@
                 </div>
                 <div class="track-info">
                     <div class="current-title">
-                        <a ng-href="{{ player.playlist.track.album_url }}" ng-bind="player.playlist.track | getTitle"></a>
+                        <a ng-href="{{ player.playlist.track.album_url }}" ng-bind="player.playlist.track | normalizeTrackTitle"></a>
                     </div>
                     <div class="current-artist">
-                        <a ng-href="tracks?q={{ player.playlist.track.track_artist }}" ng-bind="player.playlist.track | getArtist"></a>
+                        <a ng-href="tracks?q={{ player.playlist.track.track_artist }}" ng-bind="player.playlist.track.track_artist | normalizeArtist"></a>
                     </div>
                     <div class="current-rating" track-rating="player.playlist.track"></div>
                 </div>
@@ -191,9 +189,9 @@
                     <canvas class="waveform-canvas" peak-data=""></canvas>
                     <div class="track-progress" track-position=""></div>
                     <div class="time-right">
-                        <span ng-bind="player.playlist.position.position | mmss : true"></span>
+                        <span ng-bind="player.playlist.position.position | normalizeTime"></span>
                         /
-                        <span ng-bind="player.playlist.position.duration | mmss : true"></span>
+                        <span ng-bind="player.playlist.position.duration | normalizeTime"></span>
                     </div>
                 </div>
             </div>

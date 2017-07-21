@@ -11,7 +11,7 @@
                 <div class="inner"></div>
             </div>
             <div class="album-title">
-                <div class="inner" ng-bind="header.album_artist | artistFilter"></div>
+                <div class="inner" ng-bind="header.album_artist | normalizeArtist"></div>
             </div>
             <div class="album-info">
                 <table>
@@ -32,7 +32,7 @@
                             <span class="tracks-count" ng-bind="header.tracks_count"></span>
                         </td>
                         <td>
-                            <span class="artist-length" ng-bind="header.tracks_duration | mmss"></span>
+                            <span class="artist-length" ng-bind="(header.tracks_duration / 1000) | normalizeTime"></span>
                         </td>
                         <td>
                             <span class="artist-genres" ng-bind="tracks | groupGenres"></span>
@@ -59,7 +59,7 @@
                     <div class="right" ng-bind="album.items[0].track_year"></div>
                     <div class="album-sub">
                         <div class="inline name">
-                            <a ng-bind="album.items[0].track_album | albumFilter" ng-href="{{ album.items[0].album_url }}"></a>
+                            <a ng-bind="album.items[0].track_album | normalizeAlbum" ng-href="{{ album.items[0].album_url }}"></a>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     <div class="track" multiselect-item="track" ng-repeat="track in album.items" action-play="track"
                          action-context="tracks" action-resolver="fetch" ml-context-menu="selectedTracksMenu(tracks_selected)">
                         <div class="duration right">
-                            <div class="ellipsis" ng-bind="track.length | mmss"></div>
+                            <div class="ellipsis" ng-bind="(track.length / 1000) | normalizeTime"></div>
                         </div>
                         <div class="rating right">
                             <div class="ellipsis" track-rating="track"></div>
@@ -80,15 +80,15 @@
                         </div>
                         <div class="position left">
                             <div class="ellipsis">
-                                <div ng-hide="player.playlist.track == track" ng-bind="track | getTrackNumber"></div>
+                                <div ng-hide="player.playlist.track == track" ng-bind="track | normalizeTrackNumber"></div>
                                 <div ng-show="player.playlist.track == track">
                                     <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="track-title">
-                            <div class="first ellipsis" ng-bind="track | getTitle"></div>
-                            <div class="second ellipsis" ng-if="album.items | isVariousArtists" ng-bind="track | getArtist"></div>
+                            <div class="first ellipsis" ng-bind="track | normalizeTrackTitle"></div>
+                            <div class="second ellipsis" ng-if="album.items | isVariousArtists" ng-bind="track.track_artist | normalizeArtist"></div>
                         </div>
                     </div>
 

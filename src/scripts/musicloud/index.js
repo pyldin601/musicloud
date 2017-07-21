@@ -24,12 +24,16 @@ import services from './services';
 import directives from './directives';
 import controllers from './controllers';
 import filters from './filters';
+import components from './components';
+import config from './config';
 
-const components = [
+const parts = [
   services,
   directives,
   controllers,
-  filters
+  filters,
+  components,
+  config,
 ];
 
-components.forEach(apply => apply(app));
+parts.forEach(apply => apply(app));
