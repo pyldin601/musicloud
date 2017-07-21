@@ -31,7 +31,7 @@ type TrackMenuActions = {|
 |};
 
 export default function (
-  selectedTracks: TrackList,
+  selectedTracks: Array<Track>,
   playlists: Array<Playlist>,
   actions: TrackMenuActions,
 ) {
