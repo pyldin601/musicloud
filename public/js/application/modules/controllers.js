@@ -99,29 +99,6 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
 
 
 
-MusicLoud.controller("PlaylistController", [
-    "$scope", "Resolved", "Playlist", "SyncKeeper", "$location",
-    function ($scope, Resolved, Playlist, SyncKeeper, $location) {
-
-        var syncKeeper = SyncKeeper($scope);
-
-        $scope.tracks = Resolved;
-        $scope.tracks_selected = [];
-        $scope.fetch = null;
-
-        syncKeeper  .songs($scope.tracks)
-                    .songs($scope.tracks_selected)
-                    .playlistSongs($scope.tracks)
-                    .playlistSongs($scope.tracks_selected);
-
-        $scope.$on("playlist.deleted", function (event, data) {
-            if (data["id"] == Playlist["id"]) {
-                $location.url("/");
-            }
-        });
-
-    }
-]);
 
 MusicLoud.controller("SearchController", ["$scope", "SearchService", "$timeout", "SyncService", "$q",
 

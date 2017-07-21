@@ -19,29 +19,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import ArtistViewController from './ArtistViewController';
-import GenreViewController from './GenreViewController';
-import AlbumViewController from './AlbumViewController';
-import TracksViewController from './TracksViewController';
-import AllArtistsViewController from './AllArtistsViewController';
-import AllAlbumsViewController from './AllAlbumsViewController';
-import AllCompilationsViewController from './AllCompilationsViewController';
-import AllGenresViewController from './AllGenresViewController';
-import PlaylistsController from './PlaylistsController';
-import PlaylistController from './PlaylistController';
 
-const controllers = {
-  ArtistViewController,
-  GenreViewController,
-  AlbumViewController,
-  TracksViewController,
-  AllArtistsViewController,
-  AllAlbumsViewController,
-  AllCompilationsViewController,
-  AllGenresViewController,
-  PlaylistsController,
-  PlaylistController,
-};
+export default [
+  "$scope", "Resolved", "Playlist", "SyncKeeper", "$location",
+  function ($scope, Resolved, Playlist, SyncKeeper, $location) {
 
-export default (app) =>
-  Object.keys(controllers).forEach(name => app.controller(name, controllers[name]));
+    var syncKeeper = SyncKeeper($scope);
+
+    $scope.tracks = Resolved;
+    $scope.tracks_selected = [];
+    $scope.fetch = null;
+
+    syncKeeper  .songs($scope.tracks)
+      .songs($scope.tracks_selected)
+      .playlistSongs($scope.tracks)
+      .playlistSongs($scope.tracks_selected);
+
+    $scope.$on("playlist.deleted", function (event, data) {
+      if (data["id"] == Playlist["id"]) {
+        $location.url("/");
+      }
+    });
+
+  }
+];
