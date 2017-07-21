@@ -38,6 +38,7 @@
     "angular": "^1.4.3",
     "angular-cookies": "^1.4.3",
     "angular-route": "^1.4.3",
+    "entities": "^1.1.1",
     "jquery": "^2.1.3"
   }
 }

@@ -20,26 +20,46 @@
  * SOFTWARE.
  */
 // @flow
-import angular from 'angular';
+export type Track = {|
+  id: string,
+  file_id: string,
+  file_name: string,
+  bitrate: number,
+  length: number,
+  track_title: string,
+  track_artist: string,
+  track_album: string,
+  track_genre: string,
+  track_number: ?number,
+  track_comment: string,
+  track_year: string,
+  track_rating: ?number,
+  is_favourite: boolean,
+  is_compilation: boolean,
+  disc_number: ?number,
+  album_artist: string,
+  times_played: number,
+  times_skipped: number,
+  last_played_date: number,
+  created_date: number,
+  small_cover_id: string,
+  middle_cover_id: string,
+  big_cover_id: string,
+  format: string,
+  artist_url: string,
+  album_url: string,
+  genre_url: string,
+|};
 
-import tracksMenu from './ui/tracksMenu';
-import type { Track } from "./types";
+export type Playlist = {|
+  id: string,
+  name: string,
+  playlist_url: string,
+|};
 
-const app = angular.module('MusicLoud', ["ngRoute", "ngCookies", "httpPostFix",
-  "infinite-scroll", "MLContextMenu", "indexedDB"]);
+export type PlaylistTrack = Track & {| link_id: string |};
 
-app.run(['$rootScope', ($rootScope) => {
-  $rootScope.selectedTracksMenu = (selectedTracks: Array<Track>) =>
-    tracksMenu(selectedTracks, $rootScope.playlists, {
-      editSongs: tracks =>
-        $rootScope.action.editSongs(tracks),
-      deleteSongs: tracks =>
-        $rootScope.action.deleteSongs(tracks),
-      removeTracksFromPlaylist: tracks =>
-        $rootScope.playlistMethods.removeTracksFromPlaylist(tracks),
-      addTracksToPlaylist: (playlist, tracks) =>
-        $rootScope.playlistMethods.addTracksToPlaylist(playlist, tracks),
-    })
-}]);
+export type TrackColumns = $Keys<Track>;
 
-export default app;
+export type PlaylistTrackColumns = $Keys<PlaylistTrack>;
+
