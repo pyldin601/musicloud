@@ -27,6 +27,7 @@ import AllArtistsViewController from './AllArtistsViewController';
 import AllAlbumsViewController from './AllAlbumsViewController';
 import AllCompilationsViewController from './AllCompilationsViewController';
 import AllGenresViewController from './AllGenresViewController';
+import PlaylistsController from './PlaylistsController';
 
 const controllers = {
   ArtistViewController,
@@ -37,6 +38,7 @@ const controllers = {
   AllAlbumsViewController,
   AllCompilationsViewController,
   AllGenresViewController,
+  PlaylistsController,
 };
 
 export default (app) =>

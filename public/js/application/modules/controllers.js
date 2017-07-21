@@ -97,47 +97,7 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
 
 
 
-MusicLoud.controller("PlaylistsController", ["$rootScope", "PlaylistService", function ($scope, PlaylistService) {
 
-        $scope.playlists = [];
-        $scope.playlistMethods = {
-            reloadPlaylists: function () {
-                PlaylistService.list().then(function (response) {
-                    array_copy(response.data, $scope.playlists);
-                });
-            },
-            createNewPlaylist: function () {
-                var name = prompt("Please enter name for new playlist", "New playlist");
-                if (name !== null && name !== "") {
-                    PlaylistService.create(name).then(function (response) {
-                        $scope.playlists.push(response.data);
-                    }, function (response) {
-                        alert (response.data.message);
-                    })
-                }
-            },
-            deletePlaylist: function (playlist) {
-                if (confirm('Are you sure want to delete playlist "' + playlist.name + '"')) {
-                    PlaylistService.remove(playlist);
-                    $scope.$broadcast("playlist.deleted", playlist);
-                    $scope.playlists.splice($scope.playlists.indexOf(playlist), 1);
-                }
-                return false;
-            },
-            addTracksToPlaylist: function (playlist, tracks) {
-                PlaylistService.addTracks(playlist, tracks);
-            },
-            removeTracksFromPlaylist: function (tracks) {
-                PlaylistService.removeTracks(tracks);
-                $scope.$broadcast("playlist.songs.deleted", tracks.map(field("link_id")));
-            }
-        };
-
-        $scope.playlistMethods.reloadPlaylists();
-
-    }
-
-]);
 
 MusicLoud.controller("PlaylistController", [
     "$scope", "Resolved", "Playlist", "SyncKeeper", "$location",
