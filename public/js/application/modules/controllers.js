@@ -95,28 +95,6 @@ MusicLoud.run(["$rootScope", function ($rootScope) {
 
 }]);
 
-MusicLoud.controller("AllArtistsViewController", [
-    "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
-
-        $scope.artists = Resolved;
-        $scope.busy = false;
-        $scope.end = false;
-
-        $scope.load = function () {
-            $scope.busy = true;
-            SearchService.artists({q: $location.search().q}, $scope.artists.length).then(function (artists) {
-                if (artists.length > 0) {
-                    array_add(artists, $scope.artists);
-                    $scope.busy = false;
-                } else {
-                    $scope.end = true;
-                }
-            })
-        };
-
-    }
-]);
-
 MusicLoud.controller("AllAlbumsViewController", [
     "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
 

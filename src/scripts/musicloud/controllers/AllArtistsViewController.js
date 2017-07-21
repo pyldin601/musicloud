@@ -19,19 +19,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import ArtistViewController from './ArtistViewController';
-import GenreViewController from './GenreViewController';
-import AlbumViewController from './AlbumViewController';
-import TracksViewController from './TracksViewController';
-import AllArtistsViewController from './AllArtistsViewController';
 
-const controllers = {
-  ArtistViewController,
-  GenreViewController,
-  AlbumViewController,
-  TracksViewController,
-  AllArtistsViewController,
-};
+export default [
+  "Resolved", "SearchService", "$scope", "$location",
+  function (Resolved, SearchService, $scope, $location) {
 
-export default (app) =>
-  Object.keys(controllers).forEach(name => app.controller(name, controllers[name]));
+    $scope.artists = Resolved;
+    $scope.busy = false;
+    $scope.end = false;
+
+    $scope.load = function () {
+      $scope.busy = true;
+      SearchService.artists({ q: $location.search().q }, $scope.artists.length).then(function (artists) {
+        if (artists.length > 0) {
+          array_add(artists, $scope.artists);
+          $scope.busy = false;
+        } else {
+          $scope.end = true;
+        }
+      })
+    };
+
+  }
+];
