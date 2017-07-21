@@ -185,7 +185,7 @@ export default [
           function (SearchService, $location, $route, $filter) {
             const genre = decodeUriPlus($route.current.params.genre);
 
-            $route.current.title = $filter("genreFilter")(genre);
+            $route.current.title = $filter("normalizeGenre")(genre);
 
             return SearchService.tracks({ genre: genre }, 0).catch(() => {
               $location.url("/");

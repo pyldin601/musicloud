@@ -20,7 +20,14 @@
  * SOFTWARE.
  */
 
+// @flow
 import zeroFill from 'zero-fill';
+import type { Track } from '../types';
+
+const DEFAULT_TRACK_TITLE = 'Unknown Title';
+const DEFAULT_ALBUM = 'Unknown Album';
+const DEFAULT_ARTIST = 'Unknown Artist';
+const DEFAULT_GENRE = 'Unknown Genre';
 
 export const normalizeTime = [() => (time: number): string => {
   const integerTime = Math.floor(time);
@@ -39,3 +46,13 @@ export const normalizeTime = [() => (time: number): string => {
 
   return result.join(':');
 }];
+
+export const normalizeTrackTitle = [() =>
+  (track: Track) => track.track_title || track.file_name || DEFAULT_TRACK_TITLE
+];
+
+export const normalizeAlbum = [() => (album: string) => album || DEFAULT_ALBUM];
+
+export const normalizeArtist = [() => (artist: string) => artist || DEFAULT_ARTIST];
+
+export const normalizeGenre = [() => (genre: string) => genre || DEFAULT_GENRE];

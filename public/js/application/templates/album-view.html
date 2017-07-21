@@ -43,7 +43,7 @@
                                 <span class="album-length" ng-bind="(album.length / 1000) | normalizeTime"></span>
                             </td>
                             <td>
-                                <span class="album-genre" ng-bind="album.album_genre | genreFilter"></span>
+                                <span class="album-genre" ng-bind="album.album_genre | normalizeGenre"></span>
                             </td>
                         </tr>
                     </tbody>

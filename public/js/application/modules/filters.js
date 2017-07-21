@@ -29,7 +29,6 @@ var filters = {
 
 MusicLoud.filter("albumFilter",  function () { return filters.album });
 MusicLoud.filter("artistFilter", function () { return filters.artist });
-MusicLoud.filter("genreFilter",  function () { return filters.genre });
 MusicLoud.filter("titleFilter",  function () { return filters.title });
 
 MusicLoud.filter("getTitle", function () {
