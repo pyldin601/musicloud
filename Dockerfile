@@ -2,6 +2,8 @@ FROM pldin601/musicloud-image
 
 MAINTAINER Roman Lakhtadyr <roman.lakhtadyr@gmail.com>
 
+ENV PHP_ENV production
+
 WORKDIR /usr/app/
 
 COPY composer.json composer.lock ./
