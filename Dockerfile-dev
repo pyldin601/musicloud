@@ -4,6 +4,18 @@ MAINTAINER Roman Lakhtadyr <roman.lakhtadyr@gmail.com>
 
 ENV PHP_ENV development
 
+RUN { \
+        echo; \
+        echo "[program:webpack]"; \
+        echo "command=node_modules/.bin/webpack --watch"; \
+        echo "directory=/usr/app"; \
+        echo "stdout_logfile=/dev/stdout"; \
+        echo "stdout_logfile_maxbytes=0"; \
+        echo "stderr_logfile=/dev/stderr"; \
+        echo "stderr_logfile_maxbytes=0"; \
+    } | tee -a /etc/supervisor/supervisord.conf
+
+
 WORKDIR /usr/app/
 
 COPY cronfile /etc/cron.d/musicloud

@@ -32,7 +32,7 @@ docker-stop:
 
 docker-restart:
 	docker-compose kill web
-	docker-compose up web -d
+	docker-compose up -d web
 
 docker-down:
 	docker-compose down
