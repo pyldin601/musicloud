@@ -22,7 +22,7 @@
 
 // @flow
 import _ from 'lodash';
-import { or } from '../util/math';
+import { or } from '../util/exp';
 import type { Album, Track } from '../types';
 
 export const aggregateGenres = (tracks: Array<Track>): string => {
@@ -83,8 +83,8 @@ export const aggregateTrackArtists = (tracks: Array<Track>): string => {
 export const aggregateDuration = (tracks: Array<Track>): number =>
   _.sum(tracks.map(t => t.length));
 
-export const aggregateDiscCount = (tracks: Array<Track>): number =>
-  _(tracks).map(t => t.disk_number).uniq().length;
+export const aggregateDiscsCount = (tracks: Array<Track>): number =>
+  _(tracks).map(t => t.disk_number).uniq().value().length;
 
 export const aggregateAlbum = (tracks: Array<Track>): Album => {
   if (tracks.length === 0) {
@@ -100,7 +100,7 @@ export const aggregateAlbum = (tracks: Array<Track>): Album => {
     album_year: aggregateYears(tracks),
     album_genre: aggregateGenres(tracks),
     length: aggregateDuration(tracks),
-    discs_count: aggregateDiscCount(tracks),
+    discs_count: aggregateDiscsCount(tracks),
     is_various: isVariousArtists(tracks),
     tracks,
   };
