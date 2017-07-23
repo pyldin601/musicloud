@@ -84,7 +84,12 @@ export const aggregateDuration = (tracks: Array<Track>): number =>
   _.sum(tracks.map(t => t.length));
 
 export const aggregateDiscsCount = (tracks: Array<Track>): number =>
-  _(tracks).map(t => t.disk_number).uniq().value().length;
+  _(tracks)
+    .map(t => t.disc_number)
+    .uniq()
+    .filter(_.isNumber)
+    .value()
+    .length;
 
 export const aggregateAlbum = (tracks: Array<Track>): Album => {
   if (tracks.length === 0) {
