@@ -70,6 +70,7 @@ export type Album = {|
   length: number,
   discs_count: number,
   is_various: boolean,
+  tracks: Array<Track>,
 |};
 
 export type TrackColumns = $Keys<Track>;

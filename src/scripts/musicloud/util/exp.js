@@ -21,21 +21,10 @@
  */
 
 // @flow
-import type { Track, Album } from "../types";
+export function or<T>(x: T, y: T): T {
+  return x || y;
+}
 
-export default [
-  "albumData", "SyncKeeper", "$scope", "$location", "$route",
-  function (albumData: Album, SyncKeeper: *, $scope: *, $location: *, $route: *) {
-    const syncKeeper = SyncKeeper($scope);
-
-    $scope.album = albumData;
-    $scope.tracks = albumData.tracks;
-    $scope.tracks_selected = ([]: Array<Track>);
-
-    syncKeeper
-      .songs($scope.tracks)
-      .songs($scope.tracks_selected);
-
-    //$scope.$watch("tracks", () => $route.reload(), true);
-  }
-];
+export function and<T>(x: T, y: T): T {
+  return x && y;
+}
