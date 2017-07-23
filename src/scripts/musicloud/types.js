@@ -59,6 +59,19 @@ export type Playlist = {|
 
 export type PlaylistTrack = Track & {| link_id: string |};
 
+export type Album = {|
+  album_title: string,
+  album_url: string,
+  album_artist: string,
+  cover_id: ?string,
+  artist_url: string,
+  album_year: string,
+  album_genre: string,
+  length: number,
+  discs_count: number,
+  is_various: boolean,
+|};
+
 export type TrackColumns = $Keys<Track>;
 
 export type PlaylistTrackColumns = $Keys<PlaylistTrack>;

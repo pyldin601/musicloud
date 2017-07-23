@@ -19,8 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+// @flow
 import * as aggregators from '../util/aggregators';
+import type { Track } from "../types";
 
 export const aggregateArtists = [() => {
-  return (tracks) => aggregators.aggregateTrackArtists(tracks);
+  return (tracks: Array<Track>) => aggregators.aggregateTrackArtists(tracks);
+}];
+
+export const aggregateYears = [() => {
+  return (tracks: Array<Track>) => aggregators.aggregateYears(tracks);
+}];
+
+export const aggregateGenres = [() => {
+  return (tracks: Array<Track>) => aggregators.aggregateGenres(tracks);
 }];

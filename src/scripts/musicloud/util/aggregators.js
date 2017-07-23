@@ -79,9 +79,11 @@ export const aggregateTrackArtists = (tracks: Array<Track>): string => {
   }
 };
 
-export const aggregateTracksDuration = (tracks: Array<Track>): number => {
-  return _.sum(tracks.map(t => t.length));
-};
+export const aggregateDuration = (tracks: Array<Track>): number =>
+  _.sum(tracks.map(t => t.length));
+
+export const aggregateDiscCount = (tracks: Array<Track>): number =>
+  _(tracks).map(t => t.disk_number).uniq().length;
 
 export const isVariousArtists = (tracks: Array<Track>): boolean =>
   tracks.some(t => t.album_artist !== t.track_artist);

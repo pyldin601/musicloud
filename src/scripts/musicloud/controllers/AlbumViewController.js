@@ -20,38 +20,49 @@
  * SOFTWARE.
  */
 
+// @flow
+import {
+  aggregateGenres,
+  aggregateAlbumTitle,
+  aggregateYears,
+  isVariousArtists,
+  aggregateDuration,
+  aggregateDiscCount,
+} from "../util/aggregators";
+import type { Track, Album } from "../types";
+
+const or = (a, b) => a || b;
+
 export default [
   "Resolved", "$scope", "$location", "SyncKeeper",
-  function (Resolved, $scope, $location, SyncKeeper) {
+  function (Resolved: Array<Track>, $scope: *, $location: *, SyncKeeper: *) {
 
-    var syncKeeper = SyncKeeper($scope);
+    const syncKeeper = SyncKeeper($scope);
 
     $scope.tracks = Resolved;
-    $scope.tracks_selected = [];
+    $scope.tracks_selected = ([] : Array<Track>);
     $scope.album = {};
     $scope.tracks_selected = [];
     $scope.fetch = null;
 
     $scope.readAlbum = function () {
 
-      if ($scope.tracks.length == 0) {
+      if ($scope.tracks.length === 0) {
         $location.url("/");
         return;
       }
 
       $scope.album = {
         album_title:    aggregateAlbumTitle($scope.tracks),
-        album_url:      $scope.tracks.map(field("album_url")).reduce(or, ""),
-        album_artist:   $scope.tracks.map(field("album_artist")).reduce(or, ""),
-        cover_id:       $scope.tracks.map(field("middle_cover_id")).reduce(or, null),
-        artist_url:     $scope.tracks.map(field("artist_url")).reduce(or),
-        album_year:     groupYears($scope.tracks),
-        album_genre:    groupGenres($scope.tracks),
+        album_url:      $scope.tracks.map(t => t.album_url).reduce(or, ""),
+        album_artist:   $scope.tracks.map(t => t.album_artist).reduce(or, ""),
+        cover_id:       $scope.tracks.map(t => t.middle_cover_id).reduce(or, null),
+        artist_url:     $scope.tracks.map(t => t.artist_url).reduce(or),
+        album_year:     aggregateYears($scope.tracks),
+        album_genre:    aggregateGenres($scope.tracks),
         length:         aggregateDuration($scope.tracks),
-        discs_count:    $scope.tracks.map(field("disk_number")).distinct().length,
-        is_various:     $scope.tracks.any(function (t) {
-          return t.track_artist !== t.album_artist
-        })
+        discs_count:    aggregateDiscCount($scope.tracks),
+        is_various:     isVariousArtists($scope.tracks),
       };
 
     };
@@ -60,7 +71,6 @@ export default [
       .songs($scope.tracks_selected);
 
     $scope.$watch("tracks", $scope.readAlbum, true);
-
 
   }
 ];
