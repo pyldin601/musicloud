@@ -7,7 +7,9 @@ services:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
     ports:
       - '8080:8080'
     environment:
