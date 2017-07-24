@@ -23,19 +23,14 @@
 // @flow
 import type { Track, Album } from "../types";
 
-export default [
-  "albumData", "SyncKeeper", "$scope", "$location", "$route",
-  function (albumData: Album, SyncKeeper: *, $scope: *, $location: *, $route: *) {
-    const syncKeeper = SyncKeeper($scope);
+export default ["albumData", "SyncKeeper", "$scope", (albumData: Album, SyncKeeper: *, $scope: *) => {
+  const syncKeeper = SyncKeeper($scope);
 
-    $scope.album = albumData;
-    $scope.tracks = albumData.tracks;
-    $scope.tracks_selected = ([]: Array<Track>);
+  $scope.album = albumData;
+  $scope.tracks = albumData.tracks;
+  $scope.tracks_selected = ([]: Array<Track>);
 
-    syncKeeper
-      .songs($scope.tracks)
-      .songs($scope.tracks_selected);
-
-    //$scope.$watch("tracks", () => $route.reload(), true);
-  }
-];
+  syncKeeper
+    .songs($scope.tracks)
+    .songs($scope.tracks_selected);
+}];
