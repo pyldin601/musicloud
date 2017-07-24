@@ -4,8 +4,12 @@ local-install:
 	composer install
 	npm install
 
+local-install-missing:
+	composer install
+	npm-install-missing
+
 local-clean:
-	npm run rimraf -- vendor/ node_modules/ publuc/css/ public/scripts/
+	npm run rimraf -- vendor/ node_modules/ public/css/ public/scripts/
 
 local-build:
 	npm run gulp

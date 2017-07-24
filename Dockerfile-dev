@@ -15,6 +15,7 @@ RUN { \
         echo "stderr_logfile_maxbytes=0"; \
     } | tee -a /etc/supervisor/supervisord.conf
 
+RUN npm install -g npm-install-missing
 
 WORKDIR /usr/app/
 

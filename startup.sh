@@ -2,7 +2,7 @@
 
 # If started in development env install all dependencies
 if [ "$PHP_ENV" = "development" ]; then
-    make local-install local-build
+    make local-install-missing local-build
 fi
 
 # Wait for database ready to handle connections
