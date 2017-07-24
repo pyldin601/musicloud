@@ -38,8 +38,8 @@ export default class Player extends EventEmitter {
   initPlayer(pathToSwf: string) {
     this.jFrame.jPlayer({
       swfPath: pathToSwf,
-      supplied: "mp3",
-      solution: "html"
+      supplied: 'mp3',
+      solution: 'html',
     });
   }
 
@@ -47,27 +47,38 @@ export default class Player extends EventEmitter {
     const emitter = this;
 
     this.jFrame.bind($.jPlayer.event.ready, event =>
-      emitter.emit('ready'));
+      emitter.emit('ready', event),
+    );
     this.jFrame.bind($.jPlayer.event.play, event =>
-      emitter.emit('play'));
+      emitter.emit('play', event),
+    );
     this.jFrame.bind($.jPlayer.event.pause, event =>
-      emitter.emit('pause'));
+      emitter.emit('pause', event),
+    );
     this.jFrame.bind($.jPlayer.event.waiting, event =>
-      emitter.emit('waiting'));
+      emitter.emit('waiting', event),
+    );
     this.jFrame.bind($.jPlayer.event.playing, event =>
-      emitter.emit('playing'));
+      emitter.emit('playing', event),
+    );
     this.jFrame.bind($.jPlayer.event.canplay, event =>
-      emitter.emit('canplay'));
+      emitter.emit('canplay', event),
+    );
     this.jFrame.bind($.jPlayer.event.seeking, event =>
-      emitter.emit('seeking'));
+      emitter.emit('seeking', event),
+    );
     this.jFrame.bind($.jPlayer.event.seeked, event =>
-      emitter.emit('seeked'));
+      emitter.emit('seeked', event),
+    );
     this.jFrame.bind($.jPlayer.event.ended, event =>
-      emitter.emit('ended'));
+      emitter.emit('ended', event),
+    );
     this.jFrame.bind($.jPlayer.event.volumechange, event =>
-      emitter.emit('volumechange', event));
+      emitter.emit('volumechange', event),
+    );
     this.jFrame.bind($.jPlayer.event.timeupdate, event =>
-      emitter.emit('timeupdate', event.jPlayer.status.currentTime));
+      emitter.emit('timeupdate', event.jPlayer.status.currentTime, event),
+    );
   }
 
   async load(url: string) {
@@ -75,15 +86,15 @@ export default class Player extends EventEmitter {
   }
 
   async play(position: number) {
-    this.jFrame.jPlayer("play", position);
+    this.jFrame.jPlayer('play', position);
   }
 
   async pause() {
-    this.jFrame.jPlayer("pause");
+    this.jFrame.jPlayer('pause');
   }
 
   async stop() {
-    this.jFrame.jPlayer("stop");
+    this.jFrame.jPlayer('stop');
   }
 
   async close() {
@@ -95,6 +106,6 @@ export default class Player extends EventEmitter {
   }
 
   async volume(volume: number) {
-    this.jFrame.jPlayer("volume", volume);
+    this.jFrame.jPlayer('volume', volume);
   }
-};
+}
