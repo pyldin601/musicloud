@@ -22,7 +22,8 @@
 
 // @flow
 import _ from 'lodash';
-import type { Track } from '../types';
+import { or } from '../util/exp';
+import type { Album, Track } from '../types';
 
 export const aggregateGenres = (tracks: Array<Track>): string => {
   const genres = _.uniq(tracks.map(t => t.track_genre));
@@ -79,8 +80,35 @@ export const aggregateTrackArtists = (tracks: Array<Track>): string => {
   }
 };
 
-export const aggregateTracksDuration = (tracks: Array<Track>): number => {
-  return _.sum(tracks.map(t => t.length));
+export const aggregateDuration = (tracks: Array<Track>): number =>
+  _.sum(tracks.map(t => t.length));
+
+export const aggregateDiscsCount = (tracks: Array<Track>): number =>
+  _(tracks)
+    .map(t => t.disc_number)
+    .uniq()
+    .filter(_.isNumber)
+    .value()
+    .length;
+
+export const aggregateAlbum = (tracks: Array<Track>): Album => {
+  if (tracks.length === 0) {
+    throw new Error('Could not aggregate empty track list');
+  }
+
+  return {
+    album_title: aggregateAlbumTitle(tracks),
+    album_url: tracks.map(t => t.album_url).reduce(or, ""),
+    album_artist: tracks.map(t => t.album_artist).reduce(or, ""),
+    cover_id: tracks.map(t => t.middle_cover_id).reduce(or, null),
+    artist_url: tracks.map(t => t.artist_url).reduce(or),
+    album_year: aggregateYears(tracks),
+    album_genre: aggregateGenres(tracks),
+    length: aggregateDuration(tracks),
+    discs_count: aggregateDiscsCount(tracks),
+    is_various: isVariousArtists(tracks),
+    tracks,
+  };
 };
 
 export const isVariousArtists = (tracks: Array<Track>): boolean =>

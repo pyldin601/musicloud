@@ -2,10 +2,7 @@
 
 # If started in development env install all dependencies
 if [ "$PHP_ENV" = "development" ]; then
-    composer install --no-plugins --no-scripts --no-dev
-    npm install
-    npm run gulp
-    npm run webpack
+    make local-install local-build
 fi
 
 # Wait for database ready to handle connections

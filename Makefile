@@ -1,11 +1,11 @@
-IMAGE_ID := "pldin601/musicloud-service"
+dev: docker-build docker-up
 
 local-install:
 	composer install
 	npm install
 
 local-clean:
-	npm run rimraf -- vendor/ node_modules/
+	npm run rimraf -- vendor/ node_modules/ publuc/css/ public/scripts/
 
 local-build:
 	npm run gulp
@@ -25,23 +25,7 @@ docker-build:
 	docker-compose build
 
 docker-up:
-	docker-compose up -d
-
-docker-stop:
-	docker-compose stop
-
-docker-restart:
-	docker-compose kill web
-	docker-compose up -d web
-
-docker-down:
-	docker-compose down
-
-docker-logs:
-	docker-compose logs -f web
+	docker-compose up
 
 docker-bash:
 	docker-compose exec web bash
-
-docker-deploy:
-	docker build -t $(IMAGE_ID) . && docker push $(IMAGE_ID)

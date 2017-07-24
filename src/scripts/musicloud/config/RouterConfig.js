@@ -20,6 +20,8 @@
  * SOFTWARE.
  */
 
+import { aggregateAlbum } from "../util/aggregators";
+
 export default [
   "$routeProvider", "$locationProvider",
   ($routeProvider, $locationProvider) => {
@@ -75,7 +77,7 @@ export default [
       controller: "AlbumViewController",
       templateUrl: templatePath + "/album-view.html",
       resolve: {
-        Resolved: ["SearchService", "$location", "$route", "$filter",
+        albumData: ["SearchService", "$location", "$route", "$filter",
           (SearchService, $location, $route, $filter) => {
             const artist = decodeUriPlus($route.current.params.artist);
             const album = decodeUriPlus($route.current.params.album);
@@ -87,7 +89,7 @@ export default [
 
             return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).catch(() => {
               $location.url("/");
-            });
+            }).then(aggregateAlbum);
           }
         ]
       },
