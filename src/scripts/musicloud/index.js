@@ -19,21 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 import app from './app';
-import services from './services';
-import directives from './directives';
-import controllers from './controllers';
-import filters from './filters';
-import components from './components';
-import config from './config';
 
-const parts = [
-  services,
-  directives,
-  controllers,
-  filters,
-  components,
-  config,
-];
-
-parts.forEach(apply => apply(app));
+export default app;

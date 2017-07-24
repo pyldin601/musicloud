@@ -25,7 +25,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    musicloud: path.join(__dirname, 'src/scripts/musicloud/index.js')
+    musicloud: path.join(__dirname, 'src/scripts/musicloud/index.js'),
   },
   output: {
     path: path.join(__dirname, 'public/scripts'),

@@ -19,48 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-// @flow
-import services from './services';
-import directives from './directives';
-import controllers from './controllers';
-import filters from './filters';
-import components from './components';
-import config from './config';
 
-import player from '../player';
+import player from './player';
 
-import angular from 'angular';
-
-const app = angular.module('MusicLoud', ["ngRoute", "ngCookies", "httpPostFix",
-  "infinite-scroll", "MLContextMenu", "indexedDB", player]);
-
-app.run(["AccountService", "$rootScope", (AccountService, $rootScope) => {
-  $rootScope.account = { authorized: false };
-
-  AccountService.init().then(
-    response => $rootScope.account = { authorized: true, user: response.data },
-    () => window.location.href = "/",
-  );
-
-  $rootScope.$on("$routeChangeSuccess", function (e, $route) {
-    if ($route.title) {
-      document.title = $route.title + " - MusicLoud";
-    } else {
-      document.title = "MusicLoud";
-    }
-  });
-
-}]);
-
-const parts = [
-  services,
-  directives,
-  controllers,
-  filters,
-  components,
-  config,
-];
-
-parts.forEach(apply => apply(app));
-
-export default app;
+export default player;
