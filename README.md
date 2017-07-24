@@ -41,8 +41,8 @@ web:
 
 ## Checklist
 - [x] Dockerize
+- [ ] Build frontend with webpack (in progress)
 - [ ] Improve error handling
 - [ ] Save music to Amazon AWS
-- [ ] Build frontend with webpack
 - [ ] Throw out Angular and bring the React
 - [ ] Authentication
