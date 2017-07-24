@@ -10,13 +10,36 @@ containers and any build utilities. It is tested on my home server with 600 GB o
 
 Today I'm going to continue making it as pet project.
 
-## Run
+## Development
+To start service in development mode type:
 ```shell
 make docker-build docker-up
 ```
 and open in your browser url: http://localhost:8080/.
 
 Now it requires login and password what is **guest** : **please** accordingly. It is hardcoded and will be remove in future when authentication will be done.
+
+## Docker
+Docker image is available [here](https://hub.docker.com/r/pldin601/musicloud/).
+Example of stack configuration:
+```yaml
+db:
+  environment:
+    - POSTGRES_PASSWORD=musicloud
+    - POSTGRES_USER=musicloud
+  image: 'postgres:latest'
+web:
+  autoredeploy: true
+  environment:
+    - DB_DATABASE=musicloud
+    - DB_HOSTNAME=db
+    - DB_PASSWORD=musicloud
+    - DB_USERNAME=musicloud
+    - VIRTUAL_HOST=musicloud.peacefulbit.com
+  image: 'pldin601/musicloud:latest'
+  links:
+    - db
+```
 
 ## Checklist
 - [x] Dockerize
