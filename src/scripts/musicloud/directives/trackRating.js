@@ -20,17 +20,31 @@
  * SOFTWARE.
  */
 
-import changeArtwork from './changeArtwork';
-import ngVisible from './ngVisible';
-import activeTab from './activeTab';
-import trackRating from './trackRating';
+const ratingTemplate = `
+    <ul ng-show="track" class="rating-body" ng-class="{shaded: track.track_rating === null}">
+        <li class="rating-star fa"
+            ng-class="{ 'fa-star': track.track_rating >= n, 'fa-star-o': track.track_rating < n }"
+            ng-click="rate(n)"
+            ng-repeat="n in [5,4,3,2,1]">
+        </li>
+        <li class="rating-remove" ng-click="unrate()">&nbsp;</li>
+    </ul>
+`;
 
-const directives = {
-  changeArtwork,
-  ngVisible,
-  activeTab,
-  trackRating,
-};
-
-export default (app) =>
-  Object.keys(directives).forEach(name => app.directive(name, directives[name]));
+export default ["StatsService", StatsService => ({
+  scope: {
+    track: "=trackRating"
+  },
+  template: ratingTemplate,
+  link: function (scope, elem, attr) {
+    elem.on("click", function () {
+      return false;
+    });
+    scope.rate = function (value) {
+      StatsService.rateTrack(scope.track, value);
+    };
+    scope.unrate = function () {
+      StatsService.unrateTrack(scope.track);
+    };
+  }
+})];

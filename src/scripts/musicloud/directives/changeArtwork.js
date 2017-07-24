@@ -20,17 +20,39 @@
  * SOFTWARE.
  */
 
-import changeArtwork from './changeArtwork';
-import ngVisible from './ngVisible';
-import activeTab from './activeTab';
-import trackRating from './trackRating';
+import { first } from 'lodash';
 
-const directives = {
-  changeArtwork,
-  ngVisible,
-  activeTab,
-  trackRating,
-};
+export default ["TrackService", "SyncService", (TrackService, SyncService) => {
+  return {
+    scope: {
+      tracks: "=changeArtwork"
+    },
+    restrict: "A",
+    link: function (scope, elem, attrs) {
+      const onClickEvent = () => {
+        const selector = $("<input>");
+        selector.attr("type", "file");
+        selector.attr("accept", "image/jpeg,image/mjpeg,image/png,image/gif");
+        selector.attr("name", "artwork_file");
+        selector.on("change", function () {
+          if (this.files.length === 0)  {
+            return;
+          }
 
-export default (app) =>
-  Object.keys(directives).forEach(name => app.directive(name, directives[name]));
+          const that = first(this.files);
+          const track_id = scope.tracks.map(t => t.id).join(",");
+
+          const form = new FormData();
+          form.append("artwork_file", that);
+          form.append("track_id", track_id);
+
+          TrackService.changeArtwork(form).success(function (data) {
+            SyncService.tracks(data);
+          });
+        });
+        selector.click();
+      };
+      elem.bind("click", onClickEvent);
+    }
+  }
+}];

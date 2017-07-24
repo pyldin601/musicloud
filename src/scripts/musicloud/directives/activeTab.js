@@ -20,17 +20,21 @@
  * SOFTWARE.
  */
 
-import changeArtwork from './changeArtwork';
-import ngVisible from './ngVisible';
-import activeTab from './activeTab';
-import trackRating from './trackRating';
+const ACTIVE_TAB_CLASS = "active";
 
-const directives = {
-  changeArtwork,
-  ngVisible,
-  activeTab,
-  trackRating,
-};
+export default ["$location", "$route", ($location, $route) => ({
+  scope: {
+    activeTab: "@"
+  },
+  link: ($scope, $element, $attributes) => {
+    $element.toggleClass(ACTIVE_TAB_CLASS, $location.url().match($scope.activeTab) !== null);
 
-export default (app) =>
-  Object.keys(directives).forEach(name => app.directive(name, directives[name]));
+    $scope.$on("$routeChangeSuccess", function () {
+      if ($route.current.special && $route.current.special.section) {
+        $element.toggleClass(ACTIVE_TAB_CLASS, $route.current.special.section === $scope.activeTab);
+      } else {
+        $element.toggleClass(ACTIVE_TAB_CLASS, false);
+      }
+    });
+  }
+})];

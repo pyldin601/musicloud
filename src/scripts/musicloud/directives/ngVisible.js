@@ -20,17 +20,16 @@
  * SOFTWARE.
  */
 
-import changeArtwork from './changeArtwork';
-import ngVisible from './ngVisible';
-import activeTab from './activeTab';
-import trackRating from './trackRating';
-
-const directives = {
-  changeArtwork,
-  ngVisible,
-  activeTab,
-  trackRating,
-};
-
-export default (app) =>
-  Object.keys(directives).forEach(name => app.directive(name, directives[name]));
+export default [() => ({
+  scope: {
+    ngVisible: "="
+  },
+  restrict: "A",
+  link: function (scope, element, attrs) {
+    const valueChanged = function (value) {
+      element.css("visibility", value ? "visible" : "hidden")
+    };
+    scope.$watch("ngVisible", valueChanged);
+    valueChanged(scope.ngVisible);
+  }
+})];
