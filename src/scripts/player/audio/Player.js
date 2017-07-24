@@ -1,0 +1,100 @@
+/*
+ * Copyright (c) 2017 Roman Lakhtadyr
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+// @flow
+import $ from 'jquery';
+import EventEmitter from 'events';
+
+export default class Player extends EventEmitter {
+  jFrame: $;
+
+  constructor(pathToSwf: string) {
+    super();
+
+    this.jFrame = $('div');
+    this.initPlayer(pathToSwf);
+    this.initBindings();
+  }
+
+  initPlayer(pathToSwf: string) {
+    this.jFrame.jPlayer({
+      swfPath: pathToSwf,
+      supplied: "mp3",
+      solution: "html"
+    });
+  }
+
+  initBindings() {
+    const emitter = this;
+
+    this.jFrame.bind($.jPlayer.event.ready, event =>
+      emitter.emit('ready'));
+    this.jFrame.bind($.jPlayer.event.play, event =>
+      emitter.emit('play'));
+    this.jFrame.bind($.jPlayer.event.pause, event =>
+      emitter.emit('pause'));
+    this.jFrame.bind($.jPlayer.event.waiting, event =>
+      emitter.emit('waiting'));
+    this.jFrame.bind($.jPlayer.event.playing, event =>
+      emitter.emit('playing'));
+    this.jFrame.bind($.jPlayer.event.canplay, event =>
+      emitter.emit('canplay'));
+    this.jFrame.bind($.jPlayer.event.seeking, event =>
+      emitter.emit('seeking'));
+    this.jFrame.bind($.jPlayer.event.seeked, event =>
+      emitter.emit('seeked'));
+    this.jFrame.bind($.jPlayer.event.ended, event =>
+      emitter.emit('ended'));
+    this.jFrame.bind($.jPlayer.event.volumechange, event =>
+      emitter.emit('volumechange', event));
+    this.jFrame.bind($.jPlayer.event.timeupdate, event =>
+      emitter.emit('timeupdate', event.jPlayer.status.currentTime));
+  }
+
+  async load(url: string) {
+    this.jFrame.jPlayer('setMedia', { mp3: url });
+  }
+
+  async play(position: number) {
+    this.jFrame.jPlayer("play", position);
+  }
+
+  async pause() {
+    this.jFrame.jPlayer("pause");
+  }
+
+  async stop() {
+    this.jFrame.jPlayer("stop");
+  }
+
+  async close() {
+    this.jFrame.jPlayer('clearMedia');
+  }
+
+  async seek(position: number) {
+    this.jFrame.jPlayer('playHead', position);
+  }
+
+  async volume(volume: number) {
+    this.jFrame.jPlayer("volume", volume);
+  }
+};

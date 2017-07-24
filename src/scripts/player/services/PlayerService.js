@@ -20,12 +20,33 @@
  * SOFTWARE.
  */
 
-import injectServices from './services';
+// @flow
 
 import angular from 'angular';
+import EventEmitter from 'events';
 
-const player = angular.module('MusicLoud.Player', []);
+export default [() => {
+  const audioElement: HTMLAudioElement = document.createElement('audio');
+  const supportedFormats = {
+    mp3: audioElement.canPlayType("audio/mp3") !== "",
+    mp4: audioElement.canPlayType("audio/mp4") !== ""
+  };
 
-injectServices(player);
+  return {
+    async play(url: string) {
 
-export default 'MusicLoud.Player';
+    },
+    async pause() {
+
+    },
+    async stop() {
+
+    },
+    async seek(position: number) {
+      //
+    },
+    async setVolume(volume: number) {
+      audioElement.volume = volume;
+    },
+  };
+}];

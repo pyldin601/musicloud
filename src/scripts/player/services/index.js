@@ -20,12 +20,9 @@
  * SOFTWARE.
  */
 
-import injectServices from './services';
+import PlayerService from './PlayerService';
 
-import angular from 'angular';
+const services = { PlayerService };
 
-const player = angular.module('MusicLoud.Player', []);
-
-injectServices(player);
-
-export default 'MusicLoud.Player';
+export default (app) =>
+  Object.keys(services).forEach(service => app.factory(service, services[service]));
