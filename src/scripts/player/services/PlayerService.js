@@ -22,9 +22,6 @@
 
 // @flow
 
-import angular from 'angular';
-import EventEmitter from 'events';
-
 export default [() => {
   const audioElement: HTMLAudioElement = document.createElement('audio');
   const supportedFormats = {
