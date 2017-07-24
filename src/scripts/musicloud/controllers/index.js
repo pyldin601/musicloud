@@ -30,6 +30,8 @@ import AllGenresViewController from './AllGenresViewController';
 import PlaylistsController from './PlaylistsController';
 import PlaylistController from './PlaylistController';
 import SearchController from './SearchController';
+import MetadataController from './MetadataController';
+import UploadController from './UploadController';
 
 const controllers = {
   ArtistViewController,
@@ -43,6 +45,8 @@ const controllers = {
   PlaylistsController,
   PlaylistController,
   SearchController,
+  MetadataController,
+  UploadController,
 };
 
 export default (app) =>
