@@ -19,27 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
-import SyncKeeper from './SyncKeeper';
 
-const services = {
-  AccountService,
-  TrackService,
-  HeadersService,
-  PlaylistService,
-  SearchService,
-  GroupingService,
-  SyncService,
-  ModalWindow,
-  SyncKeeper,
-};
-
-export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+export default [() => ({
+  scope: {
+    ngVisible: "="
+  },
+  restrict: "A",
+  link: function (scope, element, attrs) {
+    const valueChanged = function (value) {
+      element.css("visibility", value ? "visible" : "hidden")
+    };
+    scope.$watch("ngVisible", valueChanged);
+    valueChanged(scope.ngVisible);
+  }
+})];

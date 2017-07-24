@@ -19,27 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
-import SyncKeeper from './SyncKeeper';
 
-const services = {
-  AccountService,
-  TrackService,
-  HeadersService,
-  PlaylistService,
-  SearchService,
-  GroupingService,
-  SyncService,
-  ModalWindow,
-  SyncKeeper,
-};
+const ratingTemplate = `
+    <ul ng-show="track" class="rating-body" ng-class="{shaded: track.track_rating === null}">
+        <li class="rating-star fa"
+            ng-class="{ 'fa-star': track.track_rating >= n, 'fa-star-o': track.track_rating < n }"
+            ng-click="rate(n)"
+            ng-repeat="n in [5,4,3,2,1]">
+        </li>
+        <li class="rating-remove" ng-click="unrate()">&nbsp;</li>
+    </ul>
+`;
 
-export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+export default ["StatsService", StatsService => ({
+  scope: {
+    track: "=trackRating"
+  },
+  template: ratingTemplate,
+  link: function (scope, elem, attr) {
+    elem.on("click", function () {
+      return false;
+    });
+    scope.rate = function (value) {
+      StatsService.rateTrack(scope.track, value);
+    };
+    scope.unrate = function () {
+      StatsService.unrateTrack(scope.track);
+    };
+  }
+})];

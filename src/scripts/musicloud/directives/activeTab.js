@@ -19,27 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
-import SyncKeeper from './SyncKeeper';
 
-const services = {
-  AccountService,
-  TrackService,
-  HeadersService,
-  PlaylistService,
-  SearchService,
-  GroupingService,
-  SyncService,
-  ModalWindow,
-  SyncKeeper,
-};
+const ACTIVE_TAB_CLASS = "active";
 
-export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+export default ["$location", "$route", ($location, $route) => ({
+  scope: {
+    activeTab: "@"
+  },
+  link: ($scope, $element, $attributes) => {
+    $element.toggleClass(ACTIVE_TAB_CLASS, $location.url().match($scope.activeTab) !== null);
+
+    $scope.$on("$routeChangeSuccess", function () {
+      if ($route.current.special && $route.current.special.section) {
+        $element.toggleClass(ACTIVE_TAB_CLASS, $route.current.special.section === $scope.activeTab);
+      } else {
+        $element.toggleClass(ACTIVE_TAB_CLASS, false);
+      }
+    });
+  }
+})];

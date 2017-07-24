@@ -79,52 +79,6 @@
         };
     }]);
 
-    MusicLoud.directive("changeArtwork", ["TrackService", "SyncService", function (TrackService, SyncService) {
-        return {
-            scope: {
-                tracks: "=changeArtwork"
-            },
-            restrict: "A",
-            link: function (scope, elem, attrs) {
-                var onClickEvent = function (event) {
-                    var selector = $("<input>");
-                    selector.attr("type", "file");
-                    selector.attr("accept", "image/jpeg,image/mjpeg,image/png,image/gif");
-                    selector.attr("name", "artwork_file");
-                    selector.on("change", function () {
-                        if (this.files.length == 0) return;
-                        var that = this.files[0];
-                        var track_id = scope.tracks.map(field("id")).join(",");
-                        var form = new FormData();
-                        form.append("artwork_file", that);
-                        form.append("track_id", track_id);
-                        TrackService.changeArtwork(form).success(function (data) {
-                            SyncService.tracks(data);
-                        });
-                    });
-                    selector.click();
-                };
-                elem.bind("click", onClickEvent);
-            }
-        }
-    }]);
-
-    MusicLoud.directive("ngVisible", [function () {
-        return {
-            scope: {
-                ngVisible: "="
-            },
-            restrict: "A",
-            link: function (scope, element, attrs) {
-                var valueChanged = function (value) {
-                    element.css("visibility", value ? "visible" : "hidden")
-                };
-                scope.$watch("ngVisible", valueChanged);
-                valueChanged(scope.ngVisible);
-            }
-        }
-    }]);
-
     MusicLoud.directive("multiselectList", [function () {
         return {
             scope: {
@@ -183,51 +137,6 @@
                     });
                 }
 
-            }
-        }
-    }]);
-
-    MusicLoud.directive("activeTab", ["$location", "$route", function ($location, $route) {
-        return {
-            scope: {
-                activeTab: "@"
-            },
-            link: function ($scope, $element, $attributes) {
-
-                var CLASS = "active";
-
-                $element.toggleClass(CLASS, $location.url().match($scope.activeTab) !== null);
-
-                $scope.$on("$routeChangeSuccess", function () {
-                    if ($route.current.special && $route.current.special.section) {
-                        $element.toggleClass(CLASS, $route.current.special.section == $scope.activeTab);
-                    } else {
-                        $element.toggleClass(CLASS, false);
-                    }
-                });
-
-            }
-        };
-    }]);
-
-    MusicLoud.directive("trackRating", ["StatsService", function (StatsService) {
-        return {
-            scope: {
-                track: "=trackRating"
-            },
-            template: '<ul ng-show="track" class="rating-body" ng-class="{shaded: track.track_rating === null}">\
-        <li class="rating-star fa" ng-class="{ \'fa-star\': track.track_rating >= n, \'fa-star-o\': track.track_rating < n }" ng-click="rate(n)" ng-repeat="n in [5,4,3,2,1]"></li><li class="rating-remove" ng-click="unrate()">&nbsp;</li>\
-        </ul>',
-            link: function (scope, elem, attr) {
-                elem.on("click", function (event) {
-                    return false;
-                });
-                scope.rate = function (value) {
-                    StatsService.rateTrack(scope.track, value);
-                };
-                scope.unrate = function () {
-                    StatsService.unrateTrack(scope.track);
-                };
             }
         }
     }]);

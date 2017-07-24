@@ -21,9 +21,11 @@
  */
 
 import TracksContextMenu from './TracksContextMenu';
+import Actions from './Actions';
 
 const components = [
   TracksContextMenu,
+  Actions,
 ];
 
 export default (app) => components.forEach(component => app.run(component));

@@ -60,6 +60,9 @@ module.exports = {
                   browsers: ['last 4 versions']
                 }
               }]
+            ],
+            plugins: [
+              'transform-runtime',
             ]
           }
         }
