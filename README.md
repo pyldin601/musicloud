@@ -6,7 +6,7 @@ It's buggy and unstable but can play music. In those days I didn't know anything
 containers and any build utilities. It is tested on my home server with 600 GB of music.
 
 ## Screenshot
-![Screenshot 1](/docs/musicloud.png?raw=true)
+![Screenshot 1](https://raw.githubusercontent.com/pldin601/musicloud/master/docs/musicloud.png?raw=true)
 
 Today I'm going to continue making it as pet project.
 
