@@ -111,10 +111,16 @@ class FFProbe {
         $object->meta_genre         = $o_tags["genre"]          ->orEmpty();
         $object->meta_date          = $o_tags["date"]           ->orEmpty();
         $object->meta_album         = $o_tags["album"]          ->orEmpty();
-        $object->meta_track_number  = $o_tags["track"]          ->toInt()
-                                                                ->orNull();
-        $object->meta_disc_number   = $o_tags["disc"]           ->toInt()
-                                                                ->orNull();
+
+        $object->meta_track_number  = $o_tags["track"]          ->map(function ($value) {
+            if (preg_match('`(\d+)/\d+`', $value, $matches)) {
+                return (int) $matches[1];
+            }
+            return (int) $value;
+        })->orNull();
+
+        $object->meta_disc_number   = $o_tags["disc"]           ->toInt()->orNull();
+
         $object->meta_album_artist  = $o_tags["album_artist"]   ->orEmpty();
         $object->is_compilation     = $o_tags["compilation"]    ->map("bool")
                                                                 ->getOrElse("false");
