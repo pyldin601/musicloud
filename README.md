@@ -29,13 +29,11 @@ db:
     - POSTGRES_USER=musicloud
   image: 'postgres:latest'
 web:
-  autoredeploy: true
   environment:
     - DB_DATABASE=musicloud
     - DB_HOSTNAME=db
     - DB_PASSWORD=musicloud
     - DB_USERNAME=musicloud
-    - VIRTUAL_HOST=musicloud.peacefulbit.com
   image: 'pldin601/musicloud:latest'
   links:
     - db
@@ -43,8 +41,8 @@ web:
 
 ## Checklist
 - [x] Dockerize
+- [ ] Build frontend with webpack (in progress)
 - [ ] Improve error handling
 - [ ] Save music to Amazon AWS
-- [ ] Build frontend with webpack
 - [ ] Throw out Angular and bring the React
 - [ ] Authentication
