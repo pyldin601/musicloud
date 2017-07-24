@@ -235,36 +235,6 @@
 
     ]);
 
-    MusicLoud.factory("StatsService", ["$http", "$filter", function ($http, $filter) {
-        return {
-            incrementPlays: function (track) {
-                return $http.post("/api/stats/played", {id: track.id}).success(function () {
-                    track.times_played += 1;
-                    track.last_played_date = new Date().getTime() / 1000;
-                });
-            },
-            incrementSkips: function (track) {
-                return $http.post("/api/stats/skipped", {id: track.id}).success(function () {
-                    track.times_skipped += 1;
-                });
-            },
-            rateTrack: function (track, rating) {
-                track.track_rating = rating;
-                return $http.post("/api/stats/rate", {id: track.id, rating: rating});
-            },
-            unrateTrack: function (track) {
-                track.track_rating = null;
-                return $http.post("/api/stats/unrate", {id: track.id});
-            },
-            scrobbleStart: function (track) {
-                return $http.post("/api/scrobbler/nowPlaying", {id: track.id});
-            },
-            scrobbleFinish: function (track) {
-                return $http.post("/api/scrobbler/scrobble", {id: track.id});
-            }
-        }
-    }]);
-
     MusicLoud.directive("seekController", ["$rootScope", function ($rootScope) {
         return {
             link: function (scope, element, attrs) {
