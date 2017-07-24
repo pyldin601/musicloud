@@ -20,17 +20,16 @@
  * SOFTWARE.
  */
 
+import { first } from 'lodash';
+
 export default ["$scope", "TrackService", "SyncService", "$filter", "$route",
-  function ($scope, TrackService, SyncService, $filter, $route) {
+  ($scope, TrackService, SyncService, $filter, $route) => {
 
-    var songs        = $scope.songs,
-      artists_list = songs.map(field("album_artist")).distinct(),
-      albums_list  = songs.map(field("track_album")).distinct(),
-      cover_url    = songs.map(field("middle_cover_id")).reduce(or),
-
-      is_compilation = songs.all(field("is_compilation")),
-
-      unmodified  = "[unmodified]";
+    const songs = $scope.songs;
+    const artists_list = songs.map(field("album_artist")).distinct();
+    const cover_url = songs.map(field("middle_cover_id")).reduce(or);
+    const is_compilation = songs.all(field("is_compilation"));
+    const unmodified  = "[unmodified]";
 
     $scope.fields = {
       track_title: "",
@@ -50,17 +49,18 @@ export default ["$scope", "TrackService", "SyncService", "$filter", "$route",
     $scope.current_cover = cover_url;
 
     $scope.selected = {
-      artists: (artists_list.length == 1) ? $filter("normalizeArtist")(artists_list.first()) :
-        "" + artists_list.length + " artist(s)",
-      songs: (songs.length == 1) ? $filter("normalizeTrackTitle")(songs.first()) :
-        (albums_list.length == 1 && albums_list.first() != "") ? albums_list.first() :
-          "" + songs.length + " song(s)"
+      artists: (artists_list.length === 1)
+        ? $filter("normalizeArtist")(first(artists_list))
+        : ` ${artists_list.length} artist(s)`,
+      songs: (songs.length === 1)
+        ? $filter("normalizeTrackTitle")(first(songs))
+        : "" + songs.length + " song(s)"
     };
 
     $scope.load = function () {
-      for (var i = 0; i < songs.length; i += 1) {
-        for (var key in $scope.fields) if ($scope.fields.hasOwnProperty(key)) {
-          if (i == 0) {
+      for (let i = 0; i < songs.length; i += 1) {
+        for (let key in $scope.fields) if ($scope.fields.hasOwnProperty(key)) {
+          if (i === 0) {
             $scope.fields[key] = songs[0][key];
           } else if (songs[0][key] !== songs[i][key]) {
             $scope.fields[key] = unmodified;
@@ -70,11 +70,12 @@ export default ["$scope", "TrackService", "SyncService", "$filter", "$route",
     };
 
     $scope.save = function () {
+      const song_id = songs.map(function (e) {
+          return e.id
+        }).join(",");
+      const submission = { song_id: song_id, metadata: {} };
 
-      var song_id = songs.map(function (e) { return e.id }).join(","),
-        submission = { song_id: song_id, metadata: {} };
-
-      for (var key in $scope.fields) if ($scope.fields.hasOwnProperty(key)) {
+      for (let key in $scope.fields) if ($scope.fields.hasOwnProperty(key)) {
         if ($scope.fields[key] !== unmodified) {
           submission.metadata[key] = $scope.fields[key];
         }
