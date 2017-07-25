@@ -23,12 +23,6 @@
 // @flow
 
 export default [() => {
-  const audioElement: HTMLAudioElement = document.createElement('audio');
-  const supportedFormats = {
-    mp3: audioElement.canPlayType("audio/mp3") !== "",
-    mp4: audioElement.canPlayType("audio/mp4") !== ""
-  };
-
   return {
     async play(url: string) {
 
@@ -43,7 +37,7 @@ export default [() => {
       //
     },
     async setVolume(volume: number) {
-      audioElement.volume = volume;
+      //
     },
   };
 }];
