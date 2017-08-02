@@ -1,0 +1,22 @@
+{
+  "root": true,
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ],
+  "plugins": [
+    "babel",
+    "flowtype",
+    "jest"
+  ],
+  "env": {
+    "jest/globals": true
+  },
+  "rules": {
+    "flowtype/define-flow-type": 1
+  },
+  "globals": {
+    "DOMParser": true
+  }
+}

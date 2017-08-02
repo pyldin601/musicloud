@@ -223,8 +223,18 @@
                     <div class="upload dd-icon" ng-init="uploadMenu=false" click-outside="uploadMenu=false" ng-class="{ selected: uploadMenu === true }" >
                         <i class="fa fa-cloud-upload" ng-click="uploadMenu=true"></i>
                         <ul class="menu-context" ng-show="uploadMenu">
-                            <li class="menu-item" ng-click="upload.action.add()"><i class="fa fa-music item-icon"></i> Upload files...</li>
-                            <li class="menu-item" ng-click="upload.action.addDirectory()"><i class="fa fa-folder item-icon"></i> Upload directory...</li>
+                            <li class="menu-item" ng-click="upload.action.add()">
+                                <i class="fa fa-music item-icon"></i>
+                                Upload files...
+                            </li>
+                            <li class="menu-item" ng-click="upload.action.addDirectory()">
+                                <i class="fa fa-folder item-icon"></i>
+                                Upload directory...
+                            </li>
+                            <li class="menu-item" ng-click="upload.action.extractFromVideo()">
+                                <i class="fa fa-youtube-play item-icon"></i>
+                                Extract from video by url...
+                            </li>
                         </ul>
                     </div>
                 </div>

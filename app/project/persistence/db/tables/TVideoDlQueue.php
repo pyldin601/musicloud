@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * Copyright (c) 2017 Roman Lakhtadyr
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,37 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import $ from 'jquery';
-import angular from 'angular';
 
-export default ["$http", ($http) => ({
-    create: () => $http.post("/api/track/create", {}),
-    upload: (data, callback) => {
-      return $.ajax({
-        xhr: function() {
-          const xhr = new window.XMLHttpRequest();
-          xhr.upload.addEventListener("progress", callback, false);
-          return xhr;
-        },
-        url: "/api/track/upload",
-        type: "POST",
-        data,
-        processData: false,
-        contentType: false
-      });
-    },
-    unlink: (data) => $http.post("/api/track/delete", data),
-    deleteByArtist: (data) => $http.post("/api/track/deleteByArtist", data),
-    edit: (data) => $http.post("/api/track/edit", data),
-    getPeaks: (id) => $http.get("/peaks/" + id),
-    changeArtwork: (data) => $http.post("/api/track/artwork", data, {
-      transformRequest: angular.identity,
-      headers: {
-        'Content-Type': undefined
-      }
-    }),
-    createFromVideo: (video_url: string) => {
-      return $http.post('/api/track/createFromVideo', { video_url });
-    },
-  }
-)];
+namespace app\project\persistence\db\tables;
+
+class TVideoDlQueue
+{
+    const _NAME = "video_dl_queue";
+
+    const ID = "id";
+    const URL = "url";
+    const USER_ID = "user_id";
+    const TRACK_ID = "track_id";
+    const STATUS = "status";
+
+    const ID_FULL = self::_NAME . "." . self::ID;
+    const URL_FULL = self::_NAME . "." . self::URL;
+    const USER_ID_FULL = self::_NAME . "." . self::USER_ID;
+    const TRACK_ID_FULL = self::_NAME . "." . self::TRACK_ID;
+    const STATUS_FULL = self::_NAME . "." . self::STATUS;
+}

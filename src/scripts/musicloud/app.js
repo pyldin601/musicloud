@@ -20,10 +20,19 @@
  * SOFTWARE.
  */
 // @flow
+import services from './services';
+import directives from './directives';
+import controllers from './controllers';
+import filters from './filters';
+import components from './components';
+import config from './config';
+
+import player from '../player';
+
 import angular from 'angular';
 
 const app = angular.module('MusicLoud', ["ngRoute", "ngCookies", "httpPostFix",
-  "infinite-scroll", "MLContextMenu", "indexedDB"]);
+  "infinite-scroll", "MLContextMenu", "indexedDB", player]);
 
 app.run(["AccountService", "$rootScope", (AccountService, $rootScope) => {
   $rootScope.account = { authorized: false };
@@ -42,5 +51,16 @@ app.run(["AccountService", "$rootScope", (AccountService, $rootScope) => {
   });
 
 }]);
+
+const parts = [
+  services,
+  directives,
+  controllers,
+  filters,
+  components,
+  config,
+];
+
+parts.forEach(apply => apply(app));
 
 export default app;
