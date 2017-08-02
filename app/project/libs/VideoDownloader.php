@@ -33,12 +33,16 @@ class VideoDownloader
         $temp_file = TempFileProvider::generate("ytdl");
 
         $command = sprintf(
-            'ytdl %s | ffmpeg -i - -vn -acodec copy %s',
+            'ytdl %s | ffmpeg -i - -vn -f mp3 %s',
             escapeshellarg($video_url),
             escapeshellarg($temp_file)
         );
 
         exec($command, $result, $status);
+
+        if ($status !== 0) {
+            throw new \RuntimeException("Video downloader exit status: " . $status);
+        }
 
         (new Song($song_id))->upload($temp_file, 'downloaded_video');
     }
