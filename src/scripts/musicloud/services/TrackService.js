@@ -47,6 +47,9 @@ export default ["$http", ($http) => ({
       headers: {
         'Content-Type': undefined
       }
-    })
+    }),
+    createFromVideo: (video_url: string) => {
+      return $http.post('/api/track/createFromVideo', { video_url });
+    },
   }
 )];

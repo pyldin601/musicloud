@@ -37,6 +37,12 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
           }
         },
         action: {
+          extractFromVideo: () => {
+            const url = prompt('Enter link to video to extract audio from it');
+            if (url) {
+              TrackService.createFromVideo(url);
+            }
+          },
           add: () => {
             const selector = $("<input>");
             selector.attr("type", "file");
