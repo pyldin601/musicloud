@@ -21,9 +21,9 @@
  */
 
 export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackService, $route) => {
-    var progress = function (event) {
+    const progress = (event) => {
         if (event.lengthComputable) {
-          $rootScope.$applyAsync(upload.data.progress.percent = parseInt(event.loaded / event.total * 100));
+          $rootScope.$applyAsync(upload.data.progress.percent = parseInt(event.loaded / event.total * 100, 10));
         }
       },
       upload = {
@@ -37,40 +37,40 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
           }
         },
         action: {
-          add: function () {
-            var selector = $("<input>");
+          add: () => {
+            const selector = $("<input>");
             selector.attr("type", "file");
             selector.attr("accept", "audio/mpeg,audio/aac,audio/flac,audio/ogg");
             selector.attr("multiple", "multiple");
             selector.attr("name", "file");
-            selector.on("change", function () {
-              if (this.files.length == 0) return;
-              var that = this;
-              $rootScope.$applyAsync(function () {
-                for (var i = 0; i < that.files.length; i++) {
-                  if (that.files[i].size > maxFileSize) {
+            selector.on("change", () => {
+              if (this.files.length === 0) return;
+              const that = this;
+              $rootScope.$applyAsync(() => {
+                for (const file of that.files) {
+                  if (file.size > maxFileSize) {
                     // todo: warn if file size is too big
                     continue;
                   }
-                  upload.data.queue.push(that.files[i]);
+                  upload.data.queue.push(file);
                 }
               });
               upload.action.next();
             });
             selector.click();
           },
-          addDirectory: function () {
-            var selector = $("<input>");
+          addDirectory: () => {
+            const selector = $("<input>");
             selector.attr("type", "file");
             selector.attr("accept", "audio/mpeg,audio/aac,audio/flac,audio/ogg");
             selector.attr("multiple", "multiple");
             selector.attr("webkitdirectory", "");
             selector.attr("directory", "");
             selector.attr("name", "file");
-            selector.on("change", function () {
-              if (this.files.length == 0) return;
-              var that = this;
-              $rootScope.$applyAsync(function () {
+            selector.on("change", () => {
+              if (this.files.length === 0) return;
+              const that = this;
+              $rootScope.$applyAsync(() => {
                 for (var i = 0; i < that.files.length; i++) {
                   if (that.files[i].size > maxFileSize) {
                     // todo: warn if file size is too big
@@ -83,7 +83,7 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
             });
             selector.click();
           },
-          cancel: function () {
+          cancel: () => {
             if (confirm("Are you sure want to cancel current uploading?")) {
               if (upload.data.promise !== null) {
                 upload.data.promise.abort();
@@ -91,7 +91,7 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
               upload.action.clean();
             }
           },
-          clean: function () {
+          clean: () => {
             upload.data.uploading = false;
             upload.data.current = null;
             upload.data.progress.percent = 0;
@@ -99,11 +99,11 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
             upload.data.queue = [];
             $route.reload();
           },
-          next: function () {
+          next: () => {
 
-            $rootScope.$applyAsync(function () {
+            $rootScope.$applyAsync(() => {
 
-              if (upload.data.queue.length == 0) {
+              if (upload.data.queue.length === 0) {
                 upload.action.clean();
                 return;
               } else {
@@ -111,15 +111,15 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
                 upload.data.current = upload.data.queue.shift();
               }
 
-              TrackService.create().success(function (id) {
-                var form = new FormData();
+              TrackService.create().success((id) => {
+                const form = new FormData();
                 form.append("file", upload.data.current);
                 form.append("track_id", id);
                 upload.data.promise = TrackService.upload(form, progress);
-                upload.data.promise.success(function (data) {
+                upload.data.promise.success(() => {
                   upload.action.next();
-                }).error(function () {
-                  TrackService.unlink({ song_id: id }).then(function () {
+                }).error(() => {
+                  TrackService.unlink({ song_id: id }).then(() => {
                     return upload.action.next();
                   });
                 });
