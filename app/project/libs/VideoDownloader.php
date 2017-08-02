@@ -28,8 +28,25 @@ use app\project\models\tracklist\Song;
 
 class VideoDownloader
 {
+    public function getVideoTitle(string $url): string
+    {
+        $command = sprintf('ytdl %s --info-json', escapeshellarg($url));
+
+        exec($command, $result, $status);
+
+        if ($status !== 0) {
+            throw new \RuntimeException("Video info exit status: " . $status);
+        }
+
+        $info = json_decode(implode("\n", $result));
+
+        return $info->title;
+    }
+
     public function downloadToSong(string $video_url, string $song_id): void
     {
+        $video_title = $this->getVideoTitle($video_url);
+
         $temp_file = TempFileProvider::generate("ytdl");
 
         $command = sprintf(
@@ -44,6 +61,6 @@ class VideoDownloader
             throw new \RuntimeException("Video downloader exit status: " . $status);
         }
 
-        (new Song($song_id))->upload($temp_file, 'downloaded_video');
+        (new Song($song_id))->upload($temp_file, "${video_title}.mp3");
     }
 }
