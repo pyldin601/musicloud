@@ -28,14 +28,17 @@ use app\project\models\tracklist\Song;
 
 class VideoDownloader
 {
-    public function saveToSong(string $url, int $song_id): void
+    public function downloadToSong(string $video_url, int $song_id): void
     {
         $temp_file = TempFileProvider::generate("ytdl");
-        exec(sprintf(
+
+        $command = sprintf(
             'ytdl %s | ffmpeg -i - -vn -acodec copy %s',
-            escapeshellarg($url),
+            escapeshellarg($video_url),
             escapeshellarg($temp_file)
-        ));
+        );
+
+        exec($command, $result, $status);
 
         (new Song($song_id))->upload($temp_file, 'downloaded_video');
     }
