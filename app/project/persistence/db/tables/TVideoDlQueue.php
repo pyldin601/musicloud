@@ -35,7 +35,7 @@ class TVideoDlQueue
 
     const ID_FULL = self::_NAME . "." . self::ID;
     const URL_FULL = self::_NAME . "." . self::URL;
-    const USER_FULL = self::_NAME . "." . self::USER_ID;
-    const TRACK_FULL = self::_NAME . "." . self::TRACK_ID;
+    const USER_ID_FULL = self::_NAME . "." . self::USER_ID;
+    const TRACK_ID_FULL = self::_NAME . "." . self::TRACK_ID;
     const STATUS_FULL = self::_NAME . "." . self::STATUS;
 }
