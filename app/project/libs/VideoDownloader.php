@@ -28,7 +28,7 @@ use app\project\models\tracklist\Song;
 
 class VideoDownloader
 {
-    public function downloadToSong(string $video_url, int $song_id): void
+    public function downloadToSong(string $video_url, string $song_id): void
     {
         $temp_file = TempFileProvider::generate("ytdl");
 
