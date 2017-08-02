@@ -24,12 +24,13 @@
 namespace app\project\handlers\fixed\api\track;
 
 use app\core\db\builder\InsertQuery;
+use app\core\router\RouteHandler;
 use app\core\view\JsonResponse;
 use app\project\models\single\LoggedIn;
 use app\project\models\tracklist\Songs;
 use app\project\persistence\db\tables\TVideoDlQueue;
 
-class DoCreateFromVideo
+class DoCreateFromVideo implements RouteHandler
 {
     public function doPost($video_url, JsonResponse $response, LoggedIn $user)
     {
