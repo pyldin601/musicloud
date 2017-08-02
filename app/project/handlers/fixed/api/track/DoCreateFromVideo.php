@@ -38,7 +38,7 @@ class DoCreateFromVideo implements RouteHandler
         try {
             $query = new InsertQuery(TVideoDlQueue::_NAME);
             $query->values([
-                TVideoDlQueue::STATUS => 1,
+                TVideoDlQueue::STATUS => 0,
                 TVideoDlQueue::URL => $video_url,
                 TVideoDlQueue::USER_ID => $user->getId(),
                 TVideoDlQueue::TRACK_ID => $song_id
