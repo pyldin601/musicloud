@@ -205,7 +205,7 @@ export default [
       templateUrl: templatePath + "/queue.html",
       controller: "QueueController",
       resolve: {
-        Jobs: ["TrackService", (TrackService: *) => TrackService.jobsQueue()],
+        Jobs: ["TrackService", (TrackService: *) => TrackService.getQueue()],
       },
     });
 

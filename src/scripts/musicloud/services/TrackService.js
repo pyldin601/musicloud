@@ -51,5 +51,8 @@ export default ["$http", ($http) => ({
     createFromVideo: (video_url: string) => {
       return $http.post('/api/track/createFromVideo', { video_url });
     },
+    getQueue: () => {
+      return $http.get('/api/track/queue');
+    },
   }
 )];
