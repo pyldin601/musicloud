@@ -201,7 +201,13 @@ export default [
       }
     });
 
-
+    $routeProvider.when("/queue", {
+      templateUrl: templatePath + "/queue.html",
+      controller: "QueueController",
+      resolve: {
+        Jobs: ["TrackService", (TrackService: *) => TrackService.getQueue()],
+      },
+    });
 
     $routeProvider.when("/tracks", {
       controller: "TracksViewController",
