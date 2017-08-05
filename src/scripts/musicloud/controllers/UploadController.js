@@ -49,7 +49,7 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
             selector.attr("accept", "audio/mpeg,audio/aac,audio/flac,audio/ogg");
             selector.attr("multiple", "multiple");
             selector.attr("name", "file");
-            selector.on("change", () => {
+            selector.on("change", function () {
               if (this.files.length === 0) return;
               const that = this;
               $rootScope.$applyAsync(() => {
@@ -73,7 +73,7 @@ export default ["$rootScope", "TrackService", "$route", ($rootScope, TrackServic
             selector.attr("webkitdirectory", "");
             selector.attr("directory", "");
             selector.attr("name", "file");
-            selector.on("change", () => {
+            selector.on("change", function () {
               if (this.files.length === 0) return;
               const that = this;
               $rootScope.$applyAsync(() => {
