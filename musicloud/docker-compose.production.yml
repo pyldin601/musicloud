@@ -14,8 +14,7 @@ services:
       DB_PASSWORD: musicloud
       DB_USERNAME: musicloud
       VIRTUAL_HOST: "mc.homefs.biz"
-      VIRTUAL_PORT: 433
-      VIRTUAL_PROTO: https
+      VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: "mc.homefs.biz"
     networks:
       - default
