@@ -9,14 +9,20 @@ services:
   web:
     image: 'pldin601/musicloud:latest'
     environment:
-      - DB_DATABASE=musicloud
-      - DB_HOSTNAME=db
-      - DB_PASSWORD=musicloud
-      - DB_USERNAME=musicloud
-    volumes:
-      - musicloud-files:/var/tmp/musicloud/files
+      DB_DATABASE: musicloud
+      DB_HOSTNAME: db
+      DB_PASSWORD: musicloud
+      DB_USERNAME: musicloud
+      VIRTUAL_HOST: "mc.homefs.biz"
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: "mc.homefs.biz"
+    networks:
+      - default
+      - global
     depends_on:
       - db
+    volumes:
+      - musicloud-files:/var/tmp/musicloud/files
 
 networks:
   global:
