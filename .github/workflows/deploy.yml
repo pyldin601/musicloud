@@ -1,0 +1,39 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+#jobs:
+#  build-musicloud:
+#    name: Build Backend
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@master
+#      - name: Build
+#        uses: docker/build-push-action@v1
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#          repository: myownradio/backend
+#          tags: latest
+#          path: services/backend
+
+  deploy:
+#    needs:
+#      - build-backend
+#      - build-streamer
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Push stack to production
+        uses: pldin601/docker-swarm-deploy-action@master
+        with:
+          remote_host: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_IP_ADDRESS }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+          args: stack deploy --with-registry-auth --prune --resolve-image=always --compose-file musicloud/docker-compose.production.yml musicloud

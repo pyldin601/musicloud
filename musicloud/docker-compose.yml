@@ -1,0 +1,28 @@
+version: '3.5'
+
+services:
+  db:
+    image: 'postgres'
+    environment:
+      POSTGRES_PASSWORD: musicloud
+      POSTGRES_USER: musicloud
+  web:
+    image: 'pldin601/musicloud:latest'
+    environment:
+      - DB_DATABASE=musicloud
+      - DB_HOSTNAME=db
+      - DB_PASSWORD=musicloud
+      - DB_USERNAME=musicloud
+    volumes:
+      - musicloud-files:/var/tmp/musicloud/files
+    depends_on:
+      - db
+
+networks:
+  global:
+    external: true
+    name: global_default
+
+volumes:
+  musicloud-files:
+    driver: local
