@@ -5,7 +5,7 @@ on:
     branches:
       - master
 
-#jobs:
+jobs:
 #  build-musicloud:
 #    name: Build Backend
 #    runs-on: ubuntu-latest
