@@ -48,7 +48,7 @@
     "angular-route": "^1.7.8",
     "babel-plugin-transform-runtime": "^6.23.0",
     "entities": "^1.1.2",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.13",
     "zero-fill": "^2.2.3"
   }
