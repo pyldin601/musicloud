@@ -1,10 +1,10 @@
-FROM php:7.1-fpm
+FROM php:7.1
 
 # Install dependencies
 RUN apt-get update && \
     apt-get upgrade -y && \
     # Install common dependencies
-    apt-get install -y git ffmpeg zip libzip-dev && \
+    apt-get install -y git zip libzip-dev && \
     docker-php-ext-configure zip --with-libzip && \
     docker-php-ext-install zip && \
     # Install composer
@@ -15,9 +15,6 @@ RUN apt-get update && \
     # Cleanup
     apt-get clean
 
-# Use the default production configuration
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-
 WORKDIR /code
 
 COPY composer.json /code/composer.json
@@ -25,6 +22,7 @@ COPY composer.lock /code/composer.lock
 
 RUN composer install --no-plugins --no-scripts --no-dev
 
-COPY public/index.php /code/public/index.php
-COPY app /code/app
-COPY config /code/config
+COPY .php-database-migration /code/.php-database-migration
+
+CMD composer run migrate -- migrate:init env && \
+    composer run migrate -- migrate:up env

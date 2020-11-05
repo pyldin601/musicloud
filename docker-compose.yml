@@ -2,22 +2,33 @@ version: '2'
 
 services:
   db:
-    image: 'postgres'
+    image: 'library/postgres:9.5'
     environment:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
-  web:
+  php-fpm:
     build:
       context: .
-      dockerfile: Dockerfile-dev
-    ports:
-      - '8080:8080'
+      dockerfile: musicloud/php-fpm/Dockerfile
+    depends_on:
+      - db
     environment:
       DB_HOSTNAME: db
       DB_DATABASE: musicloud
       DB_USERNAME: musicloud
       DB_PASSWORD: musicloud
-    volumes:
-      - .:/usr/app/
+  nginx:
+    build:
+      context: .
+      dockerfile: musicloud/nginx/Dockerfile
+    ports:
+    - 3030:8080
+    depends_on:
+      - php-fpm
+  migration:
+    build:
+      context: .
+      dockerfile: musicloud/migration/Dockerfile
+    restart: on-failure
     depends_on:
       - db
