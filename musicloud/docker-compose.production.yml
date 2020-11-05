@@ -8,9 +8,7 @@ services:
       POSTGRES_USER: musicloud
   php-fpm:
     user: "$UID"
-    build:
-      context: .
-      dockerfile: musicloud/php-fpm/Dockerfile
+    image: pldin601/musicloud-php-fpm:latest
     depends_on:
       - db
     environment:
@@ -22,17 +20,15 @@ services:
       - media:/volume/media
       - temp:/volume/temp
   nginx:
-    build:
-      context: .
-      dockerfile: musicloud/nginx/Dockerfile
-    ports:
-    - 3030:8080
+    image: pldin601/musicloud-nginx:latest
+    environment:
+      VIRTUAL_HOST: musicloud.homefs.biz
+      LETSENCRYPT_HOST: musicloud.homefs.biz
+      VIRTUAL_PORT: '8080'
     depends_on:
       - php-fpm
   migration:
-    build:
-      context: .
-      dockerfile: musicloud/migration/Dockerfile
+    image: pldin601/musicloud-migration:latest
     restart: on-failure
     depends_on:
       - db
