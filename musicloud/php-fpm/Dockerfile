@@ -33,3 +33,5 @@ RUN composer install --no-plugins --no-scripts --no-dev
 COPY public/index.php /code/public/index.php
 COPY app /code/app
 COPY config /code/config
+
+EXPOSE 9000
