@@ -35,7 +35,7 @@ jobs:
           tags: latest
           file: musicloud/php-fpm/Dockerfile
   build-migrations:
-    name: Build php-fpm
+    name: Build migrations
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
