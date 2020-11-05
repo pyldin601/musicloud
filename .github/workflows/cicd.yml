@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: musicloud/nginx
           tags: latest
-          path: musicloud/nginx
+          file: musicloud/nginx/Dockerfile
   build-php-fpm:
     name: Build php-fpm
     runs-on: ubuntu-latest
@@ -33,9 +33,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: musicloud/php-fpm
           tags: latest
-          path: musicloud/php-fpm
+          file: musicloud/php-fpm/Dockerfile
   build-migrations:
-    name: Build php-fpm
+    name: Build migrations
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -47,7 +47,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: musicloud/migrations
           tags: latest
-          path: musicloud/migrations
+          file: musicloud/migrations/Dockerfile
   deploy:
     needs:
       - build-nginx
