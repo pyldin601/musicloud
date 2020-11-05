@@ -7,7 +7,6 @@ services:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
   php-fpm:
-    user: "$UID"
     image: pldin601/musicloud-php-fpm:latest
     depends_on:
       - db

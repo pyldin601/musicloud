@@ -34,6 +34,7 @@ COPY public/index.php /code/public/index.php
 COPY app /code/app
 COPY config /code/config
 
-EXPOSE 9000
+RUN mkdir -p /volume/temp && chown -R www-data:www-data /volume/temp && \
+    mkdir -p /volume/media && chown -R www-data:www-data /volume/media
 
-USER www-data
+EXPOSE 9000
