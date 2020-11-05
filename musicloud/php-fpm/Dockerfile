@@ -35,3 +35,5 @@ COPY app /code/app
 COPY config /code/config
 
 EXPOSE 9000
+
+USER www-data
