@@ -40,15 +40,8 @@ class DoUpload implements RouteHandler
 
         $temp_file = TempFileProvider::generate("upload", ".$extension");
 
-        error_log(print_r($track, true));
-
-        error_log("Old Exists: " . (file_exists($track["tmp_name"]) ? 1 : 0));
-
         move_uploaded_file($track["tmp_name"], $temp_file);
 
-        error_log("New Exists: " . (file_exists($temp_file) ? 1 : 0));
-
         $response->write($tm->upload($temp_file, $decoded_name));
-
     }
 } 

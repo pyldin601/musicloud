@@ -129,7 +129,7 @@ class Song implements \JsonSerializable {
      * @param $file_path
      * @param $file_name
      * @return array Created Song record
-     * @throws AlreadyUploadedException
+     * @throws AlreadyUploadedException|ControllerException
      */
     public function upload($file_path, $file_name) {
 
