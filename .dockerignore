@@ -14,5 +14,5 @@
 !package-lock.json
 !webpack.config.js
 !gulpfile.js
-!musicloud/nginx/default.conf
+!musicloud/nginx/default.conf.template
 !.php-database-migration

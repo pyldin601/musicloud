@@ -1,4 +1,4 @@
-version: '2'
+version: '3.5'
 
 services:
   db:
@@ -7,6 +7,7 @@ services:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
   php-fpm:
+    user: "$UID"
     build:
       context: .
       dockerfile: musicloud/php-fpm/Dockerfile
@@ -17,6 +18,9 @@ services:
       DB_DATABASE: musicloud
       DB_USERNAME: musicloud
       DB_PASSWORD: musicloud
+    volumes:
+      - media:/volume/media
+      - temp:/volume/temp
   nginx:
     build:
       context: .
@@ -32,3 +36,8 @@ services:
     restart: on-failure
     depends_on:
       - db
+volumes:
+  media:
+    driver: local
+  temp:
+    driver: local

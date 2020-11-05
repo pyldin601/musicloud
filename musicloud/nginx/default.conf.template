@@ -4,7 +4,7 @@ server {
     root /code/public;
     index index.php;
 
-    # client_max_body_size 256M;
+    client_max_body_size ${MAX_UPLOAD_FILESIZE}M;
 
     location / {
         try_files $uri $uri/ @rewrites;
