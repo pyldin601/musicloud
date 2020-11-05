@@ -27,9 +27,11 @@ services:
       VIRTUAL_PORT: '8080'
     depends_on:
       - php-fpm
+    networks:
+      - default
+      - global
   migration:
     image: pldin601/musicloud-migration:latest
-    restart: on-failure
     depends_on:
       - db
 volumes:
@@ -37,3 +39,7 @@ volumes:
     driver: local
   temp:
     driver: local
+networks:
+  global:
+    external: true
+    name: global_default
