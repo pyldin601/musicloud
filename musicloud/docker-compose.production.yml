@@ -33,7 +33,8 @@ services:
   migration:
     image: pldin601/musicloud-migration:latest
     deploy:
-      restart_policy: on-failure
+      restart_policy:
+        condition: on-failure
     depends_on:
       - db
 volumes:
