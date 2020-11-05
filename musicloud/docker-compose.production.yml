@@ -32,6 +32,8 @@ services:
       - global
   migration:
     image: pldin601/musicloud-migration:latest
+    deploy:
+      restart_policy: on-failure
     depends_on:
       - db
 volumes:
