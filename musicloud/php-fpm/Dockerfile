@@ -21,7 +21,10 @@ RUN apt-get update && \
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" && \
     # Patch php configuration files
     sed -i "s/^upload_max_filesize\s=.*/upload_max_filesize = ${MAX_UPLOAD_FILESIZE}M/" $PHP_INI_DIR/php.ini && \
-    sed -i "s/^post_max_size\s=.*/post_max_size = ${MAX_UPLOAD_FILESIZE}M/" $PHP_INI_DIR/php.ini
+    sed -i "s/^post_max_size\s=.*/post_max_size = ${MAX_UPLOAD_FILESIZE}M/" $PHP_INI_DIR/php.ini && \
+    # Create directories for media content
+    mkdir -p /volume/temp && chown -R www-data:www-data /volume/temp && \
+    mkdir -p /volume/media && chown -R www-data:www-data /volume/media
 
 WORKDIR /code
 
@@ -33,8 +36,5 @@ RUN composer install --no-plugins --no-scripts --no-dev
 COPY public/index.php /code/public/index.php
 COPY app /code/app
 COPY config /code/config
-
-RUN mkdir -p /volume/temp && chown -R www-data:www-data /volume/temp && \
-    mkdir -p /volume/media && chown -R www-data:www-data /volume/media
 
 EXPOSE 9000
