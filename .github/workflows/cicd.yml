@@ -1,0 +1,67 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-nginx:
+    name: Build nginx
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Build
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: musicloud/nginx
+          tags: latest
+          path: musicloud/nginx
+  build-php-fpm:
+    name: Build php-fpm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Build
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: musicloud/php-fpm
+          tags: latest
+          path: musicloud/php-fpm
+  build-migrations:
+    name: Build php-fpm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Build
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: musicloud/migrations
+          tags: latest
+          path: musicloud/migrations
+  deploy:
+    needs:
+      - build-nginx
+      - build-php-fpm
+      - build-migrations
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Push stack to production
+        uses: pldin601/docker-swarm-deploy-action@master
+        with:
+          remote_host: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_IP_ADDRESS }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+          args: stack deploy --with-registry-auth --prune --resolve-image=always --compose-file musicloud/docker-compose.production.yml musicloud

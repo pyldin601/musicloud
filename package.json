@@ -34,7 +34,7 @@
     "eslint-config-prettier": "^2.10.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-flowtype": "^2.50.3",
-    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^20.0.3",
     "gulp": "^3.9.1",
     "gulp-less": "^3.5.0",
@@ -43,13 +43,13 @@
     "webpack": "^3.12.0"
   },
   "dependencies": {
-    "angular": "^1.8.0",
-    "angular-cookies": "^1.7.8",
-    "angular-route": "^1.7.8",
+    "angular": "^1.8.2",
+    "angular-cookies": "^1.8.2",
+    "angular-route": "^1.8.2",
     "babel-plugin-transform-runtime": "^6.23.0",
     "entities": "^1.1.2",
-    "jquery": "^3.5.0",
-    "lodash": "^4.17.19",
-    "zero-fill": "^2.2.3"
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.20",
+    "zero-fill": "^2.2.4"
   }
 }

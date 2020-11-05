@@ -20,8 +20,6 @@ if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW']) || $_SERV
     exit;
 }
 
-$used_before = memory_get_usage();
-
 require_once APP_ROOT_DIR . "/app/loader.php";
 require_once APP_ROOT_DIR . "/vendor/autoload.php";
 
@@ -31,10 +29,7 @@ if (file_exists(APP_ROOT_DIR . '/.env')) {
     $loader->toEnv(true);
 }
 
+
 $router = Router::getInstance();
 
 $router->run();
-
-$used_after = memory_get_usage();
-
-Logger::printf("Memory used: %d", $used_after - $used_before);
