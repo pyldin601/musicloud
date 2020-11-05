@@ -1,34 +1,43 @@
 version: '3.5'
 
 services:
-#  db:
-#    image: 'postgres'
-#    environment:
-#      POSTGRES_PASSWORD: musicloud
-#      POSTGRES_USER: musicloud
-#  web:
-#    image: 'pldin601/musicloud:latest'
-#    environment:
-#      DB_DATABASE: musicloud
-#      DB_HOSTNAME: db
-#      DB_PASSWORD: musicloud
-#      DB_USERNAME: musicloud
-#      VIRTUAL_HOST: "mc.homefs.biz"
-#      VIRTUAL_PORT: 8080
-#      LETSENCRYPT_HOST: "mc.homefs.biz"
-#    networks:
-#      - default
-#      - global
-#    depends_on:
-#      - db
-#    volumes:
-#      - musicloud-files:/var/tmp/musicloud/files
-
-networks:
-  global:
-    external: true
-    name: global_default
-
+  db:
+    image: 'library/postgres:9.5'
+    environment:
+      POSTGRES_PASSWORD: musicloud
+      POSTGRES_USER: musicloud
+  php-fpm:
+    user: "$UID"
+    build:
+      context: .
+      dockerfile: musicloud/php-fpm/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DB_HOSTNAME: db
+      DB_DATABASE: musicloud
+      DB_USERNAME: musicloud
+      DB_PASSWORD: musicloud
+    volumes:
+      - media:/volume/media
+      - temp:/volume/temp
+  nginx:
+    build:
+      context: .
+      dockerfile: musicloud/nginx/Dockerfile
+    ports:
+    - 3030:8080
+    depends_on:
+      - php-fpm
+  migration:
+    build:
+      context: .
+      dockerfile: musicloud/migration/Dockerfile
+    restart: on-failure
+    depends_on:
+      - db
 volumes:
-  musicloud-files:
+  media:
+    driver: local
+  temp:
     driver: local
