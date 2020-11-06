@@ -200,7 +200,7 @@ class Song implements \JsonSerializable {
 
         $filename  = FileServer::getFileUsingId($this->track_data[TSongs::FILE_ID]);
 
-        $command_template = "%s -i %s -bufsize 256k -vn -ab 192k -ac 2 -acodec libmp3lame -f mp3 -";
+        $command_template = "%s -i %s -vn -ab 256k -ac 2 -acodec libmp3lame -f mp3 -";
         $command = sprintf($command_template, $this->settings->get("tools", "ffmpeg_cmd"),
             escapeshellarg($filename));
 
