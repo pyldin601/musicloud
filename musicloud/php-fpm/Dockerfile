@@ -22,6 +22,8 @@ RUN apt-get update && \
     # Patch php configuration files
     sed -i "s/^upload_max_filesize\s=.*/upload_max_filesize = ${MAX_UPLOAD_FILESIZE}M/" $PHP_INI_DIR/php.ini && \
     sed -i "s/^post_max_size\s=.*/post_max_size = ${MAX_UPLOAD_FILESIZE}M/" $PHP_INI_DIR/php.ini && \
+    sed -i "s/^pgsql.auto_reset_persistent\s=.*/pgsql.auto_reset_persistent = On/" $PHP_INI_DIR/php.ini && \
+    sed -i "s/^pgsql.max_persistent\s=.*/pgsql.max_persistent = 10/" $PHP_INI_DIR/php.ini && \
     # Create directories for media content
     mkdir -p /volume/temp && chown -R www-data:www-data /volume/temp && \
     mkdir -p /volume/media && chown -R www-data:www-data /volume/media
