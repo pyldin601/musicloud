@@ -1,0 +1,28 @@
+{
+  "name": "@pldin601/musicloud-db",
+  "version": "1.0.0-alpha.0",
+  "description": "Database for Musicloud service",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pldin601/musicloud.git"
+  },
+  "author": "Roman Lakhtadyr <roman.lakhtadyr@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pldin601/musicloud/issues"
+  },
+  "homepage": "https://github.com/pldin601/musicloud#readme",
+  "devDependencies": {
+    "@types/eslint": "^7.2.4",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {}
+}
