@@ -43,9 +43,9 @@ volumes:
     driver: local
   temp:
     driver: local
+  postgres:
+    driver: local
 networks:
   global:
     external: true
     name: global_default
-  postgres:
-    driver: local
