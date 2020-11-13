@@ -6,6 +6,8 @@ services:
     environment:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
+    volumes:
+      - postgres:/var/lib/postgresql/data
   php-fpm:
     user: "$UID"
     build:
@@ -40,4 +42,6 @@ volumes:
   media:
     driver: local
   temp:
+    driver: local
+  postgres:
     driver: local

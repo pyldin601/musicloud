@@ -6,6 +6,8 @@ services:
     environment:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
+    volumes:
+      - postgres:/var/lib/postgresql/data
   php-fpm:
     image: pldin601/musicloud-php-fpm:latest
     depends_on:
@@ -45,3 +47,5 @@ networks:
   global:
     external: true
     name: global_default
+  postgres:
+    driver: local
