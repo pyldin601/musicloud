@@ -23,6 +23,6 @@ ARG MAX_UPLOAD_FILESIZE=256
 ENV MAX_UPLOAD_FILESIZE=${MAX_UPLOAD_FILESIZE}
 
 COPY --from=0 /code/public /code/public
-COPY musicloud/nginx/default.conf.template /etc/nginx/templates/
+COPY docker/nginx/default.conf.template /etc/nginx/templates/
 
 EXPOSE 8080
