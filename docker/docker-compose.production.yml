@@ -36,6 +36,11 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: musicloud
+      POSTGRES_USER: musicloud
+      POSTGRES_PASSWORD: musicloud
     depends_on:
       - db
 volumes:

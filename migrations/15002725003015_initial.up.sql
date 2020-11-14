@@ -1,5 +1,3 @@
--- // 
--- Migration SQL that makes the change goes here.
 CREATE TYPE action_type AS ENUM (
   'add',
   'delete',
@@ -417,6 +415,3 @@ ALTER TABLE ONLY playlists
 
 ALTER TABLE ONLY scrobbler
   ADD CONSTRAINT user_id_link FOREIGN KEY (id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
--- @UNDO
--- SQL to undo the change goes here.

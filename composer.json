@@ -18,7 +18,6 @@
         "php": ">=7.1.5",
         "ext-pdo_pgsql": "*",
         "josegonzalez/dotenv": "^3.0",
-        "php-database-migration/php-database-migration": "3.6.*",
         "malkusch/lock": "^1.0",
         "ext-json": "*",
         "ext-pdo": "*"

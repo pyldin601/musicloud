@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: pldin601/musicloud-nginx
           tags: latest
-          dockerfile: musicloud/nginx/Dockerfile
+          dockerfile: docker/nginx/Dockerfile
   build-php-fpm:
     name: Build php-fpm
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: pldin601/musicloud-php-fpm
           tags: latest
-          dockerfile: musicloud/php-fpm/Dockerfile
+          dockerfile: docker/php-fpm/Dockerfile
   build-migration:
     name: Build migration
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: pldin601/musicloud-migration
           tags: latest
-          dockerfile: musicloud/migration/Dockerfile
+          dockerfile: docker/migration/Dockerfile
   deploy:
     needs:
       - build-nginx
@@ -64,4 +64,4 @@ jobs:
           remote_host: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_IP_ADDRESS }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
-          args: stack deploy --with-registry-auth --prune --resolve-image=always --compose-file musicloud/docker-compose.production.yml musicloud
+          args: stack deploy --with-registry-auth --prune --resolve-image=always --compose-file docker/docker-compose.production.yml musicloud
