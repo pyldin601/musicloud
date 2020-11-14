@@ -22,6 +22,7 @@ server {
        fastcgi_pass   php-fpm:9000;
        fastcgi_param  SCRIPT_FILENAME /code/public/$fastcgi_script_name;
        include        fastcgi_params;
+       send_timeout   3600s;
     }
 
     # block access to hidden files .git or .htaccess
