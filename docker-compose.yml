@@ -8,29 +8,29 @@ services:
       POSTGRES_USER: musicloud
     volumes:
       - postgres:/var/lib/postgresql/data
-#  php-fpm:
-#    user: "$UID"
-#    build:
-#      context: .
-#      dockerfile: docker/php-fpm/Dockerfile
-#    depends_on:
-#      - db
-#    environment:
-#      DB_HOSTNAME: db
-#      DB_DATABASE: musicloud
-#      DB_USERNAME: musicloud
-#      DB_PASSWORD: musicloud
-#    volumes:
-#      - media:/volume/media
-#      - temp:/volume/temp
-#  nginx:
-#    build:
-#      context: .
-#      dockerfile: docker/nginx/Dockerfile
-#    ports:
-#    - 3030:8080
-#    depends_on:
-#      - php-fpm
+  php-fpm:
+    user: "$UID"
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DB_HOSTNAME: db
+      DB_DATABASE: musicloud
+      DB_USERNAME: musicloud
+      DB_PASSWORD: musicloud
+    volumes:
+      - media:/volume/media
+      - temp:/volume/temp
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+    - 3030:8080
+    depends_on:
+      - php-fpm
   migration:
     build:
       context: .
