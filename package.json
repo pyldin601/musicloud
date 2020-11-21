@@ -10,7 +10,8 @@
     "gulp": "gulp",
     "rimraf": "rimraf",
     "test": "exit 0",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "start:dev": "webpack-dev-server"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,9 @@
     "gulp-less": "^3.5.0",
     "less": "^2.7.3",
     "rimraf": "^2.6.3",
-    "webpack": "^3.12.0"
+    "webpack": "^4.44.2",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
     "angular": "^1.8.2",

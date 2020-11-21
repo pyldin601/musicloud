@@ -21,7 +21,6 @@
  */
 
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -34,16 +33,6 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'shared',
-      minChunks: ({ resource }) => (
-        resource &&
-        resource.indexOf('node_modules') >= 0 &&
-        resource.match(/\.js$/)
-      ),
-    })
-  ],
   module: {
     rules: [
       {
@@ -72,5 +61,10 @@ module.exports = {
   externals: {
     'jquery': '$',
     'angular': 'angular',
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 8080
   }
 };
