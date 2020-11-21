@@ -31,9 +31,7 @@ In development environment type:
 ```bash
 composer install
 npm install
-npm run gulp
-npm run webpack
-sh serve.sh
+npm start
 ```
 
 Then open in your browser url: http://localhost:8080/.
