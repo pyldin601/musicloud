@@ -27,7 +27,7 @@ Enter development environment:
 make enter-dev-environment
 ```
 
-In development environment
+In development environment type:
 ```bash
 composer install
 npm install
@@ -36,6 +36,6 @@ npm run webpack
 sh serve.sh
 ```
 
-and open in your browser url: http://localhost:8080/.
+Then open in your browser url: http://localhost:8080/.
 
 It will prompt you to enter default login **guest** and password **please**.
