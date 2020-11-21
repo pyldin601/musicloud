@@ -1,35 +1,36 @@
-dev: docker-build docker-up
+USER := $(shell id -u):$(shell id -g)
+PWD := $(shell pwd)
 
-local-install:
-	composer install
-	npm install
+start-dev-dependencies:
+	docker-compose up -d
 
-local-install-missing:
-	composer install
-	npm-install-missing
+stop-dev-dependencies:
+	docker-compose stop
 
-local-clean:
-	npm run rimraf -- vendor/ node_modules/ public/css/ public/scripts/
+enter-dev-environment:
+	docker build -t musicloud-dev --build-arg USER=$(USER) -f Dockerfile .
+	mkdir -p .cache/volume/temp
+	mkdir -p .cache/volume/media
+	mkdir -p .cache/home
+	docker run --rm -it --name musicloud-dev \
+			--network musicloud \
+			--env DB_HOSTNAME=db \
+			--env DB_DATABASE=musicloud \
+			--env DB_USERNAME=musicloud \
+			--env DB_PASSWORD=musicloud \
+			-p 127.0.0.1:8080:8080 \
+			-v "$(PWD)":/code \
+			-v "$(PWD)/.cache/volume/temp":/volume/temp \
+			-v "$(PWD)/.cache/volume/media":/volume/media \
+			-v "$(PWD)/.cache/home":/home \
+			musicloud-dev bash
 
-local-build:
-	npm run gulp
-	npm run webpack
-
-local-test:
-	composer test
-	npm test
-
-local-migrate:
-	composer run migrate:up env
-
-local-watch:
-	npm run webpack -- --watch
-
-docker-build:
-	docker-compose build
-
-docker-up:
-	docker-compose up
-
-docker-bash:
-	docker-compose exec web bash
+run-database-migration:
+	docker build -t musicloud-migration -f docker/migration/Dockerfile .
+	docker run --rm --name musicloud-migration \
+			--network musicloud \
+			--env POSTGRES_HOST=db \
+			--env POSTGRES_DB=musicloud \
+			--env POSTGRES_USER=musicloud \
+			--env POSTGRES_PASSWORD=musicloud \
+			musicloud-migration

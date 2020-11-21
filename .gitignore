@@ -4,3 +4,4 @@ vendor/
 node_modules/
 public/scripts/
 public/css/
+.cache
