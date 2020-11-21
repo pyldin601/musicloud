@@ -21,50 +21,72 @@
  */
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
-    musicloud: path.join(__dirname, 'src/scripts/musicloud/index.js'),
+    app: path.join(__dirname, 'src/scripts/musicloud/index.js'),
   },
   output: {
-    path: path.join(__dirname, 'public/scripts'),
-    filename: '[name].js'
+    path: path.join(__dirname, 'public/assets'),
+    filename: '[name].js',
+    publicPath: "/assets/"
   },
-  resolve: {
-    extensions: ['.js', '.jsx'],
+  optimization: {
+    minimize: false
   },
   module: {
+    strictExportPresence: true,
     rules: [
       {
-        test: /\.js?$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              'stage-2',
-              'flow',
-              ['env', {
-                targets: {
-                  browsers: ['last 4 versions']
-                }
-              }]
+        oneOf: [
+          {
+            test: /\.js$/,
+            loader: 'babel-loader',
+            exclude: /node_modules/,
+            options: {
+              presets: [
+                'stage-2',
+                'flow',
+                ['env', {
+                  targets: {
+                    browsers: ['last 2 versions']
+                  }
+                }]
+              ],
+              plugins: [
+                'transform-runtime',
+              ]
+            }
+          },
+          {
+            test: [
+              /\.jpe?g$/,
+              /\.png$/,
             ],
-            plugins: [
-              'transform-runtime',
+            loader: 'url-loader',
+            options: {
+              limit: false,
+              name: 'images/[name].[ext]',
+            },
+          },
+          {
+            test: [/\.less$/, /\.css$/],
+            use: [
+              MiniCssExtractPlugin.loader,
+              'css-loader',
+              'less-loader',
             ]
           }
-        }
+        ],
       }
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin()
+  ],
   externals: {
     'jquery': '$',
     'angular': 'angular',
   },
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
-    port: 8080
-  }
 };

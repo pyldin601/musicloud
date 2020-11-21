@@ -21,5 +21,7 @@
  */
 
 import app from './app';
+import "../../styles/reset.css";
+import "../../styles/library.less";
 
 export default app;
