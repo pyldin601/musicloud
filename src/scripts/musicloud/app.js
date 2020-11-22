@@ -25,6 +25,7 @@ import controllers from './controllers'
 import filters from './filters'
 import components from './components'
 import config from './config'
+import '../shared/MLContextMenu'
 
 import player from '../player'
 
