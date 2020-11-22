@@ -21,23 +21,27 @@
  */
 
 export default [
-  "Resolved", "SearchService", "$scope", "$location", function (Resolved, SearchService, $scope, $location) {
-
-    $scope.genres = Resolved;
-    $scope.busy = false;
-    $scope.end = false;
+  'Resolved',
+  'SearchService',
+  '$scope',
+  '$location',
+  function (Resolved, SearchService, $scope, $location) {
+    $scope.genres = Resolved
+    $scope.busy = false
+    $scope.end = false
 
     $scope.load = function () {
-      $scope.busy = true;
-      SearchService.genres({q: $location.search().q}, $scope.genres.length).then(function (genres) {
+      $scope.busy = true
+      SearchService.genres({ q: $location.search().q }, $scope.genres.length).then(function (
+        genres,
+      ) {
         if (genres.length > 0) {
-          array_add(genres, $scope.genres);
-          $scope.busy = false;
+          array_add(genres, $scope.genres)
+          $scope.busy = false
         } else {
-          $scope.end = true;
+          $scope.end = true
         }
       })
-    };
-
-  }
-];
+    }
+  },
+]

@@ -21,9 +21,9 @@
  */
 
 export function or(x, y) {
-  return x || y;
+  return x || y
 }
 
 export function and(x, y) {
-  return x && y;
+  return x && y
 }

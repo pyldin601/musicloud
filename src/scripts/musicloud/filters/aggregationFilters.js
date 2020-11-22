@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 
-import * as aggregators from '../util/aggregators';
+import * as aggregators from '../util/aggregators'
 
-export const aggregateArtists = [() => (tracks) => aggregators.aggregateTrackArtists(tracks)];
+export const aggregateArtists = [() => (tracks) => aggregators.aggregateTrackArtists(tracks)]
 
-export const aggregateYears = [() => (tracks) => aggregators.aggregateYears(tracks)];
+export const aggregateYears = [() => (tracks) => aggregators.aggregateYears(tracks)]
 
-export const aggregateGenres = [() => (tracks) => aggregators.aggregateGenres(tracks)];
+export const aggregateGenres = [() => (tracks) => aggregators.aggregateGenres(tracks)]

@@ -20,46 +20,48 @@
  * SOFTWARE.
  */
 
-export default [() => scope => {
-  const keeper = {
-    songs: songs => {
-      scope.$on('songs.deleted', (e, payload) => {
-        scope.$applyAsync(() => {
-          for (const id in payload) {
-            for (let i = songs.length - 1; i >= 0; i -= 1) {
-              if (songs[i].id === id) {
-                songs.splice(i, 1);
-                break;
+export default [
+  () => (scope) => {
+    const keeper = {
+      songs: (songs) => {
+        scope.$on('songs.deleted', (e, payload) => {
+          scope.$applyAsync(() => {
+            for (const id in payload) {
+              for (let i = songs.length - 1; i >= 0; i -= 1) {
+                if (songs[i].id === id) {
+                  songs.splice(i, 1)
+                  break
+                }
               }
             }
-          }
-        });
-      });
-      return keeper;
-    },
-    playlistSongs: function (songs) {
-      scope.$on('playlist.songs.deleted', function (e, payload) {
-        scope.$applyAsync(function () {
-          for (const id in payload) {
-            for (let i = songs.length - 1; i >= 0; i -= 1) {
-              if (songs[i].link_id === id) {
-                songs.splice(i, 1);
-                break;
+          })
+        })
+        return keeper
+      },
+      playlistSongs: function (songs) {
+        scope.$on('playlist.songs.deleted', function (e, payload) {
+          scope.$applyAsync(function () {
+            for (const id in payload) {
+              for (let i = songs.length - 1; i >= 0; i -= 1) {
+                if (songs[i].link_id === id) {
+                  songs.splice(i, 1)
+                  break
+                }
               }
             }
-          }
-        });
-      });
-      return keeper;
-    },
-    groups: gs => {
-      scope.$on('songs.deleted', (e, payload) => {
-        scope.$applyAsync(function () {
-          gs.removeItems('id', payload);
-        });
-      });
-      return keeper;
+          })
+        })
+        return keeper
+      },
+      groups: (gs) => {
+        scope.$on('songs.deleted', (e, payload) => {
+          scope.$applyAsync(function () {
+            gs.removeItems('id', payload)
+          })
+        })
+        return keeper
+      },
     }
-  };
-  return keeper;
-}];
+    return keeper
+  },
+]

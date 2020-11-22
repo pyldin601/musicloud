@@ -19,34 +19,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import $ from 'jquery';
-import angular from 'angular';
+import $ from 'jquery'
+import angular from 'angular'
 
-export default ["$http", ($http) => ({
-    create: () => $http.post("/api/track/create", {}),
-    upload: (data, callback) => $.ajax({
+export default [
+  '$http',
+  ($http) => ({
+    create: () => $http.post('/api/track/create', {}),
+    upload: (data, callback) =>
+      $.ajax({
         xhr() {
-          const xhr = new window.XMLHttpRequest();
-          xhr.upload.addEventListener("progress", callback, false);
-          return xhr;
+          const xhr = new window.XMLHttpRequest()
+          xhr.upload.addEventListener('progress', callback, false)
+          return xhr
         },
-        url: "/api/track/upload",
-        type: "POST",
+        url: '/api/track/upload',
+        type: 'POST',
         data,
         processData: false,
-        contentType: false
+        contentType: false,
       }),
-    unlink: (data) => $http.post("/api/track/delete", data),
-    deleteByArtist: (data) => $http.post("/api/track/deleteByArtist", data),
-    edit: (data) => $http.post("/api/track/edit", data),
-    getPeaks: (id) => $http.get(`/peaks/${  id}`),
-    changeArtwork: (data) => $http.post("/api/track/artwork", data, {
-      transformRequest: angular.identity,
-      headers: {
-        'Content-Type': undefined
-      }
-    }),
+    unlink: (data) => $http.post('/api/track/delete', data),
+    deleteByArtist: (data) => $http.post('/api/track/deleteByArtist', data),
+    edit: (data) => $http.post('/api/track/edit', data),
+    getPeaks: (id) => $http.get(`/peaks/${id}`),
+    changeArtwork: (data) =>
+      $http.post('/api/track/artwork', data, {
+        transformRequest: angular.identity,
+        headers: {
+          'Content-Type': undefined,
+        },
+      }),
     createFromVideo: (video_url) => $http.post('/api/track/createFromVideo', { video_url }),
     getQueue: () => $http.get('/api/track/queue'),
-  }
-)];
+  }),
+]

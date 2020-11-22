@@ -20,83 +20,82 @@
  * SOFTWARE.
  */
 
-import { first, join, uniq, min, max, sum, isEmpty, isNumber } from 'lodash';
-import { or } from '../util/exp';
+import { first, join, uniq, min, max, sum, isEmpty, isNumber } from 'lodash'
+import { or } from '../util/exp'
 
 export const aggregateGenres = (tracks) => {
-  const genres = uniq(tracks.map(t => t.track_genre));
+  const genres = uniq(tracks.map((t) => t.track_genre))
   switch (genres.length) {
     case 0:
-      return '-';
+      return '-'
     case 1:
-      return first(genres);
+      return first(genres)
     case 2:
-      return join(genres, ', ');
+      return join(genres, ', ')
     case 3:
-      return `${genres[0]}, ${genres[1]} and ${genres[2]}`;
+      return `${genres[0]}, ${genres[1]} and ${genres[2]}`
     default:
-      return `${genres[0]}, ${genres[1]} and ${genres.length - 2} others`;
+      return `${genres[0]}, ${genres[1]} and ${genres.length - 2} others`
   }
-};
+}
 
 export const aggregateYears = (tracks) => {
-  const isNumeric = (str) => !isNaN(parseInt(str, 10));
-  const years = uniq(tracks.map(t => t.track_year)).filter(isNumeric);
+  const isNumeric = (str) => !isNaN(parseInt(str, 10))
+  const years = uniq(tracks.map((t) => t.track_year)).filter(isNumeric)
   switch (years.length) {
     case 0:
-      return '-';
+      return '-'
     case 1:
-      return join(years, ', ');
+      return join(years, ', ')
     default:
-      return `${min(years)} - ${max(years)}`;
+      return `${min(years)} - ${max(years)}`
   }
-};
+}
 
-export const aggregateAlbumTitle = (tracks) => tracks.map(t => t.track_album).reduce((a, b) => a || b, "");
+export const aggregateAlbumTitle = (tracks) =>
+  tracks.map((t) => t.track_album).reduce((a, b) => a || b, '')
 
 export const aggregateTrackArtists = (tracks) => {
-  const artists = Array.from(new Set(tracks.map(t => t.track_artist).filter(t => !isEmpty(t))))
-  const prefix = 'Including';
+  const artists = Array.from(new Set(tracks.map((t) => t.track_artist).filter((t) => !isEmpty(t))))
+  const prefix = 'Including'
 
   switch (artists.length) {
     case 0:
-      return `${prefix} Unknown Artists`;
+      return `${prefix} Unknown Artists`
     case 1:
-      return `${prefix} ${first(artists)}`;
+      return `${prefix} ${first(artists)}`
     case 2:
-      return `${prefix} ${join(artists, ' and ')}`;
+      return `${prefix} ${join(artists, ' and ')}`
     case 3:
-      return `${prefix} ${artists.slice(0, 2).join(", ")} and ${last(artists)}`;
+      return `${prefix} ${artists.slice(0, 2).join(', ')} and ${last(artists)}`
     default:
-      return `${prefix} ${artists.slice(0, 3).join(", ")} and ${artists.length - 3} other artists`;
+      return `${prefix} ${artists.slice(0, 3).join(', ')} and ${artists.length - 3} other artists`
   }
-};
+}
 
-export const aggregateDuration = (tracks) =>
-  sum(tracks.map(t => t.length));
+export const aggregateDuration = (tracks) => sum(tracks.map((t) => t.length))
 
 export const aggregateDiscsCount = (tracks) =>
-    new Set(tracks.map(t => t.disc_number).filter(isNumber)).size
+  new Set(tracks.map((t) => t.disc_number).filter(isNumber)).size
 
-export const isVariousArtists = (tracks) =>
-    tracks.some(t => t.album_artist !== t.track_artist);
+export const isVariousArtists = (tracks) => tracks.some((t) => t.album_artist !== t.track_artist)
 
 export const aggregateAlbum = (tracks) => {
   if (tracks.length === 0) {
-    throw new Error('Could not aggregate empty track list');
+    throw new Error('Could not aggregate empty track list')
   }
 
   return {
     album_title: aggregateAlbumTitle(tracks),
-    album_url: tracks.map(t => t.album_url).reduce(or, ""),
-    album_artist: tracks.map(t => t.album_artist).reduce(or, ""),
-    cover_id: tracks.map(t => t.middle_cover_id).reduce(or, null),
-    artist_url: tracks.map(t => t.artist_url).reduce(or),
+    album_url: tracks.map((t) => t.album_url).reduce(or, ''),
+    album_artist: tracks.map((t) => t.album_artist).reduce(or, ''),
+    cover_id: tracks.map((t) => t.middle_cover_id).reduce(or, null),
+    artist_url: tracks.map((t) => t.artist_url).reduce(or),
     album_year: aggregateYears(tracks),
     album_genre: aggregateGenres(tracks),
     length: aggregateDuration(tracks),
     discs_count: aggregateDiscsCount(tracks),
     is_various: isVariousArtists(tracks),
     tracks,
-  };
-};
+  }
+}

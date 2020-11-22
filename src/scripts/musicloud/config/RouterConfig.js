@@ -20,218 +20,269 @@
  * SOFTWARE.
  */
 
-import { aggregateAlbum } from "../util/aggregators";
+import { aggregateAlbum } from '../util/aggregators'
 
 export default [
-  "$routeProvider", "$locationProvider",
+  '$routeProvider',
+  '$locationProvider',
   ($routeProvider, $locationProvider) => {
-    $locationProvider.html5Mode(true);
-    $locationProvider.baseHref = "/library/";
+    $locationProvider.html5Mode(true)
+    $locationProvider.baseHref = '/library/'
 
-    $routeProvider.when("/", {
-      redirectTo: '/artists/'
-    });
+    $routeProvider.when('/', {
+      redirectTo: '/artists/',
+    })
 
-    $routeProvider.when("/artists/", {
-      templateUrl: `${templatePath  }/artists-view.html`,
-      controller: "AllArtistsViewController",
+    $routeProvider.when('/artists/', {
+      templateUrl: `${templatePath}/artists-view.html`,
+      controller: 'AllArtistsViewController',
       resolve: {
-        Resolved: ["SearchService", "$location", (SearchService, $location) => {
-          const q = $location.search().q;
-          return SearchService.artists({ q }, 0).catch(() => {
-            $location.url("/");
-          });
-        }]
+        Resolved: [
+          'SearchService',
+          '$location',
+          (SearchService, $location) => {
+            const q = $location.search().q
+            return SearchService.artists({ q }, 0).catch(() => {
+              $location.url('/')
+            })
+          },
+        ],
       },
-      title: "Artists",
+      title: 'Artists',
       special: {
-        section: "artists"
-      }
-    });
+        section: 'artists',
+      },
+    })
 
-    $routeProvider.when("/artist/:artist", {
-      templateUrl: `${templatePath  }/single-artist-view.html`,
-      controller: "ArtistViewController",
+    $routeProvider.when('/artist/:artist', {
+      templateUrl: `${templatePath}/single-artist-view.html`,
+      controller: 'ArtistViewController',
       resolve: {
-        Header: ["$route", "HeadersService", ($route, HeadersService) => {
-          const artist = decodeUriPlus($route.current.params.artist);
-          return HeadersService.artist(artist).then(response => response.data);
-        }],
-        Resolved: ["SearchService", "$location", "$route", "$filter",
+        Header: [
+          '$route',
+          'HeadersService',
+          ($route, HeadersService) => {
+            const artist = decodeUriPlus($route.current.params.artist)
+            return HeadersService.artist(artist).then((response) => response.data)
+          },
+        ],
+        Resolved: [
+          'SearchService',
+          '$location',
+          '$route',
+          '$filter',
           (SearchService, $location, $route, $filter) => {
-            const artist = decodeUriPlus($route.current.params.artist);
-            $route.current.title = $filter("normalizeArtist")(artist);
+            const artist = decodeUriPlus($route.current.params.artist)
+            $route.current.title = $filter('normalizeArtist')(artist)
             return SearchService.tracks({ artist }, 0).catch(() => {
-              $location.url("/");
-            });
-          }
-        ]
+              $location.url('/')
+            })
+          },
+        ],
       },
-      title: "Contents by Album Artist",
+      title: 'Contents by Album Artist',
       special: {
-        section: "artist"
-      }
-    });
+        section: 'artist',
+      },
+    })
 
-    $routeProvider.when("/artist/:artist/:album", {
-      controller: "AlbumViewController",
-      templateUrl: `${templatePath  }/album-view.html`,
+    $routeProvider.when('/artist/:artist/:album', {
+      controller: 'AlbumViewController',
+      templateUrl: `${templatePath}/album-view.html`,
       resolve: {
-        albumData: ["SearchService", "$location", "$route", "$filter",
+        albumData: [
+          'SearchService',
+          '$location',
+          '$route',
+          '$filter',
           (SearchService, $location, $route, $filter) => {
-            const artist = decodeUriPlus($route.current.params.artist);
-            const album = decodeUriPlus($route.current.params.album);
+            const artist = decodeUriPlus($route.current.params.artist)
+            const album = decodeUriPlus($route.current.params.album)
 
             $route.current.title = String.prototype.concat(
-              `${$filter("normalizeAlbum")(album)  } by ${ 
-              $filter("normalizeArtist")(artist)}`
-            );
+              `${$filter('normalizeAlbum')(album)} by ${$filter('normalizeArtist')(artist)}`,
+            )
 
-            return SearchService.tracks({ artist, album, limit: -1 }, 0).catch(() => {
-              $location.url("/");
-            }).then(aggregateAlbum);
-          }
-        ]
+            return SearchService.tracks({ artist, album, limit: -1 }, 0)
+              .catch(() => {
+                $location.url('/')
+              })
+              .then(aggregateAlbum)
+          },
+        ],
       },
-      title: "Album",
+      title: 'Album',
       special: {
-        section: "albums"
-      }
-    });
-
-    $routeProvider.when("/playlist/:playlist", {
-      controller: "PlaylistController",
-      templateUrl: `${templatePath  }/tracks-view.html`,
-      resolve: {
-        Playlist: ["PlaylistService", "$route", "$location", (PlaylistService, $route, $location) => {
-          const playlist = decodeUriPlus($route.current.params.playlist);
-          const promise = PlaylistService.get(playlist);
-
-          promise.then(response => {
-            $route.current.title = `Playlist "${  response.data.name  }"`
-          }, () => {
-            $location.url("/");
-          });
-        }],
-        Resolved: ["PlaylistService", "$route", function (PlaylistService, $route) {
-          const playlist = decodeUriPlus($route.current.params.playlist);
-          $route.current.special.section = `playlist/${  playlist}`;
-          return PlaylistService.tracks(playlist);
-        }]
+        section: 'albums',
       },
-      title: "Playlist",
-      special: {
-      }
-    });
+    })
 
-    $routeProvider.when("/albums/", {
-      templateUrl: `${templatePath  }/albums-view.html`,
-      controller: "AllAlbumsViewController",
+    $routeProvider.when('/playlist/:playlist', {
+      controller: 'PlaylistController',
+      templateUrl: `${templatePath}/tracks-view.html`,
       resolve: {
-        Resolved: ["SearchService", "$location", function (SearchService, $location) {
-          const q = $location.search().q;
-          return SearchService.albums({ q, compilations: 0 }, 0).catch(() => {
-            $location.url("/");
-          });
-        }]
+        Playlist: [
+          'PlaylistService',
+          '$route',
+          '$location',
+          (PlaylistService, $route, $location) => {
+            const playlist = decodeUriPlus($route.current.params.playlist)
+            const promise = PlaylistService.get(playlist)
+
+            promise.then(
+              (response) => {
+                $route.current.title = `Playlist "${response.data.name}"`
+              },
+              () => {
+                $location.url('/')
+              },
+            )
+          },
+        ],
+        Resolved: [
+          'PlaylistService',
+          '$route',
+          function (PlaylistService, $route) {
+            const playlist = decodeUriPlus($route.current.params.playlist)
+            $route.current.special.section = `playlist/${playlist}`
+            return PlaylistService.tracks(playlist)
+          },
+        ],
       },
-      title: "Albums",
-      special: {
-        section: "albums"
-      }
-    });
+      title: 'Playlist',
+      special: {},
+    })
 
-    $routeProvider.when("/compilations/", {
-      templateUrl: `${templatePath  }/albums-view.html`,
-      controller: "AllCompilationsViewController",
+    $routeProvider.when('/albums/', {
+      templateUrl: `${templatePath}/albums-view.html`,
+      controller: 'AllAlbumsViewController',
       resolve: {
-        Resolved: ["SearchService", "$location", (SearchService, $location) => {
-          const q = $location.search().q;
-          return SearchService.albums({ q, compilations: 1 }, 0).catch(() => {
-            $location.url("/");
-          });
-        }]
+        Resolved: [
+          'SearchService',
+          '$location',
+          function (SearchService, $location) {
+            const q = $location.search().q
+            return SearchService.albums({ q, compilations: 0 }, 0).catch(() => {
+              $location.url('/')
+            })
+          },
+        ],
       },
-      title: "Compilations",
+      title: 'Albums',
       special: {
-        section: "compilations"
-      }
-    });
-
-    $routeProvider.when("/genres/", {
-      templateUrl: `${templatePath  }/genres-view.html`,
-      controller: "AllGenresViewController",
-      resolve: {
-        Resolved: ["SearchService", "$location", (SearchService, $location) => {
-          const q = $location.search().q;
-          return SearchService.genres({ q }, 0).catch(() => {
-            $location.url("/");
-          });
-        }]
+        section: 'albums',
       },
-      title: "Genres",
-      special: {
-        section: "genres"
-      }
-    });
+    })
 
-    $routeProvider.when("/genre/:genre", {
-      templateUrl: `${templatePath  }/single-genre-view.html`,
-      controller: "GenreViewController",
+    $routeProvider.when('/compilations/', {
+      templateUrl: `${templatePath}/albums-view.html`,
+      controller: 'AllCompilationsViewController',
       resolve: {
-        Header: ["$route", "HeadersService", function ($route, HeadersService) {
-          const genre = decodeUriPlus($route.current.params.genre);
-          return HeadersService.genre(genre).then(response => response.data);
-        }],
-        Resolved: ["SearchService", "$location", "$route", "$filter",
+        Resolved: [
+          'SearchService',
+          '$location',
+          (SearchService, $location) => {
+            const q = $location.search().q
+            return SearchService.albums({ q, compilations: 1 }, 0).catch(() => {
+              $location.url('/')
+            })
+          },
+        ],
+      },
+      title: 'Compilations',
+      special: {
+        section: 'compilations',
+      },
+    })
+
+    $routeProvider.when('/genres/', {
+      templateUrl: `${templatePath}/genres-view.html`,
+      controller: 'AllGenresViewController',
+      resolve: {
+        Resolved: [
+          'SearchService',
+          '$location',
+          (SearchService, $location) => {
+            const q = $location.search().q
+            return SearchService.genres({ q }, 0).catch(() => {
+              $location.url('/')
+            })
+          },
+        ],
+      },
+      title: 'Genres',
+      special: {
+        section: 'genres',
+      },
+    })
+
+    $routeProvider.when('/genre/:genre', {
+      templateUrl: `${templatePath}/single-genre-view.html`,
+      controller: 'GenreViewController',
+      resolve: {
+        Header: [
+          '$route',
+          'HeadersService',
+          function ($route, HeadersService) {
+            const genre = decodeUriPlus($route.current.params.genre)
+            return HeadersService.genre(genre).then((response) => response.data)
+          },
+        ],
+        Resolved: [
+          'SearchService',
+          '$location',
+          '$route',
+          '$filter',
           function (SearchService, $location, $route, $filter) {
-            const genre = decodeUriPlus($route.current.params.genre);
+            const genre = decodeUriPlus($route.current.params.genre)
 
-            $route.current.title = $filter("normalizeGenre")(genre);
+            $route.current.title = $filter('normalizeGenre')(genre)
 
             return SearchService.tracks({ genre }, 0).catch(() => {
-              $location.url("/");
-            });
-          }
-        ]
+              $location.url('/')
+            })
+          },
+        ],
       },
-      title: "Track Genres",
+      title: 'Track Genres',
       special: {
-        section: "genres"
-      }
-    });
-
-    $routeProvider.when("/queue", {
-      templateUrl: `${templatePath  }/queue.html`,
-      controller: "QueueController",
-      resolve: {
-        Jobs: ["TrackService", (TrackService) => TrackService.getQueue()],
+        section: 'genres',
       },
-    });
+    })
 
-    $routeProvider.when("/tracks", {
-      controller: "TracksViewController",
-      templateUrl: `${templatePath  }/tracks-view.html`,
+    $routeProvider.when('/queue', {
+      templateUrl: `${templatePath}/queue.html`,
+      controller: 'QueueController',
       resolve: {
-        Resolved: ["SearchService", "$location",
+        Jobs: ['TrackService', (TrackService) => TrackService.getQueue()],
+      },
+    })
+
+    $routeProvider.when('/tracks', {
+      controller: 'TracksViewController',
+      templateUrl: `${templatePath}/tracks-view.html`,
+      resolve: {
+        Resolved: [
+          'SearchService',
+          '$location',
           (SearchService, $location) => {
-            const q = $location.search().q;
-            const s = $location.search().s;
+            const q = $location.search().q
+            const s = $location.search().s
 
             return SearchService.tracks({ q, s }, 0).catch(() => {
-              $location.url("/");
-            });
-          }
-        ]
+              $location.url('/')
+            })
+          },
+        ],
       },
-      title: "Tracks",
+      title: 'Tracks',
       special: {
-        section: "tracks"
-      }
-    });
+        section: 'tracks',
+      },
+    })
 
     $routeProvider.otherwise({
-      redirectTo: "/"
-    });
+      redirectTo: '/',
+    })
   },
-];
+]

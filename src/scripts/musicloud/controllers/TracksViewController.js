@@ -21,31 +21,32 @@
  */
 
 export default [
-  "Resolved", "$scope", "$location", "SearchService", "SyncKeeper",
+  'Resolved',
+  '$scope',
+  '$location',
+  'SearchService',
+  'SyncKeeper',
   function (Resolved, $scope, $location, SearchService, SyncKeeper) {
+    var syncKeeper = SyncKeeper($scope)
 
-    var syncKeeper = SyncKeeper($scope);
-
-    $scope.tracks = Resolved;
-    $scope.busy = false;
-    $scope.end = false;
-    $scope.tracks_selected = [];
-    $scope.fetch = SearchService.tracks.curry({q: $location.search().q, s:$location.search().s});
+    $scope.tracks = Resolved
+    $scope.busy = false
+    $scope.end = false
+    $scope.tracks_selected = []
+    $scope.fetch = SearchService.tracks.curry({ q: $location.search().q, s: $location.search().s })
 
     $scope.load = function () {
-      $scope.busy = true;
+      $scope.busy = true
       $scope.fetch($scope.tracks.length).then(function (data) {
         if (data.length > 0) {
-          array_add(data, $scope.tracks);
-          $scope.busy = false;
+          array_add(data, $scope.tracks)
+          $scope.busy = false
         } else {
-          $scope.end = true;
+          $scope.end = true
         }
       })
-    };
+    }
 
-    syncKeeper  .songs($scope.tracks)
-      .songs($scope.tracks_selected);
-
-  }
-];
+    syncKeeper.songs($scope.tracks).songs($scope.tracks_selected)
+  },
+]

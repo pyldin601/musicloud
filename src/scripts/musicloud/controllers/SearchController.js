@@ -20,71 +20,80 @@
  * SOFTWARE.
  */
 
-export default ["$scope", "SearchService", "$timeout", "SyncService", "$q",
+export default [
+  '$scope',
+  'SearchService',
+  '$timeout',
+  'SyncService',
+  '$q',
 
   function ($scope, SearchService, $timeout, SyncService, $q) {
-
     var promise,
       delay = 200,
-      canceller;
+      canceller
 
-    $scope.query = "";
-    $scope.results = {};
+    $scope.query = ''
+    $scope.results = {}
 
-    $scope.$watch("query", function (newValue) {
+    $scope.$watch('query', function (newValue) {
       if (!newValue) {
-        $scope.reset();
-        return;
+        $scope.reset()
+        return
       }
-      $timeout.cancel(promise);
-      promise = $timeout($scope.search, delay);
-    });
+      $timeout.cancel(promise)
+      promise = $timeout($scope.search, delay)
+    })
 
     $scope.search = function () {
+      if (canceller) canceller.resolve()
 
-      if (canceller) canceller.resolve();
+      canceller = $q.defer()
 
-      canceller = $q.defer();
+      $scope.results.artists_busy = true
+      $scope.results.albums_busy = true
+      $scope.results.tracks_busy = true
 
-      $scope.results.artists_busy = true;
-      $scope.results.albums_busy = true;
-      $scope.results.tracks_busy = true;
+      SearchService.tracks({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).then(
+        function (response) {
+          $scope.results.tracks = response
+          $scope.results.tracks_busy = false
+        },
+      )
 
-      SearchService.tracks({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).then(function (response) {
-        $scope.results.tracks = response;
-        $scope.results.tracks_busy = false;
-      });
+      SearchService.artists(
+        {
+          q: $scope.query,
+          limit: 15,
+        },
+        0,
+        { timeout: canceller.promise },
+      ).then(function (response) {
+        $scope.results.artists = response
+        $scope.results.artists_busy = false
+      })
 
-      SearchService.artists({
-        q: $scope.query,
-        limit: 15
-      }, 0, { timeout: canceller.promise }).then(function (response) {
-        $scope.results.artists = response;
-        $scope.results.artists_busy = false;
-      });
+      SearchService.albums({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).then(
+        function (response) {
+          $scope.results.albums = response
+          $scope.results.albums_busy = false
+        },
+      )
+    }
 
-      SearchService.albums({ q: $scope.query, limit: 15 }, 0, { timeout: canceller.promise }).then(function (response) {
-        $scope.results.albums = response;
-        $scope.results.albums_busy = false;
-      });
-
-    };
-
-    $scope.$on("$routeChangeSuccess", function () {
-      $scope.reset();
-    });
+    $scope.$on('$routeChangeSuccess', function () {
+      $scope.reset()
+    })
 
     $scope.reset = function () {
-      $scope.query = "";
+      $scope.query = ''
       $scope.results = {
         artists: [],
         albums: [],
         tracks: [],
         artists_busy: false,
         albums_busy: false,
-        tracks_busy: false
-      };
-    };
-
-  }
-];
+        tracks_busy: false,
+      }
+    }
+  },
+]

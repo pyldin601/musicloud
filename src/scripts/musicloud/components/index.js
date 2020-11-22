@@ -20,12 +20,9 @@
  * SOFTWARE.
  */
 
-import TracksContextMenu from './TracksContextMenu';
-import Actions from './Actions';
+import TracksContextMenu from './TracksContextMenu'
+import Actions from './Actions'
 
-const components = [
-  TracksContextMenu,
-  Actions,
-];
+const components = [TracksContextMenu, Actions]
 
-export default (app) => components.forEach(component => app.run(component));
+export default (app) => components.forEach((component) => app.run(component))

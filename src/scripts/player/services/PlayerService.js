@@ -20,20 +20,22 @@
  * SOFTWARE.
  */
 
-export default [() => ({
-    async play(url) {
-
+export default [
+  () => ({
+    async play() {
+      // Nothing
     },
     async pause() {
-
+      // Nothing
     },
     async stop() {
-
+      // Nothing
     },
-    async seek(position) {
-      //
+    async seek() {
+      // Nothing
     },
-    async setVolume(volume) {
-      //
+    async setVolume() {
+      // Nothing
     },
-  })];
+  }),
+]

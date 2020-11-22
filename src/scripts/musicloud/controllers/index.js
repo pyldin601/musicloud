@@ -19,19 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import ArtistViewController from './ArtistViewController';
-import GenreViewController from './GenreViewController';
-import AlbumViewController from './AlbumViewController';
-import TracksViewController from './TracksViewController';
-import AllArtistsViewController from './AllArtistsViewController';
-import AllAlbumsViewController from './AllAlbumsViewController';
-import AllCompilationsViewController from './AllCompilationsViewController';
-import AllGenresViewController from './AllGenresViewController';
-import PlaylistsController from './PlaylistsController';
-import PlaylistController from './PlaylistController';
-import SearchController from './SearchController';
-import MetadataController from './MetadataController';
-import UploadController from './UploadController';
+import ArtistViewController from './ArtistViewController'
+import GenreViewController from './GenreViewController'
+import AlbumViewController from './AlbumViewController'
+import TracksViewController from './TracksViewController'
+import AllArtistsViewController from './AllArtistsViewController'
+import AllAlbumsViewController from './AllAlbumsViewController'
+import AllCompilationsViewController from './AllCompilationsViewController'
+import AllGenresViewController from './AllGenresViewController'
+import PlaylistsController from './PlaylistsController'
+import PlaylistController from './PlaylistController'
+import SearchController from './SearchController'
+import MetadataController from './MetadataController'
+import UploadController from './UploadController'
 
 const controllers = {
   ArtistViewController,
@@ -47,7 +47,7 @@ const controllers = {
   SearchController,
   MetadataController,
   UploadController,
-};
+}
 
 export default (app) =>
-  Object.keys(controllers).forEach(name => app.controller(name, controllers[name]));
+  Object.keys(controllers).forEach((name) => app.controller(name, controllers[name]))

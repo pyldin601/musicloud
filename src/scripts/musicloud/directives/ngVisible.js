@@ -20,16 +20,18 @@
  * SOFTWARE.
  */
 
-export default [() => ({
-  scope: {
-    ngVisible: "="
-  },
-  restrict: "A",
-  link: function (scope, element, attrs) {
-    const valueChanged = function (value) {
-      element.css("visibility", value ? "visible" : "hidden")
-    };
-    scope.$watch("ngVisible", valueChanged);
-    valueChanged(scope.ngVisible);
-  }
-})];
+export default [
+  () => ({
+    scope: {
+      ngVisible: '=',
+    },
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      const valueChanged = function (value) {
+        element.css('visibility', value ? 'visible' : 'hidden')
+      }
+      scope.$watch('ngVisible', valueChanged)
+      valueChanged(scope.ngVisible)
+    },
+  }),
+]

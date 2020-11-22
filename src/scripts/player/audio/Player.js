@@ -20,18 +20,18 @@
  * SOFTWARE.
  */
 
-import $ from 'jquery';
-import EventEmitter from 'events';
+import $ from 'jquery'
+import EventEmitter from 'events'
 
 export default class Player extends EventEmitter {
-  jFrame;
+  jFrame
 
   constructor(pathToSwf) {
-    super();
+    super()
 
-    this.jFrame = $('div');
-    this.initPlayer(pathToSwf);
-    this.initBindings();
+    this.jFrame = $('div')
+    this.initPlayer(pathToSwf)
+    this.initBindings()
   }
 
   initPlayer(pathToSwf) {
@@ -39,72 +39,50 @@ export default class Player extends EventEmitter {
       swfPath: pathToSwf,
       supplied: 'mp3',
       solution: 'html',
-    });
+    })
   }
 
   initBindings() {
-    const emitter = this;
-
-    this.jFrame.bind($.jPlayer.event.ready, event =>
-      emitter.emit('ready', event),
-    );
-    this.jFrame.bind($.jPlayer.event.play, event =>
-      emitter.emit('play', event),
-    );
-    this.jFrame.bind($.jPlayer.event.pause, event =>
-      emitter.emit('pause', event),
-    );
-    this.jFrame.bind($.jPlayer.event.waiting, event =>
-      emitter.emit('waiting', event),
-    );
-    this.jFrame.bind($.jPlayer.event.playing, event =>
-      emitter.emit('playing', event),
-    );
-    this.jFrame.bind($.jPlayer.event.canplay, event =>
-      emitter.emit('canplay', event),
-    );
-    this.jFrame.bind($.jPlayer.event.seeking, event =>
-      emitter.emit('seeking', event),
-    );
-    this.jFrame.bind($.jPlayer.event.seeked, event =>
-      emitter.emit('seeked', event),
-    );
-    this.jFrame.bind($.jPlayer.event.ended, event =>
-      emitter.emit('ended', event),
-    );
-    this.jFrame.bind($.jPlayer.event.volumechange, event =>
-      emitter.emit('volumechange', event),
-    );
-    this.jFrame.bind($.jPlayer.event.timeupdate, event =>
-      emitter.emit('timeupdate', event.jPlayer.status.currentTime, event),
-    );
+    this.jFrame.bind($.jPlayer.event.ready, (event) => this.emit('ready', event))
+    this.jFrame.bind($.jPlayer.event.play, (event) => this.emit('play', event))
+    this.jFrame.bind($.jPlayer.event.pause, (event) => this.emit('pause', event))
+    this.jFrame.bind($.jPlayer.event.waiting, (event) => this.emit('waiting', event))
+    this.jFrame.bind($.jPlayer.event.playing, (event) => this.emit('playing', event))
+    this.jFrame.bind($.jPlayer.event.canplay, (event) => this.emit('canplay', event))
+    this.jFrame.bind($.jPlayer.event.seeking, (event) => this.emit('seeking', event))
+    this.jFrame.bind($.jPlayer.event.seeked, (event) => this.emit('seeked', event))
+    this.jFrame.bind($.jPlayer.event.ended, (event) => this.emit('ended', event))
+    this.jFrame.bind($.jPlayer.event.volumechange, (event) => this.emit('volumechange', event))
+    this.jFrame.bind($.jPlayer.event.timeupdate, (event) =>
+      this.emit('timeupdate', event.jPlayer.status.currentTime, event),
+    )
   }
 
   async load(url) {
-    this.jFrame.jPlayer('setMedia', { mp3: url });
+    this.jFrame.jPlayer('setMedia', { mp3: url })
   }
 
   async play(position) {
-    this.jFrame.jPlayer('play', position);
+    this.jFrame.jPlayer('play', position)
   }
 
   async pause() {
-    this.jFrame.jPlayer('pause');
+    this.jFrame.jPlayer('pause')
   }
 
   async stop() {
-    this.jFrame.jPlayer('stop');
+    this.jFrame.jPlayer('stop')
   }
 
   async close() {
-    this.jFrame.jPlayer('clearMedia');
+    this.jFrame.jPlayer('clearMedia')
   }
 
   async seek(position) {
-    this.jFrame.jPlayer('playHead', position);
+    this.jFrame.jPlayer('playHead', position)
   }
 
   async volume(volume) {
-    this.jFrame.jPlayer('volume', volume);
+    this.jFrame.jPlayer('volume', volume)
   }
 }

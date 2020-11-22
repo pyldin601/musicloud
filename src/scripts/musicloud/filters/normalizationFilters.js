@@ -20,36 +20,36 @@
  * SOFTWARE.
  */
 
-import zeroFill from 'zero-fill';
-import secondsToTime from '../util/time';
+import zeroFill from 'zero-fill'
+import secondsToTime from '../util/time'
 
-const DEFAULT_TRACK_TITLE = 'Unknown Title';
-const DEFAULT_ALBUM = 'Unknown Album';
-const DEFAULT_ARTIST = 'Unknown Artist';
-const DEFAULT_GENRE = 'Unknown Genre';
+const DEFAULT_TRACK_TITLE = 'Unknown Title'
+const DEFAULT_ALBUM = 'Unknown Album'
+const DEFAULT_ARTIST = 'Unknown Artist'
+const DEFAULT_GENRE = 'Unknown Genre'
 
-export const normalizeTime = [() => (seconds) => secondsToTime(seconds)];
+export const normalizeTime = [() => (seconds) => secondsToTime(seconds)]
 
-export const normalizeTrackTitle = [() =>
-  (track) => track ? track.track_title || track.file_name || DEFAULT_TRACK_TITLE : null
-];
+export const normalizeTrackTitle = [
+  () => (track) => (track ? track.track_title || track.file_name || DEFAULT_TRACK_TITLE : null),
+]
 
-export const normalizeTrackNumber = [() =>
-  (track) => {
+export const normalizeTrackNumber = [
+  () => (track) => {
     if (!track || !track.track_number) {
-      return null;
+      return null
     }
     if (track.disc_number) {
-      return `${track.disc_number}.${zeroFill(2, track.track_number)}`;
+      return `${track.disc_number}.${zeroFill(2, track.track_number)}`
     }
-    return `${zeroFill(2, track.track_number)}`;
-  }
-];
+    return `${zeroFill(2, track.track_number)}`
+  },
+]
 
-export const normalizeAlbum = [() => (album) => album || DEFAULT_ALBUM];
+export const normalizeAlbum = [() => (album) => album || DEFAULT_ALBUM]
 
-export const normalizeArtist = [() => (artist) => artist || DEFAULT_ARTIST];
+export const normalizeArtist = [() => (artist) => artist || DEFAULT_ARTIST]
 
-export const normalizeGenre = [() => (genre) => genre || DEFAULT_GENRE];
+export const normalizeGenre = [() => (genre) => genre || DEFAULT_GENRE]
 
-export const normalizeBitrate = [() => (bitrate) => `${(parseInt(bitrate / 1000 / 8, 10) * 8)} kbps`];
+export const normalizeBitrate = [() => (bitrate) => `${parseInt(bitrate / 1000 / 8, 10) * 8} kbps`]

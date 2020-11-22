@@ -20,9 +20,9 @@
  * SOFTWARE.
  */
 
-import PlayerService from './PlayerService';
+import PlayerService from './PlayerService'
 
-const services = { PlayerService };
+const services = { PlayerService }
 
 export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+  Object.keys(services).forEach((service) => app.factory(service, services[service]))

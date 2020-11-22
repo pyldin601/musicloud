@@ -20,9 +20,11 @@
  * SOFTWARE.
  */
 
-export default ["$http", ($http) => ({
-  artist: (album_artist) =>
-    $http.get("/api/headers/artist?" + serialize_uri({ album_artist: album_artist })),
-  genre: (genre) =>
-    $http.get("/api/headers/genre?" + serialize_uri({ genre: genre })),
-})];
+export default [
+  '$http',
+  ($http) => ({
+    artist: (album_artist) =>
+      $http.get('/api/headers/artist?' + serialize_uri({ album_artist: album_artist })),
+    genre: (genre) => $http.get('/api/headers/genre?' + serialize_uri({ genre: genre })),
+  }),
+]

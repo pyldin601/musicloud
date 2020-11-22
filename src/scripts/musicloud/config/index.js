@@ -20,10 +20,8 @@
  * SOFTWARE.
  */
 
-import RouterConfig from './RouterConfig';
+import RouterConfig from './RouterConfig'
 
-const configs = [
-  RouterConfig,
-];
+const configs = [RouterConfig]
 
-export default (app) => configs.forEach(config => app.config(config));
+export default (app) => configs.forEach((config) => app.config(config))

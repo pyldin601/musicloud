@@ -20,12 +20,12 @@
  * SOFTWARE.
  */
 
-import injectServices from './services';
+import injectServices from './services'
 
-import angular from 'angular';
+import angular from 'angular'
 
-const player = angular.module('MusicLoud.Player', []);
+const player = angular.module('MusicLoud.Player', [])
 
-injectServices(player);
+injectServices(player)
 
-export default 'MusicLoud.Player';
+export default 'MusicLoud.Player'

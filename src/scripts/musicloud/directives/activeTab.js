@@ -20,21 +20,28 @@
  * SOFTWARE.
  */
 
-const ACTIVE_TAB_CLASS = "active";
+const ACTIVE_TAB_CLASS = 'active'
 
-export default ["$location", "$route", ($location, $route) => ({
-  scope: {
-    activeTab: "@"
-  },
-  link: ($scope, $element, $attributes) => {
-    $element.toggleClass(ACTIVE_TAB_CLASS, $location.url().match($scope.activeTab) !== null);
+export default [
+  '$location',
+  '$route',
+  ($location, $route) => ({
+    scope: {
+      activeTab: '@',
+    },
+    link: ($scope, $element, $attributes) => {
+      $element.toggleClass(ACTIVE_TAB_CLASS, $location.url().match($scope.activeTab) !== null)
 
-    $scope.$on("$routeChangeSuccess", function () {
-      if ($route.current.special && $route.current.special.section) {
-        $element.toggleClass(ACTIVE_TAB_CLASS, $route.current.special.section === $scope.activeTab);
-      } else {
-        $element.toggleClass(ACTIVE_TAB_CLASS, false);
-      }
-    });
-  }
-})];
+      $scope.$on('$routeChangeSuccess', function () {
+        if ($route.current.special && $route.current.special.section) {
+          $element.toggleClass(
+            ACTIVE_TAB_CLASS,
+            $route.current.special.section === $scope.activeTab,
+          )
+        } else {
+          $element.toggleClass(ACTIVE_TAB_CLASS, false)
+        }
+      })
+    },
+  }),
+]

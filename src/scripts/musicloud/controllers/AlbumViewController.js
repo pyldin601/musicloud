@@ -20,14 +20,17 @@
  * SOFTWARE.
  */
 
-export default ["albumData", "SyncKeeper", "$scope", (albumData, SyncKeeper, $scope) => {
-  const syncKeeper = SyncKeeper($scope);
+export default [
+  'albumData',
+  'SyncKeeper',
+  '$scope',
+  (albumData, SyncKeeper, $scope) => {
+    const syncKeeper = SyncKeeper($scope)
 
-  $scope.album = albumData;
-  $scope.tracks = albumData.tracks;
-  $scope.tracks_selected = [];
+    $scope.album = albumData
+    $scope.tracks = albumData.tracks
+    $scope.tracks_selected = []
 
-  syncKeeper
-    .songs($scope.tracks)
-    .songs($scope.tracks_selected);
-}];
+    syncKeeper.songs($scope.tracks).songs($scope.tracks_selected)
+  },
+]

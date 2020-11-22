@@ -29,22 +29,25 @@ const ratingTemplate = `
         </li>
         <li class="rating-remove" ng-click="unrate()">&nbsp;</li>
     </ul>
-`;
+`
 
-export default ["StatsService", StatsService => ({
-  scope: {
-    track: "=trackRating"
-  },
-  template: ratingTemplate,
-  link: function (scope, elem, attr) {
-    elem.on("click", function () {
-      return false;
-    });
-    scope.rate = function (value) {
-      StatsService.rateTrack(scope.track, value);
-    };
-    scope.unrate = function () {
-      StatsService.unrateTrack(scope.track);
-    };
-  }
-})];
+export default [
+  'StatsService',
+  (StatsService) => ({
+    scope: {
+      track: '=trackRating',
+    },
+    template: ratingTemplate,
+    link: function (scope, elem, attr) {
+      elem.on('click', function () {
+        return false
+      })
+      scope.rate = function (value) {
+        StatsService.rateTrack(scope.track, value)
+      }
+      scope.unrate = function () {
+        StatsService.unrateTrack(scope.track)
+      }
+    },
+  }),
+]

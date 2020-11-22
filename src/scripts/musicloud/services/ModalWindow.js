@@ -19,86 +19,87 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import angular from 'angular';
+import angular from 'angular'
 
 export default [
-  "$templateRequest", "$controller", "$rootScope", "$compile",
+  '$templateRequest',
+  '$controller',
+  '$rootScope',
+  '$compile',
   ($templateRequest, $controller, $rootScope, $compile) => {
     const defaults = {
       controller: null,
       closeOnEscape: true,
       closeOnClick: true,
       data: {},
-      scope: null
-    };
+      scope: null,
+    }
 
     return (opts) => {
+      const options = angular.copy(defaults)
 
-      const options = angular.copy(defaults);
+      angular.extend(options, opts)
 
-      angular.extend(options, opts);
+      $templateRequest(options.template).then((template) => {
+        const newScope = angular.isObject(options.scope) ? options.scope.$new() : $rootScope.$new()
+        const body = angular.element('body')
+        const $modal = angular.element(template)
 
-      $templateRequest(options.template).then(template => {
-
-        const newScope = angular.isObject(options.scope) ? options.scope.$new() : $rootScope.$new();
-        const body = angular.element('body');
-        const $modal = angular.element(template);
-
-        const onEscapeEvent = event => {
+        const onEscapeEvent = (event) => {
           if (event.which === 27) {
             newScope.closeThisWindow()
           }
-        };
+        }
 
         const onMouseClickEvent = (event) => {
           if (angular.element(event.target).parents($modal).length === 0) {
             newScope.closeThisWindow()
           }
-        };
-
-        const compile = () => {
-          $compile($modal.contents())(newScope);
-        };
-
-        newScope.closeThisWindow = () => {
-          $modal.remove();
-          newScope.$destroy();
-        };
-
-        newScope.$on("$destroy", () => {
-          body.off("keyup", onEscapeEvent);
-          body.off("click", onMouseClickEvent);
-        });
-
-        for (const k in options.data) if (options.data.hasOwnProperty(k)) {
-          newScope[k] = options.data[k]
         }
 
+        const compile = () => {
+          $compile($modal.contents())(newScope)
+        }
+
+        newScope.closeThisWindow = () => {
+          $modal.remove()
+          newScope.$destroy()
+        }
+
+        newScope.$on('$destroy', () => {
+          body.off('keyup', onEscapeEvent)
+          body.off('click', onMouseClickEvent)
+        })
+
+        for (const k in options.data)
+          if (options.data.hasOwnProperty(k)) {
+            newScope[k] = options.data[k]
+          }
+
         if (options.closeOnEscape) {
-          body.bind("keyup", onEscapeEvent);
+          body.bind('keyup', onEscapeEvent)
         }
 
         if (options.closeOnClick) {
-          body.bind("click", onMouseClickEvent);
+          body.bind('click', onMouseClickEvent)
         }
 
-        $modal.appendTo(body);
+        $modal.appendTo(body)
 
         if (options.controller) {
           const controllerInstance = $controller(options.controller, {
             $scope: newScope,
-            $element: $modal
-          });
-          $modal.data('$modalWindowController', controllerInstance);
+            $element: $modal,
+          })
+          $modal.data('$modalWindowController', controllerInstance)
         }
 
         if (newScope.$$phase) {
           newScope.$applyAsync(compile)
         } else {
-          newScope.$apply(compile);
+          newScope.$apply(compile)
         }
-
-      });
-    };
-  }
-];
+      })
+    }
+  },
+]

@@ -20,22 +20,22 @@
  * SOFTWARE.
  */
 
-import zeroFill from 'zero-fill';
+import zeroFill from 'zero-fill'
 
 export default (time) => {
-  const integerTime = Math.floor(time);
-  const hours = Math.floor(integerTime / 3600);
-  const minutes = Math.floor(integerTime / 60) % 60;
-  const seconds = integerTime % 60;
+  const integerTime = Math.floor(time)
+  const hours = Math.floor(integerTime / 3600)
+  const minutes = Math.floor(integerTime / 60) % 60
+  const seconds = integerTime % 60
 
-  const result = [];
+  const result = []
 
   if (hours > 0) {
-    result.push(zeroFill(2, hours));
+    result.push(zeroFill(2, hours))
   }
 
-  result.push(zeroFill(2, minutes));
-  result.push(zeroFill(2, seconds));
+  result.push(zeroFill(2, minutes))
+  result.push(zeroFill(2, seconds))
 
-  return result.join(':');
-};
+  return result.join(':')
+}

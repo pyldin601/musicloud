@@ -20,18 +20,20 @@
  * SOFTWARE.
  */
 
-export default [() => {
-  const trackSync = sync("id");
-  const artistSync = sync("id");
-  const albumSync = sync("id");
-  return {
-    tracks: trackSync,
-    track: track => trackSync([track]).shift(),
+export default [
+  () => {
+    const trackSync = sync('id')
+    const artistSync = sync('id')
+    const albumSync = sync('id')
+    return {
+      tracks: trackSync,
+      track: (track) => trackSync([track]).shift(),
 
-    artists: artistSync,
-    artist: artist => artistSync([artist]).shift(),
+      artists: artistSync,
+      artist: (artist) => artistSync([artist]).shift(),
 
-    albums: albumSync,
-    album: album => albumSync([album]).shift()
-  };
-}];
+      albums: albumSync,
+      album: (album) => albumSync([album]).shift(),
+    }
+  },
+]

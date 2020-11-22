@@ -20,96 +20,101 @@
  * SOFTWARE.
  */
 
-import { encodeHTML } from 'entities';
+import { encodeHTML } from 'entities'
 
 const tracksMenu = (selectedTracks, playlists, actions) => {
   if (selectedTracks.length === 0) {
-    return null;
+    return null
   }
 
   const menuData = [
     {
       type: 'item',
       text: `<i class="fa fa-pencil-square item-icon"></i> Edit metadata`,
-      action () {
-        actions.editSongs(selectedTracks);
-      }
+      action() {
+        actions.editSongs(selectedTracks)
+      },
     },
     {
       type: 'item',
       text: `<i class="fa fa-minus-square item-icon"></i> Delete track(s) completely`,
-      action () {
-        actions.deleteSongs(selectedTracks);
-      }
-    }
-  ];
+      action() {
+        actions.deleteSongs(selectedTracks)
+      },
+    },
+  ]
 
   if (selectedTracks.length > 0) {
-
     if (selectedTracks[0].link_id) {
       menuData.push({
         type: 'item',
         text: `<i class="fa fa-minus-square item-icon"></i> Delete track(s) from playlist`,
         action: () => {
           actions.removeTracksFromPlaylist(selectedTracks)
-        }
-      });
+        },
+      })
     }
-
   }
 
   if (selectedTracks.length === 1) {
-    menuData.push({ type: 'divider' });
+    menuData.push({ type: 'divider' })
     if (selectedTracks[0].album_artist) {
       menuData.push({
         type: 'item',
-        text: `<i class="fa fa-search item-icon"></i> Show all by <b>${encodeHTML(selectedTracks[0].album_artist)}</b>`,
+        text: `<i class="fa fa-search item-icon"></i> Show all by <b>${encodeHTML(
+          selectedTracks[0].album_artist,
+        )}</b>`,
         href: selectedTracks[0].artist_url,
-      });
+      })
     }
     if (selectedTracks[0].track_album) {
       menuData.push({
         type: 'item',
-        text: `<i class="fa fa-search item-icon"></i> Show all from <b>${encodeHTML(selectedTracks[0].track_album)}</b>`,
-        href: selectedTracks[0].album_url
-      });
+        text: `<i class="fa fa-search item-icon"></i> Show all from <b>${encodeHTML(
+          selectedTracks[0].track_album,
+        )}</b>`,
+        href: selectedTracks[0].album_url,
+      })
     }
     if (selectedTracks[0].track_genre) {
       menuData.push({
         type: 'item',
-        text: `<i class="fa fa-search item-icon"></i> Show all by genre <b>${encodeHTML(selectedTracks[0].track_genre)}</b>`,
-        href: selectedTracks[0].genre_url
-      });
+        text: `<i class="fa fa-search item-icon"></i> Show all by genre <b>${encodeHTML(
+          selectedTracks[0].track_genre,
+        )}</b>`,
+        href: selectedTracks[0].genre_url,
+      })
     }
   }
 
-  menuData.push({ type: 'divider' });
+  menuData.push({ type: 'divider' })
 
   menuData.push({
     type: 'sub',
     text: '<i class="fa fa-plus item-icon"></i> Add to playlist',
-    data: playlists.map(playlist => ({
+    data: playlists.map((playlist) => ({
       type: 'item',
-      text: `<i class="fa fa-list item-icon"></i> ${  encodeHTML(playlist.name)}`,
+      text: `<i class="fa fa-list item-icon"></i> ${encodeHTML(playlist.name)}`,
       action: () => {
-        actions.addTracksToPlaylist(playlist, selectedTracks);
-      }
-    }))
-  });
+        actions.addTracksToPlaylist(playlist, selectedTracks)
+      },
+    })),
+  })
 
-  return menuData;
-};
+  return menuData
+}
 
-export default ['$rootScope', ($rootScope) => {
-  $rootScope.selectedTracksMenu = (selectedTracks) =>
-    tracksMenu(selectedTracks, $rootScope.playlists, {
-      editSongs: tracks =>
-        $rootScope.action.editSongs(tracks),
-      deleteSongs: tracks =>
-        $rootScope.action.deleteSongs(tracks),
-      removeTracksFromPlaylist: tracks =>
-        $rootScope.playlistMethods.removeTracksFromPlaylist(tracks),
-      addTracksToPlaylist: (playlist, tracks) =>
-        $rootScope.playlistMethods.addTracksToPlaylist(playlist, tracks),
-    })
-}];
+export default [
+  '$rootScope',
+  ($rootScope) => {
+    $rootScope.selectedTracksMenu = (selectedTracks) =>
+      tracksMenu(selectedTracks, $rootScope.playlists, {
+        editSongs: (tracks) => $rootScope.action.editSongs(tracks),
+        deleteSongs: (tracks) => $rootScope.action.deleteSongs(tracks),
+        removeTracksFromPlaylist: (tracks) =>
+          $rootScope.playlistMethods.removeTracksFromPlaylist(tracks),
+        addTracksToPlaylist: (playlist, tracks) =>
+          $rootScope.playlistMethods.addTracksToPlaylist(playlist, tracks),
+      })
+  },
+]

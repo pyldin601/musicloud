@@ -21,39 +21,45 @@
  */
 
 // todo: This must be a service
-export default ["$rootScope", "TrackService", "ModalWindow", ($rootScope, TrackService, ModalWindow) => {
-  $rootScope.action = {
-    deleteSongs: async (tracks) => {
-      if (!tracks || tracks.length === 0) {
-        return;
-      }
-      if (confirm("Are you sure want to delete selected songs?")) {
-        const track_ids = tracks.map(t => t.id);
-        await TrackService.unlink({ song_id: track_ids.join(",") });
-        $rootScope.$broadcast("songs.deleted", track_ids);
-      }
-    },
-    deleteByArtist: async (track_artist) => {
-      if (confirm(`Are you sure want to delete all tracks by ${  track_artist  }?`)) {
-        const deleted_track_ids = await TrackService.deleteByArtist({ track_artist })
-          .then(response => response.data.map(t => t.id));
-        $rootScope.$broadcast("songs.deleted", deleted_track_ids);
-      }
-    },
-    editSongs: tracks => {
-      if (!tracks || tracks.length === 0) {
-        return;
-      }
+export default [
+  '$rootScope',
+  'TrackService',
+  'ModalWindow',
+  ($rootScope, TrackService, ModalWindow) => {
+    $rootScope.action = {
+      deleteSongs: async (tracks) => {
+        if (!tracks || tracks.length === 0) {
+          return
+        }
+        if (confirm('Are you sure want to delete selected songs?')) {
+          const track_ids = tracks.map((t) => t.id)
+          await TrackService.unlink({ song_id: track_ids.join(',') })
+          $rootScope.$broadcast('songs.deleted', track_ids)
+        }
+      },
+      deleteByArtist: async (track_artist) => {
+        if (confirm(`Are you sure want to delete all tracks by ${track_artist}?`)) {
+          const deleted_track_ids = await TrackService.deleteByArtist({
+            track_artist,
+          }).then((response) => response.data.map((t) => t.id))
+          $rootScope.$broadcast('songs.deleted', deleted_track_ids)
+        }
+      },
+      editSongs: (tracks) => {
+        if (!tracks || tracks.length === 0) {
+          return
+        }
 
-      ModalWindow({
-        template: `${templatePath}/metadata-view.html`,
-        controller: "MetadataController",
-        data: {
-          songs: tracks
-        },
-        closeOnEscape: true,
-        closeOnClick: true
-      });
+        ModalWindow({
+          template: `${templatePath}/metadata-view.html`,
+          controller: 'MetadataController',
+          data: {
+            songs: tracks,
+          },
+          closeOnEscape: true,
+          closeOnClick: true,
+        })
+      },
     }
-  };
-}];
+  },
+]

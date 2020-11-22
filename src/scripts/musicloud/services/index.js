@@ -19,16 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import AccountService from './AccountService';
-import TrackService from './TrackService';
-import HeadersService from './HeadersService';
-import PlaylistService from './PlaylistService';
-import SearchService from './SearchService';
-import GroupingService from './GroupingService';
-import SyncService from './SyncService';
-import ModalWindow from './ModalWindow';
-import SyncKeeper from './SyncKeeper';
-import StatsService from './StatsService';
+import AccountService from './AccountService'
+import TrackService from './TrackService'
+import HeadersService from './HeadersService'
+import PlaylistService from './PlaylistService'
+import SearchService from './SearchService'
+import GroupingService from './GroupingService'
+import SyncService from './SyncService'
+import ModalWindow from './ModalWindow'
+import SyncKeeper from './SyncKeeper'
+import StatsService from './StatsService'
 
 const services = {
   AccountService,
@@ -41,7 +41,7 @@ const services = {
   ModalWindow,
   SyncKeeper,
   StatsService,
-};
+}
 
 export default (app) =>
-  Object.keys(services).forEach(service => app.factory(service, services[service]));
+  Object.keys(services).forEach((service) => app.factory(service, services[service]))

@@ -20,6 +20,6 @@
  * SOFTWARE.
  */
 
-import player from './player';
+import player from './player'
 
-export default player;
+export default player

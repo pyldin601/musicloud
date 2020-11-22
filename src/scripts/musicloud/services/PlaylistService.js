@@ -20,30 +20,34 @@
  * SOFTWARE.
  */
 
-export default ["$http", ($http) => ({
-  get: (playlistId) =>
-    $http.get("/api/playlist/get?" + serialize_uri({ playlist_id: playlistId })),
-  list: () =>
-    $http.get("/api/catalog/playlists"),
-  tracks: (playlistId) =>
-    $http.get("/api/catalog/playlistTracks?" + serialize_uri({ playlist_id: playlistId })).then(function (response) {
-      return deflateCollection(response.data);
-    }),
-  addTracks: (playlist, coll) =>
-    $http.post("/api/playlist/addTracks", {
-      playlist_id: playlist.id,
-      track_id: coll.map(field("id")).join(",")
-    }),
-  removeTracks: (coll) =>
-    $http.post("/api/playlist/removeTracks", {
-      link_id: coll.map(field("link_id")).filter(pass).join(",")
-    }),
-  create: (name) =>
-    $http.post("/api/playlist/create", {
-      name: name
-    }),
-  remove: (playlist) =>
-    $http.post("/api/playlist/delete", {
-      playlist_id: playlist.id
-    })
-})];
+export default [
+  '$http',
+  ($http) => ({
+    get: (playlistId) =>
+      $http.get('/api/playlist/get?' + serialize_uri({ playlist_id: playlistId })),
+    list: () => $http.get('/api/catalog/playlists'),
+    tracks: (playlistId) =>
+      $http
+        .get('/api/catalog/playlistTracks?' + serialize_uri({ playlist_id: playlistId }))
+        .then(function (response) {
+          return deflateCollection(response.data)
+        }),
+    addTracks: (playlist, coll) =>
+      $http.post('/api/playlist/addTracks', {
+        playlist_id: playlist.id,
+        track_id: coll.map(field('id')).join(','),
+      }),
+    removeTracks: (coll) =>
+      $http.post('/api/playlist/removeTracks', {
+        link_id: coll.map(field('link_id')).filter(pass).join(','),
+      }),
+    create: (name) =>
+      $http.post('/api/playlist/create', {
+        name: name,
+      }),
+    remove: (playlist) =>
+      $http.post('/api/playlist/delete', {
+        playlist_id: playlist.id,
+      }),
+  }),
+]

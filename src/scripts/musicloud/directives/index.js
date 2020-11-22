@@ -20,17 +20,17 @@
  * SOFTWARE.
  */
 
-import changeArtwork from './changeArtwork';
-import ngVisible from './ngVisible';
-import activeTab from './activeTab';
-import trackRating from './trackRating';
+import changeArtwork from './changeArtwork'
+import ngVisible from './ngVisible'
+import activeTab from './activeTab'
+import trackRating from './trackRating'
 
 const directives = {
   changeArtwork,
   ngVisible,
   activeTab,
   trackRating,
-};
+}
 
 export default (app) =>
-  Object.keys(directives).forEach(name => app.directive(name, directives[name]));
+  Object.keys(directives).forEach((name) => app.directive(name, directives[name]))

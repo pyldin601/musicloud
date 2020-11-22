@@ -20,10 +20,11 @@
  * SOFTWARE.
  */
 
-export default ["$http", ($http) =>
-  ({
-    init: () => $http.get("/api/self"),
-    login: (data) => $http.post("/api/login", data),
-    logout: () => $http.post("/api/logout"),
-  })
-];
+export default [
+  '$http',
+  ($http) => ({
+    init: () => $http.get('/api/self'),
+    login: (data) => $http.post('/api/login', data),
+    logout: () => $http.post('/api/logout'),
+  }),
+]

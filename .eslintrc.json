@@ -13,5 +13,6 @@
   },
   "plugins": ["@typescript-eslint", "import"],
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }
