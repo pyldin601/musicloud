@@ -21,7 +21,8 @@
         "malkusch/lock": "^1.0",
         "ext-json": "*",
         "ext-pdo": "*",
-        "vlucas/phpdotenv": "^5.2"
+        "vlucas/phpdotenv": "^5.2",
+        "ext-iconv": "*"
     },
     "autoload": {
         "psr-4": {}
