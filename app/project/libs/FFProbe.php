@@ -63,8 +63,8 @@ class FFProbe {
      * Reads audio file metadata and returns Metadata object.
      *
      * @param string $filename
-     * @param string $original_filename
-     * @return Some
+     * @param ?string $original_filename
+     * @return Option
      */
     public static function read($filename, $original_filename = null) {
 
@@ -96,38 +96,30 @@ class FFProbe {
 
         $object = new Metadata();
 
-        $object->format_name        = $file_format;
-
-        $object->filename           = $o_format["filename"]     ->get();
-        $object->duration           = $o_format["duration"]     ->map(function ($value) { return intval($value * 1000); })
-                                                                ->get();
-        $object->size               = $o_format["size"]         ->toInt()
-                                                                ->get();
-        $object->bitrate            = $o_format["bit_rate"]     ->toInt()
-                                                                ->get();
-
-        $object->meta_artist        = $o_tags["artist"]         ->orEmpty();
-        $object->meta_title         = $o_tags["title"]          ->orEmpty();
-        $object->meta_genre         = $o_tags["genre"]          ->orEmpty();
-        $object->meta_date          = $o_tags["date"]           ->orEmpty();
-        $object->meta_album         = $o_tags["album"]          ->orEmpty();
-
-        $object->meta_track_number  = $o_tags["track"]          ->map(function ($value) {
+        $object->format_name = $file_format;
+        $object->filename = $o_format["filename"]->get();
+        $object->duration = $o_format["duration"]->map(function ($value) {
+            return intval($value * 1000);
+        })->get();
+        $object->size = $o_format["size"]->toInt()->get();
+        $object->bitrate = $o_format["bit_rate"]->toInt()->get();
+        $object->meta_artist = $o_tags["artist"]->orElse($o_tags["ARTIST"])->orEmpty();
+        $object->meta_title = $o_tags["title"]->orElse($o_tags["TITLE"])->orEmpty();
+        $object->meta_genre = $o_tags["genre"]->orElse($o_tags["GENRE"])->orEmpty();
+        $object->meta_date = $o_tags["date"]->orElse($o_tags["DATE"])->orEmpty();
+        $object->meta_album = $o_tags["album"]->orElse($o_tags["ALBUM"])->orEmpty();
+        $object->meta_track_number = $o_tags["track"]->map(function ($value) {
             if (preg_match('`(\d+)/\d+`', $value, $matches)) {
                 return (int) $matches[1];
             }
             return (int) $value;
         })->orNull();
-
-        $object->meta_disc_number   = $o_tags["disc"]           ->toInt()->orNull();
-
-        $object->meta_album_artist  = $o_tags["album_artist"]   ->orEmpty();
-        $object->is_compilation     = $o_tags["compilation"]    ->map("bool")
-                                                                ->getOrElse("false");
-        $object->meta_comment       = $o_tags["comment"]        ->orEmpty();
+        $object->meta_disc_number = $o_tags["disc"]->toInt()->orNull();
+        $object->meta_album_artist = $o_tags["album_artist"]->orEmpty();
+        $object->is_compilation = $o_tags["compilation"]->map("bool")->getOrElse("false");
+        $object->meta_comment = $o_tags["comment"]->orEmpty();
 
         return Option::Some($object);
-
     }
 
     /**
