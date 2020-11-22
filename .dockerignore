@@ -13,6 +13,7 @@
 !package.json
 !package-lock.json
 !webpack.config.ts
+!tsconfig.json
 !docker/nginx/default.conf.template
 !docker/migration/entrypoint.sh
 !migrations

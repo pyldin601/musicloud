@@ -7,7 +7,8 @@ COPY package-lock.json /code/package-lock.json
 
 RUN ["npm", "ci"]
 
-COPY webpack.config.js /code/webpack.config.ts
+COPY webpack.config.ts /code/webpack.config.ts
+COPY tsconfig.json /code/tsconfig.json
 
 COPY src /code/src
 COPY public /code/public
