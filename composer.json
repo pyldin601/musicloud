@@ -20,7 +20,8 @@
         "josegonzalez/dotenv": "^3.0",
         "malkusch/lock": "^1.0",
         "ext-json": "*",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "vlucas/phpdotenv": "^5.2"
     },
     "autoload": {
         "psr-4": {}

@@ -24,9 +24,9 @@ import $ from 'jquery';
 import EventEmitter from 'events';
 
 export default class Player extends EventEmitter {
-  jFrame: $;
+  jFrame;
 
-  constructor(pathToSwf: string) {
+  constructor(pathToSwf) {
     super();
 
     this.jFrame = $('div');
@@ -34,7 +34,7 @@ export default class Player extends EventEmitter {
     this.initBindings();
   }
 
-  initPlayer(pathToSwf: string) {
+  initPlayer(pathToSwf) {
     this.jFrame.jPlayer({
       swfPath: pathToSwf,
       supplied: 'mp3',
@@ -80,11 +80,11 @@ export default class Player extends EventEmitter {
     );
   }
 
-  async load(url: string) {
+  async load(url) {
     this.jFrame.jPlayer('setMedia', { mp3: url });
   }
 
-  async play(position: number) {
+  async play(position) {
     this.jFrame.jPlayer('play', position);
   }
 
@@ -100,11 +100,11 @@ export default class Player extends EventEmitter {
     this.jFrame.jPlayer('clearMedia');
   }
 
-  async seek(position: number) {
+  async seek(position) {
     this.jFrame.jPlayer('playHead', position);
   }
 
-  async volume(volume: number) {
+  async volume(volume) {
     this.jFrame.jPlayer('volume', volume);
   }
 }

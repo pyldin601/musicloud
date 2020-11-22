@@ -12,8 +12,7 @@
 !composer.lock
 !package.json
 !package-lock.json
-!webpack.config.js
-!gulpfile.js
+!webpack.config.ts
 !docker/nginx/default.conf.template
 !docker/migration/entrypoint.sh
 !migrations
