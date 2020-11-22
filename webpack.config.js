@@ -43,20 +43,7 @@ module.exports = {
           {
             test: /\.js$/,
             loader: 'babel-loader',
-            exclude: /node_modules/,
-            options: {
-              presets: [
-                'stage-2',
-                ['env', {
-                  targets: {
-                    browsers: ['last 2 versions']
-                  }
-                }]
-              ],
-              plugins: [
-                'transform-runtime',
-              ]
-            }
+            exclude: /node_modules/
           },
           {
             test: [
