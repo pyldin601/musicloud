@@ -20,11 +20,8 @@
  * SOFTWARE.
  */
 
-// @flow
-
-export default [() => {
-  return {
-    async play(url: string) {
+export default [() => ({
+    async play(url) {
 
     },
     async pause() {
@@ -33,11 +30,10 @@ export default [() => {
     async stop() {
 
     },
-    async seek(position: number) {
+    async seek(position) {
       //
     },
-    async setVolume(volume: number) {
+    async setVolume(volume) {
       //
     },
-  };
-}];
+  })];

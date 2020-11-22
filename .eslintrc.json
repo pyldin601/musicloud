@@ -1,22 +1,17 @@
 {
   "root": true,
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "extends": [
-    "airbnb-base",
-    "prettier"
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
   ],
-  "plugins": [
-    "babel",
-    "flowtype",
-    "jest"
-  ],
-  "env": {
-    "jest/globals": true
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "warnOnUnsupportedTypeScriptVersion": true
   },
+  "plugins": ["@typescript-eslint", "import"],
   "rules": {
-    "flowtype/define-flow-type": 1
-  },
-  "globals": {
-    "DOMParser": true
   }
 }

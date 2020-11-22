@@ -20,15 +20,12 @@
  * SOFTWARE.
  */
 
-// @flow
-import type { Track, Album } from "../types";
-
-export default ["albumData", "SyncKeeper", "$scope", (albumData: Album, SyncKeeper: *, $scope: *) => {
+export default ["albumData", "SyncKeeper", "$scope", (albumData, SyncKeeper, $scope) => {
   const syncKeeper = SyncKeeper($scope);
 
   $scope.album = albumData;
   $scope.tracks = albumData.tracks;
-  $scope.tracks_selected = ([]: Array<Track>);
+  $scope.tracks_selected = [];
 
   syncKeeper
     .songs($scope.tracks)

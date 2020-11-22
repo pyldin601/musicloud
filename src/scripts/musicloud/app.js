@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-// @flow
 import services from './services';
 import directives from './directives';
 import controllers from './controllers';
@@ -42,9 +41,9 @@ app.run(["AccountService", "$rootScope", (AccountService, $rootScope) => {
     () => window.location.href = "/",
   );
 
-  $rootScope.$on("$routeChangeSuccess", function (e, $route) {
+  $rootScope.$on("$routeChangeSuccess", (e, $route) => {
     if ($route.title) {
-      document.title = $route.title + " - MusicLoud";
+      document.title = `${$route.title  } - MusicLoud`;
     } else {
       document.title = "MusicLoud";
     }

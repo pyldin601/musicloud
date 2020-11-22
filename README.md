@@ -10,39 +10,30 @@ containers and any build utilities. It is tested on my home server with 600 GB o
 
 Today I'm going to continue making it as pet project.
 
-## Development
-To start service in development mode type:
-```shell
-make docker-build docker-up
-```
-and open in your browser url: http://localhost:8080/.
+### Development environment
 
-Now it requires login and password what is **guest** : **please** accordingly. It is hardcoded and will be remove in future when authentication will be done.
-
-## Docker
-Docker image is available [here](https://hub.docker.com/r/pldin601/musicloud/).
-Example of stack configuration:
-```yaml
-db:
-  environment:
-    - POSTGRES_PASSWORD=musicloud
-    - POSTGRES_USER=musicloud
-  image: 'postgres:latest'
-web:
-  environment:
-    - DB_DATABASE=musicloud
-    - DB_HOSTNAME=db
-    - DB_PASSWORD=musicloud
-    - DB_USERNAME=musicloud
-  image: 'pldin601/musicloud:latest'
-  links:
-    - db
+Run necessary dependencies:
+```bash
+make start-dev-dependencies
 ```
 
-## Checklist
-- [x] Dockerize
-- [ ] Build frontend with webpack (in progress)
-- [ ] Improve error handling
-- [ ] Save music to Amazon AWS
-- [ ] Throw out Angular and bring the React
-- [ ] Authentication
+Run database migration:
+```bash
+make run-database-migration
+```
+
+Enter development environment:
+```bash
+make enter-dev-environment
+```
+
+In development environment type:
+```bash
+composer install
+npm install
+npm start
+```
+
+Then open in your browser url: http://localhost:8080/.
+
+It will prompt you to enter default login **guest** and password **please**.

@@ -22,13 +22,13 @@
 
 import zeroFill from 'zero-fill';
 
-export default (time: number): string => {
+export default (time) => {
   const integerTime = Math.floor(time);
   const hours = Math.floor(integerTime / 3600);
   const minutes = Math.floor(integerTime / 60) % 60;
   const seconds = integerTime % 60;
 
-  let result = [];
+  const result = [];
 
   if (hours > 0) {
     result.push(zeroFill(2, hours));

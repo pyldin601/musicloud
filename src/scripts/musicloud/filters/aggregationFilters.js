@@ -20,18 +20,10 @@
  * SOFTWARE.
  */
 
-// @flow
 import * as aggregators from '../util/aggregators';
-import type { Track } from "../types";
 
-export const aggregateArtists = [() => {
-  return (tracks: Array<Track>) => aggregators.aggregateTrackArtists(tracks);
-}];
+export const aggregateArtists = [() => (tracks) => aggregators.aggregateTrackArtists(tracks)];
 
-export const aggregateYears = [() => {
-  return (tracks: Array<Track>) => aggregators.aggregateYears(tracks);
-}];
+export const aggregateYears = [() => (tracks) => aggregators.aggregateYears(tracks)];
 
-export const aggregateGenres = [() => {
-  return (tracks: Array<Track>) => aggregators.aggregateGenres(tracks);
-}];
+export const aggregateGenres = [() => (tracks) => aggregators.aggregateGenres(tracks)];
