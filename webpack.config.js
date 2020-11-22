@@ -47,7 +47,6 @@ module.exports = {
             options: {
               presets: [
                 'stage-2',
-                'flow',
                 ['env', {
                   targets: {
                     browsers: ['last 2 versions']

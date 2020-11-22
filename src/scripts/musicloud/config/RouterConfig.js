@@ -33,12 +33,12 @@ export default [
     });
 
     $routeProvider.when("/artists/", {
-      templateUrl: templatePath + "/artists-view.html",
+      templateUrl: `${templatePath  }/artists-view.html`,
       controller: "AllArtistsViewController",
       resolve: {
         Resolved: ["SearchService", "$location", (SearchService, $location) => {
           const q = $location.search().q;
-          return SearchService.artists({ q: q }, 0).catch(() => {
+          return SearchService.artists({ q }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -50,7 +50,7 @@ export default [
     });
 
     $routeProvider.when("/artist/:artist", {
-      templateUrl: templatePath + "/single-artist-view.html",
+      templateUrl: `${templatePath  }/single-artist-view.html`,
       controller: "ArtistViewController",
       resolve: {
         Header: ["$route", "HeadersService", ($route, HeadersService) => {
@@ -61,7 +61,7 @@ export default [
           (SearchService, $location, $route, $filter) => {
             const artist = decodeUriPlus($route.current.params.artist);
             $route.current.title = $filter("normalizeArtist")(artist);
-            return SearchService.tracks({ artist: artist }, 0).catch(() => {
+            return SearchService.tracks({ artist }, 0).catch(() => {
               $location.url("/");
             });
           }
@@ -75,7 +75,7 @@ export default [
 
     $routeProvider.when("/artist/:artist/:album", {
       controller: "AlbumViewController",
-      templateUrl: templatePath + "/album-view.html",
+      templateUrl: `${templatePath  }/album-view.html`,
       resolve: {
         albumData: ["SearchService", "$location", "$route", "$filter",
           (SearchService, $location, $route, $filter) => {
@@ -83,11 +83,11 @@ export default [
             const album = decodeUriPlus($route.current.params.album);
 
             $route.current.title = String.prototype.concat(
-              $filter("normalizeAlbum")(album) + " by " +
-              $filter("normalizeArtist")(artist)
+              `${$filter("normalizeAlbum")(album)  } by ${ 
+              $filter("normalizeArtist")(artist)}`
             );
 
-            return SearchService.tracks({ artist: artist, album: album, limit: -1 }, 0).catch(() => {
+            return SearchService.tracks({ artist, album, limit: -1 }, 0).catch(() => {
               $location.url("/");
             }).then(aggregateAlbum);
           }
@@ -101,21 +101,21 @@ export default [
 
     $routeProvider.when("/playlist/:playlist", {
       controller: "PlaylistController",
-      templateUrl: templatePath + "/tracks-view.html",
+      templateUrl: `${templatePath  }/tracks-view.html`,
       resolve: {
         Playlist: ["PlaylistService", "$route", "$location", (PlaylistService, $route, $location) => {
           const playlist = decodeUriPlus($route.current.params.playlist);
           const promise = PlaylistService.get(playlist);
 
           promise.then(response => {
-            $route.current.title = 'Playlist "' + response.data.name + '"'
+            $route.current.title = `Playlist "${  response.data.name  }"`
           }, () => {
             $location.url("/");
           });
         }],
         Resolved: ["PlaylistService", "$route", function (PlaylistService, $route) {
           const playlist = decodeUriPlus($route.current.params.playlist);
-          $route.current.special.section = "playlist/" + playlist;
+          $route.current.special.section = `playlist/${  playlist}`;
           return PlaylistService.tracks(playlist);
         }]
       },
@@ -125,12 +125,12 @@ export default [
     });
 
     $routeProvider.when("/albums/", {
-      templateUrl: templatePath + "/albums-view.html",
+      templateUrl: `${templatePath  }/albums-view.html`,
       controller: "AllAlbumsViewController",
       resolve: {
         Resolved: ["SearchService", "$location", function (SearchService, $location) {
           const q = $location.search().q;
-          return SearchService.albums({ q: q, compilations: 0 }, 0).catch(() => {
+          return SearchService.albums({ q, compilations: 0 }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -142,12 +142,12 @@ export default [
     });
 
     $routeProvider.when("/compilations/", {
-      templateUrl: templatePath + "/albums-view.html",
+      templateUrl: `${templatePath  }/albums-view.html`,
       controller: "AllCompilationsViewController",
       resolve: {
         Resolved: ["SearchService", "$location", (SearchService, $location) => {
           const q = $location.search().q;
-          return SearchService.albums({ q: q, compilations: 1 }, 0).catch(() => {
+          return SearchService.albums({ q, compilations: 1 }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -159,12 +159,12 @@ export default [
     });
 
     $routeProvider.when("/genres/", {
-      templateUrl: templatePath + "/genres-view.html",
+      templateUrl: `${templatePath  }/genres-view.html`,
       controller: "AllGenresViewController",
       resolve: {
         Resolved: ["SearchService", "$location", (SearchService, $location) => {
           const q = $location.search().q;
-          return SearchService.genres({ q: q }, 0).catch(() => {
+          return SearchService.genres({ q }, 0).catch(() => {
             $location.url("/");
           });
         }]
@@ -176,7 +176,7 @@ export default [
     });
 
     $routeProvider.when("/genre/:genre", {
-      templateUrl: templatePath + "/single-genre-view.html",
+      templateUrl: `${templatePath  }/single-genre-view.html`,
       controller: "GenreViewController",
       resolve: {
         Header: ["$route", "HeadersService", function ($route, HeadersService) {
@@ -189,7 +189,7 @@ export default [
 
             $route.current.title = $filter("normalizeGenre")(genre);
 
-            return SearchService.tracks({ genre: genre }, 0).catch(() => {
+            return SearchService.tracks({ genre }, 0).catch(() => {
               $location.url("/");
             });
           }
@@ -202,23 +202,23 @@ export default [
     });
 
     $routeProvider.when("/queue", {
-      templateUrl: templatePath + "/queue.html",
+      templateUrl: `${templatePath  }/queue.html`,
       controller: "QueueController",
       resolve: {
-        Jobs: ["TrackService", (TrackService: *) => TrackService.getQueue()],
+        Jobs: ["TrackService", (TrackService) => TrackService.getQueue()],
       },
     });
 
     $routeProvider.when("/tracks", {
       controller: "TracksViewController",
-      templateUrl: templatePath + "/tracks-view.html",
+      templateUrl: `${templatePath  }/tracks-view.html`,
       resolve: {
         Resolved: ["SearchService", "$location",
           (SearchService, $location) => {
             const q = $location.search().q;
             const s = $location.search().s;
 
-            return SearchService.tracks({ q: q, s: s }, 0).catch(() => {
+            return SearchService.tracks({ q, s }, 0).catch(() => {
               $location.url("/");
             });
           }

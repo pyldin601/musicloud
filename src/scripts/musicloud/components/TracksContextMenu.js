@@ -20,18 +20,9 @@
  * SOFTWARE.
  */
 
-// @flow
 import { encodeHTML } from 'entities';
-import type { Track, Playlist } from '../types'
 
-type TrackMenuActions = {|
-  editSongs: (Array<Track>) => void,
-  deleteSongs: (Array<Track>) => void,
-  removeTracksFromPlaylist: (Array<Track>) => void,
-  addTracksToPlaylist: (Playlist, Array<Track>) => void,
-|};
-
-const tracksMenu = (selectedTracks: Array<Track>, playlists: Array<Playlist>, actions: TrackMenuActions) => {
+const tracksMenu = (selectedTracks, playlists, actions) => {
   if (selectedTracks.length === 0) {
     return null;
   }
@@ -40,14 +31,14 @@ const tracksMenu = (selectedTracks: Array<Track>, playlists: Array<Playlist>, ac
     {
       type: 'item',
       text: `<i class="fa fa-pencil-square item-icon"></i> Edit metadata`,
-      action: function () {
+      action () {
         actions.editSongs(selectedTracks);
       }
     },
     {
       type: 'item',
       text: `<i class="fa fa-minus-square item-icon"></i> Delete track(s) completely`,
-      action: function () {
+      action () {
         actions.deleteSongs(selectedTracks);
       }
     }
@@ -80,14 +71,14 @@ const tracksMenu = (selectedTracks: Array<Track>, playlists: Array<Playlist>, ac
       menuData.push({
         type: 'item',
         text: `<i class="fa fa-search item-icon"></i> Show all from <b>${encodeHTML(selectedTracks[0].track_album)}</b>`,
-        href: selectedTracks[0]["album_url"]
+        href: selectedTracks[0].album_url
       });
     }
     if (selectedTracks[0].track_genre) {
       menuData.push({
         type: 'item',
         text: `<i class="fa fa-search item-icon"></i> Show all by genre <b>${encodeHTML(selectedTracks[0].track_genre)}</b>`,
-        href: selectedTracks[0]["genre_url"]
+        href: selectedTracks[0].genre_url
       });
     }
   }
@@ -99,7 +90,7 @@ const tracksMenu = (selectedTracks: Array<Track>, playlists: Array<Playlist>, ac
     text: '<i class="fa fa-plus item-icon"></i> Add to playlist',
     data: playlists.map(playlist => ({
       type: 'item',
-      text: '<i class="fa fa-list item-icon"></i> ' + encodeHTML(playlist.name),
+      text: `<i class="fa fa-list item-icon"></i> ${  encodeHTML(playlist.name)}`,
       action: () => {
         actions.addTracksToPlaylist(playlist, selectedTracks);
       }
@@ -109,8 +100,8 @@ const tracksMenu = (selectedTracks: Array<Track>, playlists: Array<Playlist>, ac
   return menuData;
 };
 
-export default ['$rootScope', ($rootScope: *) => {
-  $rootScope.selectedTracksMenu = (selectedTracks: Array<Track>) =>
+export default ['$rootScope', ($rootScope) => {
+  $rootScope.selectedTracksMenu = (selectedTracks) =>
     tracksMenu(selectedTracks, $rootScope.playlists, {
       editSongs: tracks =>
         $rootScope.action.editSongs(tracks),

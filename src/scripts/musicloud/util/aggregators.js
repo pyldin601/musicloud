@@ -20,20 +20,18 @@
  * SOFTWARE.
  */
 
-// @flow
-import _ from 'lodash';
+import { first, join, uniq, min, max, sum, isEmpty, isNumber } from 'lodash';
 import { or } from '../util/exp';
-import type { Album, Track } from '../types';
 
-export const aggregateGenres = (tracks: Array<Track>): string => {
-  const genres = _.uniq(tracks.map(t => t.track_genre));
+export const aggregateGenres = (tracks) => {
+  const genres = uniq(tracks.map(t => t.track_genre));
   switch (genres.length) {
     case 0:
       return '-';
     case 1:
-      return _.first(genres);
+      return first(genres);
     case 2:
-      return _.join(genres, ', ');
+      return join(genres, ', ');
     case 3:
       return `${genres[0]}, ${genres[1]} and ${genres[2]}`;
     default:
@@ -41,57 +39,49 @@ export const aggregateGenres = (tracks: Array<Track>): string => {
   }
 };
 
-export const aggregateYears = (tracks: Array<Track>): string => {
-  const isNumeric = (str: string): boolean => !isNaN(parseInt(str));
-  const years = _.uniq(tracks.map(t => t.track_year)).filter(isNumeric);
+export const aggregateYears = (tracks) => {
+  const isNumeric = (str) => !isNaN(parseInt(str, 10));
+  const years = uniq(tracks.map(t => t.track_year)).filter(isNumeric);
   switch (years.length) {
     case 0:
       return '-';
     case 1:
-      return _.join(years, ', ');
+      return join(years, ', ');
     default:
-      return `${_.min(years)} - ${_.max(years)}`;
+      return `${min(years)} - ${max(years)}`;
   }
 };
 
-export const aggregateAlbumTitle = (tracks: Array<Track>): string => {
-  return tracks.map(t => t.track_album).reduce((a, b) => a || b, "");
-};
+export const aggregateAlbumTitle = (tracks) => tracks.map(t => t.track_album).reduce((a, b) => a || b, "");
 
-export const aggregateTrackArtists = (tracks: Array<Track>): string => {
-  const artists = _(tracks)
-    .map(t => t.track_artist)
-    .uniq()
-    .reject(_.isEmpty)
-    .value();
+export const aggregateTrackArtists = (tracks) => {
+  const artists = Array.from(new Set(tracks.map(t => t.track_artist).filter(t => !isEmpty(t))))
   const prefix = 'Including';
 
   switch (artists.length) {
     case 0:
       return `${prefix} Unknown Artists`;
     case 1:
-      return `${prefix} ${_.first(artists)}`;
+      return `${prefix} ${first(artists)}`;
     case 2:
-      return `${prefix} ${_.join(artists, ' and ')}`;
+      return `${prefix} ${join(artists, ' and ')}`;
     case 3:
-      return `${prefix} ${artists.slice(0, 2).join(", ")} and ${_.last(artists)}`;
+      return `${prefix} ${artists.slice(0, 2).join(", ")} and ${last(artists)}`;
     default:
       return `${prefix} ${artists.slice(0, 3).join(", ")} and ${artists.length - 3} other artists`;
   }
 };
 
-export const aggregateDuration = (tracks: Array<Track>): number =>
-  _.sum(tracks.map(t => t.length));
+export const aggregateDuration = (tracks) =>
+  sum(tracks.map(t => t.length));
 
-export const aggregateDiscsCount = (tracks: Array<Track>): number =>
-  _(tracks)
-    .map(t => t.disc_number)
-    .uniq()
-    .filter(_.isNumber)
-    .value()
-    .length;
+export const aggregateDiscsCount = (tracks) =>
+    new Set(tracks.map(t => t.disc_number).filter(isNumber)).size
 
-export const aggregateAlbum = (tracks: Array<Track>): Album => {
+export const isVariousArtists = (tracks) =>
+    tracks.some(t => t.album_artist !== t.track_artist);
+
+export const aggregateAlbum = (tracks) => {
   if (tracks.length === 0) {
     throw new Error('Could not aggregate empty track list');
   }
@@ -110,6 +100,3 @@ export const aggregateAlbum = (tracks: Array<Track>): Album => {
     tracks,
   };
 };
-
-export const isVariousArtists = (tracks: Array<Track>): boolean =>
-  tracks.some(t => t.album_artist !== t.track_artist);

@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-// @flow
 import $ from 'jquery';
 import EventEmitter from 'events';
 

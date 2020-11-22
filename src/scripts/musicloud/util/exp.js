@@ -20,11 +20,10 @@
  * SOFTWARE.
  */
 
-// @flow
-export function or<T>(x: T, y: T): T {
+export function or(x, y) {
   return x || y;
 }
 
-export function and<T>(x: T, y: T): T {
+export function and(x, y) {
   return x && y;
 }
