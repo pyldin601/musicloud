@@ -63,10 +63,10 @@ class FFProbe {
      * Reads audio file metadata and returns Metadata object.
      *
      * @param string $filename
-     * @param ?string $original_filename
+     * @param null|string $original_filename
      * @return Option
      */
-    public static function read($filename, $original_filename = null) {
+    public static function read(string $filename, string $original_filename = null): Option {
 
         $escaped_filename = escapeshellarg($filename);
         $file_format = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
