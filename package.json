@@ -10,7 +10,7 @@
     "gulp": "gulp",
     "rimraf": "rimraf",
     "test": "exit 0",
-    "webpack": "env TS_NODE_PROJECT=tsconfig.json webpack",
+    "webpack": "env TS_NODE_PROJECT=tsconfig.json webpack --env.production",
     "start:webpack": "env TS_NODE_PROJECT=tsconfig.json webpack --watch",
     "start:web": "php -S 0.0.0.0:8080 -t public",
     "start": "npx run-p start:*",
