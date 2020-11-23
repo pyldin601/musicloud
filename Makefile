@@ -14,10 +14,6 @@ enter-dev-environment:
 	mkdir -p .cache/home
 	docker run --rm -it --name musicloud-dev \
 			--network musicloud \
-			--env DB_HOSTNAME=db \
-			--env DB_DATABASE=musicloud \
-			--env DB_USERNAME=musicloud \
-			--env DB_PASSWORD=musicloud \
 			-p 127.0.0.1:8080:8080 \
 			-v "$(PWD)":/code \
 			-v "$(PWD)/.cache/volume/temp":/volume/temp \
