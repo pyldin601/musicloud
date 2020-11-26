@@ -21,7 +21,7 @@
  */
 
 import { first, join, uniq, min, max, sum, isEmpty, isNumber } from 'lodash'
-import { or } from '../util/exp'
+import { or } from './exp'
 
 export const aggregateGenres = (tracks) => {
   const genres = uniq(tracks.map((t) => t.track_genre))

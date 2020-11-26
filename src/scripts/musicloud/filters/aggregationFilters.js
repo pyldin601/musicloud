@@ -27,3 +27,5 @@ export const aggregateArtists = [() => (tracks) => aggregators.aggregateTrackArt
 export const aggregateYears = [() => (tracks) => aggregators.aggregateYears(tracks)]
 
 export const aggregateGenres = [() => (tracks) => aggregators.aggregateGenres(tracks)]
+
+export const groupGenres = [() => (tracks) => aggregators.aggregateGenres(tracks)]
