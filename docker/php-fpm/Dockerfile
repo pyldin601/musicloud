@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.4-fpm
 
 ARG MAX_UPLOAD_FILESIZE=256
 ENV MAX_UPLOAD_FILESIZE=${MAX_UPLOAD_FILESIZE}
@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     # Install common dependencies
     apt-get install -y git ffmpeg zip libzip-dev && \
-    docker-php-ext-configure zip --with-libzip && \
+    docker-php-ext-configure zip && \
     docker-php-ext-install zip && \
     # Install composer
     php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer && \
