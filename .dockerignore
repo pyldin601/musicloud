@@ -17,4 +17,3 @@
 !docker/nginx/default.conf.template
 !docker/migration/entrypoint.sh
 !migrations
-!.cache
