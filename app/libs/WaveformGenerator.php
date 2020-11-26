@@ -54,7 +54,7 @@ class WaveformGenerator {
                     if ($code > $peak) {
                         $peak = $code;
                     }
-                    if ($code == 255) {
+                    if ($code === 255) {
                         break;
                     }
                 }

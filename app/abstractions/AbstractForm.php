@@ -20,7 +20,7 @@ abstract class AbstractForm implements Injectable {
 
         /** @var \ReflectionProperty $property */
         foreach ((new \ReflectionClass($this))->getProperties() as $property) {
-            if ($property->isStatic() || substr($property->getName(), 0, 1) == "_")
+            if ($property->isStatic() || substr($property->getName(), 0, 1) === "_")
                 continue;
 
             $property->setAccessible(true);
@@ -37,7 +37,7 @@ abstract class AbstractForm implements Injectable {
 
         /** @var \ReflectionProperty $property */
         foreach ((new \ReflectionClass($this))->getProperties() as $property) {
-            if ($property->isStatic() || substr($property->getName(), 0, 1) == "_")
+            if ($property->isStatic() || substr($property->getName(), 0, 1) === "_")
                 continue;
 
             $property->setAccessible(true);

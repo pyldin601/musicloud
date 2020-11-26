@@ -49,7 +49,7 @@ class HttpFiles extends AbstractRepository implements SingletonInterface, Inject
      * @return Option
      */
     public function findAny() {
-        if (count(array_keys($_FILES)) == 0) {
+        if (count(array_keys($_FILES)) === 0) {
             return Option::None();
         } else {
             $key = array_keys($_FILES)[0];

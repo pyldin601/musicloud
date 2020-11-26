@@ -276,7 +276,7 @@ class DatabaseConnection implements SingletonInterface, Injectable {
 
         header("Content-Type: application/json; charset=utf8");
 
-        if ($resource->rowCount() == 0) {
+        if ($resource->rowCount() === 0) {
             echo json_encode(["columns" => [], "data" => []]);
             return;
         }

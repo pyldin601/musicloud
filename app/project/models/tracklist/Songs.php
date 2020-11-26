@@ -58,7 +58,7 @@ class Songs {
         $track_objects = self::getTracksListById($track_ids);
 
         $isTrackBelongsToUser = function ($track) {
-            return $track[TSongs::USER_ID] == self::$me->getId();
+            return $track[TSongs::USER_ID] === self::$me->getId();
         };
 
         if (!$track_objects->all($isTrackBelongsToUser)) {
@@ -276,8 +276,8 @@ class Songs {
 
         $to_remove = $songs->map(Mapper::key(TSongs::ID));
 
-        if (count($to_remove) == 0) {
-            return array();
+        if (count($to_remove) === 0) {
+            return new MLArray();
         }
 
         return (new DeleteQuery(TSongs::_NAME))

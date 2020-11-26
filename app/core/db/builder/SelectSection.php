@@ -50,9 +50,9 @@ trait SelectSection {
 
         if ($column === null) {
             $this->selectNone();
-        } else if (func_num_args() == 1 && is_string(func_get_arg(0))) {
+        } else if (func_num_args() === 1 && is_string(func_get_arg(0))) {
             $this->addSelect(func_get_arg(0));
-        } else if (func_num_args() == 1 && is_array(func_get_arg(0))) {
+        } else if (func_num_args() === 1 && is_array(func_get_arg(0))) {
             $this->addSelectArray(func_get_arg(0));
         } else {
             $this->addSelectArray(func_get_args());
@@ -118,7 +118,7 @@ trait SelectSection {
 
         }
 
-        return count($build) == 0 ? "*" : implode(",", $build);
+        return count($build) === 0 ? "*" : implode(",", $build);
 
     }
 

@@ -34,8 +34,8 @@ trait OptionMixin {
     public static function ofEmpty($value) {
 
         if (is_null($value)) return None::instance();
-        if (is_array($value) && count($value) == 0) return None::instance();
-        if (is_string($value) && strlen($value) == 0) return None::instance();
+        if (is_array($value) && count($value) === 0) return None::instance();
+        if (is_string($value) && strlen($value) === 0) return None::instance();
 
         return new Some($value);
 

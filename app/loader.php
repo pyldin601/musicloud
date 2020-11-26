@@ -79,7 +79,7 @@ set_exception_handler(function ($exception) {
 
 // Scan autorun directory for executable scripts
 foreach (scandir(AUTORUN_SCRIPTS_PATH) as $file) {
-    if ($file == "." || $file == "..")
+    if ($file === "." || $file === "..")
         continue;
     require_once AUTORUN_SCRIPTS_PATH . $file;
 }

@@ -201,7 +201,7 @@ class LightORM {
                 }
             }
 
-            if (count($data) == 0) {
+            if (count($data) === 0) {
                 return;
             }
 
@@ -341,7 +341,7 @@ class LightORM {
         if (is_null($first)) {
             return null;
         }
-        if (count($path) == 0) {
+        if (count($path) === 0) {
             if (is_object($object)) {
                 $getter = $this->fieldNameToGetter($first);
                 if (method_exists($object, $getter)) {

@@ -79,10 +79,10 @@ class Sequence implements \Countable, \IteratorAggregate, \JsonSerializable {
      * @return mixed
      */
     public function reduce($callback, $initial = null) {
-        if (count($this->array) == 0) {
+        if (count($this->array) === 0) {
             return null;
         }
-        if ($initial == null) {
+        if ($initial === null) {
             $head = $this->array[0];
             $rest = array_slice($this->array, 1);
             return array_reduce($rest, $callback, $head);
@@ -107,7 +107,7 @@ class Sequence implements \Countable, \IteratorAggregate, \JsonSerializable {
      * @return Sequence
      */
     public function odd() {
-        return $this->filter(function ($value, $index) { return $index % 2 == 1; },
+        return $this->filter(function ($value, $index) { return $index % 2 === 1; },
             ARRAY_FILTER_USE_BOTH);
     }
 
@@ -115,7 +115,7 @@ class Sequence implements \Countable, \IteratorAggregate, \JsonSerializable {
      * @return Sequence
      */
     public function even() {
-        return $this->filter(function ($value, $index) { return $index % 2 == 0; },
+        return $this->filter(function ($value, $index) { return $index % 2 === 0; },
             ARRAY_FILTER_USE_BOTH);
     }
 
@@ -258,7 +258,7 @@ class Sequence implements \Countable, \IteratorAggregate, \JsonSerializable {
      * @return bool
      */
     public function isEmpty() {
-        return count($this->array) == 0;
+        return count($this->array) === 0;
     }
 
     /**

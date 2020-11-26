@@ -89,9 +89,9 @@ class Filter {
      */
     public static function notEmpty() {
         return function ($value) {
-            if (is_array($value) && count($value) == 0) {
+            if (is_array($value) && count($value) === 0) {
                 return false;
-            } else if (is_string($value) && strlen($value) == 0) {
+            } else if (is_string($value) && strlen($value) === 0) {
                 return false;
             } else if (is_null($value)) {
                 return false;
