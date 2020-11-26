@@ -24,9 +24,9 @@ class InsertQuery extends BaseQuery {
     }
 
     public function values() {
-        if (func_num_args() == 1 && is_array(func_get_arg(0))) {
+        if (func_num_args() === 1 && is_array(func_get_arg(0))) {
             $this->hashValues(func_get_arg(0));
-        } elseif (func_num_args() == 2 && is_string(func_get_arg(0))) {
+        } elseif (func_num_args() === 2 && is_string(func_get_arg(0))) {
             $this->singleValue(func_get_arg(0), func_get_arg(1));
         }
         return $this;
@@ -80,7 +80,7 @@ class InsertQuery extends BaseQuery {
 
     public function set() {
 
-        if (func_num_args() == 1 && is_array(func_get_arg(0))) {
+        if (func_num_args() === 1 && is_array(func_get_arg(0))) {
             $this->updatePairs(func_get_arg(0));
         } elseif (func_num_args() == 2 && is_string(func_get_arg(0))) {
             $this->updatePair(func_get_arg(0), func_get_arg(1));

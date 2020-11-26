@@ -70,7 +70,7 @@ class UpdateQuery extends BaseQuery {
 
     public function set() {
 
-        if (func_num_args() == 1 && is_array(func_get_arg(0))) {
+        if (func_num_args() === 1 && is_array(func_get_arg(0))) {
             $this->setPairs(func_get_arg(0));
         } elseif (func_num_args() == 2 && is_string(func_get_arg(0))) {
             $this->setPair(func_get_arg(0), func_get_arg(1));

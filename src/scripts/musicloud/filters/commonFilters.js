@@ -19,10 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import * as commonFilters from './commonFilters'
-import * as aggregationFilters from './aggregationFilters'
-import * as normalizationFilters from './normalizationFilters'
 
-const filters = { ...commonFilters, ...aggregationFilters, ...normalizationFilters }
+export const uri = [() => (path) => encodeURIComponent(path)]
 
-export default (app) => Object.keys(filters).forEach((name) => app.filter(name, filters[name]))
+export const dateFilter = [
+  '$filter',
+  ($filter) => (value) => (!value ? '-' : $filter('date')(value * 1000, dateFormat)),
+]
+
+export const isVariousArtists = [
+  () => (coll) => coll.any((el) => el.album_artist !== el.track_artist),
+]

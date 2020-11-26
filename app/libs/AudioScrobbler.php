@@ -207,7 +207,7 @@ class AudioScrobbler {
         ksort($data);
         $acc = "";
         foreach ($data as $key => $value) {
-            if ($key == "format" || $key == "callback" || $value === null)
+            if ($key === "format" || $key === "callback" || $value === null)
                 continue;
             $acc .= $key . $value;
         }

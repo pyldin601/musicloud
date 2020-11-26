@@ -64,7 +64,7 @@ function ml_explode($delimiter, $string) {
     if (!is_string($delimiter) || $delimiter === "") {
         throw new Exception("Delimited must be non-empty string");
     }
-    if ($count = substr_count($string, $delimiter) == 0) {
+    if ($count = substr_count($string, $delimiter) === 0) {
         return array($string);
     } else {
         return explode($delimiter, $string, $count + 1);

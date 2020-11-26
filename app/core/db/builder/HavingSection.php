@@ -17,13 +17,13 @@ trait HavingSection {
     // Where section
 
     public function having($clause) {
-        if (func_num_args() == 2 && is_array(func_get_arg(1))) {
+        if (func_num_args() === 2 && is_array(func_get_arg(1))) {
             $this->havingArray(func_get_arg(0), func_get_arg(1));
-        } elseif (func_num_args() == 1 && is_array(func_get_arg(0))) {
+        } elseif (func_num_args() === 1 && is_array(func_get_arg(0))) {
             $this->havingHashMap(func_get_arg(0));
-        } elseif (func_num_args() == 2) {
+        } elseif (func_num_args() === 2) {
             $this->havingSimple(func_get_arg(0), func_get_arg(1));
-        } elseif (func_num_args() == 1) {
+        } elseif (func_num_args() === 1) {
             $this->havingSimple("(".$clause.")");
         }
         return $this;
@@ -83,7 +83,7 @@ trait HavingSection {
         foreach ($this->having as $having) {
             if (is_string($having)) {
                 $build[] = $having;
-            } else if (count($having) == 2 && is_array($having[1])) {
+            } else if (count($having) === 2 && is_array($having[1])) {
                 $build[] = $having[0] . " IN (" . implode(",", $this->quote($pdo, $having[1])) . ")";
             } else {
                 $build[] = $having[0] . "=" . $having[1];

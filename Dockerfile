@@ -1,5 +1,5 @@
 # Dockerfile for development environment
-FROM php:7.1
+FROM php:7.4
 
 ARG USER=1000:1000
 
@@ -11,7 +11,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     # Install common dependencies
     apt-get install -y git ffmpeg zip libzip-dev && \
-    docker-php-ext-configure zip --with-libzip && \
+    docker-php-ext-configure zip && \
     docker-php-ext-install zip && \
     # Install composer
     php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer && \

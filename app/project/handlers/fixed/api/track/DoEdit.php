@@ -21,7 +21,7 @@ class DoEdit implements RouteHandler {
         $song_id = $post->get("song_id")->reject("")->get();
         $metadata = $post->get("metadata")->filter("is_array")->get();
 
-        $result = (count($metadata) == 0) ? array() : Songs::edit($song_id, $metadata);
+        $result = (count($metadata) === 0) ? array() : Songs::edit($song_id, $metadata);
 
         $response->write(["tracks" => $result]);
 

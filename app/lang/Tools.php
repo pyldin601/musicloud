@@ -41,7 +41,7 @@ class Tools {
     public static function fsWalker($path, $walker) {
         $fh = opendir($path);
         while ($file = readdir($fh)) {
-            if ($file == "." || $file == "..") {
+            if ($file === "." || $file === "..") {
                 continue;
             }
             $full_name = $path . "/" . $file;

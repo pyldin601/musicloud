@@ -81,7 +81,7 @@ class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSeri
 
     public function all($callable) {
         foreach ($this->contents as $value) {
-            if ($callable($value) == false) {
+            if ($callable($value) === false) {
                 return false;
             }
         }
@@ -90,7 +90,7 @@ class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSeri
 
     public function any($callable) {
         foreach ($this->contents as $value) {
-            if ($callable($value) == true) {
+            if ($callable($value) === true) {
                 return true;
             }
         }
@@ -127,13 +127,13 @@ class MLArray implements \ArrayAccess, \Countable, \IteratorAggregate, \JsonSeri
      * @return MLArray
      */
     public static function split($delimiter, $text) {
-        if ($delimiter == "") {
+        if ($delimiter === "") {
             return new self(str_split($text));
         } else {
             $count = substr_count($text, $delimiter);
-            if ($count == 0 && $text == "") {
+            if ($count === 0 && $text === "") {
                 return new self();
-            } elseif ($count == 0) {
+            } elseif ($count === 0) {
                 return new self([$text]);
             } else {
                 return new self(explode($delimiter, $text, $count + 1));
