@@ -12,6 +12,11 @@ Today I'm going to continue making it as pet project.
 
 ### Development environment
 
+Copy contents of `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+
 Run necessary dependencies:
 ```bash
 make start-dev-dependencies

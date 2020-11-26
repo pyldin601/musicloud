@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'hostname' => getenv('DB_HOSTNAME') ?? 'localhost',
-    'database' => getenv('DB_DATABASE') ?? 'musicloud',
-    'username' => getenv('DB_USERNAME') ?? 'musicloud',
-    'password' => getenv('DB_PASSWORD') ?? 'musicloud'
+    'hostname' => $_ENV['DB_HOSTNAME'] ?? 'localhost',
+    'database' => $_ENV['DB_DATABASE'] ?? 'musicloud',
+    'username' => $_ENV['DB_USERNAME'] ?? 'musicloud',
+    'password' => $_ENV['DB_PASSWORD'] ?? 'musicloud'
 ];
