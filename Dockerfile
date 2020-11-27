@@ -19,7 +19,7 @@ RUN apt-get update && \
     apt-get install -y libpq-dev && \
     docker-php-ext-install pdo_pgsql && \
     # Install nodejs
-    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_15.x | bash - && \
     apt-get install -y nodejs && \
     # Cleanup
     apt-get clean && \
