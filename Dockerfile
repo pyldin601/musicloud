@@ -1,5 +1,5 @@
 # Dockerfile for development environment
-FROM php:7.4
+FROM php:8.0
 
 ARG USER=1000:1000
 
