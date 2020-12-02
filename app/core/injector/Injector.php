@@ -118,18 +118,20 @@ class Injector implements SingletonInterface
     }
 
     /**
-     * @param \ReflectionParameter $class
+     * @param \ReflectionParameter $param
      * @return mixed|object
      * @throws \Exception
      */
-    public function injectByClass($class)
+    public function injectByClass(\ReflectionParameter $param)
     {
-        $reflection = $class->getClass();
+        $reflection = $param->getType() && !$param->getType()->isBuiltin()
+            ? new \ReflectionClass($param->getType()->getName())
+            : null;
 
         if (is_null($reflection)) {
-            return HttpParameter::getInstance()->getOrError($class->getName());
+            return HttpParameter::getInstance()->getOrError($param->getName());
         } elseif ($reflection->getName() === Option::class) {
-            return HttpParameter::getInstance()->get($class->getName());
+            return HttpParameter::getInstance()->get($param->getName());
         }
 
         return $this->create($reflection);
