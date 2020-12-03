@@ -20,11 +20,11 @@ interface PlayerPlayingState {
 
 export type PlayerState = PlayerStoppedState | PlayerPlayingState
 
-export class PlayerService {
+export class PlayerService<T extends unknown> {
   public state: PlayerState = {
     status: PlayerStatus.Stopped,
   }
-  public appData: unknown = null
+  public appData: T | null = null
 
   private audio: HTMLAudioElement
 
@@ -74,7 +74,7 @@ export class PlayerService {
     return this.audio.buffered.length > 0 ? this.audio.buffered.end(0) : 0
   }
 
-  public async play(src: string, appData: unknown | null): Promise<void> {
+  public async play(src: string, appData: T | null): Promise<void> {
     this.setAppData(appData)
     this.audio.setAttribute('src', src)
     await this.audio.play()
@@ -114,7 +114,7 @@ export class PlayerService {
     this.state = state
   }
 
-  public setAppData(appData: unknown | null): void {
+  public setAppData(appData: T | null): void {
     this.appData = appData
   }
 }
