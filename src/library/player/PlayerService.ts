@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx'
+import { action, makeObservable, observable, runInAction } from 'mobx'
 
 enum PlayerStatus {
   Stopped = 'Stopped',
@@ -53,8 +53,12 @@ export class PlayerService {
 
     this.audio.addEventListener('ended', () => {
       this.audio.removeAttribute('src')
-      this.setState({
-        status: PlayerStatus.Stopped,
+
+      runInAction(() => {
+        this.setState({
+          status: PlayerStatus.Stopped,
+        })
+        this.setAppData(null)
       })
     })
 
@@ -79,10 +83,13 @@ export class PlayerService {
   public stop(): void {
     this.audio.pause()
     this.audio.removeAttribute('src')
-    this.setState({
-      status: PlayerStatus.Stopped,
+
+    runInAction(() => {
+      this.setState({
+        status: PlayerStatus.Stopped,
+      })
+      this.setAppData(null)
     })
-    this.setAppData(null)
   }
 
   public pause(): void {
