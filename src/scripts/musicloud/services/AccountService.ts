@@ -19,12 +19,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import { IHttpService } from 'angular'
 
-export default [
-  '$http',
-  ($http) => ({
-    init: () => $http.get('/api/self'),
-    login: (data) => $http.post('/api/login', data),
-    logout: () => $http.post('/api/logout'),
-  }),
-]
+interface Account {
+  email: string
+  id: number
+  name: string
+  stats: {
+    tracks_count: number
+    artists_count: number
+    albums_count: number
+    genres_count: number
+    compilations_count: number
+  }
+}
+
+class AccountService {
+  constructor(private $http: IHttpService) {}
+
+  public async init(): Promise<Account> {
+    const response = await this.$http.get<Account>('/api/self')
+    return response.data
+  }
+}
+
+AccountService.$inject = ['$http']
