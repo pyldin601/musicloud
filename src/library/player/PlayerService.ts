@@ -20,7 +20,7 @@ interface PlayerPlayingState {
 
 export type PlayerState = PlayerStoppedState | PlayerPlayingState
 
-export class PlayerService<T extends unknown> {
+export class PlayerService<T extends unknown = unknown> {
   public state: PlayerState = {
     status: PlayerStatus.Stopped,
   }
