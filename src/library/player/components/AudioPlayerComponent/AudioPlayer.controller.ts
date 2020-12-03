@@ -1,6 +1,4 @@
-import { IModule } from 'angular'
 import { computed, makeObservable } from 'mobx'
-import templateUrl from './AudioPlayer.template.html'
 import classes from './AudioPlayer.module.less'
 import { AudioPlayerState } from '../../services/AudioPlayerService'
 import { AudioPlayerQueueService } from '../../services/AudioPlayerQueueService'
@@ -22,10 +20,3 @@ export class AudioPlayerController {
 }
 
 AudioPlayerController.$inject = [AudioPlayerQueueService.name]
-
-export function register(app: IModule): void {
-  app.component('audioPlayer', {
-    templateUrl,
-    controller: AudioPlayerController,
-  })
-}
