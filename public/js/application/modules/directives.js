@@ -62,7 +62,7 @@
                     if (!changed) {
                         clearPeaks();
                     } else {
-                        TrackService.getPeaks(changed.id).success(loadPeaks).error(clearPeaks);
+                        TrackService.getPeaks(changed.id).then(loadPeaks, clearPeaks);
                     }
                 });
 

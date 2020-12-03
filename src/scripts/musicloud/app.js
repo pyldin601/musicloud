@@ -36,10 +36,8 @@ import { PlayerService } from '../../library/player/PlayerService'
 const app = angular.module('MusicLoud', [
   'ngRoute',
   'ngCookies',
-  'httpPostFix',
   'infinite-scroll',
   'MLContextMenu',
-  'indexedDB',
   player,
   player2,
 ])

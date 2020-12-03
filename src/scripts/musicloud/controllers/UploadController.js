@@ -109,31 +109,25 @@ export default [
             upload.data.queue = []
             $route.reload()
           },
-          next: () => {
-            $rootScope.$applyAsync(() => {
+          next: async () => {
+            $rootScope.$applyAsync(async () => {
               if (upload.data.queue.length === 0) {
                 upload.action.clean()
                 return
-              } else {
-                upload.data.uploading = true
-                upload.data.current = upload.data.queue.shift()
               }
 
-              TrackService.create().success((id) => {
-                const form = new FormData()
-                form.append('file', upload.data.current)
-                form.append('track_id', id)
-                upload.data.promise = TrackService.upload(form, progress)
-                upload.data.promise
-                  .success(() => {
-                    upload.action.next()
-                  })
-                  .error(() => {
-                    TrackService.unlink({ song_id: id }).then(() => {
-                      return upload.action.next()
-                    })
-                  })
-              })
+              upload.data.uploading = true
+              upload.data.current = upload.data.queue.shift()
+
+              const trackId = await TrackService.create()
+
+              try {
+                await TrackService.upload({ file: upload.data.current, trackId }, progress)
+              } catch (error) {
+                await TrackService.unlink(trackId)
+              }
+
+              await upload.action.next()
             })
           },
         },

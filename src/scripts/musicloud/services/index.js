@@ -31,8 +31,11 @@ import SyncKeeper from './SyncKeeper'
 import StatsService from './StatsService'
 
 const services = {
-  AccountService,
   TrackService,
+}
+
+const factories = {
+  AccountService,
   HeadersService,
   PlaylistService,
   SearchService,
@@ -43,5 +46,7 @@ const services = {
   StatsService,
 }
 
-export default (app) =>
-  Object.keys(services).forEach((service) => app.factory(service, services[service]))
+export default (app) => {
+  Object.keys(services).forEach((service) => app.service(service, services[service]))
+  Object.keys(factories).forEach((factory) => app.factory(factory, factories[factory]))
+}

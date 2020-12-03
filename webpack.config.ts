@@ -51,11 +51,11 @@ export default (env: Record<string, string> = {}): webpack.Configuration => {
               exclude: /node_modules/,
             },
             {
-              test: [/\.jpe?g$/, /\.png$/],
+              test: [/\.jpe?g$/, /\.png$/, /\.html/],
               loader: 'url-loader',
               options: {
                 limit: false,
-                name: 'images/[name].[ext]',
+                name: '[name].[contentHash].[ext]',
               },
             },
             {

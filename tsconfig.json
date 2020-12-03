@@ -30,6 +30,6 @@
     "preserveSymlinks": true
   },
   "include": [
-    "src/scripts"
+    "src"
   ]
 }
