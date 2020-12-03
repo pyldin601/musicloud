@@ -20,13 +20,36 @@
  * SOFTWARE.
  */
 import angular, { IHttpService } from 'angular'
-import { makeUrlEncodedForm } from './utils'
+import qs from 'qs'
 
 const CONTENT_TYPE = 'application/x-www-form-urlencoded;charset=utf-8'
 
-interface UploadFormData {
-  file: File
-  trackId: string
+export interface Track {
+  album_artist: string
+  big_cover_id: null | string
+  bitrate: number
+  created_date: number
+  disc_number: null | number
+  file_id: string
+  file_name: string
+  format: string
+  id: string
+  is_compilation: boolean
+  is_favourite: boolean
+  last_played_date: null | number
+  length: number
+  middle_cover_id: null | string
+  small_cover_id: null | string
+  times_played: number
+  times_skipped: number
+  track_album: string
+  track_artist: string
+  track_comment: string
+  track_genre: string
+  track_number: number
+  track_rating: null | number
+  track_title: string
+  track_year: string
 }
 
 class TrackService {
@@ -37,22 +60,27 @@ class TrackService {
     return response.data
   }
 
-  public async upload(data: UploadFormData, callback: (ev: ProgressEvent) => void) {
+  public async upload(
+    { file, trackId }: { readonly file: File; readonly trackId: string },
+    callback: (ev: ProgressEvent) => void,
+  ) {
     const formData = new FormData()
-    formData.set('file', data.file)
-    formData.set('track_id', data.trackId)
+    formData.set('file', file)
+    formData.set('track_id', trackId)
+
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       xhr.upload.onprogress = callback
       xhr.onload = resolve
-      xhr.onerror = () => reject(xhr.response)
+      xhr.onerror = reject
       xhr.open('POST', '/api/track/upload', true)
       xhr.send(formData)
     })
   }
 
-  async unlink(songId: string): Promise<void> {
-    await this.$http.post('/api/track/delete', makeUrlEncodedForm({ song_id: songId }), {
+  async unlink(trackId: string): Promise<void> {
+    const form = qs.stringify({ song_id: trackId })
+    await this.$http.post('/api/track/delete', form, {
       headers: {
         'Content-Type': CONTENT_TYPE,
       },
@@ -64,8 +92,42 @@ class TrackService {
     return response.data
   }
 
-  deleteByArtist = (data: unknown) => this.$http.post('/api/track/deleteByArtist', data)
-  edit = (data: unknown) => this.$http.post('/api/track/edit', data)
+  async deleteByArtist({
+    trackArtist,
+  }: {
+    readonly trackArtist: string
+  }): Promise<ReadonlyArray<string>> {
+    const form = qs.stringify({ track_artist: trackArtist })
+    const response = await this.$http.post<ReadonlyArray<string>>('/api/track/deleteByArtist', form)
+    return response.data
+  }
+
+  public async edit(
+    songId: string,
+    metadata: {
+      readonly track_title?: string
+      readonly track_artist?: string
+      readonly track_album?: string
+      readonly album_artist?: string
+      readonly track_number?: string
+      readonly disc_number?: string
+      readonly track_genre?: string
+      readonly track_year?: string
+      readonly is_compilation?: boolean
+    },
+  ): Promise<ReadonlyArray<Track>> {
+    const formData = qs.stringify({ song_id: songId, metadata })
+    const response = await this.$http.post<{ readonly tracks: ReadonlyArray<Track> }>(
+      '/api/track/edit',
+      formData,
+      {
+        headers: {
+          'Content-Type': CONTENT_TYPE,
+        },
+      },
+    )
+    return response.data.tracks
+  }
 
   changeArtwork = (data: unknown) =>
     this.$http.post('/api/track/artwork', data, {
@@ -74,6 +136,7 @@ class TrackService {
         'Content-Type': undefined,
       },
     })
+
   createFromVideo = (video_url: string) =>
     this.$http.post('/api/track/createFromVideo', { video_url })
   getQueue = () => this.$http.get('/api/track/queue')

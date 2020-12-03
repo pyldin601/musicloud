@@ -76,26 +76,22 @@ export default [
     }
 
     $scope.save = function () {
-      const song_id = songs
-        .map(function (e) {
-          return e.id
-        })
-        .join(',')
-      const submission = { song_id: song_id, metadata: {} }
+      const song_id = songs.map((e) => e.id).join(',')
+      const metadata = {}
 
       for (let key in $scope.fields)
         if ($scope.fields.hasOwnProperty(key)) {
           if ($scope.fields[key] !== unmodified) {
-            submission.metadata[key] = $scope.fields[key]
+            metadata[key] = $scope.fields[key]
           }
         }
 
       if ($scope.flags.is_compilation !== is_compilation) {
-        submission.metadata.is_compilation = $scope.flags.is_compilation
+        metadata.is_compilation = $scope.flags.is_compilation
       }
 
-      TrackService.edit(submission).success(function (updated) {
-        SyncService.tracks(updated.tracks)
+      TrackService.edit(song_id, metadata).then(function (tracks) {
+        SyncService.tracks(tracks)
         $scope.closeThisWindow()
       })
     }
