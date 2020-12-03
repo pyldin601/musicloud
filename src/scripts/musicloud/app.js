@@ -25,11 +25,13 @@ import controllers from './controllers'
 import filters from './filters'
 import components from './components'
 import config from './config'
+import player2 from '../../library/player'
 import '../shared/MLContextMenu'
 
 import player from '../player'
 
 import angular from 'angular'
+import { PlayerService } from '../../library/player/PlayerService'
 
 const app = angular.module('MusicLoud', [
   'ngRoute',
@@ -39,12 +41,14 @@ const app = angular.module('MusicLoud', [
   'MLContextMenu',
   'indexedDB',
   player,
+  player2,
 ])
 
 app.run([
   'AccountService',
   '$rootScope',
-  (AccountService, $rootScope) => {
+  PlayerService.name,
+  (AccountService, $rootScope, playerService) => {
     $rootScope.account = { authorized: false }
 
     AccountService.init().then(
@@ -59,6 +63,8 @@ app.run([
         document.title = 'MusicLoud'
       }
     })
+
+    window.playerService = playerService
   },
 ])
 
