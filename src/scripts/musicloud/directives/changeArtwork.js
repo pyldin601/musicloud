@@ -45,12 +45,10 @@ export default [
             const that = first(this.files)
             const track_id = scope.tracks.map((t) => t.id).join(',')
 
-            const form = new FormData()
-            form.append('artwork_file', that)
-            form.append('track_id', track_id)
-
-            TrackService.changeArtwork(form).success(function (data) {
-              SyncService.tracks(data)
+            TrackService.changeArtwork({ artworkFile: that, trackId: track_id }).then(function (
+              tracks,
+            ) {
+              SyncService.tracks(tracks)
             })
           })
           selector.click()

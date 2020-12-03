@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import angular, { IHttpService } from 'angular'
+import { IHttpService } from 'angular'
 import qs from 'qs'
 
 const CONTENT_TYPE = 'application/x-www-form-urlencoded;charset=utf-8'
@@ -129,17 +129,28 @@ class TrackService {
     return response.data.tracks
   }
 
-  changeArtwork = (data: unknown) =>
-    this.$http.post('/api/track/artwork', data, {
-      transformRequest: angular.identity,
+  public async changeArtwork({
+    artworkFile,
+    trackId,
+  }: {
+    readonly artworkFile: File
+    readonly trackId: string
+  }): Promise<ReadonlyArray<Track>> {
+    const form = new FormData()
+    form.append('track_id', trackId)
+    form.append('artwork_file', artworkFile)
+
+    const response = await this.$http.post<ReadonlyArray<Track>>('/api/track/artwork', form, {
       headers: {
         'Content-Type': undefined,
       },
     })
+    return response.data
+  }
 
-  createFromVideo = (video_url: string) =>
-    this.$http.post('/api/track/createFromVideo', { video_url })
-  getQueue = () => this.$http.get('/api/track/queue')
+  public async createFromVideo(video_url: string): Promise<void> {
+    await this.$http.post('/api/track/createFromVideo', { video_url })
+  }
 }
 
 TrackService.$inject = ['$http']

@@ -104,13 +104,10 @@ export default [
         if (item.kind !== 'file') continue
         const file = item.getAsFile()
         if (file.type.startsWith('image/')) {
-          // Upload cover
-          const form = new FormData()
-          form.append('artwork_file', file)
-          form.append('track_id', trackIds)
-
-          TrackService.changeArtwork(form).success(function (updated) {
-            SyncService.tracks(updated)
+          TrackService.changeArtwork({ artworkFile: file, trackId: trackIds }).then(function (
+            tracks,
+          ) {
+            SyncService.tracks(tracks)
           })
           event.preventDefault()
           return
