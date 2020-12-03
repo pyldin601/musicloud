@@ -6,7 +6,8 @@
      "allowJs": true,
 
     "lib": [
-      "es7"
+      "es7",
+      "dom"
     ],
 
     "sourceMap": true,
