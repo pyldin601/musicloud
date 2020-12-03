@@ -1,28 +1,28 @@
 import { action, makeObservable, observable, runInAction } from 'mobx'
 
-enum PlayerStatus {
+enum AudioPlayerStatus {
   Stopped = 'Stopped',
   Loading = 'Loading',
   Playing = 'Playing',
   Paused = 'Paused',
 }
 
-interface PlayerStoppedState {
-  status: PlayerStatus.Stopped
+interface AudioPlayerStoppedState {
+  status: AudioPlayerStatus.Stopped
 }
 
-interface PlayerPlayingState {
-  status: PlayerStatus.Loading | PlayerStatus.Playing | PlayerStatus.Paused
+interface AudioPlayerPlayingState {
+  status: AudioPlayerStatus.Loading | AudioPlayerStatus.Playing | AudioPlayerStatus.Paused
   src: string
   currentTime: number
   bufferedTime: number
 }
 
-export type PlayerState = PlayerStoppedState | PlayerPlayingState
+export type AudioPlayerState = AudioPlayerStoppedState | AudioPlayerPlayingState
 
-export class PlayerService<T extends unknown = unknown> {
-  public state: PlayerState = {
-    status: PlayerStatus.Stopped,
+export class AudioPlayerService<T extends unknown = unknown> {
+  public state: AudioPlayerState = {
+    status: AudioPlayerStatus.Stopped,
   }
   public appData: T | null = null
 
@@ -33,7 +33,7 @@ export class PlayerService<T extends unknown = unknown> {
 
     this.audio.addEventListener('play', () => {
       this.setState({
-        status: PlayerStatus.Loading,
+        status: AudioPlayerStatus.Loading,
         src: this.audio.src,
         currentTime: this.audio.currentTime,
         bufferedTime: this.bufferedTime,
@@ -44,7 +44,7 @@ export class PlayerService<T extends unknown = unknown> {
       if (this.audio.paused) return
 
       this.setState({
-        status: PlayerStatus.Playing,
+        status: AudioPlayerStatus.Playing,
         src: this.audio.src,
         currentTime: this.audio.currentTime,
         bufferedTime: this.bufferedTime,
@@ -56,7 +56,7 @@ export class PlayerService<T extends unknown = unknown> {
 
       runInAction(() => {
         this.setState({
-          status: PlayerStatus.Stopped,
+          status: AudioPlayerStatus.Stopped,
         })
         this.setAppData(null)
       })
@@ -86,7 +86,7 @@ export class PlayerService<T extends unknown = unknown> {
 
     runInAction(() => {
       this.setState({
-        status: PlayerStatus.Stopped,
+        status: AudioPlayerStatus.Stopped,
       })
       this.setAppData(null)
     })
@@ -95,7 +95,7 @@ export class PlayerService<T extends unknown = unknown> {
   public pause(): void {
     this.audio.pause()
     this.setState({
-      status: PlayerStatus.Paused,
+      status: AudioPlayerStatus.Paused,
       src: this.audio.src,
       currentTime: this.audio.currentTime,
       bufferedTime: this.bufferedTime,
@@ -110,7 +110,7 @@ export class PlayerService<T extends unknown = unknown> {
     this.audio.currentTime = time
   }
 
-  public setState(state: PlayerState): void {
+  public setState(state: AudioPlayerState): void {
     this.state = state
   }
 
@@ -119,4 +119,4 @@ export class PlayerService<T extends unknown = unknown> {
   }
 }
 
-PlayerService.$inject = []
+AudioPlayerService.$inject = []
