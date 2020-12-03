@@ -44,3 +44,5 @@ class AccountService {
 }
 
 AccountService.$inject = ['$http']
+
+export default AccountService

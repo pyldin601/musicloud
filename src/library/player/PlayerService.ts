@@ -18,7 +18,7 @@ interface PlayerPlayingState {
   bufferedTime: number
 }
 
-type PlayerState = PlayerStoppedState | PlayerPlayingState
+export type PlayerState = PlayerStoppedState | PlayerPlayingState
 
 export class PlayerService {
   public state: PlayerState = {

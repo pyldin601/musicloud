@@ -31,11 +31,11 @@ import SyncKeeper from './SyncKeeper'
 import StatsService from './StatsService'
 
 const services = {
+  AccountService,
   TrackService,
 }
 
 const factories = {
-  AccountService,
   HeadersService,
   PlaylistService,
   SearchService,

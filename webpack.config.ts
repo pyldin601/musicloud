@@ -59,7 +59,22 @@ export default (env: Record<string, string> = {}): webpack.Configuration => {
               },
             },
             {
+              test: [/\.module\.less$/, /\.module\.css$/],
+              use: [
+                MiniCssExtractPlugin.loader,
+                {
+                  loader: 'css-loader',
+                  options: {
+                    modules: true,
+                    sourceMap: true,
+                  },
+                },
+                'less-loader',
+              ],
+            },
+            {
               test: [/\.less$/, /\.css$/],
+              exclude: [/\.module\.less$/, /\.module\.css$/],
               use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'],
             },
           ],
