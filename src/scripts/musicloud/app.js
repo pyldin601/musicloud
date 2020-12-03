@@ -31,7 +31,7 @@ import '../shared/MLContextMenu'
 import player from '../player'
 
 import angular from 'angular'
-import { AudioPlayerService } from '../../library/player/services/AudioPlayerService'
+import { AudioPlayerQueueService } from '../../library/player/services/AudioPlayerQueueService'
 
 const app = angular.module('MusicLoud', [
   'ngRoute',
@@ -45,8 +45,7 @@ const app = angular.module('MusicLoud', [
 app.run([
   'AccountService',
   '$rootScope',
-  AudioPlayerService.name,
-  (AccountService, $rootScope, playerService) => {
+  (AccountService, $rootScope) => {
     $rootScope.account = { authorized: false }
 
     AccountService.init().then(
@@ -61,8 +60,6 @@ app.run([
         document.title = 'MusicLoud'
       }
     })
-
-    window.playerService = playerService
   },
 ])
 

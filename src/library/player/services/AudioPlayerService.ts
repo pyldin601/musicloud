@@ -1,14 +1,16 @@
 import { action, makeObservable, observable, runInAction } from 'mobx'
+import createDebug from 'debug'
 
-enum AudioPlayerStatus {
+export enum AudioPlayerStatus {
   Stopped = 'Stopped',
   Loading = 'Loading',
   Playing = 'Playing',
   Paused = 'Paused',
+  Ended = 'Ended',
 }
 
 interface AudioPlayerStoppedState {
-  status: AudioPlayerStatus.Stopped
+  status: AudioPlayerStatus.Stopped | AudioPlayerStatus.Ended
 }
 
 interface AudioPlayerPlayingState {
@@ -20,11 +22,12 @@ interface AudioPlayerPlayingState {
 
 export type AudioPlayerState = AudioPlayerStoppedState | AudioPlayerPlayingState
 
-export class AudioPlayerService<T extends unknown = unknown> {
+export class AudioPlayerService {
+  private debug = createDebug(AudioPlayerService.name)
+
   public state: AudioPlayerState = {
     status: AudioPlayerStatus.Stopped,
   }
-  public appData: T | null = null
 
   private audio: HTMLAudioElement
 
@@ -54,28 +57,24 @@ export class AudioPlayerService<T extends unknown = unknown> {
     this.audio.addEventListener('ended', () => {
       this.audio.removeAttribute('src')
 
-      runInAction(() => {
-        this.setState({
-          status: AudioPlayerStatus.Stopped,
-        })
-        this.setAppData(null)
+      this.setState({
+        status: AudioPlayerStatus.Ended,
       })
     })
 
     makeObservable(this, {
-      appData: observable,
-      setAppData: action,
       state: observable,
       setState: action,
     })
+
+    this.debug('Ready')
   }
 
   private get bufferedTime(): number {
     return this.audio.buffered.length > 0 ? this.audio.buffered.end(0) : 0
   }
 
-  public async play(src: string, appData: T | null): Promise<void> {
-    this.setAppData(appData)
+  public async play(src: string): Promise<void> {
     this.audio.setAttribute('src', src)
     await this.audio.play()
   }
@@ -88,7 +87,6 @@ export class AudioPlayerService<T extends unknown = unknown> {
       this.setState({
         status: AudioPlayerStatus.Stopped,
       })
-      this.setAppData(null)
     })
   }
 
@@ -112,10 +110,6 @@ export class AudioPlayerService<T extends unknown = unknown> {
 
   public setState(state: AudioPlayerState): void {
     this.state = state
-  }
-
-  public setAppData(appData: T | null): void {
-    this.appData = appData
   }
 }
 

@@ -2,16 +2,17 @@ import { IModule } from 'angular'
 import { computed, makeObservable } from 'mobx'
 import templateUrl from './AudioPlayer.template.html'
 import classes from './AudioPlayer.module.less'
-import { AudioPlayerService, AudioPlayerState } from '../../services/AudioPlayerService'
+import { AudioPlayerState } from '../../services/AudioPlayerService'
+import { AudioPlayerQueueService } from '../../services/AudioPlayerQueueService'
 
 export class AudioPlayerController {
   public readonly classes: typeof classes
 
   public get playerState(): AudioPlayerState {
-    return this.audioPlayerService.state
+    return this.audioPlayerQueueService.audioPlayerState
   }
 
-  constructor(readonly audioPlayerService: AudioPlayerService) {
+  constructor(readonly audioPlayerQueueService: AudioPlayerQueueService) {
     this.classes = classes
 
     makeObservable(this, {
@@ -20,7 +21,7 @@ export class AudioPlayerController {
   }
 }
 
-AudioPlayerController.$inject = [AudioPlayerService.name]
+AudioPlayerController.$inject = [AudioPlayerQueueService.name]
 
 export function register(app: IModule): void {
   app.component('audioPlayer', {
