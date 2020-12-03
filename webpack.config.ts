@@ -37,6 +37,9 @@ export default (env: Record<string, string> = {}): webpack.Configuration => {
     optimization: {
       minimize: !!env.production,
     },
+    resolve: {
+      extensions: ['.js', '.ts'],
+    },
     module: {
       strictExportPresence: true,
       rules: [
