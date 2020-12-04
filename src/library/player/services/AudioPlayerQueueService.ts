@@ -12,8 +12,12 @@ export interface QueueEntry {
   rating: null | number
 }
 
+export type LoadMoreFn = (offset: number) => Promise<ReadonlyArray<QueueEntry>>
+
 export class AudioPlayerQueueService {
   private debug = createDebug(AudioPlayerQueueService.name)
+
+  private loadMore: LoadMoreFn | null = null
 
   public offset = 0
   public queue: Array<QueueEntry> = []
@@ -59,19 +63,35 @@ export class AudioPlayerQueueService {
     this.debug('Ready')
   }
 
-  public async play(queue: ReadonlyArray<QueueEntry>, offset = 0): Promise<void> {
+  public async play(
+    queue: ReadonlyArray<QueueEntry>,
+    offset = 0,
+    loadMore: LoadMoreFn | null = null,
+  ): Promise<void> {
     runInAction(() => {
       this.queue = [...queue]
       this.offset = offset
+      this.loadMore = loadMore
     })
     await this.playCurrentEntry()
   }
 
   public async playNext(): Promise<void> {
-    if (this.offset < this.queue.length - 1) {
-      this.offset += 1
-      this.debug('playNext')
-      await this.playCurrentEntry()
+    if (this.offset >= this.queue.length - 1) return
+
+    this.offset += 1
+    this.debug('playNext')
+
+    await this.playCurrentEntry()
+
+    if (this.isLastEntry && this.loadMore) {
+      const loadedEntries = await this.loadMore(this.queue.length)
+
+      if (loadedEntries.length === 0) {
+        this.loadMore = null
+      } else {
+        this.queue = this.queue.concat(loadedEntries)
+      }
     }
   }
 
@@ -101,6 +121,10 @@ export class AudioPlayerQueueService {
     if (!entry) return
     this.debug('playCurrentEntry', { entry: toJS(entry) })
     await this.audioPlayerService.play(entry.src)
+  }
+
+  private get isLastEntry(): boolean {
+    return this.offset === this.queue.length - 1
   }
 }
 
