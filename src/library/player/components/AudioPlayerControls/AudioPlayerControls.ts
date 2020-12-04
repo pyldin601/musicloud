@@ -10,11 +10,8 @@ class AudioPlayerControlsController {
       isPlaying: computed,
       isBuffering: computed,
     })
-
-    Object.assign(window, { audioPlayerQueueService })
   }
 
-  // [{ src: 'https://filesamples.com/samples/audio/mp3/sample2.mp3' }, { src: 'https://filesamples.com/samples/audio/mp3/sample2.mp3' }]
   public get isPlaying(): boolean {
     return this.audioPlayerQueueService.isPlaying
   }
