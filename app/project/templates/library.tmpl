@@ -132,18 +132,7 @@
 <div class="library-player">
     <ul class="items">
         <li class="player-controls">
-            <ul class="controls">
-                <li class="ctrl-previous" ng-click="player.doPlayPrev()">
-                    <i class="fa fa-backward"></i>
-                </li>
-                <li class="ctrl-play" ng-click="player.doPlayPause()">
-                    <i class="fa"
-                       ng-class="{'fa-refresh rotate': player.isBuffering && player.isPlaying, 'fa-play': !player.isPlaying, 'fa-pause': !player.isBuffering && player.isPlaying}"></i>
-                </li>
-                <li class="ctrl-next" ng-click="player.doPlayNext()">
-                    <i class="fa fa-forward"></i>
-                </li>
-            </ul>
+            <audio-player-controls></audio-player-controls>
         </li>
         <li class="track-display">
             <div class="track-container" ng-show="player.isLoaded">
