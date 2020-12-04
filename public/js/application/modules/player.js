@@ -60,7 +60,7 @@
                             player.playlist.track = track;
 
                             jFrame.jPlayer("setMedia", {
-                                mp3: (track.format == "mmp3") ? ("/file/" + track.file_id) : ("/preview/" + track.id)
+                                mp3: (track.format == "mp3") ? ("/file/" + track.file_id) : ("/preview/" + track.id)
                             }).jPlayer("play");
 
                             player.playlist.position.duration = track.length / 1000;
@@ -318,27 +318,6 @@
                 scope.$on("$destroy", function () {
                     unbind();
                 })
-            }
-        }
-    }]);
-
-
-    MusicLoud.directive("actionPlay", ["$rootScope", function ($rootScope) {
-        return {
-            scope: {
-                actionPlay: "=",
-                actionContext: "=",
-                actionResolver: "="
-            },
-            restrict: "A",
-            link: function (scope, elem, attrs) {
-                elem.on("dblclick", function () {
-                    $rootScope.player.doPlay(
-                        scope.actionPlay,
-                        scope.actionContext,
-                        scope.actionResolver
-                    );
-                });
             }
         }
     }]);

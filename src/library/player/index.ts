@@ -5,6 +5,7 @@ import { AudioPlayerQueueService } from './services/AudioPlayerQueueService'
 import { PeakDataService } from './services/PeakDataService'
 import { AudioPlayerComponent } from './components/AudioPlayerComponent'
 import { AudioPlayerControls } from './components/AudioPlayerControls'
+import { ActionPlayDirective } from './directives/ActionPlayDirective'
 
 const MODULE_NAME = 'MusicLoud.Player2'
 
@@ -13,6 +14,7 @@ angular
   .service(AudioPlayerService.name, AudioPlayerService)
   .service(AudioPlayerQueueService.name, AudioPlayerQueueService)
   .service(PeakDataService.name, PeakDataService)
+  .directive(ActionPlayDirective)
   .component(AudioPlayerComponent)
   .component(AudioPlayerControls)
 
