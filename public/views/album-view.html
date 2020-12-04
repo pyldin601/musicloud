@@ -82,54 +82,58 @@
                  action-play="track" action-context="tracks" action-resolver="null"
                  ml-context-menu="selectedTracksMenu(tracks_selected)">
 
-                <div class="last-played right xl-visible">
-                    <div class="ellipsis" ng-bind="track.created_date | dateFilter"></div>
-                </div>
-                <div class="last-played right md-visible">
-                    <div class="ellipsis" ng-bind="track.last_played_date | dateFilter"></div>
-                </div>
+                <audio-player-play-item track="track" track-list="tracks">
 
-                <div class="skips right lg-visible" title="Times skipped">
-                    <div class="times-played ellipsis" ng-visible="track.times_skipped > 0" ng-bind="track.times_skipped"></div>
-                </div>
+                    <div class="column last-played right xl-visible">
+                        <div class="ellipsis" ng-bind="track.created_date | dateFilter"></div>
+                    </div>
+                    <div class="column last-played right md-visible">
+                        <div class="ellipsis" ng-bind="track.last_played_date | dateFilter"></div>
+                    </div>
 
-                <div class="plays right sm-visible" title="Times played">
-                    <div class="times-played ellipsis" ng-visible="track.times_played > 0" ng-bind="track.times_played"></div>
-                </div>
+                    <div class="column skips right lg-visible" title="Times skipped">
+                        <div class="times-played ellipsis" ng-visible="track.times_skipped > 0" ng-bind="track.times_skipped"></div>
+                    </div>
 
-                <div class="bitrate right lg-visible">
-                    <div class="ellipsis" ng-bind="track.bitrate | normalizeBitrate"></div>
-                </div>
-                <div class="format right lg-visible">
-                    <div class="ellipsis" ng-bind="track.format"></div>
-                </div>
+                    <div class="column plays right sm-visible" title="Times played">
+                        <div class="times-played ellipsis" ng-visible="track.times_played > 0" ng-bind="track.times_played"></div>
+                    </div>
 
-                <div class="rating right  sm-visible">
-                    <div class="ellipsis" track-rating="track"></div>
-                </div>
+                    <div class="column bitrate right lg-visible">
+                        <div class="ellipsis" ng-bind="track.bitrate | normalizeBitrate"></div>
+                    </div>
+                    <div class="column format right lg-visible">
+                        <div class="ellipsis" ng-bind="track.format"></div>
+                    </div>
 
-                <div class="genre right  sm-visible">
-                    <div class="ellipsis" ng-bind="track.track_genre"></div>
-                </div>
+                    <div class="column rating right  sm-visible">
+                        <div class="ellipsis" track-rating="track"></div>
+                    </div>
 
-                <div class="position left">
-                    <div class="ellipsis">
-                        <div ng-hide="player.playlist.track == track" ng-bind="track | normalizeTrackNumber"></div>
-                        <div ng-show="player.playlist.track == track">
-                            <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                    <div class="column genre right  sm-visible">
+                        <div class="ellipsis" ng-bind="track.track_genre"></div>
+                    </div>
+
+                    <div class="column position left">
+                        <div class="ellipsis">
+                            <div ng-hide="player.playlist.track == track" ng-bind="track | normalizeTrackNumber"></div>
+                            <div ng-show="player.playlist.track == track">
+                                <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="inner-info">
-                    <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
-                        <div class="track-duration right ellipsis" ng-bind="(track.length / 1000) | normalizeTime"></div>
-                        <div class="ellipsis" ng-bind="track | normalizeTrackTitle"></div>
+                    <div class="column inner-info">
+                        <div class="left inner-title" ng-class="{'full-width': !album.is_various}">
+                            <div class="track-duration right ellipsis" ng-bind="(track.length / 1000) | normalizeTime"></div>
+                            <div class="ellipsis" ng-bind="track | normalizeTrackTitle"></div>
+                        </div>
+                        <div class="left inner-artist" ng-show="album.is_various">
+                            <div class="ellipsis" ng-bind="track.track_artist | normalizeArtist"></div>
+                        </div>
                     </div>
-                    <div class="left inner-artist" ng-show="album.is_various">
-                        <div class="ellipsis" ng-bind="track.track_artist | normalizeArtist"></div>
-                    </div>
-                </div>
+
+                </audio-player-play-item>
 
             </div>
         </div>

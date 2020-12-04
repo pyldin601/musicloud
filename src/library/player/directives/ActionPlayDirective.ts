@@ -1,6 +1,6 @@
 import { IDirectiveFactory, Injectable, IScope } from 'angular'
+import makeDebug from 'debug'
 import { AudioPlayerQueueService } from '../services/AudioPlayerQueueService'
-import { Track } from '../../../scripts/musicloud/services/TrackService'
 
 // todo refactor this
 
@@ -13,6 +13,8 @@ export class ActionPlayDirectiveController {
   static $inject = [AudioPlayerQueueService.name]
   constructor(readonly audioPayerQueueService: AudioPlayerQueueService) {}
 }
+
+const debug = makeDebug('ActionPlayDirective')
 
 export const ActionPlayDirective: Record<
   string,
@@ -28,6 +30,8 @@ export const ActionPlayDirective: Record<
     controller: ActionPlayDirectiveController,
     link: (scope, elem, _, controller): void => {
       elem.on('dblclick', async () => {
+        debug('todo replace with <audio-player-play-item> component')
+
         const track = scope.actionPlay
         const tracks = scope.actionContext
 

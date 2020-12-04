@@ -1,9 +1,9 @@
 import { AudioPlayerService, AudioPlayerState, AudioPlayerStatus } from './AudioPlayerService'
-import { computed, makeObservable, observable, runInAction } from 'mobx'
+import { computed, makeObservable, observable, runInAction, toJS } from 'mobx'
 import createDebug from 'debug'
 import { queuedReaction } from '../../../utils/mobx'
 
-interface QueueEntry {
+export interface QueueEntry {
   trackId: string
   title: string
   artist: string
@@ -31,7 +31,7 @@ export class AudioPlayerQueueService {
   }
 
   public get isLoading(): boolean {
-    return this.audioPlayerState.status === AudioPlayerStatus.Loading
+    return this.audioPlayerState.status === AudioPlayerStatus.Waiting
   }
 
   public get isPaused(): boolean {
@@ -99,7 +99,7 @@ export class AudioPlayerQueueService {
   private async playCurrentEntry(): Promise<void> {
     const entry = this.queue[this.offset]
     if (!entry) return
-    this.debug('playCurrentEntry', { entry })
+    this.debug('playCurrentEntry', { entry: toJS(entry) })
     await this.audioPlayerService.play(entry.src)
   }
 }

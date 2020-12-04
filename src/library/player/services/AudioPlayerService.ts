@@ -3,7 +3,7 @@ import createDebug from 'debug'
 
 export enum AudioPlayerStatus {
   Stopped = 'Stopped',
-  Loading = 'Loading',
+  Waiting = 'Waiting',
   Playing = 'Playing',
   Paused = 'Paused',
   Ended = 'Ended',
@@ -14,7 +14,7 @@ interface AudioPlayerStoppedState {
 }
 
 interface AudioPlayerPlayingState {
-  status: AudioPlayerStatus.Loading | AudioPlayerStatus.Playing | AudioPlayerStatus.Paused
+  status: AudioPlayerStatus.Waiting | AudioPlayerStatus.Playing | AudioPlayerStatus.Paused
   src: string
   currentTime: number
   bufferedTime: number
@@ -34,9 +34,9 @@ export class AudioPlayerService {
   constructor() {
     this.audio = new Audio()
 
-    this.audio.addEventListener('play', () => {
+    this.audio.addEventListener('waiting', () => {
       this.setState({
-        status: AudioPlayerStatus.Loading,
+        status: AudioPlayerStatus.Waiting,
         src: this.audio.src,
         currentTime: this.audio.currentTime,
         bufferedTime: this.bufferedTime,
