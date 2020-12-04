@@ -1,0 +1,12 @@
+<ul class="controls">
+  <li class="ctrl-previous" ng-click="$ctrl.playPrevious()">
+    <i class="fa fa-backward"></i>
+  </li>
+  <li class="ctrl-play" ng-click="$ctrl.playOrPause()">
+    <i class="fa"
+       ng-class="{'fa-refresh rotate': $ctrl.isBuffering && $ctrl.isPlaying, 'fa-play': !$ctrl.isPlaying, 'fa-pause': !$ctrl.isBuffering && $ctrl.isPlaying}"></i>
+  </li>
+  <li class="ctrl-next" ng-click="$ctrl.playNext()">
+    <i class="fa fa-forward"></i>
+  </li>
+</ul>

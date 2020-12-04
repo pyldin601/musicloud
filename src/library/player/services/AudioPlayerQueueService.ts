@@ -26,6 +26,18 @@ export class AudioPlayerQueueService {
     return this.audioPlayerService.state
   }
 
+  public get isPlaying(): boolean {
+    return this.audioPlayerState.status === AudioPlayerStatus.Playing
+  }
+
+  public get isLoading(): boolean {
+    return this.audioPlayerState.status === AudioPlayerStatus.Loading
+  }
+
+  public get isPaused(): boolean {
+    return this.audioPlayerState.status === AudioPlayerStatus.Paused
+  }
+
   constructor(private readonly audioPlayerService: AudioPlayerService) {
     makeObservable(this, {
       offset: observable,
