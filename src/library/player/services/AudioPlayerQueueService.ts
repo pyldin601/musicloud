@@ -88,8 +88,10 @@ export class AudioPlayerQueueService {
       const loadedEntries = await this.loadMore(this.queue.length)
 
       if (loadedEntries.length === 0) {
+        this.debug('loadMore: no more')
         this.loadMore = null
       } else {
+        this.debug('loadMore', { loadedEntries })
         this.queue = this.queue.concat(loadedEntries)
       }
     }
