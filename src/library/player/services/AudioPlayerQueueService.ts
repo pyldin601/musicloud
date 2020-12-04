@@ -1,6 +1,7 @@
 import { AudioPlayerService, AudioPlayerState, AudioPlayerStatus } from './AudioPlayerService'
 import { computed, makeObservable, observable, runInAction } from 'mobx'
 import createDebug from 'debug'
+import { queuedReaction } from '../../../utils/mobx'
 
 interface QueueEntry {
   trackId: string
@@ -33,6 +34,16 @@ export class AudioPlayerQueueService {
       audioPlayerState: computed,
     })
 
+    queuedReaction(
+      () => this.audioPlayerState.status,
+      async (status) => {
+        if (status === AudioPlayerStatus.Ended) {
+          this.debug('Playback ended: playNext')
+          await this.playNext()
+        }
+      },
+    )
+
     this.debug('Ready')
   }
 
@@ -47,30 +58,36 @@ export class AudioPlayerQueueService {
   public async playNext(): Promise<void> {
     if (this.offset < this.queue.length - 1) {
       this.offset += 1
+      this.debug('playNext')
       await this.playCurrentEntry()
     }
   }
 
   public async playPrevious(): Promise<void> {
     this.offset = Math.max(this.offset - 1, 0)
+    this.debug('playPrevious')
     await this.playCurrentEntry()
   }
 
   public async playPause(): Promise<void> {
     if (this.audioPlayerService.state.status === AudioPlayerStatus.Paused) {
+      this.debug('resume')
       await this.audioPlayerService.resume()
     } else {
+      this.debug('pause')
       await this.audioPlayerService.pause()
     }
   }
 
   public async seek(time: number): Promise<void> {
+    this.debug('seek', { time })
     this.audioPlayerService.seek(time)
   }
 
   private async playCurrentEntry(): Promise<void> {
     const entry = this.queue[this.offset]
     if (!entry) return
+    this.debug('playCurrentEntry', { entry })
     await this.audioPlayerService.play(entry.src)
   }
 }
