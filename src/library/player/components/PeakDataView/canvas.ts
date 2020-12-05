@@ -14,6 +14,8 @@ export function renderPeakDataOnCanvas(
   const gradientBase = height * 0.75
   const rate = (peakData.length / width) * 3
 
+  ctx.clearRect(0, 0, width, height)
+
   ctx.fillStyle = '#223344'
   ctx.globalCompositeOperation = 'xor'
   ctx.fillRect(0, 0, width, height)

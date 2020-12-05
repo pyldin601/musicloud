@@ -1,10 +1,12 @@
 import { IHttpService } from 'angular'
 
+export type PeakData = ReadonlyArray<number>
+
 export class PeakDataService {
   constructor(private $http: IHttpService) {}
 
-  public async getPeakData(trackId: string): Promise<ReadonlyArray<number>> {
-    const response = await this.$http.get<ReadonlyArray<number>>(`/peaks/${trackId}`)
+  public async getPeakData(trackId: string): Promise<PeakData> {
+    const response = await this.$http.get<PeakData>(`/peaks/${trackId}`)
     return response.data
   }
 }
