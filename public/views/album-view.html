@@ -116,9 +116,9 @@
 
                     <div class="column position left">
                         <div class="ellipsis">
-                            <div ng-hide="player.playlist.track == track" ng-bind="track | normalizeTrackNumber"></div>
-                            <div ng-show="player.playlist.track == track">
-                                <i class="fa" ng-class="{'fa-volume-up': !player.isBuffering, 'fa-refresh rotate': player.isBuffering}"></i>
+                            <div ng-hide="audioPlayerQueueService.currentEntry.trackId === track.id" ng-bind="track | normalizeTrackNumber"></div>
+                            <div ng-show="audioPlayerQueueService.currentEntry.trackId === track.id">
+                                <i class="fa" ng-class="{'fa-volume-up': !audioPlayerQueueService.isLoading, 'fa-refresh rotate': audioPlayerQueueService.isLoading}"></i>
                             </div>
                         </div>
                     </div>

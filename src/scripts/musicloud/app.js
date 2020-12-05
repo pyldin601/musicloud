@@ -31,7 +31,7 @@ import '../shared/MLContextMenu'
 import player from '../player'
 
 import angular from 'angular'
-import { AudioPlayerQueueService } from '../../library/player/services/AudioPlayerQueueService'
+import mobxAngularjs from 'mobx-angularjs'
 
 const app = angular.module('MusicLoud', [
   'ngRoute',
@@ -40,6 +40,7 @@ const app = angular.module('MusicLoud', [
   'MLContextMenu',
   player,
   player2,
+  mobxAngularjs,
 ])
 
 app.run([

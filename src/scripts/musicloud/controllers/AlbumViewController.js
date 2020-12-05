@@ -20,12 +20,17 @@
  * SOFTWARE.
  */
 
+import { AudioPlayerQueueService } from '../../../library/player/services/AudioPlayerQueueService'
+
 export default [
   'albumData',
   'SyncKeeper',
   '$scope',
-  (albumData, SyncKeeper, $scope) => {
+  AudioPlayerQueueService.name,
+  (albumData, SyncKeeper, $scope, audioPlayerQueueService) => {
     const syncKeeper = SyncKeeper($scope)
+
+    $scope.audioPlayerQueueService = audioPlayerQueueService
 
     $scope.album = albumData
     $scope.tracks = albumData.tracks
