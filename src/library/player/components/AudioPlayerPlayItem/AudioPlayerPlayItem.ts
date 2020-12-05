@@ -1,5 +1,4 @@
 import { IComponentController, IComponentOptions } from 'angular'
-import templateUrl from './AudioPlayerPlayItem.html'
 import classes from './AudioPlayerPlayItem.module.less'
 import { AudioPlayerQueueService } from '../../services/AudioPlayerQueueService'
 import { trackToQueueEntry } from './utils'
@@ -26,12 +25,12 @@ class AudioPlayerPlayItemController implements IComponentController {
 
 export const AudioPlayerPlayItem: Record<typeof COMPONENT_NAME, IComponentOptions> = {
   [COMPONENT_NAME]: {
+    template: `<div ng-class="$ctrl.classes.root" ng-dblclick="$ctrl.play()" ng-transclude></div>`,
+    transclude: true,
     bindings: {
       track: '=',
       trackList: '=',
     },
-    transclude: true,
-    templateUrl,
     controller: AudioPlayerPlayItemController,
   },
 }
