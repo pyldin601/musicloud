@@ -6,6 +6,8 @@ import { PeakDataService } from './services/PeakDataService'
 import { AudioPlayerComponent } from './components/AudioPlayerComponent'
 import { AudioPlayerControls } from './components/AudioPlayerControls'
 import { AudioPlayerPlayItem } from './components/AudioPlayerPlayItem'
+import { AudioPlayerProgressBar } from './components/AudioPlayerProgressBar'
+import { PeakDataCanvas } from './components/PeakDataCanvas/PeakDataCanvas'
 // import { ActionPlayDirective } from './directives/ActionPlayDirective'
 
 const MODULE_NAME = 'MusicLoud.Player2'
@@ -19,5 +21,7 @@ angular
   .component(AudioPlayerComponent)
   .component(AudioPlayerControls)
   .component(AudioPlayerPlayItem)
+  .component(AudioPlayerProgressBar)
+  .component(PeakDataCanvas)
 
 export default MODULE_NAME

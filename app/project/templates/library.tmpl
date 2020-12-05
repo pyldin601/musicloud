@@ -152,18 +152,7 @@
             </div>
         </li>
         <li class="player-display">
-            <div class="peaks-background" ng-show="player.isLoaded">
-                <div class="waveform-loader" ng-show="loading">Loading peaks data...</div>
-                <div class="waveform-container" seek-controller="" ng-class="{ hidden: loading }">
-                    <canvas class="waveform-canvas" peak-data=""></canvas>
-                    <div class="track-progress" track-position=""></div>
-                    <div class="time-right">
-                        <span ng-bind="player.playlist.position.position | normalizeTime"></span>
-                        /
-                        <span ng-bind="player.playlist.position.duration | normalizeTime"></span>
-                    </div>
-                </div>
-            </div>
+            <audio-player-progress-bar></audio-player-progress-bar>
         </li>
         <li class="player-icons">
             <ul class="icons">

@@ -235,32 +235,6 @@
 
     ]);
 
-    MusicLoud.directive("seekController", ["$rootScope", function ($rootScope) {
-        return {
-            link: function (scope, element, attrs) {
-                element.on("mousedown", function (event) {
-                    var offset = element.offset(),
-                        width = element.width();
-                    $rootScope.$applyAsync(function () {
-                        $rootScope.player.doSeek(100 / width * (event.clientX - offset.left))
-                    });
-                });
-            }
-        }
-    }]);
-
-
-    MusicLoud.directive("trackPosition", ["$rootScope", function ($rootScope) {
-        return {
-            link: function (scope, element, attrs) {
-                var watcher = $rootScope.$watchCollection("player.playlist.position", function (pos) {
-                    element.css("width", "" + (100 / pos.duration * pos.position) + "%")
-                });
-                scope.$on("$destroy", watcher);
-            }
-        }
-    }]);
-
     MusicLoud.directive("volumeController", ["$rootScope", "$document", function ($rootScope, $document) {
         return {
             restrict: "A",

@@ -75,11 +75,13 @@ export class AudioPlayerService {
   }
 
   public async play(src: string): Promise<void> {
+    this.debug('play', { src })
     this.audio.setAttribute('src', src)
     await this.audio.play()
   }
 
   public stop(): void {
+    this.debug('stop')
     this.audio.pause()
     this.audio.removeAttribute('src')
 
@@ -91,6 +93,7 @@ export class AudioPlayerService {
   }
 
   public pause(): void {
+    this.debug('pause')
     this.audio.pause()
     this.setState({
       status: AudioPlayerStatus.Paused,
@@ -101,10 +104,12 @@ export class AudioPlayerService {
   }
 
   public async resume(): Promise<void> {
+    this.debug('resume')
     await this.audio.play()
   }
 
   public seek(time: number): void {
+    this.debug('seek', { time })
     this.audio.currentTime = time
   }
 

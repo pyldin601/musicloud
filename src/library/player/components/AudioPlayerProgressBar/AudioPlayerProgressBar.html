@@ -1,0 +1,11 @@
+<div mobx-autorun class="peaks-background" ng-show="$ctrl.isPlayerLoaded">
+  <div class="waveform-container" ng-mousedown="$ctrl.handleMouseDown($event)">
+    <peak-data-canvas ng-show="$ctrl.peakData" peak-data="$ctrl.peakData"></peak-data-canvas>
+    <div class="track-progress" ng-style="{ width: $ctrl.positionInPercent + '%' }"></div>
+    <div class="time-right">
+      <span ng-bind="$ctrl.position | normalizeTime"></span>
+      /
+      <span ng-bind="$ctrl.length | normalizeTime"></span>
+    </div>
+  </div>
+</div>

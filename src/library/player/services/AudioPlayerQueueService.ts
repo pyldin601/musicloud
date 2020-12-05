@@ -113,9 +113,10 @@ export class AudioPlayerQueueService {
     }
   }
 
-  public async seek(time: number): Promise<void> {
-    this.debug('seek', { time })
-    this.audioPlayerService.seek(time)
+  public async seekPercent(percent: number): Promise<void> {
+    this.debug('seekPercent', { percent })
+    if (!this.currentEntry) return
+    this.audioPlayerService.seek(this.currentEntry.length * (percent / 100))
   }
 
   private async playCurrentEntry(): Promise<void> {
