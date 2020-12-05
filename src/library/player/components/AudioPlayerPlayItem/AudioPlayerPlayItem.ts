@@ -1,5 +1,4 @@
 import { IComponentController, IComponentOptions } from 'angular'
-import classes from './AudioPlayerPlayItem.module.less'
 import { AudioPlayerQueueService } from '../../services/AudioPlayerQueueService'
 import { trackToQueueEntry } from './utils'
 
@@ -8,8 +7,6 @@ const COMPONENT_NAME = 'audioPlayerPlayItem'
 class AudioPlayerPlayItemController implements IComponentController {
   public track!: Track
   public trackList!: ReadonlyArray<Track>
-
-  public classes = classes
 
   static $inject = [AudioPlayerQueueService.name]
 
@@ -25,7 +22,7 @@ class AudioPlayerPlayItemController implements IComponentController {
 
 export const AudioPlayerPlayItem: Record<typeof COMPONENT_NAME, IComponentOptions> = {
   [COMPONENT_NAME]: {
-    template: `<div ng-class="$ctrl.classes.root" ng-dblclick="$ctrl.play()" ng-transclude></div>`,
+    template: `<div ng-dblclick="$ctrl.play()" ng-transclude></div>`,
     transclude: true,
     bindings: {
       track: '=',
