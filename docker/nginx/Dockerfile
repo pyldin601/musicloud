@@ -26,4 +26,4 @@ COPY docker/nginx/default.conf.template /etc/nginx/templates/
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=5m --timeout=60m CMD curl --fail http://guest:please@localhost:8080/cron/generatePeaks || exit 1
+HEALTHCHECK --interval=5m --timeout=60m CMD curl -X POST --fail http://guest:please@localhost:8080/cron/generatePeaks || exit 1
