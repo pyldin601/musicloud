@@ -48,20 +48,3 @@ jobs:
           repository: pldin601/musicloud-migration
           tags: latest
           dockerfile: docker/migration/Dockerfile
-  deploy:
-    needs:
-      - build-nginx
-      - build-php-fpm
-      - build-migration
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Push stack to production
-        uses: pldin601/docker-swarm-deploy-action@master
-        with:
-          remote_host: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_IP_ADDRESS }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
-          args: stack deploy --with-registry-auth --prune --resolve-image=always --compose-file docker/docker-compose.production.yml musicloud
