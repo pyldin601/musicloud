@@ -12,11 +12,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Build
-        uses: docker/build-push-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push master as latest
+        uses: docker/build-push-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: true
           repository: pldin601/musicloud-nginx
           tags: latest
           dockerfile: docker/nginx/Dockerfile
@@ -26,11 +33,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Build
-        uses: docker/build-push-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push master as latest
+        uses: docker/build-push-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
           repository: pldin601/musicloud-php-fpm
           tags: latest
           dockerfile: docker/php-fpm/Dockerfile
@@ -40,11 +53,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Build
-        uses: docker/build-push-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push master as latest
+        uses: docker/build-push-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
           repository: pldin601/musicloud-migration
           tags: latest
           dockerfile: docker/migration/Dockerfile
