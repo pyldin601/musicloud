@@ -23,8 +23,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           platforms: linux/amd64,linux/arm64
-          repository: pldin601/musicloud-nginx
-          tags: pldin601/musicloud-php-fpm:latest
+          tags: pldin601/musicloud-nginx:latest
           file: docker/nginx/Dockerfile
           push: true
   build-php-fpm:
@@ -64,7 +63,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           platforms: linux/amd64,linux/arm64
-          repository: pldin601/musicloud-migration
-          tags: pldin601/musicloud-php-fpm:latest
+          tags: pldin601/musicloud-migration:latest
           file: docker/migration/Dockerfile
           push: true
