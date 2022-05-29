@@ -6,7 +6,23 @@ on:
       - master
 
 jobs:
+  get_build:
+    name: get current build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Setup Variables
+        id: vars
+        run: |
+          echo "::set-output name=date::$(date +'%y.%m')"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+    outputs:
+      build_id: ${{ steps.vars.outputs.date }}.${{ github.run_id }}-${{ steps.vars.outputs.sha_short }}
+
   build-nginx:
+    needs:
+      - get_build
     name: Build nginx
     runs-on: ubuntu-latest
     steps:
@@ -27,10 +43,14 @@ jobs:
         with:
           builder: ${{ steps.builder.outputs.name }}
           platforms: linux/amd64,linux/arm64
-          tags: pldin601/musicloud-nginx:latest
+          tags: >
+            pldin601/musicloud-nginx:latest,
+            pldin601/musicloud-nginx:${{ needs.get_build.outputs.build_id }}
           file: docker/nginx/Dockerfile
           push: true
   build-php-fpm:
+    needs:
+      - get_build
     name: Build php-fpm
     runs-on: ubuntu-latest
     steps:
@@ -51,10 +71,14 @@ jobs:
         with:
           builder: ${{ steps.builder.outputs.name }}
           platforms: linux/amd64,linux/arm64
-          tags: pldin601/musicloud-php-fpm:latest
+          tags: >
+            pldin601/musicloud-php-fpm:latest,
+            pldin601/musicloud-php-fpm:${{ needs.get_build.outputs.build_id }}
           file: docker/php-fpm/Dockerfile
           push: true
   build-migration:
+    needs:
+      - get_build
     name: Build migration
     runs-on: ubuntu-latest
     steps:
@@ -75,6 +99,8 @@ jobs:
         with:
           builder: ${{ steps.builder.outputs.name }}
           platforms: linux/amd64,linux/arm64
-          tags: pldin601/musicloud-migration:latest
+          tags: >
+            pldin601/musicloud-migration:latest,
+            pldin601/musicloud-migration:${{ needs.get_build.outputs.build_id }}
           file: docker/migration/Dockerfile
           push: true
