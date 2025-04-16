@@ -21,7 +21,8 @@
         "malkusch/lock": "1.4",
         "ext-json": ">=8.0",
         "ext-pdo": ">=8.0",
-        "ext-iconv": ">=8.0"
+        "ext-iconv": ">=8.0",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "autoload": {
         "psr-4": {}
