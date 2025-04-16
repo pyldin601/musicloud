@@ -2,10 +2,10 @@ USER := $(shell id -u):$(shell id -g)
 PWD := $(shell pwd)
 
 start-dev-dependencies:
-	docker-compose up -d
+	docker compose up -d
 
 stop-dev-dependencies:
-	docker-compose stop
+	docker compose stop
 
 enter-dev-environment:
 	docker build -t musicloud-dev --build-arg USER=$(USER) -f Dockerfile .
