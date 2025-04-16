@@ -30,6 +30,16 @@ const tracksMenu = (selectedTracks, playlists, actions) => {
   const menuData = [
     {
       type: 'item',
+      text: `<i class="fa fa-play item-icon"></i> Play`,
+      action() {
+        actions.playSong(selectedTracks)
+      },
+    },
+    {
+      type: 'divider',
+    },
+    {
+      type: 'item',
       text: `<i class="fa fa-pencil-square item-icon"></i> Edit metadata`,
       action() {
         actions.editSongs(selectedTracks)
@@ -115,6 +125,15 @@ export default [
           $rootScope.playlistMethods.removeTracksFromPlaylist(tracks),
         addTracksToPlaylist: (playlist, tracks) =>
           $rootScope.playlistMethods.addTracksToPlaylist(playlist, tracks),
+        playSong: (tracks) => {
+          const firstTrack = tracks.at(0)
+
+          if (!firstTrack) {
+            return
+          }
+
+          $rootScope.player.doPlay(firstTrack)
+        },
       })
   },
 ]
