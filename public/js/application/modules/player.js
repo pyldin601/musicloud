@@ -48,6 +48,9 @@
             player.volume = vol
             $cookies.put('volume', vol)
           },
+          doPlayUrl: (url) => {
+            jFrame.jPlayer('setMedia', { mp3: url }).jPlayer('play')
+          },
           doPlay: function (track, playlist, resolver) {
             $rootScope.$applyAsync(function () {
               if (playlist !== undefined && playlist !== player.playlist.tracks) {

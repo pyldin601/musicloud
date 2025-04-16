@@ -36,6 +36,13 @@ const tracksMenu = (selectedTracks, playlists, actions) => {
       },
     },
     {
+      type: 'item',
+      text: `<i class="fa fa-play item-icon"></i> Play with Alexa 😏`,
+      action() {
+        actions.playWithAlexa(selectedTracks)
+      },
+    },
+    {
       type: 'divider',
     },
     {
@@ -133,6 +140,15 @@ export default [
           }
 
           $rootScope.player.doPlay(firstTrack)
+        },
+        playWithAlexa: (tracks) => {
+          const firstTrack = tracks.at(0)
+
+          if (!firstTrack) {
+            return
+          }
+
+          $rootScope.player.doPlayUrl(`/command-for-alexa/${firstTrack.id}`)
         },
       })
   },
