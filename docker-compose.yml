@@ -1,6 +1,6 @@
 services:
   db:
-    image: 'library/postgres:9.5'
+    image: 'library/postgres:9.6'
     environment:
       POSTGRES_PASSWORD: musicloud
       POSTGRES_USER: musicloud
