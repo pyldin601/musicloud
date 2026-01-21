@@ -1,4 +1,4 @@
-FROM migrate/migrate:v4.15.2
+FROM migrate/migrate:v4.19.1
 
 COPY docker/migration/entrypoint.sh /entrypoint.sh
 COPY migrations /migrations
